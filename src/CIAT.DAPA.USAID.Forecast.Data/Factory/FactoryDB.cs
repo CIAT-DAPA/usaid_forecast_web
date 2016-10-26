@@ -71,5 +71,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var filter = builder.Eq("enable", true);
             return await collection.Find(filter).ToListAsync<T>();
         }
+        /// <summary>
+        /// Method that search a record in the database by its id
+        /// </summary>
+        /// <param name="id">Id of the entity</param>
+        /// <returns>Entity if the database found some record, otherwise null</returns>
+        public async Task<T> byIdAsync(string id)
+        {
+            var builder = Builders<T>.Filter;
+            var filter = builder.Eq("_id",new ObjectId(id));
+            var results =  await collection.Find(filter).ToListAsync<T>();
+            return results.FirstOrDefault();
+        }
     }
 }

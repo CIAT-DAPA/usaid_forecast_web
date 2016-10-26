@@ -1,0 +1,75 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Locality
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Locality</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Country:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.country.name)
+        </dd>
+
+        <dt>
+            ISO 2:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.country.iso2)
+        </dd>
+
+        <dt>
+            State:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.state)
+        </dd>
+
+        <dt>
+            Municipality:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.municipality)
+        </dd>
+
+        <dt>
+            Name:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            Date register:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date_register)
+        </dd>
+
+        <dt>
+            Date last updated:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date_updated)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to list", "Index")
+</p>
