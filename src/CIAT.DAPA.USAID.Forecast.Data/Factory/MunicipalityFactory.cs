@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
     /// <summary>
-    /// This class allow to get information about states collection
+    /// This class allow to get information about municipality collection
     /// </summary>
-    public class StateFactory: FactoryDB<State>
+    public class MunicipalityFactory: FactoryDB<Municipality>
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
-        public StateFactory(IMongoDatabase database): base(database, LogEntity.lc_state)
+        public MunicipalityFactory(IMongoDatabase database) : base(database, LogEntity.lc_municipality)
         {
 
         }

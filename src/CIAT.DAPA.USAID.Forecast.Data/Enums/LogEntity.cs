@@ -11,6 +11,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// States' table
         /// </summary>
         lc_state,
-
+        /// <summary>
+        /// Municipalities' table
+        /// </summary>
+        lc_municipality,
+        /// <summary>
+        /// Weather stations' table
+        /// </summary>
+        lc_weather_station
     }
 }
