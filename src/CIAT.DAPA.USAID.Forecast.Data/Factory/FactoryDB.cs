@@ -27,10 +27,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected</param>
-        public FactoryDB(IMongoDatabase database)
+        /// <param name="name">Name of the collection</param>
+        public FactoryDB(IMongoDatabase database, string name)
         {
             db = database;
-            name_collection = typeof(T).Name.ToLower();
+            name_collection = name;
             collection = db.GetCollection<T>(name_collection);
         }
 

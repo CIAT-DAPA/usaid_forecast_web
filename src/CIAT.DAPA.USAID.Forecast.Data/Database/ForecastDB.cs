@@ -13,7 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// <summary>
         /// Get the name of the database in mongo
         /// </summary>
-        public const string DATABASE_NAME = "forecast_db";
+        public string database_name { get; set; }
 
         /// <summary>
         /// Get or set the client connection to mongo db 
@@ -32,10 +32,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// Method Construct
         /// </summary>
         /// <param name="connection">Connection string to communicate with mongo database</param>
-        public ForecastDB(string connection)
+        /// <param name="name">Name of the database</param>
+        public ForecastDB(string connection, string name)
         {
             client = new MongoClient(connection);
-            db = client.GetDatabase(DATABASE_NAME);
+            db = client.GetDatabase(database_name);
             // Set the convetion for all fields of the mongo database
             convention = new ConventionPack();
             convention.Add(new CamelCaseElementNameConvention());
