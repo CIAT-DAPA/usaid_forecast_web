@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// </summary>
         /// <param name="database">Database connected</param>
         /// <param name="name">Name of the collection</param>
-        public FactoryDB(IMongoDatabase database, string name)
+        public FactoryDB(IMongoDatabase database, LogEntity name)
         {
             db = database;
-            name_collection = name;
+            name_collection = Enum.GetName(typeof(LogEntity), name);
             collection = db.GetCollection<T>(name_collection);
         }
 

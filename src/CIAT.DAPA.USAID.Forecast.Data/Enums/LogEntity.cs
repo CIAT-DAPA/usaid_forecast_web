@@ -7,5 +7,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
     /// </summary>
     public enum LogEntity
     {
+        /// <summary>
+        /// States' table
+        /// </summary>
+        lc_state,
+
     }
 }

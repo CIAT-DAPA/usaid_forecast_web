@@ -1,6 +1,5 @@
-﻿using CIAT.DAPA.USAID.Forecast.Data.Factory;
+﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -9,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
-    public class LocalityFactory : FactoryDB<Locality>
-    {        
+    public class StateFactory: FactoryDB<State>
+    {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
-        public LocalityFactory(IMongoDatabase database): base(database)
+        public StateFactory(IMongoDatabase database): base(database, LogEntity.lc_state)
         {
 
         }
