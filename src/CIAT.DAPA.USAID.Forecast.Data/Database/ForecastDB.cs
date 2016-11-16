@@ -43,6 +43,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             ConventionRegistry.Register("camelCase", convention, t => true);
         }
 
-        public LocalityFactory locality { get { return new LocalityFactory(db); } }
+        //public LocalityFactory locality { get { return new LocalityFactory(db); } }
     }
 }

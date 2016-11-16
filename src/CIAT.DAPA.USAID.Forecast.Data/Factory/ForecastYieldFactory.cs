@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
     /// <summary>
-    /// This class allow to get information about weather station collection
+    /// This class allow to get information about yield forecast collection
     /// </summary>
-    public class WeatherStationFactory: FactoryDB<WeatherStation>
+    public class ForecastYieldFactory: FactoryDB<ForecastYield>
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
-        public WeatherStationFactory(IMongoDatabase database): base(database, LogEntity.lc_weather_station)
+        public ForecastYieldFactory(IMongoDatabase database): base(database, LogEntity.fs_forecast_yield)
         {
 
         }
