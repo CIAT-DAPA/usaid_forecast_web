@@ -17,6 +17,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Event data
         /// </summary>
+        [BsonRequired]
         public Log data { get; set; }
     }
 }

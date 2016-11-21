@@ -21,5 +21,18 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
 
         }
+
+        public async override Task<bool> updateAsync(WeatherStation entity, WeatherStation newEntity)
+        {
+            var result = await collection.ReplaceOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), newEntity);
+            return true;
+        }
+
+        public async override Task<bool> deleteAsync(WeatherStation entity)
+        {
+            await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("track.enable", false)
+                                                                                               .Set("track.updated", DateTime.Now));
+            return true;
+        }
     }
 }

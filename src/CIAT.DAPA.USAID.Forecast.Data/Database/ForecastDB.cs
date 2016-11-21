@@ -24,9 +24,18 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         private IMongoDatabase db { get; set; }
         /// <summary>
-        /// 
+        /// Get or set the convention to setup the collection in the database
         /// </summary>
         private ConventionPack convention { get; set; }
+
+        /// <summary>
+        /// Get or set the state entity in the database
+        /// </summary>
+        public StateFactory state { get; set; }
+        /// <summary>
+        /// Get or set the log administrative entity in the database
+        /// </summary>
+        public LogAdministrativeFactory logAdministrative { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -35,14 +44,25 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// <param name="name">Name of the database</param>
         public ForecastDB(string connection, string name)
         {
-            client = new MongoClient(connection);
+            // Set the configuration connect with the database
+            database_name = name;
+            client = new MongoClient(connection);            
             db = client.GetDatabase(database_name);
             // Set the convetion for all fields of the mongo database
             convention = new ConventionPack();
             convention.Add(new CamelCaseElementNameConvention());
             ConventionRegistry.Register("camelCase", convention, t => true);
+            // Start the collections setup in the database
+            init();
         }
 
-        //public LocalityFactory locality { get { return new LocalityFactory(db); } }
+        /// <summary>
+        /// Method that setup all collection of the database with POCO
+        /// </summary>
+        public void init()
+        {
+            state = new StateFactory(db);
+            logAdministrative = new LogAdministrativeFactory(db);
+        }
     }
 }

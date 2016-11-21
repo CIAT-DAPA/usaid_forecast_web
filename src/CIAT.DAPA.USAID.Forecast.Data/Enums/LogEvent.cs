@@ -26,6 +26,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Event to list records
         /// </summary>
-        lis
+        lis,
+        /// <summary>
+        /// Error in the application
+        /// </summary>
+        err,
+        /// <summary>
+        /// Exception in the application
+        /// </summary>
+        exc
     }
 }

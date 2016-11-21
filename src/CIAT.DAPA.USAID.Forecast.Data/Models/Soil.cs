@@ -28,10 +28,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         public int order { get; set; }
         /// <summary>
-        /// Array of configuration files
-        /// </summary>
-        public IEnumerable<ConfigurationFile> conf_files { get; set; }
-        /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
         public Track track { get; set; }

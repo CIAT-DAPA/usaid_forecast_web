@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using System;
+using System.Collections.Generic;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
@@ -20,6 +21,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// ID's soil
         /// </summary>
         public ObjectId soil { get; set; }
+        /// <summary>
+        /// Array of configuration files
+        /// </summary>
+        public IEnumerable<ConfigurationFile> conf_files { get; set; }
+        /// <summary>
+        /// Days of crop development
+        /// </summary>
+        public int days { get; set; }
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>

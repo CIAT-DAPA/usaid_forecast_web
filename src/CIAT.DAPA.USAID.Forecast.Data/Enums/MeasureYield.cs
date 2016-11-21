@@ -20,6 +20,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         d_har,
         /// <summary>
+        /// days to start grain drying
+        /// </summary>
+        d_dry,
+        /// <summary>
         /// Cumulative precipitation for the crop cycle
         /// </summary>
         prec_acu,

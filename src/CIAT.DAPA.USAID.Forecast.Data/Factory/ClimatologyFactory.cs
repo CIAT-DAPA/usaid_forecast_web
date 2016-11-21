@@ -21,5 +21,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
 
         }
+        
+        public async override Task<bool> updateAsync(Climatology entity, Climatology newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async override Task<bool> deleteAsync(Climatology entity)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

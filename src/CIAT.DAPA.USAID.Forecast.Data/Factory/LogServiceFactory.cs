@@ -21,5 +21,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
 
         }
+
+        public async override Task<bool> updateAsync(LogService entity, LogService newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async override Task<bool> deleteAsync(LogService entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

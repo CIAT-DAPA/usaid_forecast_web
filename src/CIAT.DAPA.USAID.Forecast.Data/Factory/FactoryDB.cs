@@ -22,7 +22,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <summary>
         /// Get or set the collection of the database
         /// </summary>
-        protected IMongoCollection<T> collection { get; private set; }
+        protected IMongoCollection<T> collection { get; private set; }        
 
         /// <summary>
         /// Method Construct
@@ -41,27 +41,29 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// </summary>
         /// <param name="entity">Entity to save</param>
         /// <returns>Entity with new Object ID</returns>
-        public async Task<T> insertAsync(T entity)
+        public async virtual Task<T> insertAsync(T entity)
         {
             await collection.InsertOneAsync(entity);
             return entity;
         }
-
+        
         /// <summary>
         /// Method that delete one entity in the database.
         /// The register is deleted logically, in another words the field enable
         /// is updated to false
         /// </summary>
         /// <param name="entity">Entity to delete</param>
-        /// <returns>True if the register is deleted, otherwise false</returns>
-        public async Task<bool> deleteAsync(T entity)
-        {
-            Type t = entity.GetType();
-            PropertyInfo prop = t.GetRuntimeProperty("_id");
-            var id = prop.GetValue(entity).ToString();
-            await collection.UpdateOneAsync(Builders<T>.Filter.Eq("_id",id), Builders<T>.Update.Inc("enable", false));
-            return true;
-        }
+        /// <returns>True if the register has been deleted, otherwise false</returns>      
+        public abstract Task<bool> deleteAsync(T entity);
+
+        /// <summary>
+        /// Method that replace one entity in the database.
+        /// The reokaced record is searching by its id.
+        /// </summary>
+        /// <param name="entity">Current entity</param>
+        /// <param name="newEntity">New entity</param>
+        /// <returns>True if the register has been replaced, otherwise false</returns>
+        public abstract Task<bool> updateAsync(T entity, T newEntity);
 
         /// <summary>
         /// Method that return all registers enable in the database
@@ -70,9 +72,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async Task<List<T>> listEnableAsync()
         {
             var builder = Builders<T>.Filter;
-            var filter = builder.Eq("enable", true);
+            var filter = builder.Eq("track.enable", true);
             return await collection.Find(filter).ToListAsync<T>();
         }
+
         /// <summary>
         /// Method that search a record in the database by its id
         /// </summary>

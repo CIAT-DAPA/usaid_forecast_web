@@ -21,5 +21,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
 
         }
+
+        public async override Task<bool> updateAsync(ForecastScenario entity, ForecastScenario newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async override Task<bool> deleteAsync(ForecastScenario entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

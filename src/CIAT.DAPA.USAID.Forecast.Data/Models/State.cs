@@ -1,13 +1,14 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
     /// <summary>
     /// This entity has the information about the states or departments.
     /// </summary>
-    public class State
+    public partial class State
     {
         /// <summary>
         /// ID's state
@@ -17,14 +18,18 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Name of the department or state in which is located the locality
         /// </summary>
+        [Display(Name = "State name"), Required(ErrorMessage = "The state name is required")]
+        [BsonRequired]
         public string name { get; set; }
         /// <summary>
         /// Country in which is located the state
         /// </summary>
+        [BsonRequired]
         public Country country { get; set; }
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
+        [BsonRequired]        
         public Track track { get; set; }
     }
 }

@@ -28,9 +28,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         public int order { get; set; }
         /// <summary>
-        /// Array of configuration files
+        /// Sets whether or not the variety is dry. In case it is not, 
+        /// it is assumed that it is irrigated
         /// </summary>
-        public IEnumerable<ConfigurationFile> conf_files { get; set; }
+        public bool rainfed { get; set; }
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
