@@ -33,6 +33,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public StateFactory state { get; set; }
         /// <summary>
+        /// Get or set the municipality entiti in the database
+        /// </summary>
+        public MunicipalityFactory municipality { get; set; }
+        /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
         public LogAdministrativeFactory logAdministrative { get; set; }
@@ -62,6 +66,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         public void init()
         {
             state = new StateFactory(db);
+            municipality = new MunicipalityFactory(db);
             logAdministrative = new LogAdministrativeFactory(db);
         }
     }

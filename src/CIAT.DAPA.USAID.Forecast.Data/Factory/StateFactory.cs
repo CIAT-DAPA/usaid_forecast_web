@@ -30,7 +30,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 
         public async override Task<bool> deleteAsync(State entity)
         {
-            await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id",entity.id), Builders<State>.Update.Set("track.enable", false)
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id",entity.id), Builders<State>.Update.Set("track.enable", false)
                                                                                                .Set("track.updated", DateTime.Now));
             return true;
         }
