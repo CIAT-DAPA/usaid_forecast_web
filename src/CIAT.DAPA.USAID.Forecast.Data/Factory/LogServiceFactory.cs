@@ -31,5 +31,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             throw new NotImplementedException();
         }
+
+        public async override Task<LogService> insertAsync(LogService entity)
+        {
+            await collection.InsertOneAsync(entity);
+            return entity;
+        }
     }
 }

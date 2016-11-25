@@ -41,11 +41,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// </summary>
         /// <param name="entity">Entity to save</param>
         /// <returns>Entity with new Object ID</returns>
-        public async virtual Task<T> insertAsync(T entity)
-        {
-            await collection.InsertOneAsync(entity);
-            return entity;
-        }
+        public abstract Task<T> insertAsync(T entity);       
         
         /// <summary>
         /// Method that delete one entity in the database.

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
@@ -27,6 +28,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         }
 
         public async override Task<bool> deleteAsync(CIAT.DAPA.USAID.Forecast.Data.Models.Forecast entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async override Task<Models.Forecast> insertAsync(Models.Forecast entity)
         {
             throw new NotImplementedException();
         }

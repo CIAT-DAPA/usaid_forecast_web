@@ -24,6 +24,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<bool> updateAsync(Crop entity, Crop newEntity)
         {
+            newEntity.track = entity.track;
+            newEntity.track.updated = DateTime.Now;
             var result = await collection.ReplaceOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), newEntity);
             return true;
         }
@@ -33,6 +35,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("track.enable", false)
                                                                                                .Set("track.updated", DateTime.Now));
             return true;
+        }
+
+        public async override Task<Crop> insertAsync(Crop entity)
+        {
+            entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            await collection.InsertOneAsync(entity);
+            return entity;
         }
     }
 }

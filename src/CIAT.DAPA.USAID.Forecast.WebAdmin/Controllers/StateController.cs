@@ -84,7 +84,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
                     await db.state.insertAsync(entity);
                     writeEvent(entity.ToString(), LogEvent.cre);
                     return RedirectToAction("Index");
@@ -138,8 +137,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     State current_entity = await db.state.byIdAsync(id);
 
                     entity.id = getId(id);
-                    entity.track = current_entity.track;
-                    entity.track.updated = DateTime.Now;
                     await db.state.updateAsync(current_entity,entity);
                     writeEvent(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");

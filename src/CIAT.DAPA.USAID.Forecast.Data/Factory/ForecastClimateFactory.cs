@@ -31,5 +31,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             throw new NotImplementedException();
         }
+
+        public async override Task<ForecastClimate> insertAsync(ForecastClimate entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
