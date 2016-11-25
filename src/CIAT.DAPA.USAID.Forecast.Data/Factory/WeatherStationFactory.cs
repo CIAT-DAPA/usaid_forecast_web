@@ -26,15 +26,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
+            newEntity.conf_files = entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
+            newEntity.ranges = entity.ranges.Count() == 0 ? new List<YieldRange>() : entity.ranges;
             var result = await collection.ReplaceOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), newEntity);
-            return true;
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<bool> deleteAsync(WeatherStation entity)
         {
-            await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("track.enable", false)
+            var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("track.enable", false)
                                                                                                .Set("track.updated", DateTime.Now));
-            return true;
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<WeatherStation> insertAsync(WeatherStation entity)

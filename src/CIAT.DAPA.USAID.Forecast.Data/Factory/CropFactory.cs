@@ -27,14 +27,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
             var result = await collection.ReplaceOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), newEntity);
-            return true;
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<bool> deleteAsync(Crop entity)
         {
-            await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("track.enable", false)
+            var result = await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("track.enable", false)
                                                                                                .Set("track.updated", DateTime.Now));
-            return true;
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<Crop> insertAsync(Crop entity)

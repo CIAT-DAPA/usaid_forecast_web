@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.WeatherStation>
+@{
+    ViewBag.Title = "Weather Station";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Weather Station</h2>
+
+<p>
+    @Html.ActionLink("Create new", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Municipality
+        </th>
+        <th>
+            Weather Station
+        </th>
+        <th>
+            Origin
+        </th>
+        <th>
+            Visible
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.municipality.ToString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.origin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.visible)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+</table>

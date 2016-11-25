@@ -24,6 +24,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Country in which is located the state
         /// </summary>
+        [Display(Name = "Country"), Required(ErrorMessage = "The country is required")]
         [BsonRequired]
         public Country country { get; set; }
         /// <summary>

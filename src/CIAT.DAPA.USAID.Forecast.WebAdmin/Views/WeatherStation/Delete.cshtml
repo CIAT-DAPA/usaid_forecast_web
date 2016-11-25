@@ -1,0 +1,99 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.WeatherStation
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Weather Station</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.municipality)
+        </dt>
+
+        <dd>
+            @Model.municipality.ToString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.origin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.origin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ext_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ext_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.visible)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.visible)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.latitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.latitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.longitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.longitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.track.register)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.track.register)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.track.updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.track.updated)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
