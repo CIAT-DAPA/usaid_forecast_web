@@ -42,6 +42,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async override Task<WeatherStation> insertAsync(WeatherStation entity)
         {
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            entity.conf_files = new List<ConfigurationFile>();
+            entity.ranges = new List<YieldRange>();
             await collection.InsertOneAsync(entity);
             return entity;
         }

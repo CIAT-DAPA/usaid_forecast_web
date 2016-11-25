@@ -41,6 +41,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public WeatherStationFactory weatherStation { get; set; }
         /// <summary>
+        /// Get or set the crop entity in the database
+        /// </summary>
+        public CropFactory crop { get; set; }
+        /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
         public LogAdministrativeFactory logAdministrative { get; set; }
@@ -73,6 +77,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             municipality = new MunicipalityFactory(db);
             logAdministrative = new LogAdministrativeFactory(db);
             weatherStation = new WeatherStationFactory(db);
+            crop = new CropFactory(db);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
+            newEntity.setup = entity.setup.Count() == 0 ? new List<Setup>() : entity.setup;
             var result = await collection.ReplaceOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }
@@ -40,6 +41,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async override Task<Crop> insertAsync(Crop entity)
         {
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            entity.setup = new List<Setup>();
             await collection.InsertOneAsync(entity);
             return entity;
         }

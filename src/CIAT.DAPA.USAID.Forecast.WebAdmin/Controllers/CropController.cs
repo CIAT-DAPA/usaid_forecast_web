@@ -1,33 +1,32 @@
-﻿using System;
+﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
+using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CIAT.DAPA.USAID.Forecast.Data.Enums;
-using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc;
-using CIAT.DAPA.USAID.Forecast.Data.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    public class WeatherStationController : WebAdminBaseController
+    public class CropController : WebAdminBaseController
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="settings">Settings options</param>
-        public WeatherStationController(IOptions<Settings> settings) : base(settings, LogEntity.lc_weather_station)
+        public CropController(IOptions<Settings> settings) : base(settings, LogEntity.cp_crop)
         {
         }
 
-        // GET: /WeatherStation/
+        // GET: /Crop/
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var list = await db.weatherStation.listEnableAsync();
+                var list = await db.crop.listEnableAsync();
                 writeEvent(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -39,7 +38,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         }
 
-        // GET: /WeatherStation/Details/5
+        // GET: /Crop/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
@@ -50,7 +49,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     writeEvent("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                WeatherStation entity = await db.weatherStation.byIdAsync(id);
+                Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
                     writeEvent("Not found id: " + id, LogEvent.err);
@@ -66,26 +65,24 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // GET: /WeatherStation/Create
+        // GET: /Crop/Create
         [HttpGet]
         public async Task<IActionResult> Create()
-        {
-            var municipalities = await db.municipality.listEnableAsync();
-            ViewBag.municipality = new SelectList(municipalities, "id", "name");
+        {            
             return View();
         }
 
-        // POST: /WeatherStation/Create
+        // POST: /Crop/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(WeatherStation entity)
+        public async Task<IActionResult> Create(Crop entity)
         {
             try
             {
-                entity.municipality = getId(HttpContext.Request.Form["municipality"].ToString());                
+                entity.setup = new List<Setup>();
                 if (ModelState.IsValid)
                 {
-                    await db.weatherStation.insertAsync(entity);
+                    await db.crop.insertAsync(entity);
                     writeEvent(entity.ToString(), LogEvent.cre);
                     return RedirectToAction("Index");
                 }
@@ -99,7 +96,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // GET: /WeatherStation/Edit/5
+        // GET: /Crop/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
@@ -110,14 +107,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     writeEvent("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                WeatherStation entity = await db.weatherStation.byIdAsync(id);
+                Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
                     writeEvent("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                var municipalities = await db.municipality.listEnableAsync();
-                ViewBag.municipality = new SelectList(municipalities, "id", "name");
                 writeEvent("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
@@ -128,20 +123,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // POST: /WeatherStation/Edit/5
+        // POST: /Crop/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(WeatherStation entity, string id)
+        public async Task<IActionResult> Edit(Crop entity, string id)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    WeatherStation current_entity = await db.weatherStation.byIdAsync(id);
+                    Crop current_entity = await db.crop.byIdAsync(id);
 
                     entity.id = getId(id);
-                    entity.municipality = getId(HttpContext.Request.Form["municipality"].ToString());
-                    await db.weatherStation.updateAsync(current_entity, entity);
+                    await db.crop.updateAsync(current_entity, entity);
                     writeEvent(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");
                 }
@@ -155,7 +149,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // GET: /WeatherStation/Delete/5
+        // GET: /Crop/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
@@ -166,7 +160,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     writeEvent("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                WeatherStation entity = await db.weatherStation.byIdAsync(id);
+                Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
                     writeEvent("Not found id: " + id, LogEvent.err);
@@ -182,15 +176,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // POST: /WeatherStation/Delete/5
+        // POST: /Crop/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             try
             {
-                WeatherStation entity = await db.weatherStation.byIdAsync(id);
-                await db.weatherStation.deleteAsync(entity);
+                Crop entity = await db.crop.byIdAsync(id);
+                await db.crop.deleteAsync(entity);
                 writeEvent(entity.ToString(), LogEvent.del);
                 return RedirectToAction("Index");
             }
