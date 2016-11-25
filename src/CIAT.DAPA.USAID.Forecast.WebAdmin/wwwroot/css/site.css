@@ -36,3 +36,9 @@ textarea {
     display: none
   }
 }
+
+.img-carousel{
+    max-height:341px;
+    min-height:341px;
+    width: 100%;
+}
