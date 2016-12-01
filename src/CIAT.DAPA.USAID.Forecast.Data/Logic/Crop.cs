@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
-    public partial class Municipality
+    public partial class Crop
     {
         /// <summary>
-        /// Method that return a string representation of the municipality 
+        /// Method that return a string representation of the crop 
         /// </summary>
-        /// <returns>String with the content of the municipality</returns>
+        /// <returns>String with the content of the crop</returns>
         public override string ToString()
         {
-            return id.ToString() + "|" + state.ToString() + "|" + name;
+            return id.ToString() + "|" + name + "|" + setup.Count().ToString();
         }
     }
 }

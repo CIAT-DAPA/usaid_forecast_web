@@ -9,7 +9,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     /// <summary>
     /// This entity has the information about weather station.
     /// </summary>
-    public class WeatherStation
+    public partial class WeatherStation
     {
         /// <summary>
         /// ID's weather station

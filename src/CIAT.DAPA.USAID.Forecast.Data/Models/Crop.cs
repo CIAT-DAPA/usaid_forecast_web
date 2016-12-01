@@ -9,7 +9,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     /// <summary>
     /// This entity has the information about crops
     /// </summary>
-    public class Crop
+    public partial class Crop
     {
         /// <summary>
         /// ID's crop

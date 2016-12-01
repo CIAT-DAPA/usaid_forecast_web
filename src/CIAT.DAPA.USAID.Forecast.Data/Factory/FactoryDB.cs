@@ -65,7 +65,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// Method that return all registers enable in the database
         /// </summary>
         /// <returns>List of entity</returns>
-        public async Task<List<T>> listEnableAsync()
+        public async virtual Task<List<T>> listEnableAsync()
         {
             var builder = Builders<T>.Filter;
             var filter = builder.Eq("track.enable", true);
@@ -77,7 +77,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// </summary>
         /// <param name="id">Id of the entity</param>
         /// <returns>Entity if the database found some record, otherwise null</returns>
-        public async Task<T> byIdAsync(string id)
+        public async virtual Task<T> byIdAsync(string id)
         {
             var builder = Builders<T>.Filter;
             var filter = builder.Eq("_id",new ObjectId(id));

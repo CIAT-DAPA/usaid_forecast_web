@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Cultivar>
+@{
+    ViewBag.Title = "Cultivar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Cultivar</h2>
+
+<p>
+    @Html.ActionLink("Create new", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Crop
+        </th>
+        <th>
+            Rainfed
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @item.crop.ToString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rainfed)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+</table>

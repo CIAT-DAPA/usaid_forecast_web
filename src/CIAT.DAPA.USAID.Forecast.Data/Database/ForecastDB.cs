@@ -41,6 +41,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public WeatherStationFactory weatherStation { get; set; }
         /// <summary>
+        /// Get or set the cultivar entity in the database
+        /// </summary>
+        public CultivarFactory cultivar { get; set; }
+        /// <summary>
         /// Get or set the crop entity in the database
         /// </summary>
         public CropFactory crop { get; set; }
@@ -78,6 +82,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             logAdministrative = new LogAdministrativeFactory(db);
             weatherStation = new WeatherStationFactory(db);
             crop = new CropFactory(db);
+            cultivar = new CultivarFactory(db);
         }
     }
 }
