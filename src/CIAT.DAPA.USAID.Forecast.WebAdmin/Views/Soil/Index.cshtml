@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Soil>
+@{
+    ViewBag.Title = "Soil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Soil</h2>
+
+<p>
+    @Html.ActionLink("Create new", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Crop
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @item.crop.ToString()
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+</table>
