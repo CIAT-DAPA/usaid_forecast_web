@@ -56,6 +56,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// Get or set the log administrative entity in the database
         /// </summary>
         public LogAdministrativeFactory logAdministrative { get; set; }
+        /// <summary>
+        /// Get or set the log service entity in the database
+        /// </summary>
+        public LogServiceFactory logService { get; set; }
+        /// <summary>
+        /// Get or set the all views of the database. It has some complex queries to the database
+        /// </summary>
+        public ViewsFactory views { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -81,13 +89,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public void init()
         {
-            state = new StateFactory(db);
-            municipality = new MunicipalityFactory(db);
+            // entities
             logAdministrative = new LogAdministrativeFactory(db);
+            logService = new LogServiceFactory(db);
+            state = new StateFactory(db);
+            municipality = new MunicipalityFactory(db);            
             weatherStation = new WeatherStationFactory(db);
             crop = new CropFactory(db);
             cultivar = new CultivarFactory(db);
             soil = new SoilFactory(db);
+            // views
+            views = new ViewsFactory(db);
         }
     }
 }

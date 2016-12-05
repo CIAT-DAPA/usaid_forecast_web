@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI
 {
@@ -36,6 +37,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+
+            // Add custom settings from configuration file
+            services.Configure<Settings>(options =>
+            {
+                options.ConnectionString = Configuration.GetSection("ForecastConnection:ConnectionString").Value;
+                options.Database = Configuration.GetSection("ForecastConnection:Database").Value;
+                options.LogPath = Configuration.GetSection("Log:Path").Value;
+            });
 
             services.AddMvc();
         }

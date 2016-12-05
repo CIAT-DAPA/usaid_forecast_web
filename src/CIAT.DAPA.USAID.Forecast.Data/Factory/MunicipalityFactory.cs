@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
             await collection.InsertOneAsync(entity);
             return entity;
-        }
+        }        
     }
 }
