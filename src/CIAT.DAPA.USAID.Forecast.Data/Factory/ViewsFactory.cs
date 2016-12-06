@@ -26,12 +26,21 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             db = database;
         }
-        
+
+        /// <summary>
+        /// Method that search all information available about geographic data to the end user and fixed all them into a comprensible data structure
+        /// </summary>
+        /// <returns>List of LocationView (it has information about states, municipalities and weather stations)</returns>
         public async Task<IEnumerable<LocationView>> listLocationVisibleAsync()
-        {   
-            var states = db.GetCollection<State>(Enum.GetName(typeof(LogEntity), LogEntity.lc_state)).AsQueryable().Where(f => f.track.enable).ToList();
-            var municipalities = db.GetCollection<Municipality>(Enum.GetName(typeof(LogEntity), LogEntity.lc_municipality)).AsQueryable().Where(f => f.track.enable && f.visible).ToList();
-            var weatherstations = db.GetCollection<WeatherStation>(Enum.GetName(typeof(LogEntity), LogEntity.lc_weather_station)).AsQueryable().Where(f => f.track.enable && f.visible).ToList();
+        {
+            // Filter all entities available and visible to return.
+            // For can say that a entity is available it should has the field track.enable in true
+            var states = db.GetCollection<State>(Enum.GetName(typeof(LogEntity), LogEntity.lc_state))
+                                .AsQueryable().Where(f => f.track.enable).ToList();
+            var municipalities = db.GetCollection<Municipality>(Enum.GetName(typeof(LogEntity), LogEntity.lc_municipality))
+                                .AsQueryable().Where(f => f.track.enable && f.visible).ToList();
+            var weatherstations = db.GetCollection<WeatherStation>(Enum.GetName(typeof(LogEntity), LogEntity.lc_weather_station))
+                                .AsQueryable().Where(f => f.track.enable && f.visible).ToList();
             var query = from s in states
                         join m in municipalities on s.id equals m.state
                         join w in weatherstations on m.id equals w.municipality
@@ -51,6 +60,36 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                             ws_lon = p.w.longitude
                         });
             return query.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Method that search all information available about agronomic data to the end user and fixed all them into a comprensible data structure
+        /// </summary>
+        /// <returns>List of AgronomicView (it has information about crops, cultivars and soils)</returns>
+        public async Task<IEnumerable<AgronomicView>> listAgronomicDataAsync()
+        {
+            List<AgronomicView> query = new List<AgronomicView>();
+            // Filter all entities available.
+            // For can say that a entity is available it should has the field track.enable in true
+            var crops = db.GetCollection<Crop>(Enum.GetName(typeof(LogEntity), LogEntity.cp_crop))
+                            .AsQueryable().Where(f => f.track.enable).ToList();
+            var cultivars = db.GetCollection<Cultivar>(Enum.GetName(typeof(LogEntity), LogEntity.cp_cultivar))
+                            .AsQueryable().Where(f => f.track.enable).ToList();
+            var soils = db.GetCollection<Soil>(Enum.GetName(typeof(LogEntity), LogEntity.cp_soil))
+                            .AsQueryable().Where(f => f.track.enable).ToList();
+            foreach (var c in crops)
+                query.Add(new AgronomicView()
+                {
+                    cp_id = c.id.ToString(),
+                    cp_name = c.name,
+                    // Filter only the cultivars for the crop
+                    cultivars = cultivars.Where(p => p.crop == c.id).OrderByDescending(p => p.order)
+                      .Select(p => new CultivarView() { id = p.id.ToString(), name = p.name, rainfed = p.rainfed }),
+                    // Filter only the soils for the crop
+                    soils = soils.Where(p => p.crop == c.id).OrderByDescending(p => p.order)
+                      .Select(p => new SoilView() { id = p.id.ToString(), name = p.name })
+                });
+            return query;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             var builder = Builders<Cultivar>.Filter;
             var filter = builder.Eq("track.enable", true);
-            return await collection.Find(filter).SortBy(p=> p.order).ToListAsync<Cultivar>();
+            return await collection.Find(filter).SortByDescending(p=> p.order).ToListAsync<Cultivar>();
         }
     }
 }
