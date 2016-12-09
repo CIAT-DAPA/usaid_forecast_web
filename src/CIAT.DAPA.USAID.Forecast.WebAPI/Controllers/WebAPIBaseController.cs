@@ -13,8 +13,8 @@ using MongoDB.Bson;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    public class WebAPIBaseController : Controller
+    
+    public abstract class WebAPIBaseController : Controller
     {
         /// <summary>
         /// Get or set object to connect with database
@@ -87,6 +87,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             writeEvent(ex.Message + " - " + ex.StackTrace.ToString(), LogEvent.exc, entities);
         }
 
+        /// <summary>
+        /// This method translate from string to object id
+        /// </summary>
+        /// <param name="id">string data</param>
+        /// <returns>Object Id</returns>
         protected ObjectId getId(string id)
         {
             return ObjectId.Parse(id);

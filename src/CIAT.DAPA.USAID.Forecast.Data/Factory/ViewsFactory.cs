@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
+    /// <summary>
+    /// This class has the queries that represents a view of the data in the database.
+    /// Those queries are part of the bussines logic
+    /// </summary>
     public class ViewsFactory
     {
         /// <summary>
@@ -41,6 +45,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                                 .AsQueryable().Where(f => f.track.enable && f.visible).ToList();
             var weatherstations = db.GetCollection<WeatherStation>(Enum.GetName(typeof(LogEntity), LogEntity.lc_weather_station))
                                 .AsQueryable().Where(f => f.track.enable && f.visible).ToList();
+            // Join all data and groups the data by the state
             var query = from s in states
                         join m in municipalities on s.id equals m.state
                         join w in weatherstations on m.id equals w.municipality
@@ -77,6 +82,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                             .AsQueryable().Where(f => f.track.enable).ToList();
             var soils = db.GetCollection<Soil>(Enum.GetName(typeof(LogEntity), LogEntity.cp_soil))
                             .AsQueryable().Where(f => f.track.enable).ToList();
+            // Filter the data by every crop 
             foreach (var c in crops)
                 query.Add(new AgronomicView()
                 {
@@ -89,6 +95,30 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                     soils = soils.Where(p => p.crop == c.id).OrderByDescending(p => p.order)
                       .Select(p => new SoilView() { id = p.id.ToString(), name = p.name })
                 });
+            return query;
+        }
+
+        public async Task<IEnumerable<ClimatologyView>> climatologyByStations(ObjectId[] ws_ids)
+        {
+            List<ClimatologyView> query = new List<ClimatologyView>();
+            // Filter the weather stations available, visible and listed by their id
+            var weatherstations = db.GetCollection<WeatherStation>(Enum.GetName(typeof(LogEntity), LogEntity.lc_weather_station))
+                                        .AsQueryable().Where(f => f.track.enable && f.visible && ws_ids.Contains(f.id)).ToList();
+            var climatology = db.GetCollection<Climatology>(Enum.GetName(typeof(LogEntity), LogEntity.hs_climatology));
+            foreach (WeatherStation ws in weatherstations)
+            {
+                query.Add(new ClimatologyView()
+                {
+                    ws_id = ws.id.ToString(),
+                    data = climatology.AsQueryable()
+                                .Where(p => p.monthly_data.weather_station == ws.id)
+                                .Select(p => new MonthlyClimateDataView()
+                                {
+                                    month = p.monthly_data.month,
+                                    values = p.monthly_data.data
+                                })
+                });
+            }
             return query;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,7 +17,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Method Construct
         /// </summary>
         /// <param name="settings">Settings options</param>
-        public CropController(IOptions<Settings> settings) : base(settings, LogEntity.cp_crop)
+        /// <param name="hostingEnvironment">Host Enviroment</param>
+        public CropController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, LogEntity.cp_crop, hostingEnvironment)
         {
         }
 

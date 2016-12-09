@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,27 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             entity.ranges = new List<YieldRange>();
             await collection.InsertOneAsync(entity);
             return entity;
+        }
+
+        /// <summary>
+        /// Method that return all registers enable in the database
+        /// by the state
+        /// </summary>
+        /// <param name="state">Id of state</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableByStateAsync(ObjectId state)
+        {
+            // Filter all entities available.
+            var municipalities = db.GetCollection<Municipality>(Enum.GetName(typeof(LogEntity), LogEntity.lc_municipality))
+                                .AsQueryable().Where(f => f.track.enable).ToList();
+            var weatherstations = db.GetCollection<WeatherStation>(Enum.GetName(typeof(LogEntity), LogEntity.lc_weather_station))
+                                .AsQueryable().Where(f => f.track.enable).ToList();
+            // Join all data and groups the data by the state
+            var query = from m in municipalities 
+                        join w in weatherstations on m.id equals w.municipality
+                        where m.state == state
+                        select w;
+            return query.ToList();
         }
     }
 }

@@ -43,6 +43,32 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
             await collection.InsertOneAsync(entity);
             return entity;
-        }        
+        }
+                
+        /// <summary>
+        /// Method that return all registers enable in the database
+        /// by the state
+        /// </summary>
+        /// <param name="state">Id of state</param>
+        /// <returns>List of municipalities</returns>
+        public async virtual Task<List<Municipality>> listEnableByStateAsync(ObjectId state)
+        {
+            var builder = Builders<Municipality>.Filter;
+            var filter = builder.Eq("track.enable", true) & builder.Eq("state", state);
+            return await collection.Find(filter).ToListAsync<Municipality>();
+        }
+
+        /// <summary>
+        /// Method that search a record in the database by its name
+        /// </summary>
+        /// <param name="name">Name of municipality</param>
+        /// <returns>Entity if the database found some record, otherwise null</returns>
+        public async virtual Task<Municipality> byNameAsync(string name)
+        {
+            var builder = Builders<Municipality>.Filter;
+            var filter = builder.Eq("track.enable", true) & builder.Eq("name", name);
+            var results = await collection.Find(filter).ToListAsync<Municipality>();
+            return results.FirstOrDefault();
+        }
     }
 }

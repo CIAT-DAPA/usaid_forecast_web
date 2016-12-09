@@ -2,6 +2,7 @@
 using CIAT.DAPA.USAID.Forecast.Data.Factory;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// <summary>
         /// Method Construct
         /// </summary>
-        /// <param name="settings">Settings Options</param>
+        /// <param name="path_log">Path log</param>
         /// <param name="logDB">Factory instance to save data in the database</param>
-        public Log(IOptions<Settings> settings, LogAdministrativeFactory factory)
+        public Log(string path_log, LogAdministrativeFactory factory)
         {
-            path = settings.Value.LogPath;
+            path = path_log;
             db = factory;
         }
 

@@ -19,8 +19,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// </summary>
         public string Database { get; set; }
         /// <summary>
-        /// Path where 
+        /// Path where the log is located
         /// </summary>
         public string LogPath { get; set; }
+        /// <summary>
+        /// Path where the import files are located
+        /// </summary>
+        public string ImportPath { get; set; }
     }
 }

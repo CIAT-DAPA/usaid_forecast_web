@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -17,7 +18,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Method Construct
         /// </summary>
         /// <param name="settings">Settings options</param>
-        public WeatherStationController(IOptions<Settings> settings) : base(settings, LogEntity.lc_weather_station)
+        /// <param name="hostingEnvironment">Host Enviroment</param>
+        public WeatherStationController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, LogEntity.lc_weather_station, hostingEnvironment)
         {
         }
 

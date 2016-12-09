@@ -1,6 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Method Construct
         /// </summary>
         /// <param name="settings">Settings options</param>
-        public SoilController(IOptions<Settings> settings) : base(settings, LogEntity.cp_soil)
+        /// <param name="hostingEnvironment">Host Enviroment</param>
+        public SoilController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, LogEntity.cp_soil, hostingEnvironment)
         {
         }
 
