@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 });
             return query;
         }
-
+        /*
         public async Task<IEnumerable<ClimatologyView>> climatologyByStations(ObjectId[] ws_ids)
         {
             List<ClimatologyView> query = new List<ClimatologyView>();
@@ -111,7 +111,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 {
                     ws_id = ws.id.ToString(),
                     data = climatology.AsQueryable()
-                                .Where(p => p.monthly_data.weather_station == ws.id)
+                                .Where(p => p.weather_station == ws.id)
                                 .Select(p => new MonthlyClimateDataView()
                                 {
                                     month = p.monthly_data.month,
@@ -120,6 +120,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 });
             }
             return query;
-        }
+        }*/
     }
 }

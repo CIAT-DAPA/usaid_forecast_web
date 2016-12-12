@@ -14,10 +14,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Variable's name
         /// </summary>
         [BsonRepresentation(BsonType.String)]
+        [BsonRequired]
         public MeasureClimatic measure { get; set; }
         /// <summary>
         /// Variable's value
         /// </summary>
+        [BsonRequired]
         public double value { get; set; }
     }
 }

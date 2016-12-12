@@ -60,13 +60,43 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             // Filter all entities available.
             var municipalities = db.GetCollection<Municipality>(Enum.GetName(typeof(LogEntity), LogEntity.lc_municipality))
                                 .AsQueryable().Where(f => f.track.enable).ToList();
-            var weatherstations = db.GetCollection<WeatherStation>(Enum.GetName(typeof(LogEntity), LogEntity.lc_weather_station))
+            var weatherstations = collection
                                 .AsQueryable().Where(f => f.track.enable).ToList();
             // Join all data and groups the data by the state
             var query = from m in municipalities 
                         join w in weatherstations on m.id equals w.municipality
                         where m.state == state
                         select w;
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// Method that return all registers enable in the database
+        /// by the extern id
+        /// </summary>
+        /// <param name="ext_ids">Array of the extern ids</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableByExtIDsAsync(string[] ext_ids)
+        {
+            // Filter all entities available.
+            var query = from ws in collection.AsQueryable()
+                        where ws.track.enable && ext_ids.Contains(ws.ext_id)
+                        select ws;
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// Method that return all registers enable in the database
+        /// by the name
+        /// </summary>
+        /// <param name="names">Array of the weather stations names</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableByNamesAsync(string[] names)
+        {
+            // Filter all entities available.
+            var query = from ws in collection.AsQueryable()
+                        where ws.track.enable && names.Contains(ws.name)
+                        select ws;
             return query.ToList();
         }
     }

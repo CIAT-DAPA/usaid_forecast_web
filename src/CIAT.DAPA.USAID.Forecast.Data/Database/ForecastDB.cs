@@ -53,6 +53,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public CropFactory crop { get; set; }
         /// <summary>
+        /// Get or set the historical climatic entity in the database
+        /// </summary>
+        public HistoricalClimaticFactory historicalClimatic { get; set; }
+        /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
         public LogAdministrativeFactory logAdministrative { get; set; }
@@ -98,6 +102,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             crop = new CropFactory(db);
             cultivar = new CultivarFactory(db);
             soil = new SoilFactory(db);
+            historicalClimatic = new HistoricalClimaticFactory(db);
             // views
             views = new ViewsFactory(db);
         }

@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
@@ -20,6 +21,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         public ObjectId forecast { get; set; }
         /// <summary>
+        /// ID's weather station
+        /// </summary>
+        public ObjectId weather_station { get; set; }
+        /// <summary>
         /// Scenario Name
         /// </summary>
         [BsonRepresentation(BsonType.String)]
@@ -31,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Monthly data of the weather station
         /// </summary>
-        public MonthlyDataStation monthly_data { get; set; }
+        public IEnumerable<MonthlyDataStation> monthly_data { get; set; }
 
     }
 }

@@ -221,8 +221,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 writeEvent("Search id: " + id, LogEvent.rea);
-                // List climate variables
-                generateListMeasures();
                 return View(entity);
             }
             catch (Exception ex)
@@ -297,125 +295,28 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         });
                         count_weather_stations += 1;
                     }
-                    msg = new Message() { content = "The file was imported correctly. Records imported: (" + 
-                        count_municipalities + ") municipalities (" + count_weather_stations + ") weather stations", type = MessageType.successful };
-                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
-                }
-                else
-                {
-                    msg = new Message() { content = "An error occurred with the file imported", type = MessageType.error };
-                    writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
-                }
-            }
-            catch (Exception ex)
-            {
-                writeException(ex);
-                msg = new Message() { content = "An error occurred in the system, contact the administrator", type = MessageType.error };
-            }
-            // List climate variables
-            generateListMeasures();
-            ViewBag.message = msg;
-            return View("Import", entity);
-        }
-
-        // POST: /State/ImportHistoricalClimate
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ImportHistoricalClimate(string id, string search, int measures, IFormFile file)
-        {
-            Message msg = null;
-            State entity = null;
-            try
-            {
-                ObjectId state_id = getId(id);
-                entity = await db.state.byIdAsync(id);
-                if (file != null && file.Length > 0)
-                {
-                    // Save a copy in the web site
-                    await file.CopyToAsync(new FileStream(importPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-state-mws-" + file.FileName, FileMode.Create));
-                    // Read the file
-                    StreamReader reader = new StreamReader(file.OpenReadStream());
-                    // Variables to process the file
-                    IEnumerable<string> m_name = null, ws_ext_id = null, ws_name = null, ws_lat = null, ws_lon = null;
-                    string ws_origin = string.Empty;
-                    string line = string.Empty;
-                    // Read the file
-                    while (!reader.EndOfStream)
-                    {
-                        line = await reader.ReadLineAsync();
-                        // read the headers
-                        if (line.StartsWith("ext_id"))
-                            ws_ext_id = line.Split(',').Skip(1);
-                        else if (line.StartsWith("municipality"))
-                            m_name = line.Split(',').Skip(1);
-                        else if (line.StartsWith("name"))
-                            ws_name = line.Split(',').Skip(1);
-                        else if (line.StartsWith("latitude"))
-                            ws_lat = line.Split(',').Skip(1);
-                        else if (line.StartsWith("longitude"))
-                            ws_lon = line.Split(',').Skip(1);
-                        else if (line.StartsWith("origin"))
-                            ws_origin = line.Split(',')[1];
-                    }
-                    // Variables to management the import process
-                    int count_municipalities = 0, count_weather_stations = 0;
-                    // Create all municipalities
-                    foreach (string m in m_name)
-                    {
-                        await db.municipality.insertAsync(new Municipality() { name = m, state = state_id, visible = false });
-                        count_municipalities += 1;
-                    }
-
-                    // Create all weather stations
-                    Municipality m_temp;
-                    for (int i = 0; i < ws_name.Count(); i++)
-                    {
-                        m_temp = await db.municipality.byNameAsync(m_name.ElementAt(i));
-                        await db.weatherStation.insertAsync(new WeatherStation()
-                        {
-                            ext_id = ws_ext_id.ElementAt(i),
-                            latitude = double.Parse(ws_lat.ElementAt(i)),
-                            longitude = double.Parse(ws_lon.ElementAt(i)),
-                            municipality = m_temp.id,
-                            name = ws_name.ElementAt(i).Trim(),
-                            origin = ws_origin,
-                            visible = false
-                        });
-                        count_weather_stations += 1;
-                    }
                     msg = new Message()
                     {
-                        content = "The file was imported correctly. Records imported: (" +
-                        count_municipalities + ") municipalities (" + count_weather_stations + ") weather stations",
+                        content = "Import MWS. The file was imported correctly. Records imported: (" +
+                            count_municipalities.ToString() + ") municipalities (" + count_weather_stations.ToString() + ") weather stations",
                         type = MessageType.successful
                     };
                     writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
                 }
                 else
                 {
-                    msg = new Message() { content = "An error occurred with the file imported", type = MessageType.error };
+                    msg = new Message() { content = "Import MWS. An error occurred with the file imported", type = MessageType.error };
                     writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
                 }
-
-
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                msg = new Message() { content = "An error occurred in the system, contact the administrator", type = MessageType.error };
+                msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
-            // List climate variables
-            generateListMeasures();
-            ViewBag.message = msg;
             return View("Import", entity);
         }
 
-        private void generateListMeasures()
-        {
-            // List climate variables
-            var measures = from MeasureClimatic mc in Enum.GetValues(typeof(MeasureClimatic))
-                           select new { id = (int)mc, name = mc.ToString() };
-            ViewBag.measures = new SelectList(measures, "id", "name");
-        }
+        
     }
 }

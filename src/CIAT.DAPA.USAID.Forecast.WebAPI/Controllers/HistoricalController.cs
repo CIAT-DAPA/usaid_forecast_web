@@ -20,7 +20,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         public HistoricalController(IOptions<Settings> settings) : base(settings, new List<LogEntity>() { LogEntity.cp_crop })
         {
         }
-
+        /*
         // GET: api/Get
         [HttpGet]
         [Route("api/[controller]/climatology")]
@@ -41,6 +41,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 writeException(ex);
                 return new StatusCodeResult(500);
             }
-        }
+        }*/
     }
 }
