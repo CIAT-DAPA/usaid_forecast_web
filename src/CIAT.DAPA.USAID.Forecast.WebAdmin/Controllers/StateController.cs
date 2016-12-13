@@ -271,15 +271,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     }
                     // Variables to management the import process
                     int count_municipalities = 0, count_weather_stations = 0;
+                    Municipality m_temp;
                     // Create all municipalities
                     foreach (string m in m_name)
                     {
-                        await db.municipality.insertAsync(new Municipality() { name = m, state = state_id, visible = false });
-                        count_municipalities += 1;
+                        m_temp = await db.municipality.byNameAsync(m);
+                        if (m_temp == null)
+                        {
+                            await db.municipality.insertAsync(new Municipality() { name = m, state = state_id, visible = false });
+                            count_municipalities += 1;
+                        }
                     }
 
-                    // Create all weather stations
-                    Municipality m_temp;
+                    // Create all weather stations                    
                     for (int i = 0; i < ws_name.Count(); i++)
                     {
                         m_temp = await db.municipality.byNameAsync(m_name.ElementAt(i));
@@ -314,6 +318,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 writeException(ex);
                 msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
+            ViewBag.message = msg;
             return View("Import", entity);
         }
 

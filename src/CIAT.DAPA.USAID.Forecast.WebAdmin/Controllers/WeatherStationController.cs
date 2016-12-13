@@ -295,28 +295,30 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         {
                             var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p && p.year == y) : raw.Where(p => p.name == ws_p && p.year == y);
                             ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
-                            hc_entity = await db.historicalClimatic.byYearWeatherStationAsync(y, ws_entity.id);
-                            if (hc_entity == null)
-                                hc_new = new HistoricalClimatic() { weather_station = ws_entity.id, year = y, monthly_data = new List<MonthlyDataStation>() };
-                            else
-                                hc_new = new HistoricalClimatic() { id = hc_entity.id, weather_station = hc_entity.weather_station, year = y, monthly_data = hc_entity.monthly_data };
-                            var months = ws_values.Select(p => p.month);
-                            foreach (var m in months)
+                            if(ws_entity != null)
                             {
-                                var monthlyData = hc_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
-                                var restMonthlyData = hc_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
-                                data = monthlyData.data.ToList();
-                                data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault());
-                                monthlyData.data = data;
-                                restMonthlyData.Add(monthlyData);
-                                hc_new.monthly_data = restMonthlyData;
+                                hc_entity = await db.historicalClimatic.byYearWeatherStationAsync(y, ws_entity.id);
+                                if (hc_entity == null)
+                                    hc_new = new HistoricalClimatic() { weather_station = ws_entity.id, year = y, monthly_data = new List<MonthlyDataStation>() };
+                                else
+                                    hc_new = new HistoricalClimatic() { id = hc_entity.id, weather_station = hc_entity.weather_station, year = y, monthly_data = hc_entity.monthly_data };
+                                var months = ws_values.Select(p => p.month);
+                                foreach (var m in months)
+                                {
+                                    var monthlyData = hc_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
+                                    var restMonthlyData = hc_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
+                                    data = monthlyData.data.ToList();
+                                    data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault());
+                                    monthlyData.data = data;
+                                    restMonthlyData.Add(monthlyData);
+                                    hc_new.monthly_data = restMonthlyData;
+                                }
+                                // In case that the entity didn't exist, it will be created in the database
+                                if (hc_entity == null)
+                                    await db.historicalClimatic.insertAsync(hc_new);
+                                else
+                                    await db.historicalClimatic.updateAsync(hc_entity, hc_new);
                             }
-                            // In case that the entity didn't exist, it will be created in the database
-                            if (hc_entity == null)
-                                await db.historicalClimatic.insertAsync(hc_new);
-                            else
-                                await db.historicalClimatic.updateAsync(hc_entity, hc_new);
-
                         }
                     }
                     msg = new Message()
@@ -411,28 +413,30 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     {
                         var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p) : raw.Where(p => p.name == ws_p);
                         ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
-                        cl_entity = await db.climatology.byWeatherStationAsync(ws_entity.id);
-                        if (cl_entity == null)
-                            cl_new = new Climatology() {  weather_station = ws_entity.id, monthly_data = new List<MonthlyDataStation>() };
-                        else
-                            cl_new = new Climatology() { id = cl_entity.id, weather_station = cl_entity.weather_station, monthly_data = cl_entity.monthly_data };
-                        var months = ws_values.Select(p => p.month);
-                        foreach (var m in months)
+                        if(ws_entity != null)
                         {
-                            var monthlyData = cl_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
-                            var restMonthlyData = cl_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
-                            data = monthlyData.data.ToList();
-                            data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = p.measure, value = p.value }).FirstOrDefault());
-                            monthlyData.data = data;
-                            restMonthlyData.Add(monthlyData);
-                            cl_new.monthly_data = restMonthlyData;
+                            cl_entity = await db.climatology.byWeatherStationAsync(ws_entity.id);
+                            if (cl_entity == null)
+                                cl_new = new Climatology() { weather_station = ws_entity.id, monthly_data = new List<MonthlyDataStation>() };
+                            else
+                                cl_new = new Climatology() { id = cl_entity.id, weather_station = cl_entity.weather_station, monthly_data = cl_entity.monthly_data };
+                            var months = ws_values.Select(p => p.month).Distinct();
+                            foreach (var m in months)
+                            {
+                                var monthlyData = cl_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
+                                var restMonthlyData = cl_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
+                                data = monthlyData.data.ToList();
+                                data.AddRange(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = p.measure, value = p.value }));
+                                monthlyData.data = data;
+                                restMonthlyData.Add(monthlyData);
+                                cl_new.monthly_data = restMonthlyData;
+                            }
+                            // In case that the entity didn't exist, it will be created in the database
+                            if (cl_entity == null)
+                                await db.climatology.insertAsync(cl_new);
+                            else
+                                await db.climatology.updateAsync(cl_entity, cl_new);
                         }
-                        // In case that the entity didn't exist, it will be created in the database
-                        if (cl_entity == null)
-                            await db.climatology.insertAsync(cl_new);
-                        else
-                            await db.climatology.updateAsync(cl_entity, cl_new);
-
                     }
                     msg = new Message()
                     {

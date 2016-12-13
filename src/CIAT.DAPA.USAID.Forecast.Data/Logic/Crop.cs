@@ -13,7 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <returns>String with the content of the crop</returns>
         public override string ToString()
         {
-            return id.ToString() + "|" + name + "|" + setup.Count().ToString();
+            return id.ToString() + "|" + name ;
         }
     }
 }
