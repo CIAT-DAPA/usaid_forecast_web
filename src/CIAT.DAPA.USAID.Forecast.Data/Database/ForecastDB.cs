@@ -57,6 +57,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public HistoricalClimaticFactory historicalClimatic { get; set; }
         /// <summary>
+        /// Get or set the climatology entity in the database
+        /// </summary>
+        public ClimatologyFactory climatology { get; set; }
+        /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
         public LogAdministrativeFactory logAdministrative { get; set; }
@@ -103,6 +107,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             cultivar = new CultivarFactory(db);
             soil = new SoilFactory(db);
             historicalClimatic = new HistoricalClimaticFactory(db);
+            climatology = new ClimatologyFactory(db);
             // views
             views = new ViewsFactory(db);
         }

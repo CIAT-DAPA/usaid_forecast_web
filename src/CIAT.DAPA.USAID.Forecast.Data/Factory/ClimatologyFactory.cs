@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         
         public async override Task<bool> updateAsync(Climatology entity, Climatology newEntity)
         {
-            throw new NotImplementedException();
+            var result = await collection.ReplaceOneAsync(Builders<Climatology>.Filter.Eq("_id", entity.id), newEntity);
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<bool> deleteAsync(Climatology entity)
@@ -34,7 +36,21 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<Climatology> insertAsync(Climatology entity)
         {
-            throw new NotImplementedException();
+            await collection.InsertOneAsync(entity);
+            return entity;
+        }
+
+        /// <summary>
+        /// Method tat search a record by the weather station in the database
+        /// </summary>
+        /// <param name="ws">Id weather station</param>
+        /// <returns>Climatology</returns>
+        public async virtual Task<Climatology> byWeatherStationAsync(ObjectId ws)
+        {
+            var builder = Builders<Climatology>.Filter;
+            var filter = builder.Eq("weather_station", ws);
+            var results = await collection.Find(filter).ToListAsync<Climatology>();
+            return results.FirstOrDefault();
         }
     }
 }

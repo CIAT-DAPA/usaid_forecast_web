@@ -399,62 +399,58 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     }
                     // Import to the database
                     WeatherStation ws_entity;
-                    HistoricalClimatic hc_entity, hc_new;
-                    /*MeasureClimatic mc = (MeasureClimatic)measures;
+                    Climatology cl_entity, cl_new;
                     List<ClimaticData> data;
                     // In this section it is filtered the data of the field loaded and the historical information is added to the data base.
-                    // We first get the ids of the climate stations, then it is filtered the information of each year and each station. 
+                    // We first get the ids of the climate stations, then it is filtered the information of each station. 
                     // With this information we look for in the data base if it historical information stored, in case that it is not created in 
                     // a new identity. It is filtered the information of every month in order to add the data to the field.
                     // At the end it is updated the information. If there is not a file, it is created as a new one.
                     var ws_patterns = search == 1 ? raw.Select(p => p.ext_id).Distinct() : raw.Select(p => p.name).Distinct();
-                    foreach (var y in raw.Select(p => p.year).Distinct())
+                    foreach (var ws_p in ws_patterns)
                     {
-                        foreach (var ws_p in ws_patterns)
+                        var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p) : raw.Where(p => p.name == ws_p);
+                        ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
+                        cl_entity = await db.climatology.byWeatherStationAsync(ws_entity.id);
+                        if (cl_entity == null)
+                            cl_new = new Climatology() {  weather_station = ws_entity.id, monthly_data = new List<MonthlyDataStation>() };
+                        else
+                            cl_new = new Climatology() { id = cl_entity.id, weather_station = cl_entity.weather_station, monthly_data = cl_entity.monthly_data };
+                        var months = ws_values.Select(p => p.month);
+                        foreach (var m in months)
                         {
-                            var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p && p.year == y) : raw.Where(p => p.name == ws_p && p.year == y);
-                            ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
-                            hc_entity = await db.historicalClimatic.byYearWeatherStationAsync(y, ws_entity.id);
-                            if (hc_entity == null)
-                                hc_new = new HistoricalClimatic() { weather_station = ws_entity.id, year = y, monthly_data = new List<MonthlyDataStation>() };
-                            else
-                                hc_new = new HistoricalClimatic() { id = hc_entity.id, weather_station = hc_entity.weather_station, year = y, monthly_data = hc_entity.monthly_data };
-                            var months = ws_values.Select(p => p.month);
-                            foreach (var m in months)
-                            {
-                                var monthlyData = hc_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
-                                var restMonthlyData = hc_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
-                                data = monthlyData.data.ToList();
-                                data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault());
-                                monthlyData.data = data;
-                                restMonthlyData.Add(monthlyData);
-                                hc_new.monthly_data = restMonthlyData;
-                            }
-                            // In case that the entity didn't exist, it will be created in the database
-                            if (hc_entity == null)
-                                await db.historicalClimatic.insertAsync(hc_new);
-                            else
-                                await db.historicalClimatic.updateAsync(hc_entity, hc_new);
-
+                            var monthlyData = cl_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
+                            var restMonthlyData = cl_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
+                            data = monthlyData.data.ToList();
+                            data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = p.measure, value = p.value }).FirstOrDefault());
+                            monthlyData.data = data;
+                            restMonthlyData.Add(monthlyData);
+                            cl_new.monthly_data = restMonthlyData;
                         }
-                    }*/
+                        // In case that the entity didn't exist, it will be created in the database
+                        if (cl_entity == null)
+                            await db.climatology.insertAsync(cl_new);
+                        else
+                            await db.climatology.updateAsync(cl_entity, cl_new);
+
+                    }
                     msg = new Message()
                     {
-                        content = "Historical WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
+                        content = "Climatology WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
                         type = MessageType.successful
                     };
-                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_climatic });
+                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_climatology });
                 }
                 else
                 {
-                    msg = new Message() { content = "Historical WS. An error occurred with the file imported", type = MessageType.error };
+                    msg = new Message() { content = "Climatology WS. An error occurred with the file imported", type = MessageType.error };
                     writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
                 }
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                msg = new Message() { content = "Historical WS. An error occurred in the system, contact the administrator", type = MessageType.error };
+                msg = new Message() { content = "Climatology WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
             generateListMeasures();

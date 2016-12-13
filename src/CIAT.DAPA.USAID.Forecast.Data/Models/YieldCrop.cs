@@ -8,11 +8,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     /// This entity represents the yield of a cultivar, a soil for a weather station
     /// </summary>
     public class YieldCrop
-    {
-        /// <summary>
-        /// ID's weather station
-        /// </summary>
-        public ObjectId weather_station { get; set; }
+    {        
         /// <summary>
         /// ID's soil
         /// </summary>

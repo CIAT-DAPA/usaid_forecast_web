@@ -18,10 +18,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// ID's weather station
         /// </summary>
+        [BsonRequired]
         public ObjectId weather_station { get; set; }
         /// <summary>
         /// Monthly data of the weather station
         /// </summary>
+        [BsonRequired]
         public IEnumerable<MonthlyDataStation> monthly_data { get; set; }
     }
 }
