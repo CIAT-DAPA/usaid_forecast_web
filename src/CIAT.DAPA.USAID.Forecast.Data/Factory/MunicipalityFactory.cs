@@ -59,6 +59,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         }
 
         /// <summary>
+        /// Method that return all registers enable and visible in the database
+        /// </summary>
+        /// <returns>List of municipalities</returns>
+        public async virtual Task<List<Municipality>> listEnableVisibleAsync()
+        {
+            var builder = Builders<Municipality>.Filter;
+            var filter = builder.Eq("track.enable", true) & builder.Eq("visible", true);
+            return await collection.Find(filter).ToListAsync<Municipality>();
+        }
+
+        /// <summary>
         /// Method that search a record in the database by its name
         /// </summary>
         /// <param name="name">Name of municipality</param>

@@ -356,7 +356,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 if (file != null && file.Length > 0)
                 {
                     // Save a copy in the web site
-                    await file.CopyToAsync(new FileStream(importPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-weatherstation-historicalws-" + file.FileName, FileMode.Create));
+                    await file.CopyToAsync(new FileStream(importPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-weatherstation-climatology-" + file.FileName, FileMode.Create));
                     // Read the file
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     string line = string.Empty;

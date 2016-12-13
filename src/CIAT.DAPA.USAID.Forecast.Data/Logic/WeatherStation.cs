@@ -14,8 +14,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         public override string ToString()
         {
             return id.ToString() + "|" + name + "|" + municipality.ToString() + "|" + 
-                    origin + "|" + ext_id + "|" + visible.ToString() + "|" + latitude.ToString() + "|" + longitude.ToString() + "|" + 
-                    conf_files.Count().ToString() + "|" + ranges.Count().ToString() ;
+                    origin + "|" + ext_id + "|" + visible.ToString() + "|" + latitude.ToString() + "|" + longitude.ToString() ;
         }
     }
 }
