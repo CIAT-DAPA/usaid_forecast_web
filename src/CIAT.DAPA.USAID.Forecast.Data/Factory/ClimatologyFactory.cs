@@ -54,11 +54,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         }
 
         /// <summary>
-        /// Method that return all registers enable in the database 
+        /// Method that return all registers in the database 
         /// by the weather stations
         /// </summary>
         /// <param name="ws">Array of the weather stations ids</param>
-        /// <returns>List of the weather stations</returns>
+        /// <returns>List of the climatology</returns>
         public async virtual Task<List<Climatology>> byWeatherStationsAsync(ObjectId[] ws)
         {
             // Filter all entities available.
