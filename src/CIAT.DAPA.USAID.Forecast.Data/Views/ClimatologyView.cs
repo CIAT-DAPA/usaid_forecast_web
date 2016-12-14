@@ -8,7 +8,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Views
     public class ClimatologyView
     {
         public string ws_id { get; set; }
-        public IEnumerable<MonthlyClimateDataView> data { get; set; }
+        public IEnumerable<MonthlyClimateDataView> monthly_data { get; set; }
 
     }
 }

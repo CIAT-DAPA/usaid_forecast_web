@@ -9,6 +9,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities
     {
         public string id { get; set; }
         public string name { get; set; }
-        public IEnumerable<WeatherStationEntity> weather_stations { get; set; }
+        public List<WeatherStationEntity> weather_stations { get; set; }
     }
 }

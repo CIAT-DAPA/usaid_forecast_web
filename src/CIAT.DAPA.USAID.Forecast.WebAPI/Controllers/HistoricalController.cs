@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
-    
+
     public class HistoricalController : WebAPIBaseController
     {
         /// <summary>
@@ -20,27 +20,44 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         public HistoricalController(IOptions<Settings> settings) : base(settings, new List<LogEntity>() { LogEntity.cp_crop })
         {
         }
-        /*
+
         // GET: api/Get
         [HttpGet]
         [Route("api/[controller]/climatology")]
-        public async Task<IActionResult> Climatology(string[] weatherstations)
+        public async Task<IActionResult> Climatology(string weatherstations)
         {
             try
             {
                 // Transform the string id to object id
-                ObjectId[] ws = new ObjectId[weatherstations.Length];
-                for (int i = 0; i < weatherstations.Length; i++)
-                    ws[i] = getId(weatherstations[i]);
-                var json = await db.views.climatologyByStations(ws);
-                writeEvent(json.Count().ToString(), LogEvent.lis);
+                string[] parameters = weatherstations.Split(',');
+                ObjectId[] ws = new ObjectId[parameters.Length];
+                string ids = string.Empty;
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    ws[i] = getId(parameters[i]);
+                    ids += weatherstations[i] + ",";
+                }
+                var json = (await db.climatology.byWeatherStationsAsync(ws)).Select(p => new
+                {
+                    weather_station = p.weather_station.ToString(),
+                    monthly_data = p.monthly_data.Select(p2 => new
+                    {
+                        month = p2.month,
+                        data = p2.data.Select(p3 => new
+                        {
+                            measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
+                            value = p3.value
+                        })
+                    })
+                });
+                writeEvent("Climatology ids: [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
                 return Json(json);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 writeException(ex);
                 return new StatusCodeResult(500);
             }
-        }*/
+        }
     }
 }

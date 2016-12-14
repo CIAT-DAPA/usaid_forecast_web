@@ -99,5 +99,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                         select ws;
             return query.ToList();
         }
+
+        /// <summary>
+        /// Method that return all registers enable and visible in the database
+        /// </summary>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableVisibleAsync()
+        {
+            var builder = Builders<WeatherStation>.Filter;
+            var filter = builder.Eq("track.enable", true) & builder.Eq("visible", true);
+            return await collection.Find(filter).ToListAsync<WeatherStation>();
+        }
     }
 }

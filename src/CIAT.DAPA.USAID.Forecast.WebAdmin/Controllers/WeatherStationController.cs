@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Import;
+using MongoDB.Bson;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -75,8 +76,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var municipalities = await db.municipality.listEnableAsync();
-            ViewBag.municipality = new SelectList(municipalities, "id", "name");
+            generateListMunicipalitiesAsync(string.Empty);
             return View();
         }
 
@@ -95,11 +95,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
+                generateListMunicipalitiesAsync(string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
+                generateListMunicipalitiesAsync(string.Empty);
                 return View(entity);
             }
         }
@@ -108,6 +110,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            WeatherStation entity = null;
             try
             {
                 if (string.IsNullOrEmpty(id))
@@ -115,21 +118,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     writeEvent("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                WeatherStation entity = await db.weatherStation.byIdAsync(id);
+                entity = await db.weatherStation.byIdAsync(id);
                 if (entity == null)
                 {
                     writeEvent("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
-                }
-                var municipalities = await db.municipality.listEnableAsync();
-                ViewBag.municipality = new SelectList(municipalities, "id", "name");
+                }                
                 writeEvent("Search id: " + id, LogEvent.rea);
+                generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                return View();
+                generateListMunicipalitiesAsync(entity.municipality.ToString());
+                return View(entity);
             }
         }
 
@@ -151,11 +154,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
+                generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
+                generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
         }
@@ -471,6 +476,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             var measures = from MeasureClimatic mc in Enum.GetValues(typeof(MeasureClimatic))
                            select new { id = (int)mc, name = mc.ToString() };
             ViewBag.measures = new SelectList(measures, "id", "name");
+        }
+
+        /// <summary>
+        /// Method that create a select list with the municipalities available
+        /// </summary>
+        /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
+        private async void generateListMunicipalitiesAsync(string selected)
+        {
+            var municipalities = (await db.municipality.listEnableAsync()).Select(p=>new { id = p.id.ToString(), name=p.name });
+            if(string.IsNullOrEmpty(selected))
+                ViewData["municipality"] = new SelectList(municipalities, "id", "name");
+            else
+                ViewData["municipality"] = new SelectList(municipalities, "id", "name", selected);
         }
     }
 }

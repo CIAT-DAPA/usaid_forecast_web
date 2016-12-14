@@ -29,11 +29,28 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         {
             try
             {
-                var json = await db.views.listLocationVisibleAsync();
+                var states = await db.state.listEnableAsync();
+                var municipalities = await db.municipality.listEnableVisibleAsync();
+                var weatherstations = await db.weatherStation.listEnableVisibleAsync();
+                List<StateEntity> json = new List<StateEntity>();
+                StateEntity geo_s;
+                MunicipalityEntity geo_m;
+                foreach (var s in states)
+                {
+                    geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = s.country.name, municipalities = new List<MunicipalityEntity>() };
+                    foreach (var m in municipalities.Where(p => p.state == s.id))
+                    {
+                        geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
+                        foreach (var w in weatherstations.Where(p => p.municipality == m.id))
+                            geo_m.weather_stations.Add(new WeatherStationEntity() { id = w.id.ToString(), name = w.name, origin = w.origin });
+                        geo_s.municipalities.Add(geo_m);
+                    }
+                    json.Add(geo_s);
+                }
                 writeEvent(json.Count().ToString(), LogEvent.lis);
                 return Json(json);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 writeException(ex);
                 return new StatusCodeResult(500);

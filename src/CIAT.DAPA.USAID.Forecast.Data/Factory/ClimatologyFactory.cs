@@ -52,5 +52,20 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var results = await collection.Find(filter).ToListAsync<Climatology>();
             return results.FirstOrDefault();
         }
+
+        /// <summary>
+        /// Method that return all registers enable in the database 
+        /// by the weather stations
+        /// </summary>
+        /// <param name="ws">Array of the weather stations ids</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<Climatology>> byWeatherStationsAsync(ObjectId[] ws)
+        {
+            // Filter all entities available.
+            var query = from cl in collection.AsQueryable()
+                        where ws.Contains(cl.weather_station)
+                        select cl;
+            return query.ToList();
+        }
     }
 }

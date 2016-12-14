@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,8 +73,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var states = await db.state.listEnableAsync();
-            ViewBag.state = new SelectList(states, "id", "name");
+            generateListStatesAsync(string.Empty);
             return View();
         }
 
@@ -81,7 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Municipality entity)
-        {
+        {            
             try
             {
                 entity.state = getId(HttpContext.Request.Form["state"].ToString());
@@ -92,11 +92,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
+                generateListStatesAsync(string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
+                generateListStatesAsync(string.Empty);
                 return View(entity);
             }
         }
@@ -105,6 +107,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            Municipality entity=null;
             try
             {
                 if (string.IsNullOrEmpty(id))
@@ -112,21 +115,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     writeEvent("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                Municipality entity = await db.municipality.byIdAsync(id);
+                entity = await db.municipality.byIdAsync(id);
                 if (entity == null)
                 {
                     writeEvent("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
-                }
-                var states = await db.state.listEnableAsync();
-                ViewBag.state = new SelectList(states, "id", "name", entity.state.ToString());
+                }                
                 writeEvent("Search id: " + id, LogEvent.rea);
+                generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                return View();
+                generateListStatesAsync(entity.state.ToString());
+                return View(entity);
             }
         }
 
@@ -148,11 +151,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
+                generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
+                generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
         }
@@ -201,6 +206,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 writeException(ex);
                 return RedirectToAction("Delete", new { id = id });
             }
+        }
+
+        /// <summary>
+        /// Method that create a select list with the states available
+        /// </summary>
+        /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
+        private async void generateListStatesAsync(string selected)
+        {
+            var states = (await db.state.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            if(string.IsNullOrEmpty(selected))
+                ViewData["state"] = new SelectList(states, "id", "name");
+            else
+                ViewData["state"] = new SelectList(states, "id", "name", selected);
         }
     }
 }
