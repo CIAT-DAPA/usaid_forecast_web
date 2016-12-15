@@ -18,38 +18,60 @@
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <header class="header-logo">
+        <h1 class="text-center">
+            <a href="http://www.aclimatecolombia.org"><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
+        </h1>
+    </header>
+    <nav class="navbar navbar-default">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header app-name">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CIAT.DAPA.USAID.Forecast.Web</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Clima" asp-action="Index">Clima</a></li>
+                    <li><a asp-area="" asp-controller="Arroz" asp-action="Index">Arroz</a></li>
+                    <li><a asp-area="" asp-controller="Maiz" asp-action="Index">Maíz</a></li>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2016 - CIAT.DAPA.USAID.Forecast.Web</p>
-        </footer>
-    </div>
+    </nav>
 
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer class="footer clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="text-justify">
+                        CIAT All Rights reserved <br />
+                        Teléfonos de contacto: (2) 4450000 Ext. 3367, 3579 <br />
+                        Email: aclimatecolombia@gmail.com <br />
+                        Colombia
+                    </p>
+                </div>
+                <div class="col-md-offset-4 col-md-4">
+                    <p class="text-justify">
+                        <a href="http://aclimatecolomb.wpengine.com/contactenos/">Contáctenos</a> /
+                        <a href="http://aclimatecolomb.wpengine.com/html-site-map">Mapa del Sitio</a> /
+                        <a href="">Políticas de Privacidad</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -60,7 +82,7 @@
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/app.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("scripts", required: false)

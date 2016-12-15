@@ -5,6 +5,8 @@
     "bootstrap": "3.3.6",
     "jquery": "2.2.0",
     "jquery-validation": "1.14.0",
-    "jquery-validation-unobtrusive": "3.2.6"
+    "jquery-validation-unobtrusive": "3.2.6",
+    "angular": "1.4.0",
+    "d3": "3.5.17"
   }
 }
