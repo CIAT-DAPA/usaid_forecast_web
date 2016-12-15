@@ -11,30 +11,37 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
     /// <summary>
     /// This class allow to get information about forecast collection
     /// </summary>
-    public class ForecastFactory: FactoryDB<CIAT.DAPA.USAID.Forecast.Data.Models.Forecast>
+    public class ForecastFactory : FactoryDB<CIAT.DAPA.USAID.Forecast.Data.Models.Forecast>
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
-        public ForecastFactory(IMongoDatabase database): base(database, LogEntity.fs_forecast)
+        public ForecastFactory(IMongoDatabase database) : base(database, LogEntity.fs_forecast)
         {
 
         }
 
-        public async override Task<bool> updateAsync(CIAT.DAPA.USAID.Forecast.Data.Models.Forecast entity, CIAT.DAPA.USAID.Forecast.Data.Models.Forecast newEntity)
+        public async override Task<bool> updateAsync(Models.Forecast entity, Models.Forecast newEntity)
         {
-            throw new NotImplementedException();
+            newEntity.track = entity.track;
+            newEntity.track.updated = DateTime.Now;
+            var result = await collection.ReplaceOneAsync(Builders<Models.Forecast>.Filter.Eq("_id", entity.id), newEntity);
+            return result.ModifiedCount > 0;
         }
 
-        public async override Task<bool> deleteAsync(CIAT.DAPA.USAID.Forecast.Data.Models.Forecast entity)
+        public async override Task<bool> deleteAsync(Models.Forecast entity)
         {
-            throw new NotImplementedException();
+            var result = await collection.UpdateOneAsync(Builders<Models.Forecast>.Filter.Eq("_id", entity.id),
+                                                        Builders<Models.Forecast>.Update.Set("track.enable", false)
+                                                        .Set("track.updated", DateTime.Now));
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<Models.Forecast> insertAsync(Models.Forecast entity)
         {
-            throw new NotImplementedException();
+            entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            await collection.InsertOneAsync(entity);
         }
     }
 }

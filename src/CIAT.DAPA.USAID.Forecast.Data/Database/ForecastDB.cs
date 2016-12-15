@@ -61,6 +61,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public ClimatologyFactory climatology { get; set; }
         /// <summary>
+        /// Get or set the forecast entity in the database
+        /// </summary>
+        public ForecastFactory forecast { get; set; }
+        // <summary>
+        /// Get or set the forecast climate entity in the database
+        /// </summary>
+        public ForecastClimateFactory forecastClimate { get; set; }
+        /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
         public LogAdministrativeFactory logAdministrative { get; set; }
@@ -82,7 +90,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         {
             // Set the configuration connect with the database
             database_name = name;
-            client = new MongoClient(connection);            
+            client = new MongoClient(connection);
             db = client.GetDatabase(database_name);
             // Set the convetion for all fields of the mongo database
             convention = new ConventionPack();
@@ -101,13 +109,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             logAdministrative = new LogAdministrativeFactory(db);
             logService = new LogServiceFactory(db);
             state = new StateFactory(db);
-            municipality = new MunicipalityFactory(db);            
+            municipality = new MunicipalityFactory(db);
             weatherStation = new WeatherStationFactory(db);
             crop = new CropFactory(db);
             cultivar = new CultivarFactory(db);
             soil = new SoilFactory(db);
             historicalClimatic = new HistoricalClimaticFactory(db);
             climatology = new ClimatologyFactory(db);
+            forecast = new ForecastFactory(db);
+            forecastClimate = new ForecastClimateFactory(db);
             // views
             views = new ViewsFactory(db);
         }

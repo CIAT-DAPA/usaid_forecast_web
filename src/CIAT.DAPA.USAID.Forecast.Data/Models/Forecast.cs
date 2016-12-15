@@ -14,18 +14,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Start date of the process
         /// </summary>
+        [BsonRequired]
         public DateTime start { get; set; }
         /// <summary>
         /// End date of the process
         /// </summary>
+        [BsonRequired]
         public DateTime end { get; set; }
         /// <summary>
         /// Level of confidence for the generation of the intervals
         /// </summary>
+        [BsonRequired]
         public double confidence { get; set; }
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
+        [BsonRequired]
         public Track track { get; set; }
     }
 }

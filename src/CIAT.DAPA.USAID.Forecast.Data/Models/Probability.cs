@@ -17,18 +17,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Variable's name
         /// </summary>
         [BsonRepresentation(BsonType.String)]
+        [BsonRequired]
         public MeasureClimatic measure { get; set; }
         /// <summary>
         /// Probability that is below normal
         /// </summary>
+        [BsonRequired]
         public double lower { get; set; }
         /// <summary>
         /// Probability that is normal
         /// </summary>
+        [BsonRequired]
         public double normal { get; set; }
         /// <summary>
         /// Normal probability that is above
         /// </summary>
+        [BsonRequired]
         public double upper { get; set; }
     }
 }

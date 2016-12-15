@@ -20,26 +20,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// ID's forecast
         /// </summary>
+        [BsonRequired]
         public ObjectId forecast { get; set; }
         /// <summary>
         /// ID's weather station
         /// </summary>
+        [BsonRequired]
         public ObjectId weather_station { get; set; }
         /// <summary>
-        /// Year forecast
+        /// List of probabilities
         /// </summary>
-        public int year { get; set; }
-        /// <summary>
-        /// Month forecast
-        /// </summary>
-        public int month { get; set; }
-        /// <summary>
-        /// List of variables forecast for the month
-        /// </summary>
-        public IEnumerable<Probability> probabilities { get; set; }
+        [BsonRequired]
+        public IEnumerable<ProbabilityClimate> data { get; set; }
         /// <summary>
         /// List of metrics that describe the behavior of the prediction model
         /// </summary>
+        [BsonRequired]
         public IEnumerable<PerformanceMetric> performance { get; set; }
     }
 }

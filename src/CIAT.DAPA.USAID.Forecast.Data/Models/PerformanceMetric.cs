@@ -17,10 +17,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Metric name
         /// </summary>
         [BsonRepresentation(BsonType.String)]
+        [BsonRequired]
         public MeasurePerformance name { get; set; }
         /// <summary>
         /// Metric value
         /// </summary>
+        [BsonRequired]
         public double value { get; set; }
     }
 }

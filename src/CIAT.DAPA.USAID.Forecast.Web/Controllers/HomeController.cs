@@ -10,7 +10,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Clima", new { id = "ultimo" });
         }
 
         public IActionResult About()

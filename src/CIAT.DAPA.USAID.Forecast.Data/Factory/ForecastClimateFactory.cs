@@ -24,7 +24,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<bool> updateAsync(ForecastClimate entity, ForecastClimate newEntity)
         {
-            throw new NotImplementedException();
+            var result = await collection.ReplaceOneAsync(Builders<ForecastClimate>.Filter.Eq("_id", entity.id), newEntity);
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<bool> deleteAsync(ForecastClimate entity)
@@ -34,7 +35,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<ForecastClimate> insertAsync(ForecastClimate entity)
         {
-            throw new NotImplementedException();
+            await collection.InsertOneAsync(entity);
+            return entity;
         }
     }
 }
