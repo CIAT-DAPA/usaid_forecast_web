@@ -72,6 +72,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// Get or set the forecast climate entity in the database
         /// </summary>
         public ForecastClimateFactory forecastClimate { get; set; }
+        // <summary>
+        /// Get or set the forecast yield entity in the database
+        /// </summary>
+        public ForecastYieldFactory forecastYield { get; set; }
         /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
@@ -123,6 +127,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             climatology = new ClimatologyFactory(db);
             forecast = new ForecastFactory(db);
             forecastClimate = new ForecastClimateFactory(db);
+            forecastYield = new ForecastYieldFactory(db);
             // views
             views = new ViewsFactory(db);
         }

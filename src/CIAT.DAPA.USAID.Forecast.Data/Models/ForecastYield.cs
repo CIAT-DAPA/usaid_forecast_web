@@ -20,14 +20,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Name where the historical data is obtained
         /// </summary>
+        [BsonRequired]
         public ObjectId forecast { get; set; }
         /// <summary>
         /// ID's weather station
         /// </summary>
+        [BsonRequired]
         public ObjectId weather_station { get; set; }
         /// <summary>
         /// Data of the pronostic for the crop
         /// </summary>
+        [BsonRequired]
         public IEnumerable<YieldCrop> yield { get; set; }
     }
 }
