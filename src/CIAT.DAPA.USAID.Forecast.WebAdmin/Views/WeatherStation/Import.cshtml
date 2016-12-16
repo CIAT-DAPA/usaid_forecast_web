@@ -31,65 +31,103 @@
     </p>
     @using (Html.BeginForm("ImportHistoricalClimate", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.id)
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label class="control-label col-md-2" for="search">Type of search</label>
-                <div class="col-md-10">
-                    <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="2">Name
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2" for="measures">Measure</label>
-                <div class="col-md-10">
-                    @Html.DropDownList("measures", null, htmlAttributes: new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2" for="file">
-                    File to import (splitted by comma ",").
-                    <a href="~/Data/Examples/Import-Historical-Climate.csv">Example by Extern ID</a>
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.id)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="search">Type of search</label>
+            <div class="col-md-10">
+                <label class="radio-inline">
+                    <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
                 </label>
-                <div class="col-md-10">
-                    <input type="file" class="form-control" name="file" id="file" />
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Import" class="btn btn-default" />
-                </div>
+                <label class="radio-inline">
+                    <input type="radio" name="search" id="search" value="2">Name
+                </label>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="measures">Measure</label>
+            <div class="col-md-10">
+                @Html.DropDownList("measures", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="file">
+                File to import (splitted by comma ",").
+                <a href="~/Data/Examples/Import-Historical-Climate.csv">Example by Extern ID</a>
+            </label>
+            <div class="col-md-10">
+                <input type="file" class="form-control" name="file" id="file" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Import" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
     }
 </fieldset>
 
 <fieldset>
     <legend>Climatology data</legend>
     <p class="text-justify">
-        This option allow upload a file to create new records in the historical climate collection. The file should has
+        This option allow upload a file to create new records in the climatology collection. The file should has
         specify structure. You can see the example.
     </p>
     @using (Html.BeginForm("ImportClimatology", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.id)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="search">Type of search</label>
+            <div class="col-md-10">
+                <label class="radio-inline">
+                    <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="search" id="search" value="2">Name
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="file">
+                File to import (splitted by comma ",").
+                <a href="~/Data/Examples/Import-Climatology.csv">Example by Extern ID</a>
+            </label>
+            <div class="col-md-10">
+                <input type="file" class="form-control" name="file" id="file" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Import" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    }
+</fieldset>
+
+<fieldset>
+    <legend>Historical yield data</legend>
+    <p class="text-justify">
+        This option allow upload a file to create new records in the historical yield collection. The file should has
+        specify structure. You can see the example.
+    </p>
+    @using (Html.BeginForm("ImportHistoricalYield", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.id)
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-md-2" for="search">Type of search</label>
+                <label class="control-label col-md-2" for="source">
+                    Source
+                </label>
                 <div class="col-md-10">
-                    <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="2">Name
-                    </label>
+                    <input type="text" class="form-control" name="source" id="source" placeholder="Modelado" />
                 </div>
             </div>
             <div class="form-group">
@@ -110,6 +148,7 @@
         </div>
     }
 </fieldset>
+
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>

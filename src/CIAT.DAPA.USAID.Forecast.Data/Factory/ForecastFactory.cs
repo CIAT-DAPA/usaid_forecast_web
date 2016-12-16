@@ -42,6 +42,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
             await collection.InsertOneAsync(entity);
+            return entity;
         }
     }
 }

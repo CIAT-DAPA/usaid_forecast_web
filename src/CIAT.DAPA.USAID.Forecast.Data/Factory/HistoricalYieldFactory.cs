@@ -24,7 +24,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<bool> updateAsync(HistoricalYield entity, HistoricalYield newEntity)
         {
-            throw new NotImplementedException();
+            var result = await collection.ReplaceOneAsync(Builders<HistoricalYield>.Filter.Eq("_id", entity.id), newEntity);
+            return result.ModifiedCount > 0;
         }
 
         public async override Task<bool> deleteAsync(HistoricalYield entity)
@@ -34,7 +35,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<HistoricalYield> insertAsync(HistoricalYield entity)
         {
-            throw new NotImplementedException();
+            await collection.InsertOneAsync(entity);
+            return entity;
         }
     }
 }

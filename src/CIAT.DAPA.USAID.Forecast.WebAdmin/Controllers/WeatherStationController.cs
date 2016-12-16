@@ -123,7 +123,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 {
                     writeEvent("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
-                }                
+                }
                 writeEvent("Search id: " + id, LogEvent.rea);
                 generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
@@ -240,7 +240,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 if (file != null && file.Length > 0)
                 {
                     // Save a copy in the web site
-                    await file.CopyToAsync(new FileStream(importPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-weatherstation-historicalws-" + file.FileName, FileMode.Create));
+                    await file.CopyToAsync(new FileStream(importPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-weatherstation-historical-climate-ws-" + file.FileName, FileMode.Create));
                     // Read the file
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     string line = string.Empty;
@@ -300,7 +300,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         {
                             var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p && p.year == y) : raw.Where(p => p.name == ws_p && p.year == y);
                             ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
-                            if(ws_entity != null)
+                            if (ws_entity != null)
                             {
                                 hc_entity = await db.historicalClimatic.byYearWeatherStationAsync(y, ws_entity.id);
                                 if (hc_entity == null)
@@ -328,21 +328,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     }
                     msg = new Message()
                     {
-                        content = "Historical WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
+                        content = "Historical Climate WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
                         type = MessageType.successful
                     };
                     writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_climatic });
                 }
                 else
                 {
-                    msg = new Message() { content = "Historical WS. An error occurred with the file imported", type = MessageType.error };
+                    msg = new Message() { content = "Historical Climate WS. An error occurred with the file imported", type = MessageType.error };
                     writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
                 }
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                msg = new Message() { content = "Historical WS. An error occurred in the system, contact the administrator", type = MessageType.error };
+                msg = new Message() { content = "Historical Climate WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
             generateListMeasures();
@@ -418,7 +418,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     {
                         var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p) : raw.Where(p => p.name == ws_p);
                         ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
-                        if(ws_entity != null)
+                        if (ws_entity != null)
                         {
                             cl_entity = await db.climatology.byWeatherStationAsync(ws_entity.id);
                             if (cl_entity == null)
@@ -467,6 +467,131 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return View("Import");
         }
 
+        // POST: /State/ImportHistoricalYield
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportHistoricalYield(string source, IFormFile file)
+        {
+            Message msg = null;
+            try
+            {
+                if (file != null && file.Length > 0)
+                {
+                    // Save a copy in the web site
+                    await file.CopyToAsync(new FileStream(importPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-weatherstation-historical-yield-ws-" + file.FileName, FileMode.Create));
+                    // Read the file
+                    StreamReader reader = new StreamReader(file.OpenReadStream());
+                    string line = string.Empty;
+                    int lines = 0;
+                    List<HistoricalYieldViewImport> raw = new List<HistoricalYieldViewImport>();
+                    string[] values = null;
+                    // Read the file
+                    while (!reader.EndOfStream)
+                    {
+                        line = await reader.ReadLineAsync();
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            lines += 1;
+                            // Don't reade the headers
+                            if (lines != 1)
+                            {
+                                // Fixed the values to view import historical climate
+                                // The first two columns are the year and month
+                                values = line.Split(',');
+                                raw.Add(new HistoricalYieldViewImport()
+                                {
+                                    weather_station = values[0],
+                                    soil = values[1],
+                                    cultivar = values[2],
+                                    start = DateTime.Parse(values[3]),
+                                    end = DateTime.Parse(values[4]),
+                                    measure = (MeasureYield)Enum.Parse(typeof(MeasureYield), values[5]),
+                                    median = double.Parse(values[6]),
+                                    avg = double.Parse(values[7]),
+                                    min = double.Parse(values[8]),
+                                    max = double.Parse(values[9]),
+                                    quar_1 = double.Parse(values[10]),
+                                    quar_2 = double.Parse(values[11]),
+                                    quar_3 = double.Parse(values[12]),
+                                    conf_lower = double.Parse(values[13]),
+                                    conf_upper = double.Parse(values[14]),
+                                    sd = double.Parse(values[15]),
+                                    perc_5 = double.Parse(values[16]),
+                                    perc_95 = double.Parse(values[17]),
+                                    coef_var = double.Parse(values[18])
+                                });
+                            }
+                        }
+                    }
+                    // Import to the database
+                    HistoricalYield hy_new;
+                    YieldCrop yc_entity;
+                    List<YieldCrop> yc_entities;
+                    List<YieldData> yd_entities;
+                    // En esta sección se crean los nuevos registros de rendimientos para las estaciones climatologicas.
+                    // Se obtiene la información de las estaciones climátologicas, luego se filtra
+                    // 
+                    // 
+                    foreach (var ws in raw.Select(p => p.weather_station).Distinct())
+                    {
+                        hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
+                        var yield_crop = raw.Where(p => p.weather_station == ws);
+                        yc_entities = new List<YieldCrop>();
+                        int count_yc = yield_crop.Count();
+                        foreach (var yc in yield_crop)
+                        {
+                            yc_entity = new YieldCrop() { cultivar = getId(yc.cultivar), soil = getId(yc.soil), start = yc.start, end = yc.end };
+                            var yield_data = yield_crop.Where(p => p.cultivar == yc.cultivar && p.soil == yc.soil && p.start == yc.start && p.end == yc.end);
+                            int count_yd = yield_data.Count();
+                            yd_entities = new List<YieldData>();
+                            foreach (var yd in yield_data)
+                                yd_entities.Add(new YieldData()
+                                {
+                                    measure = yd.measure,
+                                    median = yd.median,
+                                    avg = yd.avg,
+                                    min = yd.min,
+                                    max = yd.max,
+                                    quar_1 = yd.quar_1,
+                                    quar_2 = yd.quar_2,
+                                    quar_3 = yd.quar_3,
+                                    conf_lower = yd.conf_lower,
+                                    conf_upper = yd.conf_upper,
+                                    sd = yd.sd,
+                                    perc_5 = yd.perc_5,
+                                    perc_95 = yd.perc_95,
+                                    coef_var = yd.coef_var
+                                });
+                            yc_entity.data = yd_entities;
+                            yc_entities.Add(yc_entity);
+                        }
+                        hy_new.yield = yc_entities;
+                        await db.historicalYield.insertAsync(hy_new);
+                    }
+                    msg = new Message()
+                    {
+                        content = "Historical Yield WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
+                        type = MessageType.successful
+                    };
+                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_yield });
+                }
+                else
+                {
+                    msg = new Message() { content = "Historical Yield WS. An error occurred with the file imported", type = MessageType.error };
+                    writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
+                }
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                msg = new Message() { content = "Historical Yield WS. An error occurred in the system, contact the administrator", type = MessageType.error };
+            }
+            // List climate variables
+            generateListMeasures();
+            ViewBag.message = msg;
+            return View("Import");
+        }
+
         /// <summary>
         /// Method to create a select list with the measure available to import
         /// </summary>
@@ -484,8 +609,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
         private async void generateListMunicipalitiesAsync(string selected)
         {
-            var municipalities = (await db.municipality.listEnableAsync()).Select(p=>new { id = p.id.ToString(), name=p.name });
-            if(string.IsNullOrEmpty(selected))
+            var municipalities = (await db.municipality.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
                 ViewData["municipality"] = new SelectList(municipalities, "id", "name");
             else
                 ViewData["municipality"] = new SelectList(municipalities, "id", "name", selected);
