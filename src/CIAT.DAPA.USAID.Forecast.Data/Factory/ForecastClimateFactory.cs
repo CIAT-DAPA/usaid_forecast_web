@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             await collection.InsertOneAsync(entity);
             return entity;
+        }
+
+        /// <summary>
+        /// Method that return all records about climate of the forecast
+        /// by forecast
+        /// </summary>
+        /// <param name="forecast">Id Forecast</param>
+        /// <returns>List of the Forecast Climate</returns>
+        public async Task<IEnumerable<ForecastClimate>> byForecastAsync(ObjectId forecast)
+        {
+            var builder = Builders<ForecastClimate>.Filter;
+            var filter = builder.Eq("forecast", forecast);
+            return await collection.Find(filter).ToListAsync<ForecastClimate>();
         }
     }
 }

@@ -44,6 +44,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return entity;
         }
 
+        /// <summary>
+        /// Method that return all records of cultivars available and ordered
+        /// </summary>
+        /// <returns>List of Cultivars</returns>
         public async override Task<List<Cultivar>> listEnableAsync()
         {
             var builder = Builders<Cultivar>.Filter;
