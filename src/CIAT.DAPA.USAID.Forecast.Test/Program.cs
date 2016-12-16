@@ -3,6 +3,7 @@ using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -58,7 +59,9 @@ namespace CIAT.DAPA.USAID.Forecast.Test
                     ForecastClimate fc = new ForecastClimate() { forecast = forecast.id, weather_station = ws.id, data = data, performance = performance };
                     await db.forecastClimate.insertAsync(fc);
                 }
-                // 
+                // Create forecast yield
+                string[] lines = File.ReadAllLines(@"D:\SourceCode\USAID\CIAT.DAPA.USAID.Forecast\src\CIAT.DAPA.USAID.Forecast.Test\Data\Forecast.csv");
+                //for(int i=0;)
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,21 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             await collection.InsertOneAsync(entity);
             return entity;
+        }
+
+        /// <summary>
+        /// Method that return all registers in the database 
+        /// by the weather stations
+        /// </summary>
+        /// <param name="ws">Array of the weather stations ids</param>
+        /// <returns>List of the historical yield data</returns>
+        public async virtual Task<List<HistoricalYield>> byWeatherStationsAsync(ObjectId[] ws)
+        {
+            // Filter all entities available.
+            var query = from hc in collection.AsQueryable()
+                        where ws.Contains(hc.weather_station)
+                        select hc;
+            return query.ToList();
         }
     }
 }
