@@ -28,10 +28,10 @@ function Base(container) {
  * (double) height: Height value of the graphic
  */
 Base.prototype.init = function (relative, height) {
-    var containerEl = document.getElementById(this.container);
-    this.width = containerEl.clientWidth;
+    var element = document.getElementById(this.container.replace('#',''));
+    this.width = element.clientWidth;
     this.height = relative == true ? this.width * height : height;
-    this.svg = d3.select(this.container).select('svg')
+    this.svg = d3.select(this.container).append("svg")
         .attr('width', this.width)
         .attr('height', this.height);
 }

@@ -1,11 +1,6 @@
 ﻿body {
-}
-
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* Navbar */
@@ -28,6 +23,7 @@ textarea {
 }
 
 /* Body content */
+
 .body-content {
     background-color: #f8f8f8;
 }
@@ -41,6 +37,7 @@ textarea {
 }
 
 /* Helpers */
+
 .section-content {
     padding: 5px;
     background-color: #fff;
@@ -55,8 +52,8 @@ textarea {
     margin-top: 5px;
     fill: #ccc;
     transition: all 0.6s ease-in-out;
-    width:24px;
-    height:24px;
+    width: 24px;
+    height: 24px;
 }
 
     .icon_help:hover {
@@ -65,10 +62,24 @@ textarea {
 
 
 /* Climate Pie */
-.pie_content{
+
+.pie_content {
     padding: 5px;
 }
-.pieChart--center--innerCircle {
+
+.pie_upper {
+    fill: #6bb7c7;
+}
+
+.pie_lower {
+    fill: #d79d91;
+}
+
+.pie_normal {
+    fill: #92d892;
+}
+
+.pie_center_inner_circle {
     fill: #fff;
 }
 
@@ -76,52 +87,14 @@ textarea {
     font-size: 28px;
 }
 
-.pieChart--center--outerCircle {
+.pie_center_outer_circle {
     fill: rgba(255, 255, 255, 0.75);
 }
 
-.pieChart--detail--divider {
-    stroke: gray;
-    stroke-width: 1;
-}
-
-.pieChart--detail--percentage {
-    font-size: 22px;
-    font-weight: 100;
-    fill: #333;
-    stroke-width: 1px;
-}
-
-.pieChart--detail--textContainer {
-    background-color: transparent;
-    padding: 10px 0 0 0;
-    margin: 0;
-    color: #666;
-    font-style: italic;
-}
-
-.pieChart--detail__left {
-    text-align: left;
-}
-
-.pieChart--detail__right {
-    text-align: right;
-}
-
-.pieChart__blue {
-    fill: #6bb7c7;
-}
-
-.pieChart__red {
-    fill: #d79d91;
-}
-
-.pieChart__green {
-    fill: #92d892;
-}
 
 
 /* Hide/rearrange for smaller screens */
+
 @media screen and (max-width: 767px) {
     /* Hide header logo */
     .header-logo {

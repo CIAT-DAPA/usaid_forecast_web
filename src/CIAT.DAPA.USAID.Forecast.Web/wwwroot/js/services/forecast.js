@@ -52,13 +52,16 @@ angular.module('ForecastApp')
         dataFactory.getProbabilities = function (raw, ws, measure) {
             var filtered = dataFactory.getByWeatherStation(raw, ws);
             var data = filtered.data.map(function (item) {
-                var probabilities = item.probabilities.filter(function (item) { return item.measure === measure });
+                var probabilities = item.probabilities.filter(function (item) { return item.measure === measure })[0];
+                var p = new Array({ label: 'Arriba de lo normal', type:'upper', value: probabilities.upper },
+                    { label: 'Normal', type: 'normal', value: probabilities.normal },
+                    { label: 'Debajo de lo normal', type: 'lower', value: probabilities.lower });
                 var obj = {
                     year: item.year,
                     month: item.month,
                     month_name: config.month_names[item.month-1],
-                    probabilities: probabilities[0],
-                    summary: summaryProbabilities(probabilities[0])
+                    probabilities: p,
+                    summary: summaryProbabilities(probabilities)
                 };
                 return obj;
             });
