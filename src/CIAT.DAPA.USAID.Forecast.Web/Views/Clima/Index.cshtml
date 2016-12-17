@@ -26,14 +26,39 @@
     </div>
 </nav>
 <!-- End weather station -->
-
 <!-- Start Probabilities -->
-<section id="probabilities" class="row">
-    <article class="col-md-2"></article>
-    <article class="col-md-2"></article>
-    <article class="col-md-2"></article>
-    <article class="col-md-2"></article>
-    <article class="col-md-2"></article>
-    <article class="col-md-2"></article>
+<section id="probabilities" ng-controller="ClimateCtrl">
+    <div class="row section-content">
+        <div class="col-lg-12">
+            <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+            <h2 class="text-center">Predicción climática</h2>
+            <p class="text-justify">
+                Las siguientes gráficas muestran el resultado de las predicciónes climáticas de la
+                variable de precipitación para el período de
+                <span id="climate-period">Enero, 2017 a Junio, 2017</span>
+                en el municipio <span id="climate-municipality">Ceréte</span>.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <article class="col-lg-2 pie_content" ng-repeat="m in months">
+            <div class="section-content">
+                <h3>{{m.year}} - {{m.month_name}}</h3>
+                <div id="{{m.year}}-{{m.month}}">
+
+                </div>
+                <p class="text-justify">
+                    {{m.summary}}
+                </p>
+            </div>
+        </article>
+    </div>
 </section>
 <!-- End Probabilities -->
+
+@section Scripts {
+    <script src="~/lib/d3/d3.min.js"></script>
+    <script src="~/js/lib/d3graphics/base.js"></script>
+    <script src="~/js/lib/d3graphics/pie.js"></script>
+    <script src="~/js/controllers/climate.js"></script>
+}

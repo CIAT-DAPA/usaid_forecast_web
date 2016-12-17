@@ -1,5 +1,4 @@
 ﻿body {
-    
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
@@ -15,20 +14,21 @@ textarea {
 }
 
 .navbar-collapse, .navbar-location {
-  text-align:center;
-}
-.navbar-nav {
-    display:inline-block;
-    float:none;
+    text-align: center;
 }
 
-.navbar{
-    margin:0px;
+.navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar {
+    margin: 0px;
     border: 0;
 }
 
 /* Body content */
-.body-content{
+.body-content {
     background-color: #f8f8f8;
 }
 
@@ -38,6 +38,86 @@ textarea {
     background: #222222;
     color: #777777;
     padding: 10px;
+}
+
+/* Helpers */
+.section-content {
+    padding: 5px;
+    background-color: #fff;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Icons */
+.icon_help {
+    cursor: pointer;
+    position: absolute;
+    margin-top: 5px;
+    fill: #ccc;
+    transition: all 0.6s ease-in-out;
+    width:24px;
+    height:24px;
+}
+
+    .icon_help:hover {
+        fill: #00cc44;
+    }
+
+
+/* Climate Pie */
+.pie_content{
+    padding: 5px;
+}
+.pieChart--center--innerCircle {
+    fill: #fff;
+}
+
+.pieChart--center--text {
+    font-size: 28px;
+}
+
+.pieChart--center--outerCircle {
+    fill: rgba(255, 255, 255, 0.75);
+}
+
+.pieChart--detail--divider {
+    stroke: gray;
+    stroke-width: 1;
+}
+
+.pieChart--detail--percentage {
+    font-size: 22px;
+    font-weight: 100;
+    fill: #333;
+    stroke-width: 1px;
+}
+
+.pieChart--detail--textContainer {
+    background-color: transparent;
+    padding: 10px 0 0 0;
+    margin: 0;
+    color: #666;
+    font-style: italic;
+}
+
+.pieChart--detail__left {
+    text-align: left;
+}
+
+.pieChart--detail__right {
+    text-align: right;
+}
+
+.pieChart__blue {
+    fill: #6bb7c7;
+}
+
+.pieChart__red {
+    fill: #d79d91;
+}
+
+.pieChart__green {
+    fill: #92d892;
 }
 
 

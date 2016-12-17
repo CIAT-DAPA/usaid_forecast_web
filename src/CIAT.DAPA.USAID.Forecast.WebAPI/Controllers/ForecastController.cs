@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools;
 using Microsoft.Extensions.Options;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
+    [EnableCors("SiteCorsPolicy")]
     [Route("api/[controller]")]
     public class ForecastController : WebAPIBaseController
     {
@@ -23,7 +25,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         }
 
-        // GET: api/values
+        // GET: api/[controller]
         [HttpGet]
         public async Task<IActionResult> Get()
         {

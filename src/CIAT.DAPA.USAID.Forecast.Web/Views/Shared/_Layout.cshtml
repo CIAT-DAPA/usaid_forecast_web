@@ -38,7 +38,7 @@
         </div>
     </nav>
 
-    <div class="body-content">
+    <div class="body-content" ng-app="ForecastApp">
         <div class="container">
             @RenderBody()
         </div>
@@ -69,7 +69,6 @@
     <script src="~/lib/angular/angular.min.js"></script>
     <script src="~/js/app.js"></script>
     <script src="~/js/services/forecast.js"></script>
-    <script src="~/js/controllers/climate.js"></script>
-    <script src="~/js/controllers/crop.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
