@@ -1,4 +1,5 @@
 ﻿body {
+    
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
@@ -9,17 +10,28 @@ textarea {
 }
 
 /* Navbar */
-.app-name {
+.navbar-text {
     display: none;
 }
 
-.navbar-collapse {
+.navbar-collapse, .navbar-location {
   text-align:center;
 }
 .navbar-nav {
     display:inline-block;
     float:none;
 }
+
+.navbar{
+    margin:0px;
+    border: 0;
+}
+
+/* Body content */
+.body-content{
+    background-color: #f8f8f8;
+}
+
 
 /* Footer */
 .footer {
@@ -36,7 +48,7 @@ textarea {
         display: none;
     }
 
-    .app-name {
+    .navbar-text {
         display: block;
     }
 }

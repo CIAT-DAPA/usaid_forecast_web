@@ -2,6 +2,7 @@
 /// <reference path="js/app.js" />
 /// <reference path="js/controllers/climate.js" />
 /// <reference path="js/controllers/crop.js" />
+/// <reference path="js/services/forecast.js" />
 /// <reference path="js/site.min.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />

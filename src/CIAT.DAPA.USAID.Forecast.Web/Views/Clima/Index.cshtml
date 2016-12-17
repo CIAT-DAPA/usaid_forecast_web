@@ -2,11 +2,38 @@
     ViewData["Title"] = "Clima";
 }
 <!-- Start weather station -->
-<nav>
-    <ul class="nav nav-justified">
-        <li><a ng-href="#/clima">Clima</a></li>
-        <li><a ng-href="#/cultivo/arroz">Arroz</a></li>
-        <li><a ng-href="#/cultivo/maiz">Maíz</a></li>
-    </ul>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-location">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand navbar-text">Localidad</span>
+        </div>
+        <div class="navbar-location">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Ceréte</a></li>
+                <li><a href="#">Lorica</a></li>
+                <li><a href="#">Espinal</a></li>
+                <li><a href="#">Ibague</a></li>
+                <li><a href="#">Yopal</a></li>
+                <li><a href="#">La Unión</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
-<h1></h1>
+<!-- End weather station -->
+
+<!-- Start Probabilities -->
+<section id="probabilities" class="row">
+    <article class="col-md-2"></article>
+    <article class="col-md-2"></article>
+    <article class="col-md-2"></article>
+    <article class="col-md-2"></article>
+    <article class="col-md-2"></article>
+    <article class="col-md-2"></article>
+</section>
+<!-- End Probabilities -->

@@ -13,7 +13,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index(string id)
         {
-            ViewBag.id = id;
             return View();
         }
     }
