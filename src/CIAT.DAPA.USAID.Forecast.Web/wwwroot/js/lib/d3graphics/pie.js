@@ -9,6 +9,10 @@ function Pie(base) {
     this.twoPi = 2 * Math.PI;
 }
 
+/**
+ * Method tha draw a white circle in the center of the graphic, so this way it gave an apparence of radial
+ * (object) pie: Graphic in the which should add the new graphic
+*/
 Pie.prototype.drawChartCenter = function (pie) {
     var centerContainer = pie.append('g')
       .attr('class', 'pie_center');
@@ -33,6 +37,10 @@ Pie.prototype.drawChartCenter = function (pie) {
       .attr('fill', '#fff');
 }
 
+/*
+ * Method that render the graphic in a container
+ * (object) data: Set of the data to visualization
+*/
 Pie.prototype.render = function render(data) {
 
     this.base.init(true, 1);
@@ -66,7 +74,6 @@ Pie.prototype.render = function render(data) {
                               };
                           })
                           .each('end', function handleAnimationEnd(d) {
-                              //D3Graphics.Pie.tools.drawDetailedInformation(d.data, this, width, detailedInfo, height);
                           });
 
     this.drawChartCenter(pie);

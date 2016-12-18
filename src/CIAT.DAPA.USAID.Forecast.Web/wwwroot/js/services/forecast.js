@@ -10,7 +10,9 @@
 angular.module('ForecastApp')
     .factory('ForecastFactory', ['$http', 'config', function ($http, config) {
         var dataFactory = {};
-
+        /*
+        * Method that request the last forecast to the web api
+        */
         dataFactory.get = function () {
             if (dataFactory.raw == null) {
                 dataFactory.raw = $http.get(config.api_forecast);
@@ -23,6 +25,8 @@ angular.module('ForecastApp')
 
         var dataFactory = {};
         /*
+        * Method that created a summary based in the probabilities
+        * (object) p: Object with probabilities
         */
         function summaryProbabilities(p){
             var summary = '';

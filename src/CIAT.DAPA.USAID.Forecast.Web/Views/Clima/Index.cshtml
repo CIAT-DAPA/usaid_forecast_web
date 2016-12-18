@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Clima";
 }
+<!-- Start global variables -->
+<input type="hidden" id="gv_months" name="gv_months" value="1,2,3,4,5,6" />
+<!-- End global variables -->
 <!-- Start weather station -->
 <nav class="navbar navbar-default">
     <div class="container">
@@ -40,15 +43,64 @@
             </p>
         </div>
     </div>
-    <div class="row" id="probabilities_pies">
-        
-    </div>
+    <div class="row" id="probabilities_pies"></div>
 </section>
 <!-- End Probabilities -->
+
+<div class="row">
+    <!-- Start Climatology -->
+    <section id="climatology" class="col-lg-6" ng-controller="ClimatologyCtrl">
+        <div class="row section-content">
+            <div class="col-lg-12">
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <h2 class="text-center">Climatología</h2>
+                <p class="text-justify">
+                    La siguiente gráfica muestra el promedio para cada mes de las variables climáticas desde 1983 a 2013
+                    en el municipio <span id="climate-municipality">Ceréte</span>. Los meses mostrados a continuación
+                    corresponden a los mismos de la predicción.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <article class="col-lg-12 article_content">
+                <div class="section-content">
+                    <div id="bar_climatology"></div>
+                </div>
+            </article>
+        </div>
+    </section>
+    <!-- End Climatology -->
+
+    <!-- Start Historical -->
+    <section id="climatology" class="col-lg-6" ng-controller="">
+        <div class="row section-content">
+            <div class="col-lg-12">
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <h2 class="text-center">Histórico climático</h2>
+                <p class="text-justify">
+                    La siguiente gráfica muestra los datos observados de las variables climáticas
+                    en el municipio <span id="climate-municipality">Ceréte</span>. Los meses mostrados a continuación
+                    corresponden a los mismos de la predicción.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <article class="col-lg-12 article_content">
+                <div class="section-content">
+                    <div id=""></div>
+                </div>
+            </article>
+        </div>
+    </section>
+    <!-- End Historical -->
+</div>
+
 
 @section Scripts {
     <script src="~/lib/d3/d3.min.js"></script>
     <script src="~/js/lib/d3graphics/base.js"></script>
     <script src="~/js/lib/d3graphics/pie.js"></script>
+    <script src="~/js/lib/d3graphics/bars.js"></script>
     <script src="~/js/controllers/climate.js"></script>
+    <script src="~/js/controllers/climatology.js"></script>
 }

@@ -15,11 +15,16 @@ function Base(container) {
     // SVG 
     this.svg = null;
 
-    // Animation sSettings
+    // Animation settings
     this.animation = {
         duration: 1500,
         delay: 500
     }
+
+    // Formats tho show the information or values in the graphics
+    this.formats = {
+        round : d3.format(",.0f"),
+    };
 }
 
 /**

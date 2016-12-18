@@ -45,6 +45,10 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.article_content {
+    padding: 5px;
+}
+
 /* Icons */
 .icon_help {
     cursor: pointer;
@@ -62,11 +66,6 @@
 
 
 /* Climate Pie */
-
-.pie_content {
-    padding: 5px;
-}
-
 .pie_upper {
     fill: #6bb7c7;
 }
@@ -83,15 +82,26 @@
     fill: #fff;
 }
 
-.pieChart--center--text {
-    font-size: 28px;
-}
-
 .pie_center_outer_circle {
     fill: rgba(255, 255, 255, 0.75);
 }
 
+/* Bars */
+.bar_color {
+    fill: #6bb7c7;
+}
 
+#bar_climatology path {
+  stroke: #000;
+}
+
+#bar_climatology path:hover {
+  opacity: 0.9;
+}
+
+#bar_climatology rect:hover {
+  fill: #6bb7c7;
+}
 
 /* Hide/rearrange for smaller screens */
 
