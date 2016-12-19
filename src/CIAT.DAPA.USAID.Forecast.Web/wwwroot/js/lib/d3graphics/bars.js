@@ -13,47 +13,36 @@ Bars.prototype.render = function (data) {
     this.base.init(true, 0.5);
 
     //create svg for histogram.
-    var hg = this.base.svg.append("g")
+    this.base.svg.append("g")
                 .attr("transform", "translate(0,0)");
-        
+
     // create function for x-axis mapping.
-    var x = d3.scale.ordinal().rangeRoundBands([30, this.base.width - 30], 0.1)
+    var x = d3.scale.ordinal().rangeRoundBands([this.base.margin.right, this.base.width], this.base.space)
                 .domain(data.map(function (d) { return d.month_name; }));
-    
-    // Add x-axis to the histogram svg.
-    hg.append("g").attr("class", "x axis")
-        .attr("transform", "translate(0," + (this.base.height * .9) + ")")
-        .call(d3.svg.axis().scale(x).orient("bottom"));
 
     // Create function for y-axis map.
-    var y = d3.scale.linear().range([this.base.height * .9, 0])
+    var y = d3.scale.linear().range([this.base.height, this.base.getMarginVertical()])
                 .domain([0, d3.max(data, function (d) { return d.value; }) * 1.1]);
 
-    var yAxisLeft = d3.svg.axis().scale(y).ticks(8).orient("left");
-
-    hg.append("g")
-        .attr("class", "y axis ")
-        .attr("transform", "translate(35,0)")
-        .call(yAxisLeft)
-        .append("text")
-        .attr("y", 6)
-        .attr("dy", "-2em")
-        .style("text-anchor", "end")
-        .text("Precipitación mt2");
-
+    // Add the axis
+    this.base.addAxis(x, y, 8);
+   
     // Create bars for histogram to contain rectangles and freq labels.
-    var bars = hg.selectAll(".bar").data(data).enter()
-                .append("g").attr("class", "bar");
+    var bars = this.base.svg.selectAll(".bar")
+                    .data(data)
+                    .enter()
+                    .append("g")
+                    .attr("class", "bar");
 
     //create the rectangles.
     bars.append("rect")
         .attr("x", function (d) { return x(d.month_name); })
         .attr("y", function (d) { return y(d.value); })
         .attr("width", x.rangeBand())
-        .attr("height", function (d) { return (that.base.height * .9) - y(d.value); })
+        .attr("height", function (d) { return (that.base.height) - y(d.value); })
         .attr('class', 'bar_color');
-        //.on("mouseover", mouseover)// mouseover is defined bebajo.
-        //.on("mouseout", mouseout);// mouseout is defined bebajo.
+    //.on("mouseover", mouseover)// mouseover is defined bebajo.
+    //.on("mouseout", mouseout);// mouseout is defined bebajo.
 
     //Create the frequency labels above the rectangles.
     bars.append("text").text(function (d) { return that.base.formats.round(d.value) })

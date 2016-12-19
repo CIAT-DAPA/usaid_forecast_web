@@ -103,6 +103,73 @@
   fill: #6bb7c7;
 }
 
+/* Line */
+
+.line_area {
+  fill: url(#line_gradient);
+}
+
+.line_gradient--top {
+  stop-color: #6bb7c7;
+  stop-opacity: 0.1;
+}
+
+.line_gradient--bottom {
+  stop-color: #6bb7c7;
+  stop-opacity: 0.6;
+}
+
+.line_area_line {
+  fill: none;
+  stroke: #6bb7c7;
+  stroke-width: 3;
+}
+
+.lineChart--bubble--label {
+  fill: none;
+  stroke: #6bb7c7;
+  font-size: 12.6px;
+  font-style: italic;
+  font-weight: 100;
+}
+
+.lineChart--bubble--value {
+  fill: #fff;
+  stroke: #fff;
+  font-size: 21px;
+  font-weight: 100;
+}
+
+.lineChart--circle {
+  fill: #6bb7c7;
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.lineChart--circle__highlighted {
+  fill: #fff;
+  stroke: #3f95a7;
+}
+
+.line--svg {
+  border: 1px solid #eee;
+}
+
+.lineChart--xAxisTicks .domain, .line_x_axis .domain, .lineChart--yAxisTicks .domain {
+  display: none;
+}
+
+.line_x_axis .tick line {
+  display: none;
+}
+
+.lineChart--xAxisTicks .tick line, .lineChart--yAxisTicks .tick line {
+  fill: none;
+  stroke: #b3b3b3;
+  stroke-width: 1;
+  stroke-dasharray: 2, 2;
+}
+
 /* Hide/rearrange for smaller screens */
 
 @media screen and (max-width: 767px) {
