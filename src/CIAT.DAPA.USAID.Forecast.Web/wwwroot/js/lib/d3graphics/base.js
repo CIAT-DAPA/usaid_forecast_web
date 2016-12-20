@@ -1,11 +1,14 @@
 ﻿/**
  * This class contains all settings and some tools for the graphics
  * (string) container: Name of the div where the graphic will display
+ * (object) data: Set of information
  */
-function Base(container) {
+function Base(container, data) {
 
     // Name of the div where the graphic will display
     this.container = container;
+    // Data of the graphic
+    this.data = data;
 
     // Width of container    
     this.width_full = 0;
@@ -25,6 +28,7 @@ function Base(container) {
 
     // SVG 
     this.svg = null;
+    this.g = null;
 
     // Animation settings
     this.animation = {
@@ -38,8 +42,6 @@ function Base(container) {
         date: d3.time.format('%Y-%m-%d').parse
     };
 
-    // 
-    this.space = 0.1;
 }
 
 /*
@@ -51,14 +53,6 @@ Base.prototype.setMargin = function (size) {
     this.margin.right = size;
     this.margin.left = size;
     this.margin.bottom = size;
-
-}
-
-/*
- * Method that get full margin veritcal of the graphic
-*/
-Base.prototype.getMarginVertical = function(){
-    return (this.margin.top + this.margin.bottom);
 }
 
 /*
@@ -76,20 +70,37 @@ Base.prototype.setMargin = function (top, right, left, bottom) {
 
 }
 
+/*
+ * Method that get full margin veritcal of the graphic
+*/
+Base.prototype.getMarginVertical = function(){
+    return (this.margin.top + this.margin.bottom);
+}
+
 /**
  * This method set the init values
  * (bool) relative: Indicates if the height if relative or not
  * (double) height: Height value of the graphic
  */
 Base.prototype.init = function (relative, height) {
+    this.svg = d3.select(this.container).append("svg");
+    this.g = this.svg.append('g');
+    this.update(relative, height);
+}
+
+/*
+ * Method that update the graphic's dimensions
+ * (bool) relative: Indicates if the height if relative or not
+ * (double) height: Height value of the graphic
+*/
+Base.prototype.update = function (relative, height) {
     var element = document.getElementById(this.container.replace('#', ''));
     this.width_full = element.clientWidth;
     this.height_full = relative == true ? this.width_full * height : height;
     this.width = this.width_full - (this.margin.left + this.margin.right);
     this.height = this.height_full - (this.margin.top + this.margin.bottom);
-    this.svg = d3.select(this.container).append("svg")
-        .attr('width', this.width_full)
-        .attr('height', this.height_full);
+    this.svg.attr('width', this.width_full)
+            .attr('height', this.height_full);
 }
 
 /*
@@ -130,13 +141,13 @@ Base.prototype.getTicks = function (xy, ticks, size) {
 */
 Base.prototype.addAxis = function (x,y,ticks) {
     // Add x-axis to the histogram svg.
-    this.svg.append("g").attr("class", "x axis")
+    this.svg.append("g").attr("class", "x_axis")
         .attr("transform", "translate(0," + (this.height) + ")")
         .call(this.getXAxis(x));
 
     // Add y-axis to the histogram svg.
     this.svg.append("g")
-        .attr("class", "y axis")
+        .attr("class", "y_axis")
         .attr("transform", "translate(35,0)")
         .call(this.getYAxis(y, ticks));
 }
@@ -150,11 +161,11 @@ Base.prototype.addAxis = function (x,y,ticks) {
 */
 Base.prototype.addAxisTicks = function (x, y, x_ticks, y_ticks) {
     this.svg.append('g')
-        .attr('class', 'lineChart--xAxisTicks')
+        .attr('class', 'x_axis_ticks')
         .attr('transform', 'translate(' + this.margin.right / 2 + ',' + this.height + ')')
         .call(this.getTicks(x,x_ticks,-this.height));
     
     this.svg.append('g')
-        .attr('class', 'lineChart--yAxisTicks')
+        .attr('class', 'y_axis_ticks')
         .call(this.getTicks(y, y_ticks, this.width).orient('right'));
 }

@@ -5,7 +5,7 @@
 function Line(base) {
     this.base = base;
 
-    // circleContainer;
+    this.circleContainer = null;
 }
 
 /*
@@ -21,7 +21,47 @@ Line.prototype.tween= function (b, callback) {
     };
 }
 
-Line.prototype.render = function (data) {    
+Line.prototype.addCircle = function (datum, index, x, y, circleContainer) {
+
+    circleContainer.datum(datum)
+        .append('circle')
+        .attr('class', 'lineChart--circle')
+        .attr('r', 0)
+        .attr('cx', function (d) { return x(d.date) + detailWidth / 2; })
+        .attr('cy', function (d) { return y(d.value); })
+        .on('mouseenter', function (d) {
+            d3.select(this)
+                .attr('class', 'lineChart--circle lineChart--circle__highlighted')
+                .attr('r', 7);
+            d.active = true;
+            D3Graphics.Line.tools.showCircleDetail(d, x, y, detailHeight, detailMargin, detailWidth, circleContainer);
+        })
+        .on('mouseout', function (d) {
+            d3.select(this)
+                .attr('class', 'lineChart--circle')
+                .attr('r', 6);
+            if (d.active) {
+                D3Graphics.Line.tools.hideCircleDetails(circleContainer);
+                d.active = false;
+            }
+        })
+        .on('click touch', function (d) {
+            if (d.active) {
+                D3Graphics.Line.tools.showCircleDetail(d, x, y, detailHeight, detailMargin, detailWidth, circleContainer);
+            } else {
+                D3Graphics.Line.tools.hideCircleDetails(circleContainer);
+            }
+        })
+        .transition()
+        .delay(D3Graphics.Line.vars.DURATION / 10 * index)
+        .attr('r', 6);
+}
+
+
+/*
+ * 
+*/
+Line.prototype.render = function () {    
     var that = this;
 
     this.base.init(true, 0.5);
@@ -41,7 +81,7 @@ Line.prototype.render = function (data) {
             .x(function (d) { return x(d.date) + that.base.margin.right / 2; })
             .y(function (d) { return y(d.value); });
 
-    var startData = data.map(function (datum) {
+    var startData = this.base.data.map(function (datum) {
         return {
             date: datum.date,
             value: 0
@@ -49,15 +89,15 @@ Line.prototype.render = function (data) {
     });
 
     // Compute the minimum and maximum date, and the maximum value.
-    x.domain([data[0].date, data[data.length - 1].date]);
+    x.domain([this.base.data[0].date, this.base.data[this.base.data.length - 1].date]);
     // Compute the maximun value more 10%
-    y.domain([0, d3.max(data, function (d) { return d.value; }) * 1.1]);
+    y.domain([0, d3.max(this.base.data, function (d) { return d.value; }) * 1.1]);
 
     // Add the axis
-    this.base.addAxis(x, y, 12);
+    this.base.addAxis(x, y, 10);
 
     // Add the ticks
-    this.base.addAxisTicks(x, y, data.length, 12 );
+    this.base.addAxisTicks(x, y, this.base.data.length, 12);
 
     // Add the line path.
     this.base.svg.append('path')
@@ -67,7 +107,7 @@ Line.prototype.render = function (data) {
             .transition()
             .duration(that.base.animation.duration)
             .delay(that.base.animation.delay)
-            .attrTween('d', that.tween(data, line))
+            .attrTween('d', that.tween(this.base.data, line))
             .each('end', function () {
                 //D3Graphics.Line.tools.drawCircles(data, svg, x, y, detailWidth, detailHeight, detailMargin, circleContainer);
             });
@@ -79,7 +119,7 @@ Line.prototype.render = function (data) {
         .attr('d', area)
         .transition()
         .duration(that.base.animation.duration)
-        .attrTween('d', that.tween(data, area));
+        .attrTween('d', that.tween(this.base.data, area));
 
     // Line Normal
     

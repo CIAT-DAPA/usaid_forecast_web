@@ -4,12 +4,14 @@
  */
 function Bars(base) {
     this.base = base;
+
+    this.space = 0.1;
 }
 
 // function to handle histogram.
-Bars.prototype.render = function (data) {
+Bars.prototype.render = function () {
     var that = this;
-
+    console.log(this);
     this.base.init(true, 0.5);
 
     //create svg for histogram.
@@ -17,19 +19,19 @@ Bars.prototype.render = function (data) {
                 .attr("transform", "translate(0,0)");
 
     // create function for x-axis mapping.
-    var x = d3.scale.ordinal().rangeRoundBands([this.base.margin.right, this.base.width], this.base.space)
-                .domain(data.map(function (d) { return d.month_name; }));
+    var x = d3.scale.ordinal().rangeRoundBands([this.base.margin.right, this.base.width], this.space)
+                .domain(this.base.data.map(function (d) { return d.month_name; }));
 
     // Create function for y-axis map.
     var y = d3.scale.linear().range([this.base.height, this.base.getMarginVertical()])
-                .domain([0, d3.max(data, function (d) { return d.value; }) * 1.1]);
+                .domain([0, d3.max(this.base.data, function (d) { return d.value; }) * 1.1]);
 
     // Add the axis
     this.base.addAxis(x, y, 8);
    
     // Create bars for histogram to contain rectangles and freq labels.
     var bars = this.base.svg.selectAll(".bar")
-                    .data(data)
+                    .data(this.base.data)
                     .enter()
                     .append("g")
                     .attr("class", "bar");

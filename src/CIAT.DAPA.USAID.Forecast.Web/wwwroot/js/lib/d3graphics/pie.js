@@ -20,7 +20,7 @@ Pie.prototype.drawChartCenter = function (pie) {
     centerContainer.append('circle')
       .attr('class', 'pie_center_outer_circle')
       .attr('r', 0)
-      .attr('filter', 'url(#pieChartDropShadow)')
+      //.attr('filter', 'url(#pieChartDropShadow)')
       .transition()
       .duration(this.base.animation.duration)
       .delay(this.base.animation.delay)
@@ -39,9 +39,8 @@ Pie.prototype.drawChartCenter = function (pie) {
 
 /*
  * Method that render the graphic in a container
- * (object) data: Set of the data to visualization
 */
-Pie.prototype.render = function render(data) {
+Pie.prototype.render = function () {
 
     this.base.init(true, 1);
     this.radius = Math.min(this.base.width, this.base.height) / 2;
@@ -52,7 +51,7 @@ Pie.prototype.render = function render(data) {
     var arc = d3.svg.arc()
                 .outerRadius(this.radius - 20)
                 .innerRadius(0);
-    var pieChartPieces = pie.datum(data)
+    var pieChartPieces = pie.datum(this.base.data)
                           .selectAll('path')
                           .data(pieData)
                           .enter()

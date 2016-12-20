@@ -64,6 +64,25 @@
         fill: #00cc44;
     }
 
+/* Axis Charts */
+
+.x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
+  display: none;
+}
+
+/*.x_axis path, .x_axis line, */
+.y_axis path, .y_axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x_axis_ticks .tick line, .y_axis_ticks .tick line {
+  fill: none;
+  stroke: #b3b3b3;
+  stroke-width: 1;
+  stroke-dasharray: 2, 2;
+}
 
 /* Climate Pie */
 .pie_upper {
@@ -153,21 +172,6 @@
 
 .line--svg {
   border: 1px solid #eee;
-}
-
-.lineChart--xAxisTicks .domain, .line_x_axis .domain, .lineChart--yAxisTicks .domain {
-  display: none;
-}
-
-.line_x_axis .tick line {
-  display: none;
-}
-
-.lineChart--xAxisTicks .tick line, .lineChart--yAxisTicks .tick line {
-  fill: none;
-  stroke: #b3b3b3;
-  stroke-width: 1;
-  stroke-dasharray: 2, 2;
 }
 
 /* Hide/rearrange for smaller screens */

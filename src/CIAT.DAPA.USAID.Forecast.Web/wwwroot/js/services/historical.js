@@ -96,9 +96,8 @@ angular.module('ForecastApp')
                     month: data2[0].month,
                     month_name: data2[0].month_name,
                     value: data2[0].value,
-                    fake_date: item.year + '-' + 1 + '-' + 1,
-                    //date: item.year + '-' + data2[0].month + '-' + 1
-                    date: new Date(item.year, data2[0].month, 1)
+                    date: new Date(item.year,1,1)
+                    //date: new Date(item.year, data2[0].month, 1)
                 };
                 return obj;
             });

@@ -15,17 +15,17 @@ angular.module('ForecastApp')
       HistoricalFactory.get(ws).success(function (data_h) {
           // Climatology
           var climatology = ClimatologyFactory.getMonthlyData(data_h, ws, gv_months, 'prec');
-          var base = new Base('#bar_climatology');
+          var base = new Base('#bar_climatology', climatology);
           base.setMargin(10, 30, 10, 10);
           var bar = new Bars(base);
-          bar.render(climatology);
+          bar.render();
 
           // Historical
           var historical = HistoricalClimateFactory.getData(data_h, ws, 1, 'prec');
-          var base = new Base('#line_historical');
+          var base = new Base('#line_historical', historical);
           base.setMargin(10, 30, 10, 10);
           var line = new Line(base);
-          line.render(historical);
+          line.render();
 
           // Load the Forecast information
           ForecastFactory.get().success(function (data_f) {
@@ -53,9 +53,9 @@ angular.module('ForecastApp')
               for (var i = 0; i < months.length; i++) {
                   var m = months[i];
                   var id = '#pie' + m.year + '-' + m.month;
-                  var base = new Base(id);
+                  var base = new Base(id, m.probabilities);
                   var pie = new Pie(base);
-                  pie.render(m.probabilities);
+                  pie.render();
               }
           }).error(function (error) {
               console.log(error);
