@@ -10,9 +10,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
     public class CultivoController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        // GET: /<controller>/Index?cultivo=arroz
+        public IActionResult Index(string cultivo)
         {
+
             return View();
         }
     }

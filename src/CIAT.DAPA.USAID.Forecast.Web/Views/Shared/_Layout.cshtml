@@ -31,9 +31,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Clima" asp-action="Index">Clima</a></li>
-                    <li><a asp-area="" asp-controller="Arroz" asp-action="Index">Arroz</a></li>
-                    <li><a asp-area="" asp-controller="Maiz" asp-action="Index">Maíz</a></li>
+                    <li>@Html.ActionLink("Clima","Index","Clima")</li>
+                    <li>@Html.ActionLink("Arroz", "Index", "Cultivo",new { cultivo = "arroz" })</li>
+                    <li>@Html.ActionLink("Maiz", "Index", "Cultivo", new { cultivo = "maiz" })</li>
                 </ul>
             </div>
         </div>

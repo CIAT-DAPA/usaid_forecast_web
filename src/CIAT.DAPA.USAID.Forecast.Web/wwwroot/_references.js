@@ -7,6 +7,7 @@
 /// <reference path="js/lib/d3graphics/line.js" />
 /// <reference path="js/lib/d3graphics/pie.js" />
 /// <reference path="js/services/forecast.js" />
+/// <reference path="js/services/geographic.js" />
 /// <reference path="js/services/historical.js" />
 /// <reference path="js/site.min.js" />
 /// <reference path="lib/angular/angular.js" />
