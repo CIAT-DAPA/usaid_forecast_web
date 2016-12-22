@@ -4,7 +4,7 @@
 <div ng-controller="CropCtrl">
 
     <!-- Start global variables -->
-    <input type="hidden" id="gv_months" name="gv_months" value="1,2" />
+    
     <!-- End global variables -->
 
     <!-- Start weather station -->
@@ -36,13 +36,24 @@
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                 <h2 class="text-center">Rendimiento potencial para el cultivo</h2>
                 <p class="text-justify">
-                    La siguiente gráfica muestran el resultado del pronóstico agro-climatico para el 
+                    La siguiente gráfica muestra el resultado del pronóstico agro-climatico para el 
                     período comprendido desde <span id="climate-period">Enero, 2017 a Febrero, 2017</span> 
                     en el municipio <span id="climate-municipality">Lorica</span>.
                 </p>
             </div>
         </div>
-        <div class="row" id="probabilities_pies"></div>
+        <div class="row">
+            <article class="col-lg-9 article_content">
+                <div class="section-content">
+                    <div id="yield_calendar"></div>
+                </div>
+            </article>
+            <article class="col-lg-3 article_content">
+                <div class="section-content">
+                    <div id="yield_detail"></div>
+                </div>
+            </article>
+        </div>
     </section>
     <!-- End Probabilities -->
 </div>

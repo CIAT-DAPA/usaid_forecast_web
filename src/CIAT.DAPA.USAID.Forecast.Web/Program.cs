@@ -14,8 +14,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                //.UseIISIntegration()
                 .UseStartup<Startup>()
+                .UseUrls("http://*:4000")
                 .Build();
 
             host.Run();

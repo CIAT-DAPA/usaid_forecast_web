@@ -4,6 +4,7 @@
 /// <reference path="js/controllers/crop.js" />
 /// <reference path="js/lib/d3graphics/bars.js" />
 /// <reference path="js/lib/d3graphics/base.js" />
+/// <reference path="js/lib/d3graphics/calendar.js" />
 /// <reference path="js/lib/d3graphics/line.js" />
 /// <reference path="js/lib/d3graphics/pie.js" />
 /// <reference path="js/services/forecast.js" />

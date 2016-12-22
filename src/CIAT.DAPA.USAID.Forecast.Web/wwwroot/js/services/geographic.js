@@ -11,7 +11,7 @@ angular.module('ForecastApp')
     .factory('GeographicFactory', ['$http', 'config', function ($http, config) {
         var dataFactory = {};
         /*
-        * Method that request all information 
+        * Method that request all geographic information available
         */
         dataFactory.get = function () {
             if (dataFactory.raw == null) {
