@@ -11,7 +11,6 @@ function Bars(base) {
 // function to handle histogram.
 Bars.prototype.render = function () {
     var that = this;
-    console.log(this);
     this.base.init(true, 0.5);
 
     //create svg for histogram.

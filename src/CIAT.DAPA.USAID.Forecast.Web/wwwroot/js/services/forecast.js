@@ -15,7 +15,7 @@ angular.module('ForecastApp')
         */
         dataFactory.get = function () {
             if (dataFactory.raw == null) {
-                dataFactory.raw = $http.get(config.api_forecast);
+                dataFactory.raw = $http.get(config.api_fs + config.api_fs_forecast);
             }
             return dataFactory.raw;
         }

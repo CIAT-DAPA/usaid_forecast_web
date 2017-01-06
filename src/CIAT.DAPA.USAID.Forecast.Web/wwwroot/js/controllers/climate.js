@@ -8,7 +8,8 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('ClimateCtrl', function ($scope, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory) {
+  .controller('ClimateCtrl', function ($scope, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory) {
+      $scope.municipality_name = tools.search('municipio');
       var ws = "58504f4f006cb93ed40eec13";
       var gv_months = $("#gv_months").val().split(',');
       // Load the historical information
