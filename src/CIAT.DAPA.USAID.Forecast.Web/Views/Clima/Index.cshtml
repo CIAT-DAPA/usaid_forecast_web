@@ -20,12 +20,7 @@
             </div>
             <div class="navbar-location">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Ceréte</a></li>
-                    <li><a href="#">Lorica</a></li>
-                    <li><a href="#">Espinal</a></li>
-                    <li><a href="#">Ibague</a></li>
-                    <li><a href="#">Yopal</a></li>
-                    <li><a href="#">La Unión</a></li>
+                    <li ng-repeat="m in municipalities"><a href="/Clima?municipio={{m.name}}">{{m.name}}</a></li>
                 </ul>
             </div>
         </div>
@@ -41,7 +36,9 @@
                     Las siguientes gráficas muestran el resultado de las predicciónes climáticas de la
                     variable de precipitación para el período de
                     <span id="climate-period">Enero, 2017 a Junio, 2017</span>
-                    en el municipio <span class="municipality_name">{{municipality_name}}</span>.
+                    en el municipio <span class="municipality_name">{{municipality_name}}</span>. La estación
+                    meteorológica con la cual se realizan los cálculos es <span class="ws_name">{{ws_name}}</span>,
+                    provista por <span class="ws_origin">{{ws_origin}}</span>
                 </p>
             </div>
         </div>

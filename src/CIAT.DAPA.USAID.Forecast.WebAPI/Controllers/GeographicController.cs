@@ -7,11 +7,13 @@ using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
+    [EnableCors("SiteCorsPolicy")]
     [Route("api/[controller]")]
     public class GeographicController : WebAPIBaseController
     {

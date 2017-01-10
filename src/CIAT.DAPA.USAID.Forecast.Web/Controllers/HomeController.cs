@@ -9,7 +9,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
     public class HomeController : Controller
     {
         public IActionResult Index()
-        {
+        {   
             return RedirectToAction("Index", "Clima");
         }
 
@@ -25,11 +25,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             ViewData["Message"] = "Your contact page.";
 
             return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
+        }        
     }
 }
