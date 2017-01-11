@@ -45,6 +45,11 @@ angular.module('ForecastApp')
         dataFactory.getMonthlyData = function (raw, ws, months, measure) {
             var filtered_ws = dataFactory.getByWeatherStation(raw, ws);
             var filtered_monthly = filtered_ws.monthly_data.filter(function (item) { return months.includes(item.month.toString()); });
+            // Transform months (delete de first zero) if data doesn't have information
+            if (filtered_monthly.length < 1) {
+                months = months.map(function (m) { return m.startsWith('0') ? m.replace('0', '') : m; });
+                filtered_monthly = filtered_ws.monthly_data.filter(function (item) { return months.includes(item.month.toString()); });
+            }            
             var data = filtered_monthly.map(function (item) {
                 var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
                 var obj = {
@@ -97,7 +102,6 @@ angular.module('ForecastApp')
                     month_name: data2[0].month_name,
                     value: data2[0].value,
                     date: new Date(item.year,1,1)
-                    //date: new Date(item.year, data2[0].month, 1)
                 };
                 return obj;
             });

@@ -11,13 +11,17 @@
 angular
   .module('ForecastApp', [])
   .value('config', {
-      api_fs: 'http://localhost:59292/api/',
-      api_fs_geographic: 'Geographic',
-      api_fs_agronomic: 'Agronomic',
-      api_fs_forecast: 'Forecast',
-      api_fs_historical: 'Historical/Get/?weatherstations=',
+      api_fs: $('#api_fs').val(),
+      api_fs_geographic: $('#api_fs_geographic').val(),
+      api_fs_agronomic: $('#api_fs_agronomic').val(),
+      api_fs_forecast: $('#api_fs_forecast').val(),
+      api_fs_historical: $('#api_fs_historical').val(),
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-      days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+      days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+      climate_vars: [{ name: 'Precipitación', value: 'prec', metric:'mm2', description: 'Precipitación' },
+                     { name: 'Temperatura máxima', value: 't_max', metric: 'mm2', description: 'Temperatura máxima' },
+                     { name: 'Temperatura minima', value: 't_min', metric: 'mm2', description: 'Temperatura minima' },
+                     { name: 'Radiación solar', value: 'sol_rad', metric: 'mm2', description: 'Radiación solar' }]
   })
   .factory('tools', function () {
       var _tools = {};

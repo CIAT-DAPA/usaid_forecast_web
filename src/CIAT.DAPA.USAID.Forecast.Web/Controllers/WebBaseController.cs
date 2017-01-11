@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
-    public class WebBaseController : Controller
+    public abstract class WebBaseController : Controller
     {
         protected IHostingEnvironment hostingEnvironment { get; set; }
         /// <summary>
@@ -36,7 +36,32 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             };
         }
 
+        /// <summary>
+        /// Method that load the paths of the web apis
+        /// </summary>
+        protected void loadAPIs()
+        {
+            ViewBag.api_fs = apiForecast.root;
+            ViewBag.api_fs_geographic = apiForecast.geographic;
+            ViewBag.api_fs_agronomic = apiForecast.agronomic;
+            ViewBag.api_fs_forecast = apiForecast.forecast;
+            ViewBag.api_fs_historical = apiForecast.historical;
+        }
 
+        /// <summary>
+        /// Method that stablish the months of the forecast
+        /// </summary>
+        protected void loadMonths()
+        {
+            string dates = string.Empty;
+            DateTime start = DateTime.Now.AddMonths(-1);
+            for (int i = 1; i <= 6; i++)
+            {
+                start = start.AddMonths(1);
+                dates += start.ToString("MM") + ",";
+            }
+            ViewBag.gv_months = dates.Substring(0, dates.Length - 1);
+        }
 
 
     }

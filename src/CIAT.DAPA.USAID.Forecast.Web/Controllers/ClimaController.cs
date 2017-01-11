@@ -23,7 +23,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
         }
 
-        // GET: /<controller>/Index/?municipio
+        // GET: /Clima/Index/?municipio=
         public async Task<IActionResult> Index(string municipio)
         {
             // Section to get a default municipality if it doesn't exist
@@ -33,6 +33,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 municipio = m.FirstOrDefault().name;
                 return RedirectToAction("Index", new { municipio = municipio });
             }
+            // Load the urls of the web api's
+            loadAPIs();
+            // Load the dates of the forecast
+            loadMonths();
             return View();
         }
     }

@@ -64,6 +64,11 @@
         fill: #00cc44;
     }
 
+/* Titles in content */
+.municipality_name, .ws_origin, .ws_name, .climate_period{
+    font-weight: bold;   
+}
+
 /* Axis Charts */
 
 .x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
@@ -105,25 +110,32 @@
     fill: rgba(255, 255, 255, 0.75);
 }
 
+.pie_center_text_high{
+    font-size: 22px;
+}
+
+.pie_center_text_small{
+    font-size: 10px;
+}
+
 /* Bars */
 .bar_color {
     fill: #6bb7c7;
 }
 
-#bar_climatology path {
+.bar_climatology path {
   stroke: #000;
 }
 
-#bar_climatology path:hover {
+.bar_climatology path:hover {
   opacity: 0.9;
 }
 
-#bar_climatology rect:hover {
+.bar_climatology rect:hover {
   fill: #6bb7c7;
 }
 
 /* Line */
-
 .line_area {
   fill: url(#line_gradient);
 }

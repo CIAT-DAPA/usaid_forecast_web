@@ -72,8 +72,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         {
             string json = await requestDataAsync(root + geographic);
             var json_geo = JsonConvert.DeserializeObject<IEnumerable<State>>(json);
-            var json_m = from g in json_geo
-                         select g.municipalities.FirstOrDefault();
+            List<Municipality> json_m = new List<Municipality>();
+            foreach(var ms in json_geo)
+                foreach (var m in ms.municipalities)
+                    json_m.Add(m);
             return json_m;
         }        
     }

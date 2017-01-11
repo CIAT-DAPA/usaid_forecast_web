@@ -30,9 +30,13 @@ angular.module('ForecastApp')
         */
         dataFactory.listAll = function (raw) {
             var data = raw.map(function (item) {                
-                return item.municipalities[0];
+                return item.municipalities;
             });
-            return data;
+            var m = [];
+            for (var i = 0; i < data.length; i++)
+                for (var j = 0; j < data[i].length; j++)
+                    m.push(data[i][j]);
+            return m;
         }
 
         return dataFactory;

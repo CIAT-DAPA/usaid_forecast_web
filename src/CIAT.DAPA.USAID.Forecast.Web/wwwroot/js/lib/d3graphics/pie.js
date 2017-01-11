@@ -13,14 +13,15 @@ function Pie(base) {
  * Method tha draw a white circle in the center of the graphic, so this way it gave an apparence of radial
  * (object) pie: Graphic in the which should add the new graphic
 */
-Pie.prototype.drawChartCenter = function (pie) {
+Pie.prototype.drawChartCenter = function (pie, content) {
+    var that = this;
     var centerContainer = pie.append('g')
       .attr('class', 'pie_center');
 
     centerContainer.append('circle')
       .attr('class', 'pie_center_outer_circle')
       .attr('r', 0)
-      //.attr('filter', 'url(#pieChartDropShadow)')
+      .attr('filter', 'url(#pieChartDropShadow)')
       .transition()
       .duration(this.base.animation.duration)
       .delay(this.base.animation.delay)
@@ -35,6 +36,20 @@ Pie.prototype.drawChartCenter = function (pie) {
       .duration(this.base.animation.duration)
       .attr('r', this.radius - 55)
       .attr('fill', '#fff');
+
+    centerContainer.append("text")
+      .attr('dx', function (d) {
+          var l = content.toString().length;
+          return l >= 3 ? -17 : (l == 2 ? -10 : -5);
+      })
+      .attr('class', 'pie_center_text_high')
+      .text(function (d) { return content; });      
+
+    centerContainer.append("text")
+      .attr('dx', function (d) { return -16; })
+      .attr('dy', function (d) { return 10; })
+      .attr('class', 'pie_center_text_small')
+      .text(function (d) { return 'Normal'; });
 }
 
 /*
@@ -45,13 +60,13 @@ Pie.prototype.render = function () {
     this.base.init(true, 1);
     this.radius = Math.min(this.base.width, this.base.height) / 2;
     var pie = this.base.svg.append('g')
-                  .attr('transform', 'translate(' + this.base.width / 2 + ',' + this.base.height / 2 + ')');    
+                  .attr('transform', 'translate(' + this.base.width / 2 + ',' + this.base.height / 2 + ')');
     var pieData = d3.layout.pie()
                     .value(function (d) { return d.value; });
     var arc = d3.svg.arc()
                 .outerRadius(this.radius - 20)
                 .innerRadius(0);
-    var pieChartPieces = pie.datum(this.base.data)
+    var pieChartPieces = pie.datum(this.base.data.percentages)
                           .selectAll('path')
                           .data(pieData)
                           .enter()
@@ -75,5 +90,5 @@ Pie.prototype.render = function () {
                           .each('end', function handleAnimationEnd(d) {
                           });
 
-    this.drawChartCenter(pie);
+    this.drawChartCenter(pie, this.base.formats.round(this.base.data.center));
 }
