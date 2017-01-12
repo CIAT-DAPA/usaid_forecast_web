@@ -46,7 +46,7 @@ Bars.prototype.render = function () {
     //.on("mouseout", mouseout);// mouseout is defined bebajo.
 
     //Create the frequency labels above the rectangles.
-    bars.append("text").text(function (d) { return that.base.formats.round(d.value) })
+    bars.append("text").text(function (d) { return that.base.formats.float(d.value) })
         .attr("x", function (d) { return x(d.month_name) + x.rangeBand() / 2; })
         .attr("y", function (d) { return y(d.value) - 5; })
         .attr("text-anchor", "normaldle");

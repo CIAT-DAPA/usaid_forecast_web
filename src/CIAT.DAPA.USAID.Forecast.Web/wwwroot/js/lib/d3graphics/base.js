@@ -39,6 +39,7 @@ function Base(container, data) {
     // Formats tho show the information or values in the graphics
     this.formats = {
         round: d3.format(",.0f"),
+        float: d3.format(",.1f"),
         date: d3.time.format('%Y-%m-%d').parse
     };
 

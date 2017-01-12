@@ -65,11 +65,7 @@
                 <div class="section-content">
                     <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                     <h3 class="text-center">Climatología</h3>
-                    <p class="text-justify">
-                        La siguiente gráfica muestra el promedio para cada mes de {{cv.name}} desde 1981 a 2013
-                        en el municipio <span class="text-bold">{{municipality_name}}</span>. 
-                        Los meses mostrados a continuación corresponden a los mismos de la predicción.
-                    </p>
+                    <p class="text-justify" id="{{cv.value}}_content_climatology"></p>
                     <div id="{{cv.value}}_bar_climatology" class="bar_climatology"></div>
                 </div>
             </article>

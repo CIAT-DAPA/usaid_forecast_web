@@ -28,14 +28,12 @@ angular.module('ForecastApp')
         * Method that created a summary based in the probabilities
         * (object) p: Object with probabilities
         */
-        function summaryProbabilities(p){
+        function summary(p){
             var summary = '';
             if(p.lower > p.normal && p.lower > p.upper)
                 summary = 'la probabilidad de precipitación estará por debajo de lo normal';
             else if (p.upper > p.normal && p.upper > p.lower)
                 summary = 'la probabilidad de precipitación estará por encima de lo normal';
-            else if (p.upper == p.normal && p.upper == p.lower)
-                summary = 'las probabilidades de precipitación están muy similares';
             else 
                 summary = 'la probabilidad de precipitación estará dentro de lo normal';
             return summary;
@@ -67,7 +65,7 @@ angular.module('ForecastApp')
                     month: item.month,
                     month_name: config.month_names[item.month-1],
                     probabilities: p,
-                    summary: summaryProbabilities(probabilities)
+                    summary: summary(probabilities)
                 };
                 return obj;
             });

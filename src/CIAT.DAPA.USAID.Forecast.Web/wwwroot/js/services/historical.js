@@ -58,14 +58,31 @@ angular.module('ForecastApp')
                     value: monthly.value
                 };
                 return obj;
-            });
+            });            
             return data;
+        }
+        /*
+        * Method that created a summary based in the climatology
+        * (object) cl: Climatology object
+        */
+        dataFactory.summary = function (cl) {
+            var max = null;
+            var min = null;
+            var distance = 0;
+            for (var i = 0; i < cl.length; i++) {
+                if (max == null || max.value < cl[i].value)
+                    max = cl[i];
+                if (min == null || min.value > cl[i].value)
+                    min = cl[i];
+                distance = max.value - min.value;
+            }
+            return { max: max, min: min, distance: distance };
         }
         return dataFactory;
     }])
     .factory('HistoricalClimateFactory', ['config', function (config) {
 
-        var dataFactory = {};
+        var dataFactory = {};        
         /*
         * Method that filter all climate data from forecast of the weather station
         * (object) raw: Json with all forecast
@@ -75,7 +92,6 @@ angular.module('ForecastApp')
             var data = raw.climate.filter(function (item) { return item.weather_station === ws; });
             return data;
         }
-
         /*
         * Method that return all probabilities from the forecast of the weather station
         * (object) raw: Json with all forecast
