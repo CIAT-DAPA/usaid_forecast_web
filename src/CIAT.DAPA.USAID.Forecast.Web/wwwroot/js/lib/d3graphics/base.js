@@ -73,7 +73,7 @@ Base.prototype.setMargin = function (top, right, left, bottom) {
 /*
  * Method that get full margin veritcal of the graphic
 */
-Base.prototype.getMarginVertical = function(){
+Base.prototype.getMarginVertical = function () {
     return (this.margin.top + this.margin.bottom);
 }
 
@@ -139,10 +139,10 @@ Base.prototype.getTicks = function (xy, ticks, size) {
  * (function) y: Function to interpolate the y values
  * (int) ticks: Count of ticks
 */
-Base.prototype.addAxis = function (x,y,ticks) {
+Base.prototype.addAxis = function (x, y, ticks) {
     // Add x-axis to the histogram svg.
     this.svg.append("g").attr("class", "x_axis")
-        .attr("transform", "translate(0," + (this.height) + ")")
+        .attr("transform", 'translate(0,' + this.height + ')')
         .call(this.getXAxis(x));
 
     // Add y-axis to the histogram svg.
@@ -163,9 +163,52 @@ Base.prototype.addAxisTicks = function (x, y, x_ticks, y_ticks) {
     this.svg.append('g')
         .attr('class', 'x_axis_ticks')
         .attr('transform', 'translate(' + this.margin.right / 2 + ',' + this.height + ')')
-        .call(this.getTicks(x,x_ticks,-this.height));
-    
+        .call(this.getTicks(x, x_ticks, -this.height));
+
     this.svg.append('g')
         .attr('class', 'y_axis_ticks')
+        .attr('transform', 'translate(' + this.margin.right + ',0)')
         .call(this.getTicks(y, y_ticks, this.width).orient('right'));
+}
+
+/*
+ * Method that add legend to the graphic
+ * (string) location: Place where you want to put the legend (bottom, right)
+ * (object) content: Information that should the legend has ({title,value,class})
+*/
+Base.prototype.addLegend = function (location, content) {
+    var that = this;
+
+    // Create function for y-axis map.
+    var y_legend = d3.scale.ordinal()
+                        .domain(content.map(function (item) { return item.title; }))
+                        .rangePoints([0, 15 * content.length]);
+
+    this.svg.attr('height', this.height_full + (25 * content.length));
+
+    var legend = this.svg.append('g');
+    if (location === 'bottom')
+        legend.attr('transform', 'translate(0,' + this.height +')');
+    else
+        legend.attr('transform', 'translate(0,0)');
+
+    legend.selectAll(".legend")
+          .data(content)
+          .enter()
+          .append("rect")
+          .attr("x", '0')
+          .attr("y", function (d) { return y_legend(d.title) - 15; })
+          .attr("width", '20')
+          .attr("height", '20')
+          .attr('class', function (d) { return d.class; });
+
+    legend.selectAll(".legend")
+          .data(content)
+          .enter()
+          .append('text')
+          .attr("x", '22')
+          .attr("y", function (d) { return y_legend(d.title); })
+          .text(function (d) { return d.value + ' - ' + d.title; });
+
+
 }

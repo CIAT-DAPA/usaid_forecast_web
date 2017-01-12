@@ -25,7 +25,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .transition()
       .duration(this.base.animation.duration)
       .delay(this.base.animation.delay)
-      .attr('r', this.radius - 50);
+      .attr('r', this.radius * 0.4);
 
     centerContainer.append('circle')
       .attr('id', 'pie_clippy')
@@ -34,7 +34,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .transition()
       .delay(this.base.animation.delay)
       .duration(this.base.animation.duration)
-      .attr('r', this.radius - 55)
+      .attr('r', this.radius * 0.5)
       .attr('fill', '#fff');
 
     centerContainer.append("text")
@@ -43,7 +43,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
           return l >= 3 ? -17 : (l == 2 ? -10 : -5);
       })
       .attr('class', 'pie_center_text_high')
-      .text(function (d) { return content; });      
+      .text(function (d) { return content; });
 
     centerContainer.append("text")
       .attr('dx', function (d) { return -16; })
@@ -64,7 +64,7 @@ Pie.prototype.render = function () {
     var pieData = d3.layout.pie()
                     .value(function (d) { return d.value; });
     var arc = d3.svg.arc()
-                .outerRadius(this.radius - 20)
+                .outerRadius(this.radius * 0.8)
                 .innerRadius(0);
     var pieChartPieces = pie.datum(this.base.data.percentages)
                           .selectAll('path')
@@ -90,5 +90,10 @@ Pie.prototype.render = function () {
                           .each('end', function handleAnimationEnd(d) {
                           });
 
+    // Draw the center and add the text
     this.drawChartCenter(pie, this.base.formats.round(this.base.data.center));
+    // Draw the legend
+    this.base.addLegend('bottom', this.base.data.percentages.map(function (item) {
+        return { title: item.label, value: (item.value * 100) + '%', class: 'pie_' + item.type };
+    }));
 }
