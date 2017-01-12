@@ -183,15 +183,21 @@ Base.prototype.addLegend = function (location, content) {
     var y_legend = d3.scale.ordinal()
                         .domain(content.map(function (item) { return item.title; }))
                         .rangePoints([0, 15 * content.length]);
+    var legend = null;
 
-    this.svg.attr('height', this.height_full + (25 * content.length));
-
-    var legend = this.svg.append('g');
-    if (location === 'bottom')
+    // Select the location of the legend
+    if (location === 'bottom') {
+        this.svg.attr('height', this.height_full + (20 * content.length));
+        legend = this.svg.append('g');
         legend.attr('transform', 'translate(0,' + this.height +')');
-    else
-        legend.attr('transform', 'translate(0,0)');
+    }
+    else {
+        this.svg.attr('width', this.width_full * 1.3);
+        legend = this.svg.append('g');
+        legend.attr('transform', 'translate(' + this.width + ',0)');
+    }
 
+    // Add rect with color of every item
     legend.selectAll(".legend")
           .data(content)
           .enter()
@@ -201,7 +207,7 @@ Base.prototype.addLegend = function (location, content) {
           .attr("width", '20')
           .attr("height", '20')
           .attr('class', function (d) { return d.class; });
-
+    // Add text with titles of the legend
     legend.selectAll(".legend")
           .data(content)
           .enter()
@@ -209,6 +215,4 @@ Base.prototype.addLegend = function (location, content) {
           .attr("x", '22')
           .attr("y", function (d) { return y_legend(d.title); })
           .text(function (d) { return d.value + ' - ' + d.title; });
-
-
 }

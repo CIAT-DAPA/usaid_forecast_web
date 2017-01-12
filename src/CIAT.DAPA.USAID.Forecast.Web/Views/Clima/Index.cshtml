@@ -38,12 +38,10 @@
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                 <h2 class="text-center">Predicción climática</h2>
                 <p class="text-justify">
-                    Las siguientes gráficas muestran el resultado de las predicciónes climáticas de la
-                    variable de precipitación para el período de 
-                    <span class="climate_period">{{period_start}} a {{period_end}}</span> 
-                    en el municipio <span class="municipality_name">{{municipality_name}}</span>. La estación
-                    meteorológica que provee los datos para realizar los cálculos es <span class="ws_name">{{ws_entity.name}}</span>,
-                    provista por <span class="ws_origin">{{ws_entity.origin}}</span>.
+                    Para la ciudad de <span class="text-bold">{{municipality_name}}</span> 
+                    se presenta la predicción del clima para el período comprendido de <span class="text-bold">{{period_start}} a {{period_end}}</span>. 
+                    La estación meteorológica que provee los datos para realizar los cálculos es <span class="text-bold">{{ws_entity.name}}</span>, 
+                    provista por <span class="text-bold">{{ws_entity.origin}}</span>.
                 </p>
             </div>
         </div>
@@ -69,7 +67,7 @@
                     <h3 class="text-center">Climatología</h3>
                     <p class="text-justify">
                         La siguiente gráfica muestra el promedio para cada mes de {{cv.name}} desde 1981 a 2013
-                        en el municipio <span class="municipality_name">{{municipality_name}}</span>. 
+                        en el municipio <span class="text-bold">{{municipality_name}}</span>. 
                         Los meses mostrados a continuación corresponden a los mismos de la predicción.
                     </p>
                     <div id="{{cv.value}}_bar_climatology" class="bar_climatology"></div>
@@ -84,7 +82,7 @@
                     <p class="text-justify">
                         La siguiente gráfica muestra los valores observados de {{cv.name}} en los distintos 
                         años para cada mes en especifico. Los datos observados corresponden al municipio de
-                        <span class="municipality_name">{{municipality_name}}</span>.
+                        <span class="text-bold">{{municipality_name}}</span>.
                     </p>
                     <div id="{{cv.value}}_line_historical"></div>
                 </div>

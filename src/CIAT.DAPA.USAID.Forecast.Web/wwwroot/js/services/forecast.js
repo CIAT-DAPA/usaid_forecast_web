@@ -31,11 +31,13 @@ angular.module('ForecastApp')
         function summaryProbabilities(p){
             var summary = '';
             if(p.lower > p.normal && p.lower > p.upper)
-                summary = 'Para este mes la predicción indica que la precipitación esta por debajo de lo normal';
+                summary = 'la probabilidad de precipitación estará por debajo de lo normal';
             else if (p.upper > p.normal && p.upper > p.lower)
-                summary = 'Para este mes la predicción indica que la precipitación esta por encima de lo normal';
+                summary = 'la probabilidad de precipitación estará por encima de lo normal';
+            else if (p.upper == p.normal && p.upper == p.lower)
+                summary = 'las probabilidades de precipitación están muy similares';
             else 
-                summary = 'Para este mes la predicción indica que la precipitación esta dentro de lo normal';
+                summary = 'la probabilidad de precipitación estará dentro de lo normal';
             return summary;
         }
         /*

@@ -70,7 +70,10 @@ angular.module('ForecastApp')
                                     '<h3 class="text-center">' + m.year + '-' + m.month_name + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
                                     '<div id="pie' + m.year + '-' + m.month + '"></div>' +
-                                    '<p class="text-justify article_content">' + m.summary + '</p>' +
+                                    '<p class="text-justify article_content">' +
+                                        'Para el mes de <span class="text-bold">' + m.month_name + '</span> ' +
+                                        'se predice que <span class="text-bold">' + m.summary + '</span> ' +
+                                    '</p>' +
                                 '</div>' +
                             '</article>';
           }
@@ -78,13 +81,12 @@ angular.module('ForecastApp')
           $("#probabilities_pies").html(ctrs);          
           for (var i = 0; i < months.length; i++) {
               var m = months[i];
-              var gv_months = [m.month.toString()];
               if (i == 0)
                   $scope.period_start = m.month_name + ', ' + m.year;
               if (i == (months.length - 1))
                   $scope.period_end = m.month_name + ', ' + m.year;
               var id = '#pie' + m.year + '-' + m.month;
-              var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, gv_months, 'prec');
+              var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], 'prec');
               var data = { percentages: m.probabilities, center: climatology[0].value };
               var base = new Base(id, data);
               var pie = new Pie(base);
