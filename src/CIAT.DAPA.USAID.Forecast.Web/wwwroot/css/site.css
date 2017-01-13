@@ -49,8 +49,8 @@
     padding: 5px;
 }
 
-.text-bold{
-    font-weight: bold; 
+.text-bold {
+    font-weight: bold;
 }
 
 /* Icons */
@@ -71,21 +71,21 @@
 /* Axis Charts */
 
 .x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
-  display: none;
+    display: none;
 }
 
 /*.x_axis path, .x_axis line, */
 .y_axis path, .y_axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .x_axis_ticks .tick line, .y_axis_ticks .tick line {
-  fill: none;
-  stroke: #b3b3b3;
-  stroke-width: 1;
-  stroke-dasharray: 2, 2;
+    fill: none;
+    stroke: #b3b3b3;
+    stroke-width: 1;
+    stroke-dasharray: 2, 2;
 }
 
 /* Climate Pie */
@@ -109,11 +109,11 @@
     fill: rgba(255, 255, 255, 0.75);
 }
 
-.pie_center_text_high{
+.pie_center_text_high {
     font-size: 22px;
 }
 
-.pie_center_text_small{
+.pie_center_text_small {
     font-size: 10px;
 }
 
@@ -123,67 +123,46 @@
 }
 
 .bar_climatology path {
-  stroke: #000;
+    stroke: #000;
 }
 
-.bar_climatology path:hover {
-  opacity: 0.9;
-}
+    .bar_climatology path:hover {
+        opacity: 0.9;
+    }
 
 .bar_climatology rect:hover {
-  fill: #6bb7c7;
+    fill: #6bb7c7;
 }
 
 /* Line */
-.line_area {
-  fill: url(#line_gradient);
-}
-
-.line_gradient--top {
-  stop-color: #6bb7c7;
-  stop-opacity: 0.1;
-}
-
-.line_gradient--bottom {
-  stop-color: #6bb7c7;
-  stop-opacity: 0.6;
-}
-
 .line_area_line {
-  fill: none;
-  stroke: #6bb7c7;
-  stroke-width: 3;
+    fill: none;
+    stroke: #6bb7c7;
+    stroke-width: 3;
 }
 
-.lineChart--bubble--label {
-  fill: none;
-  stroke: #6bb7c7;
-  font-size: 12.6px;
-  font-style: italic;
-  font-weight: 100;
+.line_area_area {
+    fill: #6bb7c7;
+    fill-opacity: 0.5;
 }
 
-.lineChart--bubble--value {
-  fill: #fff;
-  stroke: #fff;
-  font-size: 21px;
-  font-weight: 100;
+.line_area_circle {
+    fill: #6bb7c7;
+    stroke: #fff;
+    stroke-width: 3;
 }
 
-.lineChart--circle {
-  fill: #6bb7c7;
-  stroke: #fff;
-  stroke-width: 3;
+.line_area_circle_highlighted {
+    fill: #fff;
+    stroke: #3f95a7;
 }
 
-.lineChart--circle__highlighted {
-  fill: #fff;
-  stroke: #3f95a7;
+.line_area_splitted {
+    fill: none;
+    stroke: #c76b6b;
+    stroke-width: 3;
 }
 
-.line--svg {
-  border: 1px solid #eee;
-}
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

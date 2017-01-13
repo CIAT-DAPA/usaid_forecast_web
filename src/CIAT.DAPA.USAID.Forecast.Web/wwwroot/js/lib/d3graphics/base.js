@@ -122,19 +122,6 @@ Base.prototype.getXAxis = function (x) {
 }
 
 /*
- * Method that create a function for the ticks
- * (function) xy: X or Y function to create interpolation
- * (int) ticks: Count of ticks
- * (double) size: Size of the ticks
-*/
-Base.prototype.getTicks = function (xy, ticks, size) {
-    return d3.svg.axis().scale(xy)
-            .ticks(ticks)
-            .tickSize(size)
-            .tickFormat('');
-}
-
-/*
  * Method that add the axis x and y in the graphic
  * (function) x: Function to interpolate the x values
  * (function) y: Function to interpolate the y values
@@ -149,8 +136,21 @@ Base.prototype.addAxis = function (x, y, ticks) {
     // Add y-axis to the histogram svg.
     this.svg.append("g")
         .attr("class", "y_axis")
-        .attr("transform", "translate(35,0)")
+        .attr("transform", "translate(" + this.margin.right + ",0)")
         .call(this.getYAxis(y, ticks));
+}
+
+/*
+ * Method that create a function for the ticks
+ * (function) xy: X or Y function to create interpolation
+ * (int) ticks: Count of ticks
+ * (double) size: Size of the ticks
+*/
+Base.prototype.getTicks = function (xy, ticks, size) {
+    return d3.svg.axis().scale(xy)
+            .ticks(ticks)
+            .tickSize(size)
+            .tickFormat('');
 }
 
 /*
@@ -163,7 +163,7 @@ Base.prototype.addAxis = function (x, y, ticks) {
 Base.prototype.addAxisTicks = function (x, y, x_ticks, y_ticks) {
     this.svg.append('g')
         .attr('class', 'x_axis_ticks')
-        .attr('transform', 'translate(' + this.margin.right / 2 + ',' + this.height + ')')
+        .attr('transform', 'translate(0,' + this.height + ')')
         .call(this.getTicks(x, x_ticks, -this.height));
 
     this.svg.append('g')
