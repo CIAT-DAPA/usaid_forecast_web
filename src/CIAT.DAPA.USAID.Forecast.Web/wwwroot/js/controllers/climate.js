@@ -104,18 +104,19 @@ angular.module('ForecastApp')
                   var bar = new Bars(base_c);
                   bar.render();
                   var compute_c = ClimatologyFactory.summary(climatology);
-                  var summary_c = 'La climatología para <span class="text-bold">' + cv.name + '</span> en el período de <span class="text-bold">' + climatology[0].month_name + ' a ' + climatology[climatology.length - 1].month_name + '</span>, ' +
-                            'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> nos indica que: ' +
-                            '<ul>' +
-                                '<li>El mes <span class="text-bold">' + compute_c.max.month_name + '</span> ha tenido mayores valores de <span class="text-bold">' + cv.name + ' (' + compute_c.max.value.toFixed(1) + ' ' + cv.metric + ')</span>' + '.</li>' +
-                                '<li>El mes <span class="text-bold">' + compute_c.min.month_name + '</span> ha tenido menores valores de <span class="text-bold">' + cv.name + ' (' + compute_c.min.value.toFixed(1) + ' ' + cv.metric + ')</span>' + '.</li>' +
-                                '<li>Existe una variación de <span class="text-bold">' + compute_c.distance.toFixed(1) + ' ' + cv.metric + '</span> en el semestre.</li>' +
-                            '</ul>';
-                  $('#' + cv.value + '_content_climatology').html(summary_c);
 
+                  /*$scope.climate_vars[i].month_start = climatology[0].month_name;
+                  $scope.climate_vars[i].month_end = climatology[climatology.length - 1].month_name;
+                  $scope.climate_vars[i].max = compute_c.max;
+                  $scope.climate_vars[i].min = compute_c.min;*/
+
+                  cv.month_start = climatology[0].month_name;
+                  cv.month_end = climatology[climatology.length - 1].month_name;
+                  cv.max = compute_c.max;
+                  cv.min = compute_c.min;
+                  
                   // Historical
                   var historical = HistoricalClimateFactory.getData($scope.data_h, $scope.ws_entity.id, 1, cv.value);
-                  console.log(historical);
                   var data_h = { raw: historical, splitted: climatology[0].value };
                   var base_h = new Base('#' + cv.value + '_line_historical', data_h);
                   base_h.setMargin(10, 30, 10, 10);

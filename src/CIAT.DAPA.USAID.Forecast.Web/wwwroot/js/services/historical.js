@@ -49,7 +49,7 @@ angular.module('ForecastApp')
             if (filtered_monthly.length < 1) {
                 months = months.map(function (m) { return m.startsWith('0') ? m.replace('0', '') : m; });
                 filtered_monthly = filtered_ws.monthly_data.filter(function (item) { return months.includes(item.month.toString()); });
-            }            
+            }
             var data = filtered_monthly.map(function (item) {
                 var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
                 var obj = {
@@ -58,7 +58,7 @@ angular.module('ForecastApp')
                     value: monthly.value
                 };
                 return obj;
-            });            
+            });
             return data;
         }
         /*
@@ -82,7 +82,7 @@ angular.module('ForecastApp')
     }])
     .factory('HistoricalClimateFactory', ['config', function (config) {
 
-        var dataFactory = {};        
+        var dataFactory = {};
         /*
         * Method that filter all climate data from forecast of the weather station
         * (object) raw: Json with all forecast
@@ -105,24 +105,28 @@ angular.module('ForecastApp')
                 var filtered_monthly = item.monthly_data.filter(function (item2) { return month.toString() === item2.month.toString(); });
                 var data2 = filtered_monthly.map(function (item2) {
                     var monthly = item2.data.filter(function (item3) { return item3.measure === measure })[0];
-                    var obj = {
-                        month: item2.month,
-                        month_name: config.month_names[item2.month - 1],
-                        value: (monthly == null ? 0 : monthly.value)
-                    };
-                    return obj;
+                    if (monthly == null)
+                        return null;
+                    else
+                        return {
+                            month: item2.month,
+                            month_name: config.month_names[item2.month - 1],
+                            value: monthly.value
+                        };
+
                 });
-                var obj = {
-                    year: item.year,
-                    month: data2[0].month,
-                    month_name: data2[0].month_name,
-                    value: data2[0].value,
-                    date: new Date(item.year,1,1)
-                };
-                return obj;
+                if (data2[0] == null)
+                    return null;
+                else
+                    return {
+                        year: item.year,
+                        month: data2[0].month,
+                        month_name: data2[0].month_name,
+                        value: data2[0].value,
+                        date: new Date(item.year, 1, 1)
+                    };
             });
-            console.log(data);
-            return data;
+            return data.filter(function (item) { return item != null; });
         }
         return dataFactory;
     }]);

@@ -8,7 +8,7 @@ function Base(container, data) {
     // Name of the div where the graphic will display
     this.container = container;
     // Data of the graphic
-    this.data = data;
+    this.data = data;    
 
     // Width of container    
     this.width_full = 0;
@@ -42,6 +42,9 @@ function Base(container, data) {
         float: d3.format(",.1f"),
         date: d3.time.format('%Y-%m-%d').parse
     };
+
+    // Tooltip
+    this.tooltip = null;
 
 }
 
@@ -85,7 +88,10 @@ Base.prototype.getMarginVertical = function () {
  */
 Base.prototype.init = function (relative, height) {
     this.svg = d3.select(this.container).append("svg");
-    this.g = this.svg.append('g');
+    this.g = this.svg.append('g');    
+    this.tooltip = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
     this.update(relative, height);
 }
 
@@ -216,4 +222,28 @@ Base.prototype.addLegend = function (location, content) {
           .attr("x", '22')
           .attr("y", function (d) { return y_legend(d.title); })
           .text(function (d) { return d.value + ' - ' + d.title; });
+}
+
+/*
+ * Method that show a tooltip in the graphic
+ * (int) left: Distance of the side left in the web page
+ * (int) top: Distance of the side top in the web page
+ * (string) content: Content of the tooltip
+*/
+Base.prototype.tooltip_show = function (left, top, content) {
+    this.tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+    this.tooltip.html(content)
+            .style("left", left + "px")
+            .style("top", top + "px");
+}
+
+/*
+ * Method that hide the tooltip of the graphic
+*/
+Base.prototype.tooltip_hide = function () {
+    this.tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
 }

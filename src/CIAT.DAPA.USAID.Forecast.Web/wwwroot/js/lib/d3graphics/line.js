@@ -11,7 +11,7 @@ function Line(base) {
 /*
  * Method to interpolate
 */
-Line.prototype.tween= function (b, callback) {
+Line.prototype.tween = function (b, callback) {
     return function (a) {
         var i = d3.interpolateArray(a, b);
 
@@ -21,34 +21,14 @@ Line.prototype.tween= function (b, callback) {
     };
 }
 
-Line.prototype.mouseOver = function (d, i) {
-    
-    // Use D3 to select element, change color and size
-    d3.select(this).attr('class', 'line_area_circle_highlighted');/*d3.select(this).attr({
-        fill: "orange",
-        r: radius * 2
-    });*/
-
-    // Specify where to put label of text
-    d3.select(this).append("text")/*.attr({
-        id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
-        x: function () { return xScale(d.x) - 30; },
-        y: function () { return yScale(d.y) - 15; }
-    })*/
-    .text(function () {
-        console.log(d);
-        return d;  // Value of the text
-    });
-}
-
 /*
  * Method that render the graphic in a container
 */
-Line.prototype.render = function () {    
+Line.prototype.render = function () {
     var that = this;
 
     this.base.init(true, 0.5);
-    
+
     // TODO code duplication check how you can avoid that
     var x = d3.time.scale().range([this.base.margin.right, this.base.width_full - this.base.margin.left]);
     var y = d3.scale.linear().range([this.base.height, 0]);
@@ -86,7 +66,7 @@ Line.prototype.render = function () {
     this.base.svg.append('g')
             .attr('class', 'line_area_line')
             .append('path')
-            .datum(startData)            
+            .datum(startData)
             .attr('d', line)
             .transition()
             .duration(that.base.animation.duration)
@@ -101,21 +81,28 @@ Line.prototype.render = function () {
                                     .attr('x1', that.base.margin.right)
                                     .attr('y1', function (d) { return y(d); })
                                     .attr('x2', that.base.width_full - that.base.margin.left)
-                                    .attr('y2', function (d) { return y(d); });                
+                                    .attr('y2', function (d) { return y(d); });
 
                 // Add circles to show more details
                 var circles = that.base.svg.append('g')
                                 .attr("class", "line_area_point");
                 circles.selectAll('.line_area_point')
-                    .data(that.base.data.raw)                    
-                    .enter()  
+                    .data(that.base.data.raw)
+                    .enter()
                     .append('circle')
                     .attr('class', 'line_area_circle')
                     .attr('r', 5)
                     .attr('cx', function (d) { return x(d.date); })
                     .attr('cy', function (d) { return y(d.value); })
-                    .on("mouseover", that.mouseOver);
-                    //.on("mouseout", handleMouseOut);
+                    .on("mouseover", function (d, i) {
+                        
+                        d3.select(this).attr('class', 'line_area_circle_highlighted');
+                        that.base.tooltip_show(d3.event.pageX, d3.event.pageY-28, d.year);
+                    })
+                    .on("mouseout", function (d, i) {
+                        d3.select(this).attr('class', 'line_area_circle');
+                        that.base.tooltip_hide();
+                    });
             });
 
     // Add the area path.

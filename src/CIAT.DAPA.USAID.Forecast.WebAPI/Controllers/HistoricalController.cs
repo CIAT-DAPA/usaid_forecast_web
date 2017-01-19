@@ -186,7 +186,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     })
                 });
 
-                var jsonClimate = (await db.historicalClimatic.byWeatherStationsAsync(ws)).Select(p => new
+                var jsonClimate = (await db.historicalClimatic.byWeatherStationsAsync(ws)).OrderBy(p => p.year).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
                     year = p.year,
