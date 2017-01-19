@@ -8,7 +8,9 @@ function Bars(base) {
     this.space = 0.1;
 }
 
-// function to handle histogram.
+/*
+ * Method that render the graphic in a container
+*/
 Bars.prototype.render = function () {
     var that = this;
     this.base.init(true, 0.5);

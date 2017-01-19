@@ -26,6 +26,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Solar radiation
         /// </summary>
-        sol_rad
+        sol_rad,
+        /// <summary>
+        /// Lower tertile of normality of precipitation
+        /// </summary>
+        prec_ter_1,
+        /// <summary>
+        /// Upper tertile of normality of precipitation
+        /// </summary>
+        prec_ter_2
     }
 }

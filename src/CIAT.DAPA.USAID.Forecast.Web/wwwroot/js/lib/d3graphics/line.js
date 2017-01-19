@@ -21,8 +21,28 @@ Line.prototype.tween= function (b, callback) {
     };
 }
 
+Line.prototype.mouseOver = function (d, i) {
+    
+    // Use D3 to select element, change color and size
+    d3.select(this).attr('class', 'line_area_circle_highlighted');/*d3.select(this).attr({
+        fill: "orange",
+        r: radius * 2
+    });*/
+
+    // Specify where to put label of text
+    d3.select(this).append("text")/*.attr({
+        id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
+        x: function () { return xScale(d.x) - 30; },
+        y: function () { return yScale(d.y) - 15; }
+    })*/
+    .text(function () {
+        console.log(d);
+        return d;  // Value of the text
+    });
+}
+
 /*
- * 
+ * Method that render the graphic in a container
 */
 Line.prototype.render = function () {    
     var that = this;
@@ -81,14 +101,7 @@ Line.prototype.render = function () {
                                     .attr('x1', that.base.margin.right)
                                     .attr('y1', function (d) { return y(d); })
                                     .attr('x2', that.base.width_full - that.base.margin.left)
-                                    .attr('y2', function (d) { return y(d); });
-                /*
-                line_splitted.selectAll('line_area_splitted')
-                      .append("text")
-                      .attr('dx', that.base.margin.right)
-                      .attr('dy', function (d) { return y(d); })
-                      .attr('class', 'pie_center_text_small')
-                      .text(function (d) { return 'Normal'; });*/
+                                    .attr('y2', function (d) { return y(d); });                
 
                 // Add circles to show more details
                 var circles = that.base.svg.append('g')
@@ -97,10 +110,12 @@ Line.prototype.render = function () {
                     .data(that.base.data.raw)                    
                     .enter()  
                     .append('circle')
-                    .attr('class', 'line_area_circle line_area_circle_highlighted')
+                    .attr('class', 'line_area_circle')
                     .attr('r', 5)
                     .attr('cx', function (d) { return x(d.date); })
-                    .attr('cy', function (d) { return y(d.value); });
+                    .attr('cy', function (d) { return y(d.value); })
+                    .on("mouseover", that.mouseOver);
+                    //.on("mouseout", handleMouseOut);
             });
 
     // Add the area path.

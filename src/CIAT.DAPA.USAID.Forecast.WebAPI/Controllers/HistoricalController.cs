@@ -77,7 +77,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     ws[i] = getId(parameters[i]);
                     ids += weatherstations[i] + ",";
                 }
-                var json = (await db.historicalClimatic.byWeatherStationsAsync(ws)).Select(p => new
+                var json = (await db.historicalClimatic.byWeatherStationsAsync(ws)).OrderBy(p => p.year).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
                     year = p.year,

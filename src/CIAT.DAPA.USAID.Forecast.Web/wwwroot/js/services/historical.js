@@ -108,7 +108,7 @@ angular.module('ForecastApp')
                     var obj = {
                         month: item2.month,
                         month_name: config.month_names[item2.month - 1],
-                        value: monthly.value
+                        value: (monthly == null ? 0 : monthly.value)
                     };
                     return obj;
                 });
@@ -121,6 +121,7 @@ angular.module('ForecastApp')
                 };
                 return obj;
             });
+            console.log(data);
             return data;
         }
         return dataFactory;
