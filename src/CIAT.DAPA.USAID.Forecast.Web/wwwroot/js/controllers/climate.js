@@ -104,12 +104,7 @@ angular.module('ForecastApp')
                   var bar = new Bars(base_c);
                   bar.render();
                   var compute_c = ClimatologyFactory.summary(climatology);
-
-                  /*$scope.climate_vars[i].month_start = climatology[0].month_name;
-                  $scope.climate_vars[i].month_end = climatology[climatology.length - 1].month_name;
-                  $scope.climate_vars[i].max = compute_c.max;
-                  $scope.climate_vars[i].min = compute_c.min;*/
-
+                  
                   cv.month_start = climatology[0].month_name;
                   cv.month_end = climatology[climatology.length - 1].month_name;
                   cv.max = compute_c.max;

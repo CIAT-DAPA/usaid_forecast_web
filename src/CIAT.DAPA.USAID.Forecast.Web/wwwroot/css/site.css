@@ -53,6 +53,17 @@
     font-weight: bold;
 }
 
+/* Tooltip */
+.tooltip {
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px 5px 5px;
+    position: absolute;
+    z-index: 1;
+}
+
 /* Icons */
 .icon_help {
     cursor: pointer;
