@@ -18,10 +18,10 @@ angular
       api_fs_historical: $('#api_fs_historical').val(),
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-      climate_vars: [{ name: 'Precipitación', value: 'prec', metric:'mm', description: '' },
-                     { name: 'Temperatura máxima', value: 't_max', metric: '°C', description: '' },
-                     { name: 'Temperatura minima', value: 't_min', metric: '°C', description: '' },
-                     { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', description: '' }]
+      climate_vars: [{ name: 'Precipitación', value: 'prec', metric: 'mm', historical_months: [] },
+                     { name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [] },
+                     { name: 'Temperatura minima', value: 't_min', metric: '°C', historical_months: [] },
+                     { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', historical_months: [] }]
   })
   .factory('tools', function () {
       var _tools = {};

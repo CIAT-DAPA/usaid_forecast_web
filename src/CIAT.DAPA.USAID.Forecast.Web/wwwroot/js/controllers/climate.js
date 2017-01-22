@@ -59,6 +59,7 @@ angular.module('ForecastApp')
           var months = ClimateFactory.getProbabilities($scope.data_f, $scope.ws_entity.id, 'prec');
           var ctrs = '';
           var period = '';
+          // This cicle add the html code for the graphic pie.
           for (var i = 0; i < months.length; i++) {
               var m = months[i];
               if (i == 0)
@@ -78,7 +79,8 @@ angular.module('ForecastApp')
                             '</article>';
           }
           $('#climate-period').html(period);
-          $("#probabilities_pies").html(ctrs);          
+          $("#probabilities_pies").html(ctrs);
+          // This cicle add the graphic pie and render the information of the forecast
           for (var i = 0; i < months.length; i++) {
               var m = months[i];
               if (i == 0)
@@ -97,6 +99,11 @@ angular.module('ForecastApp')
           for (var i = 0; i < $scope.climate_vars.length; i++) {
               try {
                   var cv = $scope.climate_vars[i];
+                  // Set the months for historical data
+                  var h_month_start = parseInt($scope.gv_months[0]);
+                  var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
+                  cv.historical_months = config.month_names.slice(h_month_start - 1, h_month_end);
+
                   // Climatology
                   var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, $scope.gv_months, cv.value);                  
                   var base_c = new Base('#' + cv.value + '_bar_climatology', climatology);
@@ -109,14 +116,52 @@ angular.module('ForecastApp')
                   cv.month_end = climatology[climatology.length - 1].month_name;
                   cv.max = compute_c.max;
                   cv.min = compute_c.min;
-                  
                   // Historical
-                  var historical = HistoricalClimateFactory.getData($scope.data_h, $scope.ws_entity.id, 1, cv.value);
-                  var data_h = { raw: historical, splitted: climatology[0].value };
-                  var base_h = new Base('#' + cv.value + '_line_historical', data_h);
-                  base_h.setMargin(10, 30, 10, 10);
-                  var line = new Line(base_h);
-                  line.render();
+
+                  // Build the html code for every month of the forecast in tabs.
+                  // All content of tabs is enable, so this way later can draw the graphic
+                  var tabs = '<ul class="nav nav-tabs nav-justified" id="' + cv.value + '_tabs" role="tablist">';
+                  var content = '<div class="tab-content" id="' + cv.value + '_content">';
+                  var tab_enable = '';
+                  for (var j = 0; j < cv.historical_months.length; j++) {
+                      var cvm = cv.historical_months[j];
+                      tabs += '<li role="presentation"' + (j==0 ? ' class="active"' : '') + '>' +
+                                '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content"> ' + cvm + '</a>' +
+                             '</li>';
+                      content += '<div class="tab-pane fade active in ' + cv.value + '" role="tabpanel" id="' + cv.value + '_' + cvm + '_content" aria-labelledby="' + cv.value + '_' + cvm + '_tab">' +
+                                    '<p>' +
+                                    '</p>' +
+                                    '<div id="' + cv.value + '_line_historical_' + cvm + '">' +
+                                    '</div>' +
+                                '</div>';
+                      if (j == 0)
+                          tab_enable = cv.value + '_' + cvm + '_content';
+                  }
+                  tabs += '</ul>';
+                  content += '</div>';                  
+                  $('#climatic_history_content_' + cv.value).html(tabs + content);
+                  // Add the event to show the tabs on click
+                  $('#' + cv.value + '_tabs a').click(function (e) {
+                      e.preventDefault();
+                      $(this).tab('show');
+                  });
+                  // Add the line grapich for every month
+                  for (var j = 0; j < cv.historical_months.length; j++) {
+                      var cvm = cv.historical_months[j];
+                      var historical = HistoricalClimateFactory.getData($scope.data_h, $scope.ws_entity.id, h_month_start, cv.value);
+                      var data_h = { raw: historical, splitted: climatology[0].value };
+                      var base_h = new Base('#' + cv.value + '_line_historical_' + cvm, data_h);
+                      base_h.setMargin(10, 30, 10, 10);
+                      var line = new Line(base_h);
+                      line.render();
+                      h_month_start += 1;
+                  }
+                  // Disable the content of tabs (hide the content)
+                  $('.' + cv.value).removeClass('active');
+                  $('.' + cv.value).removeClass('in');
+                  // Enable the content of the first tab
+                  $('#' + tab_enable).addClass('active');
+                  $('#' + tab_enable).addClass('in');
               }
               catch (err) {
                   console.log(err);

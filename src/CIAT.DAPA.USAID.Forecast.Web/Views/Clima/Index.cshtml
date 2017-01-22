@@ -74,11 +74,11 @@
                         <ul>
                             <li>
                                 El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.max.value}} {{cv.metric}})</span>.
+                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 1}} {{cv.metric}})</span>.
                             </li>
                             <li>
                                 El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.min.value}} {{cv.metric}})</span>.
+                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 1}} {{cv.metric}})</span>.
                             </li>
                         </ul>
                     </p>
@@ -91,12 +91,8 @@
                 <div class="section-content">
                     <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                     <h3 class="text-center">Histórico climático</h3>
-                    <p class="text-justify">
-                        La siguiente gráfica muestra los valores observados de {{cv.name}} en los distintos
-                        años para cada mes en especifico. Los datos observados corresponden al municipio de
-                        <span class="text-bold">{{municipality_name}}</span>.
-                    </p>
-                    <div id="{{cv.value}}_line_historical"></div>
+                    <div id="climatic_history_content_{{cv.value}}">                        
+                    </div>
                 </div>
             </article>
             <!-- End Historical -->
