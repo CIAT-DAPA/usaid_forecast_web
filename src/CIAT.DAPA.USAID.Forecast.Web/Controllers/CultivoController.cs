@@ -26,7 +26,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public async Task<IActionResult> Index(string municipio, string cultivo)
         {
             // Section to get a default municipality if it doesn't exist
-            var m = await apiForecast.listMunicipalities();
+            var m = await apiForecast.listMunicipalitiesAsync();
             if (string.IsNullOrEmpty(municipio) || m.Where(p => p.name.Equals(municipio)).Count() < 1)
             {
                 municipio = m.FirstOrDefault().name;
