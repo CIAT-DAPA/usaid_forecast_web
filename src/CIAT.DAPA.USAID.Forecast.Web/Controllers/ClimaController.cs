@@ -36,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             // Load the urls of the web api's
             loadAPIs();
             // Load the dates of the forecast
-            loadMonths();
+            loadMonthsClimate();
             return View();
         }
     }

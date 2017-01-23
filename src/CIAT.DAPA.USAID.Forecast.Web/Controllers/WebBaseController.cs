@@ -51,11 +51,26 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <summary>
         /// Method that stablish the months of the forecast
         /// </summary>
-        protected void loadMonths()
+        protected void loadMonthsClimate()
         {
             string dates = string.Empty;
             DateTime start = DateTime.Now.AddMonths(-1);
             for (int i = 1; i <= 6; i++)
+            {
+                start = start.AddMonths(1);
+                dates += start.ToString("MM") + ",";
+            }
+            ViewBag.gv_months = dates.Substring(0, dates.Length - 1);
+        }
+
+        /// <summary>
+        /// Method that stablish the months of the forecast
+        /// </summary>
+        protected void loadMonthsCrop()
+        {
+            string dates = string.Empty;
+            DateTime start = DateTime.Now.AddMonths(-1);
+            for (int i = 1; i <= 2; i++)
             {
                 start = start.AddMonths(1);
                 dates += start.ToString("MM") + ",";
