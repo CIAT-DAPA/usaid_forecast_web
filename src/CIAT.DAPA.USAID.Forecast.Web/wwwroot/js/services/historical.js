@@ -63,20 +63,18 @@ angular.module('ForecastApp')
         }
         /*
         * Method that created a summary based in the climatology
-        * (object) cl: Climatology object
+        * (object) data: Climatology object
         */
-        dataFactory.summary = function (cl) {
+        dataFactory.summary = function (data) {
             var max = null;
             var min = null;
-            var distance = 0;
-            for (var i = 0; i < cl.length; i++) {
-                if (max == null || max.value < cl[i].value)
-                    max = cl[i];
-                if (min == null || min.value > cl[i].value)
-                    min = cl[i];
-                distance = max.value - min.value;
+            for (var i = 0; i < data.length; i++) {
+                if (max == null || max.value < data[i].value)
+                    max = data[i];
+                if (min == null || min.value > data[i].value)
+                    min = data[i];
             }
-            return { max: max, min: min, distance: distance };
+            return { max: max, min: min };
         }
         return dataFactory;
     }])
@@ -127,6 +125,18 @@ angular.module('ForecastApp')
                     };
             });
             return data.filter(function (item) { return item != null; });
+        };
+
+        /*
+        * Method that created a summary based in the historical climate data
+        * (object) data: Historical climate object
+        * (float) cl: Climatology value
+        */
+        dataFactory.summary = function (data, cl) {
+            var count_upper = data.filter(function (item) { return item.value > cl }).length;
+            var count_lower = data.filter(function (item) { return item.value < cl }).length;
+            var count_cl = data.filter(function (item) { return item.value == cl }).length;
+            return { upper: count_upper, lower: count_lower, equals: count_cl };
         }
         return dataFactory;
     }]);

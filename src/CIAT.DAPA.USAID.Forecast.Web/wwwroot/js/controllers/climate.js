@@ -105,7 +105,10 @@ angular.module('ForecastApp')
                   cv.historical_months = config.month_names.slice(h_month_start - 1, h_month_end);
 
                   // Climatology
-                  var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, $scope.gv_months, cv.value);                  
+
+                  // Get data
+                  var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, $scope.gv_months, cv.value);
+                  // Draw the graphic
                   var base_c = new Base('#' + cv.value + '_bar_climatology', climatology);
                   base_c.setMargin(10, 30, 10, 10);
                   var bar = new Bars(base_c);
@@ -116,6 +119,7 @@ angular.module('ForecastApp')
                   cv.month_end = climatology[climatology.length - 1].month_name;
                   cv.max = compute_c.max;
                   cv.min = compute_c.min;
+
                   // Historical
 
                   // Build the html code for every month of the forecast in tabs.
@@ -129,7 +133,7 @@ angular.module('ForecastApp')
                                 '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content"> ' + cvm + '</a>' +
                              '</li>';
                       content += '<div class="tab-pane fade active in ' + cv.value + '" role="tabpanel" id="' + cv.value + '_' + cvm + '_content" aria-labelledby="' + cv.value + '_' + cvm + '_tab">' +
-                                    '<p>' +
+                                    '<p class="text-justify" id="' + cv.value + '_' + cvm + '_summary">' +
                                     '</p>' +
                                     '<div id="' + cv.value + '_line_historical_' + cvm + '">' +
                                     '</div>' +
@@ -147,14 +151,26 @@ angular.module('ForecastApp')
                   });
                   // Add the line grapich for every month
                   for (var j = 0; j < cv.historical_months.length; j++) {
+                      // Get data from month
                       var cvm = cv.historical_months[j];
                       var historical = HistoricalClimateFactory.getData($scope.data_h, $scope.ws_entity.id, h_month_start, cv.value);
-                      var data_h = { raw: historical, splitted: climatology[0].value };
+                      var data_h = { raw: historical, splitted: climatology[j].value };
                       var base_h = new Base('#' + cv.value + '_line_historical_' + cvm, data_h);
+                      // Build the graphic for every month
                       base_h.setMargin(10, 30, 10, 10);
                       var line = new Line(base_h);
                       line.render();
                       h_month_start += 1;
+                      // Add summary to the content tab
+                      var summary_data = HistoricalClimateFactory.summary(historical, climatology[j].value);
+                      var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
+                                    'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
+                                    '<ul>' +
+                                        '<li>Han habido <span class="text-bold">' + summary_data.upper + '</span> anos por encima de lo normal</li>' +
+                                        '<li>Han habido <span class="text-bold">' + summary_data.lower + '</span> anos por debajo de lo normal</li>' +
+                                        '<li>Han habido <span class="text-bold">' + summary_data.equals + '</span> anos similar a lo normal</li>' +
+                                    '</ul>';
+                      $('#' + cv.value + '_' + cvm + '_summary').html(summary);
                   }
                   // Disable the content of tabs (hide the content)
                   $('.' + cv.value).removeClass('active');
