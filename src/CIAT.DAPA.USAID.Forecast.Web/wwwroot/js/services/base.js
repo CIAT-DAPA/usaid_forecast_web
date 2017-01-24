@@ -25,7 +25,7 @@ angular.module('ForecastApp')
         var dataFactory = {};
         
         /*
-        * Method that filter all climate data from forecast of the weather station
+        * Method that filter all municipalities available
         * (object) raw: Json with all geographic data
         */
         dataFactory.listAll = function (raw) {
@@ -36,6 +36,24 @@ angular.module('ForecastApp')
             for (var i = 0; i < data.length; i++)
                 for (var j = 0; j < data[i].length; j++)
                     m.push(data[i][j]);
+            return m;
+        }
+
+        /*
+        * Method that filter the municipalities by their ids
+        * (object) raw: Json with all geographic data
+        * (string[]) ids: Id of the municipalities
+        */
+        dataFactory.listByIds = function (raw, ids) {
+            var data = raw.map(function (item) {
+                return item.municipalities;
+            });
+            var m = [];
+            for (var i = 0; i < data.length; i++)
+                for (var j = 0; j < data[i].length; j++) {
+                    if (ids.includes(data[i][j].id))
+                        m.push(data[i][j]);
+                }
             return m;
         }
 

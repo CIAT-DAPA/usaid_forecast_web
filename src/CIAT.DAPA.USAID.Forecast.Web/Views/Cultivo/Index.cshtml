@@ -10,6 +10,7 @@
     <input type="hidden" id="api_fs_forecast" name="api_fs_forecast" value="@ViewBag.api_fs_forecast" />
     <input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
     <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
+    <input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
     <!-- End global variables -->
     <!-- Start weather station -->
     <nav class="navbar navbar-default">
@@ -31,15 +32,15 @@
         </div>
     </nav>
     <!-- End weather station -->
-    <!-- Start Probabilities -->
+    <!-- Start Description -->
     <section id="probabilities">
         <div class="row section-content">
             <div class="col-lg-12">
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
-                <h2 class="text-center">Predicción climática</h2>
+                <h2 class="text-center">Pronóstico Agroclimático</h2>
                 <p class="text-justify">
                     Para la ciudad de <span class="text-bold">{{municipality_name}}</span>
-                    se presenta la predicción del clima para el período comprendido de
+                    se presenta el pronóstico agroclimático para el período comprendido de
                     <span class="text-bold">{{period_start}} a {{period_end}}</span>.
                     La estación meteorológica que provee los datos para realizar los cálculos es
                     <span class="text-bold">{{ws_entity.name}}</span>,
@@ -47,10 +48,9 @@
                 </p>
             </div>
         </div>
-        <div class="row" id="probabilities_pies"></div>
     </section>
-    <!-- End Probabilities -->
-    <!-- Start precipitation -->
+    <!-- End Description -->
+    <!-- Start cultivars -->
     <section ng-repeat="cv in climate_vars" id="{{cv.value}}">
         <div class="row section-content">
             <div class="col-lg-12">

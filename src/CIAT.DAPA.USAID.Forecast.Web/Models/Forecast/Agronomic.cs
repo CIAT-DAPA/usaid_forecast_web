@@ -5,12 +5,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
 {
-
-    public class Agronomic
-    {
-        public Crop[] crops { get; set; }
-    }
-
+    
     public class Crop
     {
         public string cp_id { get; set; }

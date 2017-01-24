@@ -15,6 +15,7 @@ angular.module('ForecastApp')
       $scope.municipalities = [];
       $scope.ws_entity = null;
       $scope.gv_months = $("#gv_months").val().split(',');
+      $scope.gv_municipalities = $("#gv_municipalities").val().split(',');
       $scope.period_start = null;
       $scope.period_end = null;
       // Vars of the data
@@ -30,7 +31,7 @@ angular.module('ForecastApp')
       GeographicFactory.get().success(function (data_m) {
           $scope.data_m = data_m;
           // List all municipalities
-          $scope.municipalities = MunicipalityFactory.listAll(data_m);
+          $scope.municipalities = MunicipalityFactory.listByIds(data_m, $scope.gv_municipalities);
           // Search the weather station
           $scope.ws_entity = WeatherStationFactory.getByMunicipality(data_m, $scope.municipality_name);
           // Load the historical information

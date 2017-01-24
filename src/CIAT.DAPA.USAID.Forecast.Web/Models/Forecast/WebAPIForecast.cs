@@ -67,8 +67,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Method that list all municipalities from the forecast web api 
         /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Municipality>> listMunicipalitiesAsync()
+        /// <returns>List municipalities</returns>
+        public async Task<IEnumerable<Municipality>> getMunicipalitiesAsync()
         {
             string json = await requestDataAsync(root + geographic);
             var json_geo = JsonConvert.DeserializeObject<IEnumerable<State>>(json);
@@ -82,12 +82,23 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Method that get all configuration agronomic data from the forecast web api 
         /// </summary>
-        /// <returns></returns>
-        public async Task<Agronomic> getAgronomicAsync()
+        /// <returns>Agronomic</returns>
+        public async Task<IEnumerable<Crop>> getAgronomicAsync()
         {
             string json = await requestDataAsync(root + agronomic);
-            var json_agronomic = JsonConvert.DeserializeObject<Agronomic>(json);            
+            var json_agronomic = JsonConvert.DeserializeObject<IEnumerable<Crop>>(json);            
             return json_agronomic;
+        }
+
+        /// <summary>
+        /// Method that get all configuration agronomic data from the forecast web api 
+        /// </summary>
+        /// <returns>Forecast</returns>
+        public async Task<Forecast> getForecastAsync()
+        {
+            string json = await requestDataAsync(root + forecast);
+            var json_forecast = JsonConvert.DeserializeObject<Forecast>(json);
+            return json_forecast;
         }
     }
 }
