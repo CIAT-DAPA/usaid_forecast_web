@@ -1,4 +1,8 @@
-﻿var Calendar = (function (base, months_names) {
+﻿/**
+ * This class draws a calendar graphic
+ * (Base) base: Configuration to render the graphic
+ */
+function Calendar(base, months_names) {
     var base = base;
     var counter = 0;
     var current_month = new Date().getMonth();
@@ -120,7 +124,7 @@
             //.range(["hsl(0,100%,36%)", "hsl(130,100%,36%)"]);
             .range(["#A50026", "#F46D43", "#FEE08B", "#D9EF8B", "#66BD63", "#006837"]);
     }
-})();
+};
 
 D3Graphics.CalendarGoogle.vars = {
     calendarWidthReal: 1100,

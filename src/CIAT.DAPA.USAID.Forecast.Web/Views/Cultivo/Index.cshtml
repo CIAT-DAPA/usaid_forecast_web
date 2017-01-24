@@ -26,18 +26,18 @@
             </div>
             <div class="navbar-collapse collapse" id="navbar_municipality">
                 <ul class="nav navbar-nav">
-                    <li ng-repeat="m in municipalities"><a href="/Crop?municipio={{m.name}}">{{m.name}}</a></li>
+                    <li ng-repeat="m in municipalities"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <!-- End weather station -->
     <!-- Start Description -->
-    <section id="probabilities">
+    <section id="description">
         <div class="row section-content">
             <div class="col-lg-12">
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
-                <h2 class="text-center">Pronóstico Agroclimático</h2>
+                <h2 class="text-center">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
                 <p class="text-justify">
                     Para la ciudad de <span class="text-bold">{{municipality_name}}</span>
                     se presenta el pronóstico agroclimático para el período comprendido de
@@ -50,60 +50,35 @@
         </div>
     </section>
     <!-- End Description -->
-    <!-- Start cultivars -->
-    <section ng-repeat="cv in climate_vars" id="{{cv.value}}">
-        <div class="row section-content">
+    <!-- Start Cultivars -->
+    <section ng-repeat="cu in cultivars" id="{{cu.id}}">
+        <article class="row section-content">
             <div class="col-lg-12">
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
-                <h2 class="text-center">{{cv.name}}</h2>
+                <h2 class="text-center">{{cu.name}}</h2>
                 <p class="text-justify">
-                    {{cv.description}}
+                    {{cu.name}}
                 </p>
             </div>
-        </div>
-        <div class="row">
-            <!-- Start Climatology -->
-            <article id="climatology" class="col-lg-6 article_content">
-                <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
-                    <h3 class="text-center">Climatología</h3>
-                    <p class="text-justify">
-                        La climatología para <span class="text-bold">{{cv.name}}</span>
-                        en el período de <span class="text-bold">{{cv.month_start}} a {{cv.month_end}}</span>
-                        en el municipio <span class="text-bold">{{municipality_name}}</span> nos indica que:
-                        <ul>
-                            <li>
-                                El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 1}} {{cv.metric}})</span>.
-                            </li>
-                            <li>
-                                El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 1}} {{cv.metric}})</span>.
-                            </li>
-                        </ul>
-                    </p>
-                    <div id="{{cv.value}}_bar_climatology" class="bar_climatology"></div>
-                </div>
-            </article>
-            <!-- End Climatology -->
-            <!-- Start Historical -->
-            <article id="climatic_history" class="col-lg-6 article_content">
-                <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
-                    <h3 class="text-center">Histórico climático</h3>
-                    <div id="climatic_history_content_{{cv.value}}" class="article_content">
-                    </div>
-                </div>
-            </article>
-            <!-- End Historical -->
-        </div>
+        </article>
+        <article id="cultivar_{{cu.name}}" class="col-lg-9 article_content">
+            <div class="section-content">
+                <div id="{{cu.id}}_calendar"></div>
+            </div>
+        </article>
+        <article id="cultivar_des_{{cu.name}}" class="col-lg-3 article_content">
+            <div class="section-content">
+               {{cu.name}}
+            </div>
+        </article>
     </section>
-    <!-- End precipitation -->
+    <!-- End Cultivars -->
 </div>
 
 
 @section Scripts {
     <script src="~/lib/d3/d3.min.js"></script>
     <script src="~/js/lib/d3graphics/base.js"></script>
+    <script src="~/js/lib/d3graphics/calendar.js"></script>
     <script src="~/js/controllers/crop.js"></script>
 }

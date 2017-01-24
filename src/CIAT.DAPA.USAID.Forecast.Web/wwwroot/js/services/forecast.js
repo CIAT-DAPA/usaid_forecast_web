@@ -72,4 +72,36 @@ angular.module('ForecastApp')
             return data;
         }
         return dataFactory;
+    }])
+    .factory('YieldForecastFactory', ['config', function (config) {
+
+        var dataFactory = {};
+        /*
+        * Method that created a summary based in the forecast
+        * (object) data: Forecast yield data
+        */
+        function summary(data) {
+            
+        }
+        /*
+        * Method that filter all yield data from forecast of the weather station
+        * (object) raw: Json with all forecast
+        * (string) ws: Id of the weather station
+        */
+        dataFactory.getByWeatherStation = function (raw, ws) {
+            var data = raw.yield.filter(function (item) { return item.weather_station === ws; });
+            return data[0];
+        }
+        /*
+        * Method that filter all yield data from forecast by cultivar and soil
+        * (object) raw: Json with all forecast of the weather station
+        * (string) cultivar: Id of the cultivar
+        * (string) doil: Id of the cultivar
+        */
+        dataFactory.getByCultivarSoil = function (raw, cultivar, soil) {
+            var data = raw.filter(function (item) { return item.cultivar === cultivar && item.soil === soil; });
+            return data;
+        }
+
+        return dataFactory;
     }]);

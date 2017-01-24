@@ -23,13 +23,13 @@ angular.module('ForecastApp')
     }])
     .factory('MunicipalityFactory', ['config', function (config) {
         var dataFactory = {};
-        
+
         /*
         * Method that filter all municipalities available
         * (object) raw: Json with all geographic data
         */
         dataFactory.listAll = function (raw) {
-            var data = raw.map(function (item) {                
+            var data = raw.map(function (item) {
                 return item.municipalities;
             });
             var m = [];
@@ -95,5 +95,21 @@ angular.module('ForecastApp')
             }
             return dataFactory.raw;
         }
+        return dataFactory;
+    }])
+    .factory('CultivarsFactory', ['config', function (config) {
+        var dataFactory = {};
+        /*
+        * Method that filter all cultivars of the crop
+        * (object) raw: Json with all agronomic data
+        * (string) crop: Crop's name
+        */
+        dataFactory.getByCrop = function (raw, crop) {
+            var data = raw.filter(function (item) {
+                return item.cp_name.toLowerCase() === crop.toLowerCase();
+            })[0];            
+            return data.cultivars;
+        }
+
         return dataFactory;
     }]);
