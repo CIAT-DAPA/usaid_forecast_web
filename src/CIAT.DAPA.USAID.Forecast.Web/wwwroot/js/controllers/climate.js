@@ -166,9 +166,8 @@ angular.module('ForecastApp')
                       var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
                                     'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
                                     '<ul>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.upper + '</span> anos por encima de lo normal</li>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.lower + '</span> anos por debajo de lo normal</li>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.equals + '</span> anos similar a lo normal</li>' +
+                                        '<li>Han habido <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
+                                        '<li>Han habido <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
                                     '</ul>';
                       $('#' + cv.value + '_' + cvm + '_summary').html(summary);
                   }

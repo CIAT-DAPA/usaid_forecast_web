@@ -87,6 +87,7 @@ Base.prototype.getMarginVertical = function () {
  * (double) height: Height value of the graphic
  */
 Base.prototype.init = function (relative, height) {
+    $(this.container).html('');
     this.svg = d3.select(this.container).append("svg");
     this.g = this.svg.append('g');    
     this.tooltip = d3.select("body").append("div")
