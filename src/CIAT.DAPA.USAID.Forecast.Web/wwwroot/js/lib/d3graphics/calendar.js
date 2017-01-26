@@ -10,66 +10,17 @@ function Calendar(base, months_names, days_names) {
     var days_names = days_names;
     var cell_width = 0;
 
-    var cellColorForCurrentMonth = '#EAEAEA';
-    var cellColorForPreviousMonth = '#FFFFFF';
+    var color_current_month = '#EAEAEA';
+    var color_previous_month = '#FFFFFF';
 
     function incrementCounter() {counter += 1; }
-    function decrementCounter() { counter -= 1; }
-    function monthToDisplay() {
-        var dateToDisplay = new Date();
-        // We use the counter that keep tracks of "back" and "forward" presses to get the month to display.
-        dateToDisplay.setMonth(current_month + counter);
-        return dateToDisplay.getMonth();
-    }
-    function monthToDisplayAsText() { return monthNames[monthToDisplay()]; }
-    function yearToDisplay() {
-        var dateToDisplay = new Date();
-        // We use the counter that keep tracks of "back" and "forward" presses to get the year to display.
-        dateToDisplay.setMonth(current_month + counter);
-        return dateToDisplay.getFullYear();
-    }
+    function decrementCounter() { counter -= 1; }    
     
-    // This function generates all the days of the month. But since we have a 7 by 5 grid, we also need to get some of
-    // the days from the previous month and the next month. This way our grid will have all its cells filled. The days
-    // from the previous or the next month will have a different color though. 
-    function daysInMonth() {
-        var daysArray = [];
-
-        var firstDayOfTheWeek = new Date(yearToDisplay(), monthToDisplay(), 1).getDay();
-        var daysInPreviousMonth = new Date(yearToDisplay(), monthToDisplay(), 0).getDate();
-        // Lets say the first week of the current month is a Wednesday. Then we need to get 3 days from 
-        // the end of the previous month. But we can't naively go from 29 - 31. We have to do it properly
-        // depending on whether the last month was one that had 31 days, 30 days or 28.
-        for (var i = 1; i <= firstDayOfTheWeek; i++) 
-            daysArray.push([daysInPreviousMonth - firstDayOfTheWeek + i, cellColorForCurrentMonth]);
-        
-
-        // These are all the days in the current month.
-        var daysInMonth = new Date(yearToDisplay(), monthToDisplay() + 1, 0).getDate();
-        for (i = 1; i <= daysInMonth; i++) 
-            daysArray.push([i, cellColorForPreviousMonth]);
-
-        // Depending on how many days we have so far (from previous month and current), we will need
-        // to get some days from next month. We can do this naively though, since all months start on
-        // the 1st.
-        var daysRequiredFromNextMonth = 35 - daysArray.length;
-
-        for (i = 1; i <= daysRequiredFromNextMonth; i++) 
-            daysArray.push([i, cellColorForCurrentMonth]);
-
-        return daysArray.slice(0, 35);
-    }
-
     function dateToYMD (date) {
         var d = date.getDate();
         var m = date.getMonth() + 1;
         var y = date.getFullYear();
         return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-    }
-    function searchInData(date) {
-        return base.data.filter(function (item) {
-            return item.Fecha == date;
-        });
     }
 
     function color() {
@@ -101,54 +52,120 @@ Calendar.prototype.generate_grid = function () {
             cellPositions.push([x * this.cell_width(), y * this.cell_height()]);
     return cellPositions;
 }
+
 /*
- * Method
+ * Method that return the month to display in the calendar
+*/
+Calendar.prototype.month_display = function () {
+    var dateToDisplay = new Date();
+    // We use the counter that keep tracks of "back" and "forward" presses to get the month to display.
+    dateToDisplay.setMonth(this.current_month + this.counter);
+    return dateToDisplay.getMonth();
+}
+//function monthToDisplayAsText() { return monthNames[monthToDisplay()]; }
+/*
+ * Method that return the year to display in the calendar
+*/
+Calendar.prototype.year_display = function () {
+    var dateToDisplay = new Date();
+    // We use the counter that keep tracks of "back" and "forward" presses to get the year to display.
+    dateToDisplay.setMonth(this.current_month + this.counter);
+    return dateToDisplay.getFullYear();
+}
+/*
+ * Method that filter data from the data source
+ * (Date) date: Date of the event
+*/
+Calendar.prototype.search = function (date) {
+    return this.base.data.filter(function (item) {
+        return item.start >= date && item.end <= date;
+    });
+}
+
+/* 
+ * This function generates all the days of the month. But since we have a 7 by 5 grid, we also need to get some of
+ * the days from the previous month and the next month. This way our grid will have all its cells filled. The days
+ * from the previous or the next month will have a different color though. 
+*/
+Calendar.prototype.days_month = function () {
+    var daysArray = [];
+
+    var firstDayOfTheWeek = new Date(this.year_display(), this.month_display(), 1).getDay();
+    var daysInPreviousMonth = new Date(this.year_display(), this.month_display(), 0).getDate();
+    // Lets say the first week of the current month is a Wednesday. Then we need to get 3 days from 
+    // the end of the previous month. But we can't naively go from 29 - 31. We have to do it properly
+    // depending on whether the last month was one that had 31 days, 30 days or 28.
+    for (var i = 1; i <= firstDayOfTheWeek; i++)
+        daysArray.push([daysInPreviousMonth - firstDayOfTheWeek + i, this.color_current_month]);
+
+    // These are all the days in the current month.
+    var daysInMonth = new Date(yearToDisplay(), monthToDisplay() + 1, 0).getDate();
+    for (i = 1; i <= daysInMonth; i++)
+        daysArray.push([i, this.color_previous_month]);
+
+    // Depending on how many days we have so far (from previous month and current), we will need
+    // to get some days from next month. We can do this naively though, since all months start on
+    // the 1st.
+    var daysRequiredFromNextMonth = 35 - daysArray.length;
+    for (i = 1; i <= daysRequiredFromNextMonth; i++)
+        daysArray.push([i, this.color_current_month]);
+
+    return daysArray.slice(0, 35);
+}
+
+/*
+ * Method to get data from the current month in the calendar
 */
 Calendar.prototype.get_data_month = function () {
-    var randomData = [];
-    var firstDayOfTheWeek = new Date(yearToDisplay(), monthToDisplay(), 1).getDay();
-    var daysInPreviousMonth = new Date(yearToDisplay(), monthToDisplay(), 0).getDate();
+    var data = [];
+    var date = null;
+    var value = null;
+    var firstDayOfTheWeek = new Date(this.year_display(), this.month_display(), 1).getDay();
+    var daysInPreviousMonth = new Date(this.year_display(), this.month_display(), 0).getDate();
     // Lets say the first week of the current month is a Wednesday. Then we need to get 3 days from 
     // the end of the previous month. But we can't naively go from 29 - 31. We have to do it properly
     // depending on whether the last month was one that had 31 days, 30 days or 28.
     for (var i = 1; i <= firstDayOfTheWeek; i++) {
-        var date = new Date(yearToDisplay(), monthToDisplay() - 1, daysInPreviousMonth - firstDayOfTheWeek + i);
-        var value = searchInData(dateToYMD(date));
-        randomData.push(value);
+        date = new Date(this.year_display(), this.month_display() - 1, daysInPreviousMonth - firstDayOfTheWeek + i);
+        value = this.search(date);
+        data.push(value);
     }
 
     // These are all the days in the current month.
-
-    var daysInMonth = new Date(yearToDisplay(), monthToDisplay(), 0).getDate();
+    var daysInMonth = new Date(this.year_display(), this.month_display(), 0).getDate();
     for (i = 1; i <= daysInMonth; i++) {
-        var date = new Date(yearToDisplay(), monthToDisplay(), i);
-        var value = searchInData(dateToYMD(date));
-        randomData.push(value);
+        date = new Date(this.year_display(), this.month_display(), i);
+        value = this.search(date);
+        data.push(value);
     }
 
     // Depending on how many days we have so far (from previous month and current), we will need
     // to get some days from next month. We can do this naively though, since all months start on
     // the 1st.
-    var daysRequiredFromNextMonth = 35 - randomData.length;
+    var daysRequiredFromNextMonth = 35 - data.length;
     for (i = 1; i <= daysRequiredFromNextMonth; i++) {
-        var date = new Date(yearToDisplay(), monthToDisplay() + 1, i);
-        var value = searchInData(dateToYMD(date));
-        randomData.push(value);
+        date = new Date(this.year_display(), this.month_display() + 1, i);
+        value = this.search(date);
+        data.push(value);
     }
-    return randomData;
+    return data;
 }
 /*
  * Dispatch the event to show next month
 */
 Calendar.prototype.next_month = function () {
-
+    // We keep track of user's "back" and "forward" presses in this counter
+    D3Graphics.CalendarGoogle.tools.incrementCounter();
+    D3Graphics.CalendarGoogle.tools.renderDaysOfMonth();
 }
 
 /*
  * Dispatch the event to show prev month
 */
 Calendar.prototype.prev_month = function () {
-
+    // We keep track of user's "back" and "forward" presses in this counter
+    D3Graphics.CalendarGoogle.tools.decrementCounter();
+    D3Graphics.CalendarGoogle.tools.renderDaysOfMonth();
 }
 
 /*
@@ -161,19 +178,19 @@ Calendar.prototype.render_month = function () {
 
     // We get the days for the month we need to display based on the number of times the user has pressed
     // the forward or backward button.
-    var daysInMonthToDisplay = D3Graphics.CalendarGoogle.tools.daysInMonth();
-    var cellPositions = D3Graphics.CalendarGoogle.tools.gridCellPositions();
+    var days_to_display = this.days_month();
+    var cells = this.generate_grid();
 
     // All text elements representing the dates in the month are grouped together in the "datesGroup" element by the initalizing
     // function below. The initializing function is also responsible for drawing the rectangles that make up the grid.
-    D3Graphics.CalendarGoogle.vars.datesGroup
+    this.base.svg
         .selectAll("text")
-        .data(daysInMonthToDisplay)
-        .attr("x", function (d, i) { return cellPositions[i][0]; })
-        .attr("y", function (d, i) { return cellPositions[i][1]; })
+        .data(days_to_display)
+        .attr("x", function (d, i) { return cells[i][0]; })
+        .attr("y", function (d, i) { return cells[i][1]; })
         .attr("dx", 20) // right padding
         .attr("dy", 20) // vertical alignment : middle
-        .attr("transform", "translate(" + D3Graphics.CalendarGoogle.vars.gridXTranslation + "," + D3Graphics.CalendarGoogle.vars.gridYTranslation + ")")
+        //.attr("transform", "translate(" + D3Graphics.CalendarGoogle.vars.gridXTranslation + "," + D3Graphics.CalendarGoogle.vars.gridYTranslation + ")")
         .text(function (d) { return d[0]; }); // Render text for the day of the week
 
     D3Graphics.CalendarGoogle.vars.chartsGroup
@@ -190,67 +207,12 @@ Calendar.prototype.render_month = function () {
         .attr("y", function (d, i) { return cellPositions[i][1]; })
         .attr("dx", 20) // right padding
         .attr("dy", 20) // vertical alignment : middle
-        .attr("transform", "translate(" + (D3Graphics.CalendarGoogle.vars.gridXTranslation - 18) + "," + (D3Graphics.CalendarGoogle.vars.gridYTranslation + 40) + ")")
+        //.attr("transform", "translate(" + (D3Graphics.CalendarGoogle.vars.gridXTranslation - 18) + "," + (D3Graphics.CalendarGoogle.vars.gridYTranslation + 40) + ")")
         .text(function (d, i) {
             return data[i].length > 0 ? 'Rendimiento esperado: ' : '';
         }); // Render text for the day of the week
 
-    D3Graphics.CalendarGoogle.vars.chartsGroup
-        .selectAll("g.text")
-        .data(daysInMonthToDisplay)
-        .enter()
-        .append("text")
-        .attr("class", "gcContent")
-        .attr("x", function (d, i) { return cellPositions[i][0]; })
-        .attr("y", function (d, i) { return cellPositions[i][1]; })
-        .attr("dx", 20) // right padding
-        .attr("dy", 20) // vertical alignment : middle
-        .attr("transform", "translate(" + (D3Graphics.CalendarGoogle.vars.gridXTranslation - 18) + "," + (D3Graphics.CalendarGoogle.vars.gridYTranslation + 55) + ")")
-        .text(function (d, i) {
-            return data[i].length > 0 ? round(data[i][0].RendimientoPromedio) : '';
-        })
-        .style("font-size", '15px')
-        .style("font-weight", 'bold'); // Render text for the day of the week
-
-    D3Graphics.CalendarGoogle.vars.chartsGroup
-        .selectAll("g.text")
-        .data(daysInMonthToDisplay)
-        .enter()
-        .append("text")
-        .attr("class", "gcContent")
-        .attr("x", function (d, i) { return cellPositions[i][0]; })
-        .attr("y", function (d, i) { return cellPositions[i][1]; })
-        .attr("dx", 20) // right padding
-        .attr("dy", 20) // vertical alignment : middle
-        .attr("transform", "translate(" + (D3Graphics.CalendarGoogle.vars.gridXTranslation - 18) + "," + (D3Graphics.CalendarGoogle.vars.gridYTranslation + 70) + ")")
-        .text(function (d, i) {
-            return data[i].length > 0 ? 'Intervalo Rendimiento: ' : '';
-        }); // Render text for the day of the week
-
-    D3Graphics.CalendarGoogle.vars.chartsGroup
-        .selectAll("g.text")
-        .data(daysInMonthToDisplay)
-        .enter()
-        .append("text")
-        .attr("class", "gcContent")
-        .attr("x", function (d, i) { return cellPositions[i][0]; })
-        .attr("y", function (d, i) { return cellPositions[i][1]; })
-        .attr("dx", 20) // right padding
-        .attr("dy", 20) // vertical alignment : middle
-        .attr("transform", "translate(" + (D3Graphics.CalendarGoogle.vars.gridXTranslation - 18) + "," + (D3Graphics.CalendarGoogle.vars.gridYTranslation + 85) + ")")
-        .text(function (d, i) {
-            if (data[i].length > 0) {
-                var low = parseFloat(data[i][0].RendimientoPromedio) - parseFloat(data[i][0].RendimientoDesviacion);
-                var upper = parseFloat(data[i][0].RendimientoPromedio) + parseFloat(data[i][0].RendimientoDesviacion);
-                return '[' + round(low) + ' - ' + round(upper) + ']'
-            }
-            else
-                return '';
-        })
-        .style("font-size", '14px')
-        .style("font-weight", 'bold'); // Render text for the day of the week
-
-    var color = D3Graphics.CalendarGoogle.tools.color();
+    /*var color = D3Graphics.CalendarGoogle.tools.color();
 
     D3Graphics.CalendarGoogle.vars.calendar
         .selectAll("rect")
@@ -266,7 +228,7 @@ Calendar.prototype.render_month = function () {
             else
                 bg += d[1];
             return bg;
-        });
+        });*/
 },
 
 /*
@@ -293,7 +255,7 @@ Calendar.prototype.render = function () {
     var cells = this.generate_grid();
     this.base.svg
         .append("g")
-        .selectAll(".rect")
+        .selectAll("rect")
         .data(cells)
         .enter()
         .append("rect")
@@ -306,14 +268,16 @@ Calendar.prototype.render = function () {
 
 
     // This adds the day of the week headings on top of the grid
-    this.base.svg.selectAll("header_days")
+    this.base.svg
+        .append("g")
+        .selectAll("header_days")
         .data([0, 1, 2, 3, 4, 5, 6])
         .enter().append("text")
         .attr("x", function (d) { return cells[d][0]; })
         .attr("y", function (d) { return cells[d][1]; })
         .text(function (d) { return that.days_names[d] });
 
-    // The intial rendering of the dates for the current mont inside each of the cells in the grid. We create a named group ("datesGroup"),
+    /*// The intial rendering of the dates for the current mont inside each of the cells in the grid. We create a named group ("datesGroup"),
     // and add our dates to this group. This group is also stored globally. Later on, when the the user presses the back and forward buttons
     // to navigate between the months, we clear and re add the new text elements to this group
     D3Graphics.CalendarGoogle.vars.datesGroup = D3Graphics.CalendarGoogle.vars.calendar.append("svg:g");
@@ -329,7 +293,7 @@ Calendar.prototype.render = function () {
         .attr("dx", 20) // right padding
         .attr("dy", 20) // vertical alignment : middle
         .attr("transform", "translate(" + D3Graphics.CalendarGoogle.vars.gridXTranslation + "," + D3Graphics.CalendarGoogle.vars.gridYTranslation + ")")
-        .text(function (d) { return d[0]; });
+        .text(function (d) { return d[0]; });*/
 
     // Create a new svg group to store the chart elements and store it globally. Again, as the user navigates through the months by pressing 
     // the "back" and "forward" buttons on the page, we clear the chart elements from this group and re add them again.
@@ -340,7 +304,7 @@ Calendar.prototype.render = function () {
     // Print de color scale 
     //D3Graphics.CalendarGoogle.tools.drawLegend();
 }
-
+/*
 D3Graphics.CalendarGoogle.vars = {
     calendarWidthReal: 1100,
     calendarWidth: 950,
@@ -361,10 +325,6 @@ D3Graphics.CalendarGoogle.vars = {
 }
 
 D3Graphics.CalendarGoogle.tools = {
-    
-    
-    
-
     drawLegend: function () {
 
 
@@ -447,17 +407,4 @@ D3Graphics.CalendarGoogle.tools = {
             .attr("y", function (d, i) { return (i + 1) * lineheight - 2; })
             .text(function (d) { return round(rendimiento(d)); });
     }
-}
-
-D3Graphics.CalendarGoogle.controls = {
-    displayPreviousMonth: function () {
-        // We keep track of user's "back" and "forward" presses in this counter
-        D3Graphics.CalendarGoogle.tools.decrementCounter();
-        D3Graphics.CalendarGoogle.tools.renderDaysOfMonth();
-    },
-    displayNextMonth: function () {
-        // We keep track of user's "back" and "forward" presses in this counter
-        D3Graphics.CalendarGoogle.tools.incrementCounter();
-        D3Graphics.CalendarGoogle.tools.renderDaysOfMonth();
-    }
-}
+}*/

@@ -61,17 +61,19 @@
                 </p>
             </div>
         </article>
-        <article id="cultivar_{{cu.name}}" class="col-lg-9 article_content">
-            <div class="section-content">
-                <div id="{{cu.id}}_calendar"></div>
-            </div>
-        </article>
-        <article id="cultivar_des_{{cu.name}}" class="col-lg-3 article_content">
-            <div class="section-content">
-               {{cu.name}}
-            </div>
-        </article>
-    </section>
+        <div class="row section-content">
+            <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
+                <div class="section-content">
+                    <div id="{{cu.id}}_calendar"></div>
+                </div>
+            </article>
+            <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
+                <div class="section-content">
+                    <div id="{{cu.id}}_trend"></div>
+                </div>
+            </article>
+        </div>
+</section>
     <!-- End Cultivars -->
 </div>
 
