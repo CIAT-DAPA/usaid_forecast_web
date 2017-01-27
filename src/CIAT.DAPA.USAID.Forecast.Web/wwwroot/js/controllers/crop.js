@@ -8,7 +8,7 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory) {
+  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, YieldForecastFactory) {
       $scope.crop_name = tools.search('cultivo');
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
@@ -48,7 +48,7 @@ angular.module('ForecastApp')
                   ForecastFactory.get().success(function (data_f) {
                       $scope.data_f = data_f;
                       // Draw the graphics
-                      //draw();
+                      draw();
                   }).error(function (error) {
                       console.log(error);
                   });
@@ -73,23 +73,15 @@ angular.module('ForecastApp')
                   // Set the months for historical data
                   var h_month_start = parseInt($scope.gv_months[0]);
                   var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
-                  cv.historical_months = config.month_names.slice(h_month_start - 1, h_month_end);
-
-                  // Climatology
 
                   // Get data
-                  var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, $scope.gv_months, cv.value);
+                  var yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
+                  var yield_cu = YieldForecastFactory.getByCultivarSoil(yield_ws.yield, cu.id, "5851ab2c47847d1f144b83ff");
                   // Draw the graphic
-                  var base_c = new Base('#' + cv.value + '_bar_climatology', climatology);
+                  var base_c = new Base('#calendar_' + cu.id, yield_cu);
                   base_c.setMargin(10, 30, 10, 10);
-                  var bar = new Bars(base_c);
-                  bar.render();
-                  var compute_c = ClimatologyFactory.summary(climatology);
-
-                  cv.month_start = climatology[0].month_name;
-                  cv.month_end = climatology[climatology.length - 1].month_name;
-                  cv.max = compute_c.max;
-                  cv.min = compute_c.min;
+                  var bar = new Calendar(base_c, config.month_names, config.days_names);
+                  bar.render();                  
               }
               catch (err) {
                   console.log(err);

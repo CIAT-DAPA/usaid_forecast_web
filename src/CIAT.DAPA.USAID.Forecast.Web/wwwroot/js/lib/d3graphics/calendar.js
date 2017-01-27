@@ -3,15 +3,14 @@
  * (Base) base: Configuration to render the graphic
  */
 function Calendar(base, months_names, days_names) {
-    var base = base;
-    var counter = 0;
-    var current_month = new Date().getMonth();
-    var months_names = months_names;
-    var days_names = days_names;
-    var cell_width = 0;
+    this.base = base;
+    this.counter = 0;
+    this.current_month = new Date().getMonth();
+    this.months_names = months_names;
+    this.days_names = days_names;
 
-    var color_current_month = '#EAEAEA';
-    var color_previous_month = '#FFFFFF';
+    this.color_current_month = '#EAEAEA';
+    this.color_previous_month = '#FFFFFF';
 
     function incrementCounter() {counter += 1; }
     function decrementCounter() { counter -= 1; }    
@@ -35,11 +34,11 @@ function Calendar(base, months_names, days_names) {
 /*
  * Get the width of a cell in the graphic
 */
-Calendar.prototype.cell_width = function () { return this.base.width / 7; }
+Calendar.prototype.cell_width = function () { return this.base.width_full / 7; }
 /*
  * Get the height of a cell in the graphic
 */
-Calendar.prototype.cell_height = function () { return this.base.height / 7; }
+Calendar.prototype.cell_height = function () { return this.base.height_full / 6; }
 /*
  * Method to create a array with data for the calendar. It builds the structure of a calendar (matrix 5x7)
 */
@@ -99,7 +98,7 @@ Calendar.prototype.days_month = function () {
         daysArray.push([daysInPreviousMonth - firstDayOfTheWeek + i, this.color_current_month]);
 
     // These are all the days in the current month.
-    var daysInMonth = new Date(yearToDisplay(), monthToDisplay() + 1, 0).getDate();
+    var daysInMonth = new Date(this.year_display(), this.month_display() + 1, 0).getDate();
     for (i = 1; i <= daysInMonth; i++)
         daysArray.push([i, this.color_previous_month]);
 
@@ -185,14 +184,13 @@ Calendar.prototype.render_month = function () {
     // function below. The initializing function is also responsible for drawing the rectangles that make up the grid.
     this.base.svg
         .selectAll("text")
-        .data(days_to_display)
         .attr("x", function (d, i) { return cells[i][0]; })
         .attr("y", function (d, i) { return cells[i][1]; })
         .attr("dx", 20) // right padding
         .attr("dy", 20) // vertical alignment : middle
         //.attr("transform", "translate(" + D3Graphics.CalendarGoogle.vars.gridXTranslation + "," + D3Graphics.CalendarGoogle.vars.gridYTranslation + ")")
         .text(function (d) { return d[0]; }); // Render text for the day of the week
-
+/*
     D3Graphics.CalendarGoogle.vars.chartsGroup
         .selectAll(".gcContent")
         .remove();
@@ -235,8 +233,8 @@ Calendar.prototype.render_month = function () {
  * Method that render the graphic in a container
 */
 Calendar.prototype.render = function () {
-    var that = this;
-    this.base.init(true, 0.5);
+    var that = this;    
+    that.base.init(true, 0.5);
 
     /*
     if (!D3Graphics.CalendarGoogle.vars.setted) {
@@ -246,15 +244,27 @@ Calendar.prototype.render = function () {
         D3Graphics.CalendarGoogle.vars.setted = true;
     }*/
 
-    //create svg for the calendar.
-    this.base.svg.append("g")
-                .attr("transform", "translate(0,0)");
-
-    // Draw rectangles at the appropriate postions, starting from the top left corner. Since we want to leave some room for the heading and buttons,
-    // use the gridXTranslation and gridYTranslation variables.
+    // Create the partition of the graphic in cells
+    // The first row is for the header
     var cells = this.generate_grid();
+
+    // This adds the day of the week headings on top of the grid
+    this.base.svg        
+        .append("g")
+        .attr("class", "header_days")
+        .selectAll("header_days")
+        .data([0, 1, 2, 3, 4, 5, 6])
+        .enter()
+        .append("text")
+        .text("hola")
+        .attr("x", function (d) { console.log(cells); return cells[d][0]; })
+        .attr("y", "20");
+       
+    // Draw rectangles at the appropriate postions, starting from the top left corner. Since we want to leave some room for the heading and buttons
     this.base.svg
         .append("g")
+        .attr("class", "calendar_days")
+        .attr("transform", "translate(0," + that.cell_height() + ")")
         .selectAll("rect")
         .data(cells)
         .enter()
@@ -262,20 +272,7 @@ Calendar.prototype.render = function () {
         .attr("x", function (d) { return d[0]; })
         .attr("y", function (d) { return d[1]; })
         .attr("width", this.cell_width())
-        .attr("height", this.cell_height())
-        .style("stroke", "#555")
-        .style("fill", "white");
-
-
-    // This adds the day of the week headings on top of the grid
-    this.base.svg
-        .append("g")
-        .selectAll("header_days")
-        .data([0, 1, 2, 3, 4, 5, 6])
-        .enter().append("text")
-        .attr("x", function (d) { return cells[d][0]; })
-        .attr("y", function (d) { return cells[d][1]; })
-        .text(function (d) { return that.days_names[d] });
+        .attr("height", this.cell_height());
 
     /*// The intial rendering of the dates for the current mont inside each of the cells in the grid. We create a named group ("datesGroup"),
     // and add our dates to this group. This group is also stored globally. Later on, when the the user presses the back and forward buttons

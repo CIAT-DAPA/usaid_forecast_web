@@ -28,7 +28,6 @@ function Base(container, data) {
 
     // SVG 
     this.svg = null;
-    this.g = null;
 
     // Animation settings
     this.animation = {
@@ -89,7 +88,6 @@ Base.prototype.getMarginVertical = function () {
 Base.prototype.init = function (relative, height) {
     $(this.container).html('');
     this.svg = d3.select(this.container).append("svg");
-    this.g = this.svg.append('g');    
     this.tooltip = d3.select("body").append("div")
                     .attr("class", "tooltip")
                     .style("opacity", 0);
