@@ -71,14 +71,18 @@ Calendar.prototype.year_display = function () {
     dateToDisplay.setMonth(this.current_month + this.counter);
     return dateToDisplay.getFullYear();
 }
+
 /*
  * Method that filter data from the data source
  * (Date) date: Date of the event
 */
 Calendar.prototype.search = function (date) {
-    return this.base.data.filter(function (item) {
-        return item.start >= date && item.end <= date;
-    });
+    var filtered = this.base.data.filter(function (item) {
+        var date_start = new Date(item.start.substring(0, 4), parseInt(item.start.substring(5, 7)) -1, item.start.substring(8, 10));
+        var date_end = new Date(item.end.substring(0, 4), parseInt(item.end.substring(5, 7))-1, item.end.substring(8, 10));        
+        return date >= date_start && date <= date_end;
+    });    
+    return filtered.length < 1 ? null : filtered[0];
 }
 
 /* 
@@ -146,7 +150,7 @@ Calendar.prototype.get_data_month = function () {
         date = new Date(this.year_display(), this.month_display() + 1, i);
         value = this.search(date);
         data.push(value);
-    }
+    }    
     return data;
 }
 /*
@@ -170,6 +174,7 @@ Calendar.prototype.prev_month = function () {
 /*
 */
 Calendar.prototype.render_month = function () {
+    var that = this;
     // RENDERDAYSOFMONTH
     //$('#currentMonth').text(D3Graphics.CalendarGoogle.tools.monthToDisplayAsText() + ' ' + D3Graphics.CalendarGoogle.tools.yearToDisplay());
     // Get data
@@ -180,15 +185,36 @@ Calendar.prototype.render_month = function () {
     var days_to_display = this.days_month();
     var cells = this.generate_grid();
 
-    // All text elements representing the dates in the month are grouped together in the "datesGroup" element by the initalizing
+    // All text elements representing the dates in the month are grouped together in the element by the initalizing
     // function below. The initializing function is also responsible for drawing the rectangles that make up the grid.
     this.base.svg
-        .selectAll("text")
+        .append("g")
+        .attr("class", "days_month")
+        .attr("transform", "translate(0," + that.cell_height() + ")")
+        .selectAll("days_month")
+        .data(days_to_display)
+        .enter()
+        .append("text")
         .attr("x", function (d, i) { return cells[i][0]; })
         .attr("y", function (d, i) { return cells[i][1]; })
-        .attr("dx", 20) // right padding
-        .attr("dy", 20) // vertical alignment : middle
-        //.attr("transform", "translate(" + D3Graphics.CalendarGoogle.vars.gridXTranslation + "," + D3Graphics.CalendarGoogle.vars.gridYTranslation + ")")
+        .attr("dx", 10) // right padding
+        .attr("dy", 15) // vertical alignment 
+        .text(function (d) { return d[0]; }); // Render text for the day of the week
+
+    var data_month = this.get_data_month();
+
+    this.base.svg
+        .append("g")
+        .attr("class", "days_yield")
+        .attr("transform", "translate(0," + that.cell_height() + ")")
+        .selectAll("days_yield")
+        .data(data_month)
+        .enter()
+        .append("text")
+        .attr("x", function (d, i) { return cells[i][0]; })
+        .attr("y", function (d, i) { return cells[i][1]; })
+        .attr("dx", 10) // right padding
+        .attr("dy", 15) // vertical alignment 
         .text(function (d) { return d[0]; }); // Render text for the day of the week
 /*
     D3Graphics.CalendarGoogle.vars.chartsGroup
@@ -255,10 +281,11 @@ Calendar.prototype.render = function () {
         .selectAll("header_days")
         .data([0, 1, 2, 3, 4, 5, 6])
         .enter()
-        .append("text")
-        .text("hola")
-        .attr("x", function (d) { console.log(cells); return cells[d][0]; })
-        .attr("y", "20");
+        .append("text")        
+        .attr("x", function (d) { return cells[d][0]; })
+        .attr("y", "0")
+        .attr("dy", "30")
+        .text(function (d) { return that.days_names[d]; });
        
     // Draw rectangles at the appropriate postions, starting from the top left corner. Since we want to leave some room for the heading and buttons
     this.base.svg
@@ -274,24 +301,6 @@ Calendar.prototype.render = function () {
         .attr("width", this.cell_width())
         .attr("height", this.cell_height());
 
-    /*// The intial rendering of the dates for the current mont inside each of the cells in the grid. We create a named group ("datesGroup"),
-    // and add our dates to this group. This group is also stored globally. Later on, when the the user presses the back and forward buttons
-    // to navigate between the months, we clear and re add the new text elements to this group
-    D3Graphics.CalendarGoogle.vars.datesGroup = D3Graphics.CalendarGoogle.vars.calendar.append("svg:g");
-    var daysInMonthToDisplay = D3Graphics.CalendarGoogle.tools.daysInMonth();
-
-    D3Graphics.CalendarGoogle.vars.datesGroup
-        .selectAll("daysText")
-        .data(daysInMonthToDisplay)
-        .enter()
-        .append("text")
-        .attr("x", function (d, i) { return cellPositions[i][0]; })
-        .attr("y", function (d, i) { return cellPositions[i][1]; })
-        .attr("dx", 20) // right padding
-        .attr("dy", 20) // vertical alignment : middle
-        .attr("transform", "translate(" + D3Graphics.CalendarGoogle.vars.gridXTranslation + "," + D3Graphics.CalendarGoogle.vars.gridYTranslation + ")")
-        .text(function (d) { return d[0]; });*/
-
     // Create a new svg group to store the chart elements and store it globally. Again, as the user navigates through the months by pressing 
     // the "back" and "forward" buttons on the page, we clear the chart elements from this group and re add them again.
     //D3Graphics.CalendarGoogle.vars.chartsGroup = D3Graphics.CalendarGoogle.vars.calendar.append("svg:g");
@@ -302,25 +311,6 @@ Calendar.prototype.render = function () {
     //D3Graphics.CalendarGoogle.tools.drawLegend();
 }
 /*
-D3Graphics.CalendarGoogle.vars = {
-    calendarWidthReal: 1100,
-    calendarWidth: 950,
-    calendarHeight: 850,
-    gridXTranslation: 6,
-    gridYTranslation: 90,
-    
-    counter: 0, // Counter is used to keep track of the number of "back" and "forward" button presses and to calculate the month to display.
-    currentMonth: new Date().getMonth(),
-    monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-    daysOfTheWeek: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-    datesGroup: null,
-    calendar: null,
-    chartsGroup: null,
-    container: '#chart_google',
-    data: null,
-    setted: false
-}
-
 D3Graphics.CalendarGoogle.tools = {
     drawLegend: function () {
 

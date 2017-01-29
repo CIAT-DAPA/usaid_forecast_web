@@ -75,8 +75,8 @@ angular.module('ForecastApp')
                   var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
 
                   // Get data
-                  var yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
-                  var yield_cu = YieldForecastFactory.getByCultivarSoil(yield_ws.yield, cu.id, "5851ab2c47847d1f144b83ff");
+                  var yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);                  
+                  var yield_cu = YieldForecastFactory.getByCultivarSoil(yield_ws.yield, cu.id, "5851ad2b07b6e43910c304b2");
                   // Draw the graphic
                   var base_c = new Base('#calendar_' + cu.id, yield_cu);
                   base_c.setMargin(10, 30, 10, 10);
