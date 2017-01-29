@@ -180,6 +180,9 @@
     stroke: #555;
 }
 
+.days_yield {
+    font-size:large;
+}
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

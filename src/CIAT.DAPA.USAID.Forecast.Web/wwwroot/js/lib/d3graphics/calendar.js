@@ -1,13 +1,17 @@
 ﻿/**
  * This class draws a calendar graphic
  * (Base) base: Configuration to render the graphic
+ * (string[]) months_names: Array with name of the months
+ * (string[]) days_names: Array with name of the days
+ * (string) measure: Name of measure to display
  */
-function Calendar(base, months_names, days_names) {
+function Calendar(base, months_names, days_names, measure) {
     this.base = base;
     this.counter = 0;
     this.current_month = new Date().getMonth();
     this.months_names = months_names;
     this.days_names = days_names;
+    this.measure = measure;
 
     this.color_current_month = '#EAEAEA';
     this.color_previous_month = '#FFFFFF';
@@ -213,9 +217,15 @@ Calendar.prototype.render_month = function () {
         .append("text")
         .attr("x", function (d, i) { return cells[i][0]; })
         .attr("y", function (d, i) { return cells[i][1]; })
-        .attr("dx", 10) // right padding
-        .attr("dy", 15) // vertical alignment 
-        .text(function (d) { return d[0]; }); // Render text for the day of the week
+        .attr("dx", this.cell_width() / 4) // right padding
+        .attr("dy", 2*(this.cell_height() / 3)) // vertical alignment 
+        .text(function (d) { 
+            var text = '';
+            if (d != null)
+                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
+            //console.log()
+            return text; 
+        }); // Render text for the day of the week
 /*
     D3Graphics.CalendarGoogle.vars.chartsGroup
         .selectAll(".gcContent")

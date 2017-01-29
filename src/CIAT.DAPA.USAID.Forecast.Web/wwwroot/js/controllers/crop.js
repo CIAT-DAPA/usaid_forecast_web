@@ -8,7 +8,7 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, YieldForecastFactory) {
+  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, YieldForecastFactory) {
       $scope.crop_name = tools.search('cultivo');
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
@@ -80,8 +80,8 @@ angular.module('ForecastApp')
                   // Draw the graphic
                   var base_c = new Base('#calendar_' + cu.id, yield_cu);
                   base_c.setMargin(10, 30, 10, 10);
-                  var bar = new Calendar(base_c, config.month_names, config.days_names);
-                  bar.render();                  
+                  var calendar = new Calendar(base_c, config.month_names, config.days_names, 'yield_14');
+                  calendar.render();
               }
               catch (err) {
                   console.log(err);
