@@ -31,6 +31,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return result.ModifiedCount > 0;
         }
 
+        /// <summary>
+        /// Method that update the property setup of the crops
+        /// </summary>
+        /// <param name="entity">Crop with the new setup</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> updateSetupAsync(Crop entity)
+        {
+            var result = await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("setup", entity.setup));
+            return result.ModifiedCount > 0;
+        }
+
         public async override Task<bool> deleteAsync(Crop entity)
         {
             var result = await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("track.enable", false)

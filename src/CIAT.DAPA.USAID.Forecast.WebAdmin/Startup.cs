@@ -44,6 +44,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.Database = Configuration.GetSection("ForecastConnection:Database").Value;
                 options.LogPath = Configuration.GetSection("Data:Log").Value;
                 options.ImportPath = Configuration.GetSection("Data:Imports").Value;
+                options.ConfigurationPath = Configuration.GetSection("Data:Configuration").Value;
             });
 
             // Add framework services

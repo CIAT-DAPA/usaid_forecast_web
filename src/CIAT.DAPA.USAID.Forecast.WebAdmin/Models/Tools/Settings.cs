@@ -26,5 +26,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// Path where the import files are located
         /// </summary>
         public string ImportPath { get; set; }
+        /// <summary>
+        /// Path where the configuration files are located
+        /// </summary>
+        public string ConfigurationPath { get; set; }
     }
 }

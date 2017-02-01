@@ -1,0 +1,125 @@
+﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend.CropSetup>
+@using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
+
+@{
+    ViewBag.Title = "Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Setup</h2>
+
+<h4>@ViewBag.crop_name</h4>
+
+@if (ViewBag.message != null)
+{
+    @if (ViewBag.message.type == MessageType.error)
+    {
+        <p class="bg-danger">@ViewBag.message.content</p>
+    }
+    else
+    {
+        <p class="bg-success">@ViewBag.message.content</p>
+    }
+}
+
+@using (Html.BeginForm("Setup", "Crop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+        
+    <input type="hidden" id="id" name="id" value="@ViewBag.crop_id" />
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>Global configuration</legend>
+            <div class="form-group">
+                <label for="weather_station" class="control-label col-md-2">Weather station:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("weather_station", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cultivar" class="control-label col-md-2">Cultivar:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("cultivar", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="soil" class="control-label col-md-2">Soil:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("soil", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="days" class="control-label col-md-2">Days:</label>
+                <div class="col-md-10">
+                    @Html.Editor("days", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Files configuration</legend>
+            <div class="form-group">
+                <div class="col-md-">
+                    <input type="button" id="add_file" value="Add file" class="btn btn-default" />
+                </div>
+            </div>
+            <table class="table" id="conf_files">
+                <thead>
+                    <tr>
+                        <th>Name parameter</th>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Back to crop", "Details", new { id = ViewBag.crop_id })
+</div>
+<table class="table">
+    <tr>
+        <th>Weather Station</th>
+        <th>Cultivar</th>
+        <th>Soil</th>
+        <th>Days</th>
+        <th>Files</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.weather_station_name
+            </td>
+            <td>
+                @item.cultivar_name
+            </td>
+            <td>
+                @item.soil_name
+            </td>
+            <td>
+                @item.days
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item2 in item.conf_files)
+                    {
+                        <li>@item2.name</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+    }
+</table>
+<div>
+    @Html.ActionLink("Back to crop", "Details", new { id = ViewBag.crop_id })
+</div>
+@section Scripts {
+    <script src="~/js/setup.js"></script>
+}

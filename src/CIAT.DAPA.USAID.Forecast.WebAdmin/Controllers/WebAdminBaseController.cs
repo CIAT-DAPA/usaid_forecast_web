@@ -35,6 +35,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Path where the imports files are located
         /// </summary>
         protected string importPath { get; set; }
+        /// <summary>
+        /// Path where the configuration files are located
+        /// </summary>
+        protected string configurationPath { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -50,6 +54,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             db = new ForecastDB(settings.Value.ConnectionString, settings.Value.Database);
             log = new Log(hostingEnvironment.ContentRootPath + settings.Value.LogPath, db.logAdministrative);
             importPath = hostingEnvironment.ContentRootPath + settings.Value.ImportPath;
+            configurationPath = hostingEnvironment.ContentRootPath + settings.Value.ConfigurationPath;
         }
 
         /// <summary>
