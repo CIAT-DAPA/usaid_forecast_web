@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Database;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using CIAT.DAPA.USAID.Forecast.Data.Factory;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -87,9 +88,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             writeEvent(ex.Message + " - " + ex.StackTrace.ToString(), LogEvent.exc, entities);
         }
 
+        /// <summary>
+        /// Method that return a object id from a string
+        /// </summary>
+        /// <param name="id">String hash to convert in ObjectId</param>
+        /// <returns>ObjectId</returns>
         protected ObjectId getId(string id)
         {
-            return ObjectId.Parse(id);
+            return ForecastDB.parseId(id);
         }
     }
 }

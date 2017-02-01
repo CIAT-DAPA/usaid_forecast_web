@@ -25,7 +25,7 @@
 @using (Html.BeginForm("Setup", "Crop", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-        
+
     <input type="hidden" id="id" name="id" value="@ViewBag.crop_id" />
     <div class="form-horizontal">
         <fieldset>
@@ -82,16 +82,17 @@
 <div>
     @Html.ActionLink("Back to crop", "Details", new { id = ViewBag.crop_id })
 </div>
+<h3>Setups' crop available</h3>
 <table class="table">
     <tr>
         <th>Weather Station</th>
         <th>Cultivar</th>
         <th>Soil</th>
         <th>Days</th>
-        <th>Files</th>
+        <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Where(p => p.track.enable))
     {
         <tr>
             <td>
@@ -107,12 +108,16 @@
                 @item.days
             </td>
             <td>
-                <ul>
-                    @foreach (var item2 in item.conf_files)
-                    {
-                        <li>@item2.name</li>
-                    }
-                </ul>
+                @using (Html.BeginForm("SetupDelete", "Crop", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="crop" name="crop" value="@ViewBag.crop_id" />
+                    <input type="hidden" id="ws" name="ws" value="@item.weather_station.ToString()" />
+                    <input type="hidden" id="cu" name="cu" value="@item.cultivar.ToString()" />
+                    <input type="hidden" id="so" name="so" value="@item.soil.ToString()" />
+                    <input type="hidden" id="days" name="days" value="@item.days.ToString()" />
+                    <input class="btn btn-danger" type="submit" value="Delete" />
+                }
             </td>
         </tr>
     }

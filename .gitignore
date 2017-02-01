@@ -245,5 +245,6 @@ ModelManifest.xml
 .fake/
 
 # Data dummy
+src/CIAT.DAPA.USAID.Forecast.WebAdmin/Data/Configuration/
 src/CIAT.DAPA.USAID.Forecast.WebAdmin/Data/Imports/
 src/CIAT.DAPA.USAID.Forecast.WebAdmin/Data/Log/

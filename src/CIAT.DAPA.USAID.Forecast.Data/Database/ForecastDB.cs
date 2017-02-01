@@ -1,4 +1,5 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Factory;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using System;
@@ -130,6 +131,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             forecastYield = new ForecastYieldFactory(db);
             // views
             views = new ViewsFactory(db);
+        }
+
+        /// <summary>
+        /// Method that return a object id from a string
+        /// </summary>
+        /// <param name="id">String hash to convert in ObjectId</param>
+        /// <returns>ObjectId</returns>
+        public static ObjectId parseId(string id)
+        {
+            return ObjectId.Parse(id);
         }
     }
 }

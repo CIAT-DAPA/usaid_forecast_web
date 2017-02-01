@@ -251,44 +251,63 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Get original crop data
                 var form = HttpContext.Request.Form;
                 Crop entity_new = await db.crop.byIdAsync(id);
-                // Instance
+                // Instance the new setup entity
                 Setup setup = new Setup()
                 {
                     weather_station = getId(form["weather_station"]),
                     cultivar = getId(form["cultivar"]),
                     soil = getId(form["soil"]),
-                    days = int.Parse(form["days"]),
-                    track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now }
+                    days = int.Parse(form["days"])
                 };
                 // Saving the data of the configuration files
                 List<ConfigurationFile> files = new List<ConfigurationFile>();
                 ConfigurationFile file_temp;
                 int i = 0;
+                // This cicle add all files upload to the setup entity
                 foreach (var f in form.Files)
                 {
                     i += 1;
-                    // Save a copy in the web site
                     file_temp = new ConfigurationFile()
                     {
                         date = DateTime.Now,
                         path = configurationPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + id + "-" + f.FileName,
                         name = form["name_f_" + i.ToString()]
                     };
+                    // Save a copy of the file in the server
                     await f.CopyToAsync(new FileStream(file_temp.path, FileMode.Create));
                     files.Add(file_temp);
                 }
+                // Set the files to the setup entity
                 setup.conf_files = files;
-                List<Setup> allSetups = entity_new.setup.ToList();
-                allSetups.Add(setup);
-                entity_new.setup = allSetups;
-                await db.crop.updateSetupAsync(entity_new);
-                writeEvent(id + "setup: " + entity_new.setup.Count().ToString(), LogEvent.upd);
+                await db.crop.addSetupAsync(entity_new, setup);
+                writeEvent(id + "setup add: " + setup.weather_station.ToString() + "-" + setup.cultivar.ToString() + "-" + setup.soil.ToString() + "-" + setup.days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = id });
             }
             catch (Exception ex)
             {
                 writeException(ex);
                 return RedirectToAction("Setup");
+            }
+        }
+
+        // POST: /Crop/SetupDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetupDelete(string crop, string ws, string cu, string so, int days)
+        {
+            try
+            {
+                // Get original crop data
+                Crop entity_new = await db.crop.byIdAsync(crop);
+                // Delete the setup
+                await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
+                writeEvent(crop + "setup del: " + ws + "-" + cu + "-" + so + "-" + days.ToString(), LogEvent.upd);
+                return RedirectToAction("Setup", new { id = crop });
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return RedirectToAction("Setup", new { id = crop });
             }
         }
     }
