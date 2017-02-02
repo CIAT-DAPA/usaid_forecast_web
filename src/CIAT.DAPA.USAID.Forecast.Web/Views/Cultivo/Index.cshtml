@@ -39,7 +39,7 @@
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                 <h2 class="text-center">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
                 <p class="text-justify">
-                    Para la ciudad de <span class="text-bold">{{municipality_name}}</span>
+                    Para el municipio de <span class="text-bold">{{municipality_name}}</span>
                     se presenta el pronóstico agroclimático para el período comprendido de
                     <span class="text-bold">{{period_start}} a {{period_end}}</span>.
                     La estación meteorológica que provee los datos para realizar los cálculos es
@@ -64,18 +64,47 @@
         <div class="row">
             <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                     <h3 class="text-center">Rendimientos Potenciales</h3>
                     <p class="text-justify">
-                        En el siguiente calendario puede observar los 
+                        En el siguiente calendario puede observar los
                         para el período de <span class="text-bold"></span>
+                        <span class="text-bold">los rendimientos potenciales esperados</span>,
+                        si se realiza la siembra en dicha fecha.
+                        <ul>
+                            <li>
+                                La fecha más favorable para sembrar la variedad <span class="text-bold">{{cu.name}}</span>
+                                en el suelo <span class="text-bold">{{cu.name}}</span> es el
+                                <span class="text-bold">{{cu.name}}</span>
+                            </li>
+                            <li>
+                                La fecha menos favorable para sembrar la variedad <span class="text-bold">{{cu.name}}</span>
+                                en el suelo <span class="text-bold">{{cu.name}}</span> es el
+                                <span class="text-bold">{{cu.name}}</span>
+                            </li>
+                        </ul>
                     </p>
                     <div id="calendar_{{cu.id}}"></div>
                 </div>
             </article>
             <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <h3 class="text-center">Variación de cultivar</h3>                    
-                    <div id="trend_{{cu.id}}"></div>
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                    <h3 class="text-center">Variación de cultivar</h3>
+                    <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
+                        <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
+                            <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}">{{vr.label}}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="content_{{cu.id}}">
+                        <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':$first, 'in':$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
+                            <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
+                                <span class="text-bold">{{vr.label}}</span> del cultivar <span class="text-bold">{{cu.name}}</span>
+                                para el período, en el municipio <span class="text-bold">{{municipality_name}}</span> presenta la siguiente variación:
+                            </p>
+                            <div id="trend_{{cu.id}}_{{vr.name}}"></div>
+                        </div>
+                    </div>
                 </div>
             </article>
         </div>
@@ -88,5 +117,6 @@
     <script src="~/lib/d3/d3.min.js"></script>
     <script src="~/js/lib/d3graphics/base.js"></script>
     <script src="~/js/lib/d3graphics/calendar.js"></script>
+    <script src="~/js/lib/d3graphics/trend.js"></script>
     <script src="~/js/controllers/crop.js"></script>
 }

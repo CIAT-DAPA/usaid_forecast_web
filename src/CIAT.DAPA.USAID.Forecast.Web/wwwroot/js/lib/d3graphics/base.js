@@ -8,7 +8,7 @@ function Base(container, data) {
     // Name of the div where the graphic will display
     this.container = container;
     // Data of the graphic
-    this.data = data;    
+    this.data = data;
 
     // Width of container    
     this.width_full = 0;
@@ -40,6 +40,14 @@ function Base(container, data) {
         round: d3.format(",.0f"),
         float: d3.format(",.1f"),
         date: d3.time.format('%Y-%m-%d').parse
+    };
+
+    // Tools to translate data from one format to javascript objects
+    this.translate = {
+        // translate from c# datetime to Date javascript
+        toDateFromJson: function (date) {
+            return new Date(date.substring(0, 4), parseInt(date.substring(5, 7)) - 1, date.substring(8, 10));
+        }
     };
 
     // Tooltip
@@ -146,6 +154,31 @@ Base.prototype.addAxis = function (x, y, ticks) {
 }
 
 /*
+ * Method that add the axis x and y in the graphic
+ * (function) x: Function to interpolate the x values
+ * (function) y: Function to interpolate the y values
+ * (int) ticks: Count of ticks
+ * (int) grade: Grades to rotate the x axis
+*/
+Base.prototype.addAxisRotate = function (x, y, ticks, grade) {
+    // Add x-axis to the histogram svg.
+    this.svg.append("g").attr("class", "x_axis")
+        .attr("transform", 'translate(0,' + this.height + ')')
+        .call(d3.svg.axis().scale(x))
+        .selectAll("text")
+        .attr("y", 0)
+        .attr("x", 9)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(" + grade + ")");
+
+    // Add y-axis to the histogram svg.
+    this.svg.append("g")
+        .attr("class", "y_axis")
+        .attr("transform", "translate(" + this.margin.right + ",0)")
+        .call(this.getYAxis(y, ticks));
+}
+
+/*
  * Method that create a function for the ticks
  * (function) xy: X or Y function to create interpolation
  * (int) ticks: Count of ticks
@@ -195,7 +228,7 @@ Base.prototype.addLegend = function (location, content) {
     if (location === 'bottom') {
         this.svg.attr('height', this.height_full + (20 * content.length));
         legend = this.svg.append('g');
-        legend.attr('transform', 'translate(0,' + this.height +')');
+        legend.attr('transform', 'translate(0,' + this.height + ')');
     }
     else {
         this.svg.attr('width', this.width_full * 1.3);

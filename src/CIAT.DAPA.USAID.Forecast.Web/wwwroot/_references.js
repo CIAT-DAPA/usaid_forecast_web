@@ -7,6 +7,7 @@
 /// <reference path="js/lib/d3graphics/calendar.js" />
 /// <reference path="js/lib/d3graphics/line.js" />
 /// <reference path="js/lib/d3graphics/pie.js" />
+/// <reference path="js/lib/d3graphics/trend.js" />
 /// <reference path="js/services/base.js" />
 /// <reference path="js/services/forecast.js" />
 /// <reference path="js/services/historical.js" />

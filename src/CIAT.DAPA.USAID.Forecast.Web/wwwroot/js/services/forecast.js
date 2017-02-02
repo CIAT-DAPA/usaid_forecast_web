@@ -96,10 +96,32 @@ angular.module('ForecastApp')
         * Method that filter all yield data from forecast by cultivar and soil
         * (object) raw: Json with all forecast of the weather station
         * (string) cultivar: Id of the cultivar
-        * (string) doil: Id of the cultivar
+        * (string) soil: Id of the cultivar
         */
         dataFactory.getByCultivarSoil = function (raw, cultivar, soil) {
             var data = raw.filter(function (item) { return item.cultivar === cultivar && item.soil === soil; });
+            return data;
+        }
+
+        /*
+        * Method that filter all yield data from forecast by cultivar and soil
+        * (object) raw: Json with all forecast of the weather station, cultivar and soil (getByCultivarSoil)
+        * (string) measure: Measure name
+        */
+        dataFactory.getByCultivarSoilMeasure = function (raw, measure) {
+            var data = raw.map(function (item) {
+                // Get measure' data
+                var measure_filtered = item.data.filter(function (item2) {
+                    return item2.measure === measure;
+                });
+                if (measure.length < 1)
+                    return null;
+                return {
+                    date: item.start,
+                    data: measure_filtered[0]
+                }
+
+            });
             return data;
         }
 

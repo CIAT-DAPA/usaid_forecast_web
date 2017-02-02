@@ -18,10 +18,31 @@ angular
       api_fs_historical: $('#api_fs_historical').val(),
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-      climate_vars: [{ name: 'Precipitación', value: 'prec', metric: 'mm', historical_months: [] },
-                     { name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [] },
-                     { name: 'Temperatura minima', value: 't_min', metric: '°C', historical_months: [] },
-                     { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', historical_months: [] }]
+      climate_vars: [
+          { name: 'Precipitación', value: 'prec', metric: 'mm', historical_months: [] },
+          { name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [] },
+          { name: 'Temperatura minima', value: 't_min', metric: '°C', historical_months: [] },
+          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', historical_months: [] }
+      ],
+      yield_default_var: [
+          {
+              crop: "arroz", vars:
+                  [{ name: "yield_14", label: "Rendimiento", default: true },
+                   { name: "d_har", label: "Cosecha", default: false },
+                  { name: "prec_acu", label: "Precipitación", default: false },
+                  { name: "t_max_acu", label: "T. máxima", default: false },
+                  { name: "t_min_acu", label: "T. mínima", default: false }]
+          },
+          {
+              crop: "maiz", vars:
+                  [{ name: "yield_0", label: "Rendimiento", default: true },
+                   { name: "d_har", label: "Cosecha", default: false },
+                  { name: "prec_acu", label: "Precipitación", default: false },
+                  { name: "t_max_acu", label: "T. máxima", default: false },
+                  { name: "t_min_acu", label: "T. mínima", default: false },
+                  { name: "d_dry", label: "Secado", default: false },
+                  { name: "bio_acu", label: "Biomasa", default: false }]
+          }]
   })
   .factory('tools', function () {
       var _tools = {};

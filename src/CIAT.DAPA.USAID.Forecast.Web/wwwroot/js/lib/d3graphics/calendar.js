@@ -15,17 +15,7 @@ function Calendar(base, months_names, days_names, measure) {
 
     this.color_current_month = '#EAEAEA';
     this.color_previous_month = '#FFFFFF';
-
-    function incrementCounter() {counter += 1; }
-    function decrementCounter() { counter -= 1; }    
     
-    function dateToYMD (date) {
-        var d = date.getDate();
-        var m = date.getMonth() + 1;
-        var y = date.getFullYear();
-        return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-    }
-
     function color() {
         return d3.scale.quantize()
             .domain([9000, 11000])
@@ -81,9 +71,10 @@ Calendar.prototype.year_display = function () {
  * (Date) date: Date of the event
 */
 Calendar.prototype.search = function (date) {
+    var that = this;
     var filtered = this.base.data.filter(function (item) {
-        var date_start = new Date(item.start.substring(0, 4), parseInt(item.start.substring(5, 7)) -1, item.start.substring(8, 10));
-        var date_end = new Date(item.end.substring(0, 4), parseInt(item.end.substring(5, 7))-1, item.end.substring(8, 10));        
+        var date_start = that.base.translate.toDateFromJson(item.start);
+        var date_end = that.base.translate.toDateFromJson(item.end);
         return date >= date_start && date <= date_end;
     });    
     return filtered.length < 1 ? null : filtered[0];
