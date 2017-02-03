@@ -57,8 +57,24 @@
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                 <h2 class="text-center">{{cu.name}}</h2>
                 <p class="text-justify">
-                    {{cu.name}}
                 </p>
+                <div class="navbar nav-justified">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_cultivar_{{cu.id}}">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse" id="navbar_cultivar_{{cu.id}}">
+                            <button type="button" ng-repeat="so in cu.soils" ng-class="{'btn':true, 'btn-default':true, 'btn-primary':$first }" id="soil_{{cu.id}}_{{so.id}}" ng-click="draw(cu,so)">
+                                {{so.name}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
         <div class="row">

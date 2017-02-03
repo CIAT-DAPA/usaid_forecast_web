@@ -80,8 +80,8 @@ angular.module('ForecastApp')
         * Method that created a summary based in the forecast
         * (object) data: Forecast yield data
         */
-        function summary(data) {
-            
+        function summaryCultivarSoil(data) {
+            console.log(data);
         }
         /*
         * Method that filter all yield data from forecast of the weather station
