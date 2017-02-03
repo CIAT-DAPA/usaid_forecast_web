@@ -186,6 +186,25 @@
 
 /* Trend */
 
+.trend_yield .area {
+  stroke-width: 1;
+}
+
+.trend_yield .area .outer {
+  fill: rgba(230, 230, 255, 0.8);
+  stroke: rgba(216, 216, 255, 0.8);
+}
+
+.trend_yield .area .inner {
+  fill: rgba(127, 127, 255, 0.8);
+  stroke: rgba(96, 96, 255, 0.8);
+}
+
+.trend_yield .median-line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3;
+}
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

@@ -18,7 +18,7 @@ Trend.prototype.render = function () {
             .domain([0, d3.max(that.base.data, function (d) { return d.data.max * 1.1; })]);
 
     // Add the axis
-    this.base.addAxisRotate(x, y, 10, 45);
+    this.base.addAxisRotate(x, y, 10, 30);
 
     // Add the ticks
     this.base.addAxisTicks(x, y, this.base.data.length, 12);
@@ -26,7 +26,10 @@ Trend.prototype.render = function () {
     // clipping to start chart hidden and slide it in later
     this.base.svg.append('clipPath')
             .attr('id', 'trend_clip')
-            .append('rect');
+            .append('rect')
+            .attr('width', that.base.width)
+            .attr('height', that.base.height)
+            .attr('transform', 'translate(' + that.base.margin.right + ',0)');
 
     this.base.svg.datum(this.base.data);
 
@@ -62,27 +65,27 @@ Trend.prototype.render = function () {
     this.base.svg.append('path')
         .attr('class', 'area upper outer')
         .attr('d', upperOuterArea)
-        .attr('clip-path', 'url(#rect-clip)');
+        .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
         .attr('class', 'area lower outer')
         .attr('d', lowerOuterArea)
-        .attr('clip-path', 'url(#rect-clip)');
+        .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
         .attr('class', 'area upper inner')
         .attr('d', upperInnerArea)
-        .attr('clip-path', 'url(#rect-clip)');
+        .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
         .attr('class', 'area lower inner')
         .attr('d', lowerInnerArea)
-        .attr('clip-path', 'url(#rect-clip)');
+        .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
         .attr('class', 'median-line')
         .attr('d', medianLine)
-        .attr('clip-path', 'url(#rect-clip)');
+        .attr('clip-path', 'url(#trend_clip)');
 
     /*
     // Axis
