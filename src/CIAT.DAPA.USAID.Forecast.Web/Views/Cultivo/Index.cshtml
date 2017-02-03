@@ -84,22 +84,24 @@
                     <h3 class="text-center">Rendimientos Potenciales</h3>
                     <p class="text-justify">
                         En el siguiente calendario puede observar
-                        <span class="text-bold">los rendimientos potenciales esperados</span> 
+                        <span class="text-bold">los rendimientos potenciales esperados</span>
                         en el municipio <span class="text-bold">{{municipality_name}}</span>
-                        para el final del ciclo del cultivo del  
-                        período <span class="text-bold">{{period_start}} a {{period_end}}</span> 
+                        para el final del ciclo del cultivo del
+                        período <span class="text-bold">{{period_start}} a {{period_end}}</span>
                         de la variedad <span class="text-bold">{{cu.name}}</span> en el suelo seleccionado anteriormente.
                         <ul>
                             <li>
-                                La fecha <span class="text-bold" >más favorable</span> para sembrar es: 
+                                La fecha <span class="text-bold">más favorable</span> para sembrar es:
                                 <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
-                                con un rendimiento potencial promedio al final del ciclo del cultivo de 
+                                con un <span class="text-bold">rendimiento potencial promedio</span> 
+                                al final del ciclo del cultivo de
                                 <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
                             </li>
                             <li>
-                                La fecha <span class="text-bold">menos favorable</span> para sembrar es: 
+                                La fecha <span class="text-bold">menos favorable</span> para sembrar es:
                                 <span class="text-bold" id="yield_{{cu.id}}_min_date"></span>
-                                con un rendimiento potencial promedio al final del ciclo del cultivo de
+                                con un <span class="text-bold">rendimiento potencial promedio</span>
+                                al final del ciclo del cultivo de
                                 <span class="text-bold" id="yield_{{cu.id}}_min_yield"></span>
                             </li>
                         </ul>
@@ -120,7 +122,24 @@
                         <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
                             <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
                                 <span class="text-bold">{{vr.label}}</span> del cultivar <span class="text-bold">{{cu.name}}</span>
-                                para el período, en el municipio <span class="text-bold">{{municipality_name}}</span> presenta la siguiente variación:
+                                para el período <span class="text-bold">{{period_start}} a {{period_end}}</span> 
+                                en el municipio <span class="text-bold">{{municipality_name}}</span> presenta la siguiente variación:
+                                <ul>
+                                    <li>
+                                        La fecha <span class="text-bold">con mayor variación</span> 
+                                        de <span class="text-bold">{{vr.label}}</span>, es 
+                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_date"></span>
+                                        con una desviación standar de 
+                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_yield"></span>
+                                    </li>
+                                    <li>
+                                        La fecha <span class="text-bold">con menor variación</span> 
+                                        de <span class="text-bold">{{vr.label}}</span>, es  
+                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_date"></span>
+                                        con una desviación standar de 
+                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_yield"></span>
+                                    </li>
+                                </ul>
                             </p>
                             <div id="trend_{{cu.id}}_{{vr.name}}"></div>
                         </div>

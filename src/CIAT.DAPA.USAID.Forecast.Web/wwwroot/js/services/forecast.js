@@ -78,7 +78,7 @@ angular.module('ForecastApp')
         var dataFactory = {};
         /*
         * Method that created a summary based in the forecast
-        * (object) data: Forecast yield data
+        * (object) data: Forecast yield data filtered by cultivar and soil
         * (string) measure: Measure name
         */
         dataFactory.summaryCultivarSoil = function(data, measure) {
@@ -93,6 +93,23 @@ angular.module('ForecastApp')
             }
             return { max: max, min: min };
         }
+
+        /*
+        * Method that created a summary based in the forecast
+        * (object) data: Forecast yield data filtered by cultivar, soil and measure
+        */
+        dataFactory.summaryCultivarSoilMeasure = function (data) {
+            var max = null;
+            var min = null;
+            for (var i = 0; i < data.length; i++) {
+                if (max == null || max.value < data[i].data.sd)
+                    max = { date: data[i].date, value: data[i].data.sd };
+                if (min == null || min.value > data[i].data.sd)
+                    min = { date: data[i].date, value: data[i].data.sd };
+            }
+            return { max: max, min: min };
+        }
+
         /*
         * Method that filter all yield data from forecast of the weather station
         * (object) raw: Json with all forecast
