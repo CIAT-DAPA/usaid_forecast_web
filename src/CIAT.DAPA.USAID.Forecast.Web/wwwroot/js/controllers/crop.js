@@ -116,18 +116,25 @@ angular.module('ForecastApp')
        * (object) so: Soil entity
       */
       function draw(cu, so) {
-          console.log('holla');
           // Set default color for all buttons of the soil by the cultivar
           $('#navbar_cultivar_' + cu.id + ' button').removeClass('btn-primary');
           $('#soil_'+ cu.id + '_' + so.id).addClass('btn-primary');
 
           // Get data
           var yield_cu = YieldForecastFactory.getByCultivarSoil($scope.yield_ws.yield, cu.id, so.id);
+          
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
           base_c.setMargin(10, 30, 10, 10);
           var calendar = new Calendar(base_c, config.month_names, config.days_names, $scope.crop_yield_var.name);
           calendar.render();
+
+          // Get the summary 
+          var summary_cu_so = YieldForecastFactory.summaryCultivarSoil(yield_cu, $scope.crop_yield_var.name);
+          $("#yield_" + cu.id + "_max_date").html(summary_cu_so.max.date);
+          $("#yield_" + cu.id + "_max_yield").html(summary_cu_so.max.value + ' ' + $scope.crop_yield_var.metric);
+          $("#yield_" + cu.id + "_min_date").html(summary_cu_so.min.date);
+          $("#yield_" + cu.id + "_min_yield").html(summary_cu_so.min.value + ' ' + $scope.crop_yield_var.metric);
 
           // The following cicle is used to draw the trend graphic
           // by every variable of the yield crop

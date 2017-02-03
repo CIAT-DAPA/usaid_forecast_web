@@ -85,15 +85,22 @@
                     <p class="text-justify">
                         En el siguiente calendario puede observar
                         <span class="text-bold">los rendimientos potenciales esperados</span> 
-                        para el final del ciclo del cultivo si la siembra se realiza en el 
-                        período de <span class="text-bold">{{period_start}} a {{period_end}}</span> 
-                        si se realiza la siembra de <span class="text-bold">{{cu.name}}</span> en dicha fecha.
+                        en el municipio <span class="text-bold">{{municipality_name}}</span>
+                        para el final del ciclo del cultivo del  
+                        período <span class="text-bold">{{period_start}} a {{period_end}}</span> 
+                        de la variedad <span class="text-bold">{{cu.name}}</span> en el suelo seleccionado anteriormente.
                         <ul>
                             <li>
-                                La fecha más favorable 
+                                La fecha <span class="text-bold" >más favorable</span> para sembrar es: 
+                                <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
+                                con un rendimiento potencial promedio al final del ciclo del cultivo de 
+                                <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
                             </li>
                             <li>
-                                La fecha menos favorable 
+                                La fecha <span class="text-bold">menos favorable</span> para sembrar es: 
+                                <span class="text-bold" id="yield_{{cu.id}}_min_date"></span>
+                                con un rendimiento potencial promedio al final del ciclo del cultivo de
+                                <span class="text-bold" id="yield_{{cu.id}}_min_yield"></span>
                             </li>
                         </ul>
                     </p>
