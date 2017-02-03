@@ -20,9 +20,12 @@ Trend.prototype.render = function () {
     // Add the axis
     this.base.addAxisRotate(x, y, 10, 45);
 
+    // Add the ticks
+    this.base.addAxisTicks(x, y, this.base.data.length, 12);
+
     // clipping to start chart hidden and slide it in later
     this.base.svg.append('clipPath')
-            .attr('id', 'rect-clip')
+            .attr('id', 'trend_clip')
             .append('rect');
 
     this.base.svg.datum(this.base.data);

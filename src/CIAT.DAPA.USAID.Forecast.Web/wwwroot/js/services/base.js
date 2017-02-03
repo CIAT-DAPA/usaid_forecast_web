@@ -111,6 +111,22 @@ angular.module('ForecastApp')
             return data.cultivars;
         }
 
+        /*
+        * Method that filter all cultivars available for the crop in the forecast by weather station
+        * (object []) cultivars: Array of cultivar entity to check
+        * (string) yield_forecast: Json with yield data of the weather station
+        */
+        dataFactory.getCultivarsAvailableForecast = function (cultivars, yield_forecast) {
+            var data = [];
+            for (var i = 0; i < cultivars.length; i++) {
+                var cu = cultivars[i];
+                var filtered = yield_forecast.yield.filter(function (item) { return item.cultivar === cu.id; });
+                if (filtered.length >= 1)
+                    data.push(cu);
+            }
+            return data;
+        }
+
         return dataFactory;
     }])
     .factory('CropVarsFactory', ['config', function (config) {

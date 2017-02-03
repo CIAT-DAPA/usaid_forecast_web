@@ -27,21 +27,21 @@ angular
       yield_default_var: [
           {
               crop: "arroz", vars:
-                  [{ name: "yield_14", label: "Rendimiento", default: true },
-                   { name: "d_har", label: "Cosecha", default: false },
-                  { name: "prec_acu", label: "Precipitación", default: false },
-                  { name: "t_max_acu", label: "T. máxima", default: false },
-                  { name: "t_min_acu", label: "T. mínima", default: false }]
+                  [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/héc', default: true },
+                   { name: "d_har", label: "Cosecha", metric: 'día', default: false },
+                  { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
+                  { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
+                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }]
           },
           {
               crop: "maiz", vars:
-                  [{ name: "yield_0", label: "Rendimiento", default: true },
-                   { name: "d_har", label: "Cosecha", default: false },
-                  { name: "prec_acu", label: "Precipitación", default: false },
-                  { name: "t_max_acu", label: "T. máxima", default: false },
-                  { name: "t_min_acu", label: "T. mínima", default: false },
-                  { name: "d_dry", label: "Secado", default: false },
-                  { name: "bio_acu", label: "Biomasa", default: false }]
+                  [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/héc', default: true },
+                   { name: "d_har", label: "Cosecha", metric: 'día', default: false },
+                  { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
+                  { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
+                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },
+                  { name: "d_dry", label: "Secado", metric: 'día', default: false },
+                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }]
           }]
   })
   .factory('tools', function () {

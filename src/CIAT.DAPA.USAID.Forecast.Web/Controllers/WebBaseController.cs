@@ -69,11 +69,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         protected void loadMonthsCrop()
         {
             string dates = string.Empty;
+            string years = string.Empty;
             DateTime start = DateTime.Now.AddMonths(-1);
             for (int i = 1; i <= 2; i++)
             {
                 start = start.AddMonths(1);
-                dates += start.ToString("MM") + ",";
+                dates += start.ToString("yyyy-MM") + ",";
             }
             ViewBag.gv_months = dates.Substring(0, dates.Length - 1);
         }

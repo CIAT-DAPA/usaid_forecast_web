@@ -67,20 +67,17 @@
                     <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                     <h3 class="text-center">Rendimientos Potenciales</h3>
                     <p class="text-justify">
-                        En el siguiente calendario puede observar los
-                        para el período de <span class="text-bold"></span>
-                        <span class="text-bold">los rendimientos potenciales esperados</span>,
-                        si se realiza la siembra en dicha fecha.
+                        En el siguiente calendario puede observar
+                        <span class="text-bold">los rendimientos potenciales esperados</span> 
+                        para el final del ciclo del cultivo si la siembra se realiza en el 
+                        período de <span class="text-bold">{{period_start}} a {{period_end}}</span> 
+                        si se realiza la siembra de <span class="text-bold">{{cu.name}}</span> en dicha fecha.
                         <ul>
                             <li>
-                                La fecha más favorable para sembrar la variedad <span class="text-bold">{{cu.name}}</span>
-                                en el suelo <span class="text-bold">{{cu.name}}</span> es el
-                                <span class="text-bold">{{cu.name}}</span>
+                                La fecha más favorable 
                             </li>
                             <li>
-                                La fecha menos favorable para sembrar la variedad <span class="text-bold">{{cu.name}}</span>
-                                en el suelo <span class="text-bold">{{cu.name}}</span> es el
-                                <span class="text-bold">{{cu.name}}</span>
+                                La fecha menos favorable 
                             </li>
                         </ul>
                     </p>
@@ -90,14 +87,14 @@
             <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
                     <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
-                    <h3 class="text-center">Variación de cultivar</h3>
+                    <h3 class="text-center">Análisis de cultivar</h3>
                     <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
                         <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
                             <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}">{{vr.label}}</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="content_{{cu.id}}">
-                        <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':$first, 'in':$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
+                        <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
                             <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
                                 <span class="text-bold">{{vr.label}}</span> del cultivar <span class="text-bold">{{cu.name}}</span>
                                 para el período, en el municipio <span class="text-bold">{{municipality_name}}</span> presenta la siguiente variación:

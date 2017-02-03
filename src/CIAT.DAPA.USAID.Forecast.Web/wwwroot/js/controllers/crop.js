@@ -31,6 +31,8 @@ angular.module('ForecastApp')
       $scope.data_h = null;
       // Forecast data
       $scope.data_f = null;
+      // Yield crop filtered by weather station
+      $scope.yield_ws = null;
 
       // Load data from web web api
       // Get all geographic data able with information
@@ -50,6 +52,14 @@ angular.module('ForecastApp')
                   // Load the Forecast information
                   ForecastFactory.get().success(function (data_f) {
                       $scope.data_f = data_f;
+                      // Filter data for weather station
+                      $scope.yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
+                      $scope.cultivars = CultivarsFactory.getCultivarsAvailableForecast($scope.cultivars, $scope.yield_ws);
+                      // Set the period of the forecast
+                      var temp_date = $scope.gv_months[0].split('-');
+                      $scope.period_start = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
+                      temp_date = $scope.gv_months[1].split('-');
+                      $scope.period_end = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
                       // Draw the graphics
                       draw();
                   }).error(function (error) {
@@ -80,14 +90,9 @@ angular.module('ForecastApp')
                       e.preventDefault();
                       $(this).tab('show');
                   });
-
-                  // Set the months for historical data
-                  var h_month_start = parseInt($scope.gv_months[0]);
-                  var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
-
+                  
                   // Get data
-                  var yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);                  
-                  var yield_cu = YieldForecastFactory.getByCultivarSoil(yield_ws.yield, cu.id, "5851ad2b07b6e43910c304b2");
+                  var yield_cu = YieldForecastFactory.getByCultivarSoil($scope.yield_ws.yield, cu.id, "5851ad2b07b6e43910c304b2");
                   // Draw the graphic
                   var base_c = new Base('#calendar_' + cu.id, yield_cu);
                   base_c.setMargin(10, 30, 10, 10);
@@ -106,12 +111,14 @@ angular.module('ForecastApp')
                       var trend = new Trend(base_t);
                       trend.render();
                   }
-
               }
               catch (err) {
                   console.log(err);
               }
           }
+          // Hide the content of the tabs variation
+          $('.disable_tab').removeClass('active');
+          $('.disable_tab').removeClass('in');
       }
 
   });
