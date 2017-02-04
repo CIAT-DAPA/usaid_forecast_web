@@ -126,7 +126,7 @@ angular.module('ForecastApp')
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
           base_c.setMargin(10, 30, 10, 10);
-          var calendar = new Calendar(base_c, config.month_names, config.days_names, $scope.crop_yield_var.name);
+          var calendar = new Calendar(base_c, config.month_names, config.days_names, $scope.crop_yield_var.name, '#back_' + cu.id, '#forward_' + cu.id, '#current_month_' + cu.id);
           calendar.render();
 
           // Get the summary 
@@ -144,7 +144,7 @@ angular.module('ForecastApp')
               
               // Draw the graphic
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
-              base_t.setMargin(10, 30, 10, 10);
+              base_t.setMargin(10, 50, 10, 10);
               var trend = new Trend(base_t);
               trend.render();
 

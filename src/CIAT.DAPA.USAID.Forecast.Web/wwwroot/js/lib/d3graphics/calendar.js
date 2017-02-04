@@ -4,14 +4,23 @@
  * (string[]) months_names: Array with name of the months
  * (string[]) days_names: Array with name of the days
  * (string) measure: Name of measure to display
+ * (string) back: Id button with the back function
+ * (string) forward: Id button with the forward function
+ * (string) label: Id of the title
+ * (object[]) range: Array with levels of yield standard
  */
-function Calendar(base, months_names, days_names, measure) {
+function Calendar(base, months_names, days_names, measure, back, forward, label, range) {
     this.base = base;
     this.counter = 0;
     this.current_month = new Date().getMonth();
     this.months_names = months_names;
     this.days_names = days_names;
     this.measure = measure;
+    this.back = back;
+    this.forward = forward;
+    this.label = label;
+    this.setted = false;
+    this.range = range;
 
     this.color_current_month = '#EAEAEA';
     this.color_previous_month = '#FFFFFF';
@@ -151,27 +160,27 @@ Calendar.prototype.get_data_month = function () {
 /*
  * Dispatch the event to show next month
 */
-Calendar.prototype.next_month = function () {
+Calendar.prototype.next_month = function (e) {
     // We keep track of user's "back" and "forward" presses in this counter
-    D3Graphics.CalendarGoogle.tools.incrementCounter();
-    D3Graphics.CalendarGoogle.tools.renderDaysOfMonth();
+    e.data.instance.counter += 1;
+    e.data.instance.render_month();
 }
 
 /*
  * Dispatch the event to show prev month
 */
-Calendar.prototype.prev_month = function () {
-    // We keep track of user's "back" and "forward" presses in this counter
-    D3Graphics.CalendarGoogle.tools.decrementCounter();
-    D3Graphics.CalendarGoogle.tools.renderDaysOfMonth();
+Calendar.prototype.prev_month = function (e) {
+    // We keep track of user's "back" and "forward" presses in this counter    
+    e.data.instance.counter -= 1;
+    e.data.instance.render_month();
 }
 
 /*
 */
 Calendar.prototype.render_month = function () {
     var that = this;
-    // RENDERDAYSOFMONTH
-    //$('#currentMonth').text(D3Graphics.CalendarGoogle.tools.monthToDisplayAsText() + ' ' + D3Graphics.CalendarGoogle.tools.yearToDisplay());
+    // Show the current month and year
+    $(this.label).text(this.months_names[this.month_display()] + ' ' + this.year_display());
     // Get data
     var data = this.get_data_month();
 
@@ -179,6 +188,15 @@ Calendar.prototype.render_month = function () {
     // the forward or backward button.
     var days_to_display = this.days_month();
     var cells = this.generate_grid();
+
+    // Clear the calendar data
+    this.base.svg
+        .selectAll(".days_month")
+        .remove();
+
+    this.base.svg
+        .selectAll(".days_yield")
+        .remove();
 
     // All text elements representing the dates in the month are grouped together in the element by the initalizing
     // function below. The initializing function is also responsible for drawing the rectangles that make up the grid.
@@ -213,14 +231,10 @@ Calendar.prototype.render_month = function () {
         .text(function (d) { 
             var text = '';
             if (d != null)
-                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
-            //console.log()
+                text = that.base.formats.float(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
             return text; 
         }); // Render text for the day of the week
-/*
-    D3Graphics.CalendarGoogle.vars.chartsGroup
-        .selectAll(".gcContent")
-        .remove();
+/*    
 
     D3Graphics.CalendarGoogle.vars.chartsGroup
         .selectAll("g.text")
@@ -262,14 +276,13 @@ Calendar.prototype.render_month = function () {
 Calendar.prototype.render = function () {
     var that = this;    
     that.base.init(true, 0.5);
-
-    /*
-    if (!D3Graphics.CalendarGoogle.vars.setted) {
+        
+    if (!this.setted) {
         //Controls    
-        $('#back').click(D3Graphics.CalendarGoogle.controls.displayPreviousMonth);
-        $('#forward').click(D3Graphics.CalendarGoogle.controls.displayNextMonth);
-        D3Graphics.CalendarGoogle.vars.setted = true;
-    }*/
+        $(this.back).click({instance:this},this.prev_month);
+        $(this.forward).click({ instance: this }, this.next_month);
+        this.setted = true;
+    }
 
     // Create the partition of the graphic in cells
     // The first row is for the header

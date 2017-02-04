@@ -39,7 +39,8 @@ function Base(container, data) {
     this.formats = {
         round: d3.format(",.0f"),
         float: d3.format(",.1f"),
-        date: d3.time.format('%Y-%m-%d').parse
+        date: d3.time.format('%Y-%m-%d').parse,
+        date_monthly: d3.time.format('%m-%d').parse
     };
 
     // Tools to translate data from one format to javascript objects
