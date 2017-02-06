@@ -39,8 +39,7 @@ function Base(container, data) {
     this.formats = {
         round: d3.format(",.0f"),
         float: d3.format(",.1f"),
-        date: d3.time.format('%Y-%m-%d').parse,
-        date_monthly: d3.time.format('%m-%d').parse
+        date: d3.time.format('%Y-%m-%d').parse
     };
 
     // Tools to translate data from one format to javascript objects
@@ -54,6 +53,20 @@ function Base(container, data) {
     // Tooltip
     this.tooltip = null;
 
+    // Date data
+    this.month_names = [];
+    this.days_names = [];
+
+}
+
+/*
+ * Method that set the date date
+ * (string []) months: Array with month names
+ * (string []) days: Array with days names
+*/
+Base.prototype.setDateNames = function (months, days) {
+    this.month_names = months;
+    this.days_names = days;
 }
 
 /*
@@ -161,11 +174,11 @@ Base.prototype.addAxis = function (x, y, ticks) {
  * (int) ticks: Count of ticks
  * (int) grade: Grades to rotate the x axis
 */
-Base.prototype.addAxisRotate = function (x, y, ticks, grade) {
+Base.prototype.addAxisDate = function (x, y, ticks, grade) {
     // Add x-axis to the histogram svg.
     this.svg.append("g").attr("class", "x_axis")
         .attr("transform", 'translate(0,' + this.height + ')')
-        .call(d3.svg.axis().scale(x))
+        .call(d3.svg.axis().scale(x).tickFormat(d3.time.format('%b %d')))
         .selectAll("text")
         .attr("y", 0)
         .attr("x", 9)

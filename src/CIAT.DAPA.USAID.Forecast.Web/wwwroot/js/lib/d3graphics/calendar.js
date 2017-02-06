@@ -175,7 +175,9 @@ Calendar.prototype.prev_month = function (e) {
     e.data.instance.render_month();
 }
 
+
 /*
+ * Method that add information to the graphic
 */
 Calendar.prototype.render_month = function () {
     var that = this;

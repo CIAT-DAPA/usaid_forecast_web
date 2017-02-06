@@ -4,21 +4,30 @@
  */
 function Trend(base) {
     this.base = base;
- }
+}
 
+Trend.prototype.dateParse = function (date) {
+    return this.base.translate.toDateFromJson(date);
+    /*var date_temp = this.base.translate.toDateFromJson(date);        
+    var answer = this.base.days_names[date_temp.getDay()].substring(0,3) + ' ' + date_temp.getDate();
+    return answer;*/
+}
 
+/*
+ * Method
+*/
 Trend.prototype.render = function () {    
     var that = this;
     that.base.init(true, 0.5);
 
     // Interpolation function
     var x = d3.time.scale().range([that.base.margin.right, that.base.width_full - that.base.margin.left])
-            .domain(d3.extent(that.base.data, function (d) { return that.base.translate.toDateFromJson(d.date); }));
+            .domain(d3.extent(that.base.data, function (d) { return that.dateParse(d.date); }));
     var y = d3.scale.linear().range([that.base.height, 0])
             .domain([0, d3.max(that.base.data, function (d) { return d.data.max * 1.1; })]);
 
     // Add the axis
-    this.base.addAxisRotate(x, y, 10, 30);
+    this.base.addAxisDate(x, y, 10, 45);
 
     // Add the ticks
     this.base.addAxisTicks(x, y, this.base.data.length, 12);
@@ -35,30 +44,30 @@ Trend.prototype.render = function () {
 
     var upperOuterArea = d3.svg.area()
         .interpolate('basis')
-        .x(function (d) { return x(that.base.translate.toDateFromJson(d.date)) || 1; })
+        .x(function (d) { return x(that.dateParse(d.date)) || 1; })
         .y0(function (d) { return y(d.data.perc_95); })
         .y1(function (d) { return y(d.data.quar_3); });
 
     var upperInnerArea = d3.svg.area()
         .interpolate('basis')
-        .x(function (d) { return x(that.base.translate.toDateFromJson(d.date)) || 1; })
+        .x(function (d) { return x(that.dateParse(d.date)) || 1; })
         .y0(function (d) { return y(d.data.quar_3); })
         .y1(function (d) { return y(d.data.quar_2); });
 
     var medianLine = d3.svg.line()
         .interpolate('basis')
-        .x(function (d) { return x(that.base.translate.toDateFromJson(d.date)); })
+        .x(function (d) { return x(that.dateParse(d.date)); })
         .y(function (d) { return y(d.data.quar_2); });
 
     var lowerInnerArea = d3.svg.area()
         .interpolate('basis')
-        .x(function (d) { return x(that.base.translate.toDateFromJson(d.date)) || 1; })
+        .x(function (d) { return x(that.dateParse(d.date)) || 1; })
         .y0(function (d) { return y(d.data.quar_2); })
         .y1(function (d) { return y(d.data.quar_1); });
 
     var lowerOuterArea = d3.svg.area()
         .interpolate('basis')
-        .x(function (d) { return x(that.base.translate.toDateFromJson(d.date)) || 1; })
+        .x(function (d) { return x(that.dateParse(d.date)) || 1; })
         .y0(function (d) { return y(d.data.quar_1); })
         .y1(function (d) { return y(d.data.perc_5); });
 
