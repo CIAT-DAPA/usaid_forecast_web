@@ -220,14 +220,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Set data for the view
                 ViewBag.crop_name = entity.name;
                 ViewBag.crop_id = entity.id;
-                // 
+                // Get the data
                 var ws = await db.weatherStation.listEnableVisibleAsync();
                 var cu = await db.cultivar.listEnableAsync();
                 var so = await db.soil.listEnableAsync();
                 List<CropSetup> entities = new List<CropSetup>();
                 foreach (var c in entity.setup)
                     entities.Add(new CropSetup(c, ws, cu, so));
-                //                
+                // Fill the select list
                 ViewBag.weather_station = new SelectList(ws, "id", "name");
                 ViewBag.cultivar = new SelectList(cu.Where(p => p.crop == entity.id), "id", "name");
                 ViewBag.soil = new SelectList(so.Where(p => p.crop == entity.id), "id", "name");

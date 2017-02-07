@@ -11,6 +11,7 @@
 /// <reference path="js/services/base.js" />
 /// <reference path="js/services/forecast.js" />
 /// <reference path="js/services/historical.js" />
+/// <reference path="js/site.min.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
 /// <reference path="lib/d3/d3.js" />

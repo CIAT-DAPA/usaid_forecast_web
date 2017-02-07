@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Import;
 using MongoDB.Bson;
+using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -590,6 +591,95 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             generateListMeasures();
             ViewBag.message = msg;
             return View("Import");
+        }
+
+        // GET: /WeatherStation/Range/5
+        [HttpGet]
+        public async Task<IActionResult> Range(string id)
+        {
+            WeatherStation entity = null;
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    writeEvent("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                entity = await db.weatherStation.byIdAsync(id);
+                if (entity == null)
+                {
+                    writeEvent("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                // Set data for the view
+                ViewBag.ws_name = entity.name;
+                ViewBag.ws_id = entity.id;
+                // Get data 
+                var cp = await db.crop.listEnableAsync();
+                // 
+                List<CropYieldRange> entities = new List<CropYieldRange>();
+                foreach (var r in entity.ranges)
+                    entities.Add(new CropYieldRange(r, cp));
+                // Fill the select list
+                ViewBag.crop = new SelectList(cp, "id", "name");
+                writeEvent("Search id: " + id, LogEvent.rea);
+                return View(entities);
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return View();
+            }
+        }
+
+        // POST: /WeatherStation/Range/5
+        [HttpPost, ActionName("Range")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RangeAdd(string id)
+        {
+            try
+            {
+                // Get original weather station data
+                var form = HttpContext.Request.Form;
+                WeatherStation entity_new = await db.weatherStation.byIdAsync(id);
+                // Instance the new range entity
+                YieldRange range = new YieldRange()
+                {
+                    crop = getId(form["crop"]),
+                    label = form["label"],
+                    lower = int.Parse(form["lower"]),
+                    upper = int.Parse(form["upper"])
+                };               
+                await db.weatherStation.addRangeAsync(entity_new, range);
+                writeEvent(id + "range add: " + range.crop.ToString() + "-" + range.label + "-" + range.lower.ToString() + "-" + range.upper.ToString(), LogEvent.upd);
+                return RedirectToAction("Range", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return RedirectToAction("Range", new { id = id });
+            }
+        }
+
+        // POST: /WeatherStation/RangeDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RangeDelete(string ws, string crop, string label, int lower, int upper)
+        {
+            try
+            {
+                // Get original crop data
+                WeatherStation entity_new = await db.weatherStation.byIdAsync(ws);
+                // Delete the setup
+                await db.weatherStation.deleteRangeAsync(entity_new, crop,label, lower, upper);
+                writeEvent(ws + "range del: " + crop + "-" + label + "-" + lower.ToString() + "-" + upper.ToString(), LogEvent.upd);
+                return RedirectToAction("Range", new { id = ws });
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return RedirectToAction("Range", new { id = ws });
+            }
         }
 
         /// <summary>

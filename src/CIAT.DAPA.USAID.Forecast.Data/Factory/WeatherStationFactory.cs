@@ -1,4 +1,5 @@
-﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+﻿using CIAT.DAPA.USAID.Forecast.Data.Database;
+using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,6 +31,45 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             newEntity.conf_files = entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
             newEntity.ranges = entity.ranges.Count() == 0 ? new List<YieldRange>() : entity.ranges;
             var result = await collection.ReplaceOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), newEntity);
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that add a new setup to a crop
+        /// </summary>
+        /// <param name="entity">Weather station with the new range</param>
+        /// <param name="range">New range to add to the weather station</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> addRangeAsync(WeatherStation entity, YieldRange range)
+        {            
+            List<YieldRange> allRanges = entity.ranges.ToList();
+            allRanges.Add(range);
+            entity.ranges = allRanges;
+            var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("ranges", entity.ranges));
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that delete a yield range entity from a weather station
+        /// </summary>
+        /// <param name="entity">Crop to delete the setup configuration</param>
+        /// <param name="crop">Id of the crop</param>
+        /// <param name="label">Name of level</param>
+        /// <param name="lower">Limit lower</param>
+        /// <param name="upper">Limit upper</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> deleteRangeAsync(WeatherStation entity, string crop, string label, int lower, int upper)
+        {
+            List<YieldRange> allRanges = new List<YieldRange>();
+            // This cicle search the range to delete
+            foreach (var r in entity.ranges)
+            {
+                // If the setup is found, it will update
+                if (!(r.crop == ForecastDB.parseId(crop) && r.label.Equals(label) && r.lower == lower && r.upper == upper))
+                    allRanges.Add(r);
+            }
+            entity.ranges = allRanges;
+            var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("ranges", entity.ranges));
             return result.ModifiedCount > 0;
         }
 
