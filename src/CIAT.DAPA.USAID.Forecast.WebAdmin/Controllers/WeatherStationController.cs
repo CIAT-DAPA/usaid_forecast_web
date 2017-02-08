@@ -682,6 +682,70 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
+        // GET: /WeatherStation/Range/5
+        [HttpGet]
+        public async Task<IActionResult> Configuration(string id)
+        {
+            WeatherStation entity = null;
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    writeEvent("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                entity = await db.weatherStation.byIdAsync(id);
+                if (entity == null)
+                {
+                    writeEvent("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                // Set data for the view
+                ViewBag.ws_name = entity.name;
+                ViewBag.ws_id = entity.id;
+                // 
+                var entities = entity.conf_files;
+                writeEvent("Search id: " + id, LogEvent.rea);
+                return View(entities);
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return View();
+            }
+        }
+
+        // POST: /WeatherStation/Configuration/5
+        [HttpPost, ActionName("Configuration")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationAdd(string id)
+        {
+            try
+            {
+                // Get original weather station data
+                var form = HttpContext.Request.Form;
+                WeatherStation entity_new = await db.weatherStation.byIdAsync(id);
+                // Instance the new range entity
+                ConfigurationFile file_temp = new ConfigurationFile()
+                {
+                    date = DateTime.Now,
+                    path = configurationPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + id + "-" + form.Files[0].FileName,
+                    name = form.Files[0].FileName
+                };
+                // Save a copy of the file in the server
+                await form.Files[0].CopyToAsync(new FileStream(file_temp.path, FileMode.Create));
+
+                await db.weatherStation.addConfigurationFileAsync(entity_new, file_temp);
+                writeEvent(id + "file add: " + entity_new.id.ToString() + "-" + form.Files[0].FileName, LogEvent.upd);
+                return RedirectToAction("Configuration", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return RedirectToAction("Configuration", new { id = id });
+            }
+        }
+
         /// <summary>
         /// Method to create a select list with the measure available to import
         /// </summary>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.ConfigurationFile>
+@using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
+
+@{
+    ViewBag.Title = "Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Configuration weather station</h2>
+
+<h4>@ViewBag.ws_name</h4>
+
+@if (ViewBag.message != null)
+{
+    @if (ViewBag.message.type == MessageType.error)
+    {
+        <p class="bg-danger">@ViewBag.message.content</p>
+    }
+    else
+    {
+        <p class="bg-success">@ViewBag.message.content</p>
+    }
+}
+
+@using (Html.BeginForm("Configuration", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" id="id" name="id" value="@ViewBag.ws_id" />
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>Weather station file</legend>
+            <div class="form-group">
+                <label for="name" class="control-label col-md-2">Name:</label>
+                <div class="col-md-10">
+                    @Html.Editor("name", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="label" class="control-label col-md-2">File:</label>
+                <div class="col-md-10">
+                    <input class="form-control" id="file" name="file" type="file"  />
+                </div>
+            </div>            
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Back to weather station", "Details", new { id = ViewBag.ws_id })
+</div>
+<h3>Configuration file by weather station available</h3>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.name
+            </td>
+            <td>
+                @item.date
+            </td>
+        </tr>
+    }
+</table>
+<div>
+    @Html.ActionLink("Back to weather station", "Details", new { id = ViewBag.ws_id })
+</div>
+
+@section Scripts {
+
+}

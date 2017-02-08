@@ -73,6 +73,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return result.ModifiedCount > 0;
         }
 
+        /// <summary>
+        /// Method that add a new setup to a crop
+        /// </summary>
+        /// <param name="entity">Weather station with the new range</param>
+        /// <param name="file">New range to add to the weather station</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> addConfigurationFileAsync(WeatherStation entity, ConfigurationFile file)
+        {
+            List<ConfigurationFile> allFiles = entity.conf_files.ToList();
+            allFiles.Add(file);
+            entity.conf_files = allFiles;
+            var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("conf_files", entity.conf_files));
+            return result.ModifiedCount > 0;
+        }
+        
+
         public async override Task<bool> deleteAsync(WeatherStation entity)
         {
             var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("track.enable", false)
