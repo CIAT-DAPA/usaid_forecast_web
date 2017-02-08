@@ -38,11 +38,12 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .attr('fill', '#fff');
 
     centerContainer.append("text")
-      .attr('dx', function (d) {
+      /*.attr('dx', function (d) {
           var l = content.toString().length;
           return l >= 3 ? -17 : (l == 2 ? -10 : -5);
-      })
+      })*/
       .attr('class', 'pie_center_text_high')
+      .style("text-anchor", "middle")
       .text(function (d) { return content; });
 
     centerContainer.append("text")
@@ -91,7 +92,7 @@ Pie.prototype.render = function () {
                           });
 
     // Draw the center and add the text
-    this.drawChartCenter(pie, this.base.formats.round(this.base.data.center));
+    this.drawChartCenter(pie, this.base.data.center);
     // Draw the legend
     this.base.addLegend('bottom', this.base.data.percentages.map(function (item) {
         return { title: item.label, value: (item.value * 100) + '%', class: 'pie_' + item.type };

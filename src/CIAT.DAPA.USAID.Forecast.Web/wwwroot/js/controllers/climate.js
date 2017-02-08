@@ -71,9 +71,7 @@ angular.module('ForecastApp')
                                     '<h3 class="text-center">' + m.year + '-' + m.month_name + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
                                     '<div id="pie' + m.year + '-' + m.month + '"></div>' +
-                                    '<p class="text-justify article_content">' +
-                                        'Para el mes de <span class="text-bold">' + m.month_name + '</span> ' +
-                                        'se predice que <span class="text-bold">' + m.summary + '</span> ' +
+                                    '<p class="text-justify article_content" id="summary_' + m.year + '-' + m.month + '">' +
                                     '</p>' +
                                 '</div>' +
                             '</article>';
@@ -88,11 +86,21 @@ angular.module('ForecastApp')
               if (i == (months.length - 1))
                   $scope.period_end = m.month_name + ', ' + m.year;
               var id = '#pie' + m.year + '-' + m.month;
-              var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], 'prec');              
-              var data = { percentages: m.probabilities, center: climatology[0].value };
+              var climatology_lower = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.lower);
+              var climatology_upper = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.upper);              
+              var data = { percentages: m.probabilities, center: '[' + climatology_lower[0].value.toFixed(0) + ' - ' + climatology_upper[0].value.toFixed(0) + ']' };
               var base = new Base(id, data);
               var pie = new Pie(base);
               pie.render();
+
+              // Add summary
+              var summary = ClimateFactory.summary(m.raw);
+              var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
+                                 'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> '+
+                                 'lo normal es que haya una precipitación entre <span class="text-bold">' + climatology_lower[0].value.toFixed(0) +
+                                 ' mm y ' + climatology_upper[0].value.toFixed(0) + ' mm</span>, la predicción climática determina que ' +
+                                 '<span class="text-bold">' + summary + '</span>.';
+              $('#summary_' + m.year + '-' + m.month).html(summary_text);
           }
 
           // Historical data for every climate variable
