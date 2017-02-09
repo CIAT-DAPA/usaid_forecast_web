@@ -131,7 +131,7 @@ angular.module('ForecastApp')
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
           base_c.setMargin(10, 30, 10, 10);          
-          var calendar = new Calendar(base_c, config.month_names, config.days_names, $scope.crop_yield_var.name, '#back_' + cu.id, '#forward_' + cu.id, '#current_month_' + cu.id);
+          var calendar = new Calendar(base_c, config.month_names, config.days_names, $scope.crop_yield_var.name, '#back_' + cu.id, '#forward_' + cu.id, '#current_month_' + cu.id, $scope.yield_ranges);
           calendar.render();
 
           // Get the summary 

@@ -7,9 +7,9 @@
  * (string) back: Id button with the back function
  * (string) forward: Id button with the forward function
  * (string) label: Id of the title
- * (object[]) range: Array with levels of yield standard
+ * (object[]) ranges: Array with levels of yield standard
  */
-function Calendar(base, months_names, days_names, measure, back, forward, label, range) {
+function Calendar(base, months_names, days_names, measure, back, forward, label, ranges) {
     this.base = base;
     this.counter = 0;
     this.current_month = new Date().getMonth();
@@ -20,19 +20,24 @@ function Calendar(base, months_names, days_names, measure, back, forward, label,
     this.forward = forward;
     this.label = label;
     this.setted = false;
-    this.range = range;
+    this.ranges = ranges;
 
     this.color_current_month = '#EAEAEA';
     this.color_previous_month = '#FFFFFF';
-    
-    function color() {
-        return d3.scale.quantize()
-            .domain([9000, 11000])
-            //.domain([0, 12000])
-            //.range(["hsl(0,100%,36%)", "hsl(130,100%,36%)"]);
-            .range(["#A50026", "#F46D43", "#FEE08B", "#D9EF8B", "#66BD63", "#006837"]);
-    }
 };
+
+/*
+ * Method that return a function to interpolate the values to color
+*/
+Calendar.prototype.color = function () {
+    var domain = this.ranges.treashold;
+    var generator = d3.scale.linear()
+                      .domain([0, domain.length - 1])
+                      .range([d3.hsl("rgb(199, 107, 107)"), d3.hsl("rgb(107, 199, 113)")])
+                     .interpolate(d3.interpolateCubehelix);
+    var range = d3.range(domain.length).map(generator);
+    return d3.scale.threshold().domain(domain).range(range);
+}
 
 /*
  * Get the width of a cell in the graphic
@@ -49,8 +54,8 @@ Calendar.prototype.generate_grid = function () {
     // We store the top left positions of a 7 by 5 grid. These positions will be our reference points for drawing
     // various objects such as the rectangular grids, the text indicating the date etc.
     var cellPositions = [];
-    for (var y = 0; y < 5; y++) 
-        for (var x = 0; x < 7; x++) 
+    for (var y = 0; y < 5; y++)
+        for (var x = 0; x < 7; x++)
             cellPositions.push([x * this.cell_width(), y * this.cell_height()]);
     return cellPositions;
 }
@@ -85,7 +90,7 @@ Calendar.prototype.search = function (date) {
         var date_start = that.base.translate.toDateFromJson(item.start);
         var date_end = that.base.translate.toDateFromJson(item.end);
         return date >= date_start && date <= date_end;
-    });    
+    });
     return filtered.length < 1 ? null : filtered[0];
 }
 
@@ -154,7 +159,7 @@ Calendar.prototype.get_data_month = function () {
         date = new Date(this.year_display(), this.month_display() + 1, i);
         value = this.search(date);
         data.push(value);
-    }    
+    }
     return data;
 }
 /*
@@ -229,59 +234,45 @@ Calendar.prototype.render_month = function () {
         .attr("x", function (d, i) { return cells[i][0]; })
         .attr("y", function (d, i) { return cells[i][1]; })
         .attr("dx", this.cell_width() / 4) // right padding
-        .attr("dy", 2*(this.cell_height() / 3)) // vertical alignment 
-        .text(function (d) { 
+        .attr("dy", 2 * (this.cell_height() / 3)) // vertical alignment 
+        .text(function (d) {
             var text = '';
             if (d != null)
                 text = that.base.formats.float(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
-            return text; 
-        }); // Render text for the day of the week
-/*    
-
-    D3Graphics.CalendarGoogle.vars.chartsGroup
-        .selectAll("g.text")
-        .data(daysInMonthToDisplay)
-        .enter()
-        .append("text")
-        .attr("class", "gcContent")
-        .attr("x", function (d, i) { return cellPositions[i][0]; })
-        .attr("y", function (d, i) { return cellPositions[i][1]; })
-        .attr("dx", 20) // right padding
-        .attr("dy", 20) // vertical alignment : middle
-        //.attr("transform", "translate(" + (D3Graphics.CalendarGoogle.vars.gridXTranslation - 18) + "," + (D3Graphics.CalendarGoogle.vars.gridYTranslation + 40) + ")")
-        .text(function (d, i) {
-            return data[i].length > 0 ? 'Rendimiento esperado: ' : '';
+            return text;
         }); // Render text for the day of the week
 
-    /*var color = D3Graphics.CalendarGoogle.tools.color();
-
-    D3Graphics.CalendarGoogle.vars.calendar
-        .selectAll("rect")
-        .data(daysInMonthToDisplay)
-        // Here we change the color depending on whether the day is in the current month, the previous month or the next month.
-        // The function that generates the dates for any given month will also specify the colors for days that are not part of the
-        // current month. We just have to use it to fill the rectangle
-        .style("fill", function (d, i) {
-            var bg = '';
-            if (d[1].indexOf('FFFFFF')) {
-                bg += data[i].length > 0 ? color(data[i][0].RendimientoPromedio) : d[1];
-            }
-            else
-                bg += d[1];
-            return bg;
-        });*/
+    // Paint the cells 
+    this.base.svg
+            .selectAll("rect")
+            .data(days_to_display)
+            // Here we change the color depending on whether the day is in the current month, the previous month or the next month.
+            // The function that generates the dates for any given month will also specify the colors for days that are not part of the
+            // current month. We just have to use it to fill the rectangle
+            .style("fill", function (d, i) {
+                var bg = '';
+                if (d[1].indexOf('FFFFFF')) {
+                    if (data_month[i] != null) 
+                        bg = that.color()(data_month[i].data.filter(function (item) { return item.measure === that.measure; })[0].median);
+                    else
+                        bg = d[1];
+                }
+                else
+                    bg += d[1];
+                return bg;
+            });
 },
 
 /*
  * Method that render the graphic in a container
 */
 Calendar.prototype.render = function () {
-    var that = this;    
+    var that = this;
     that.base.init(true, 0.5);
-        
+
     if (!this.setted) {
         //Controls    
-        $(this.back).click({instance:this},this.prev_month);
+        $(this.back).click({ instance: this }, this.prev_month);
         $(this.forward).click({ instance: this }, this.next_month);
         this.setted = true;
     }
@@ -291,18 +282,18 @@ Calendar.prototype.render = function () {
     var cells = this.generate_grid();
 
     // This adds the day of the week headings on top of the grid
-    this.base.svg        
+    this.base.svg
         .append("g")
         .attr("class", "header_days")
         .selectAll("header_days")
         .data([0, 1, 2, 3, 4, 5, 6])
         .enter()
-        .append("text")        
+        .append("text")
         .attr("x", function (d) { return cells[d][0]; })
         .attr("y", "0")
         .attr("dy", "30")
         .text(function (d) { return that.days_names[d]; });
-       
+
     // Draw rectangles at the appropriate postions, starting from the top left corner. Since we want to leave some room for the heading and buttons
     this.base.svg
         .append("g")

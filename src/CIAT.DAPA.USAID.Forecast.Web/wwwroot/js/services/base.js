@@ -88,20 +88,15 @@ angular.module('ForecastApp')
         * (string) crop: Id crop
         */
         dataFactory.getRanges = function (raw, crop) {
-            console.log(raw);
-            /*
-            var data = raw.filter(function (item) {
-                var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
-                return municipalities.length > 0;
+            var answer = { labels: [], treashold: [] };
+            var data = raw.ranges.filter(function (item) {
+                return item.crop_name.toLowerCase() === crop.toLowerCase();
             });
-            if (data == null)
-                return null;
-            // Map to get only weather station
-            var ws = data.map(function (item) {
-                var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
-                return municipalities[0].weather_stations[0];
-            });
-            return ws[0];*/
+            for (var i = 0; i < data.length; i++) {
+                answer.labels.push(data[i].label);
+                answer.treashold.push(data[i].upper);
+            }
+            return answer;
         }
         return dataFactory;
     }])
@@ -128,7 +123,7 @@ angular.module('ForecastApp')
         dataFactory.getByCrop = function (raw, crop) {
             var data = raw.filter(function (item) {
                 return item.cp_name.toLowerCase() === crop.toLowerCase();
-            })[0];            
+            })[0];
             return data.cultivars;
         }
 
