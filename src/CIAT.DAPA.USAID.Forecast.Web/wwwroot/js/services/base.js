@@ -82,6 +82,27 @@ angular.module('ForecastApp')
             return ws[0];
         }
 
+        /*
+        * Method that filter all ranges from a weather station
+        * (object) raw: Json with data from weather station
+        * (string) crop: Id crop
+        */
+        dataFactory.getRanges = function (raw, crop) {
+            console.log(raw);
+            /*
+            var data = raw.filter(function (item) {
+                var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
+                return municipalities.length > 0;
+            });
+            if (data == null)
+                return null;
+            // Map to get only weather station
+            var ws = data.map(function (item) {
+                var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
+                return municipalities[0].weather_stations[0];
+            });
+            return ws[0];*/
+        }
         return dataFactory;
     }])
     .factory('AgronomicFactory', ['$http', 'config', function ($http, config) {

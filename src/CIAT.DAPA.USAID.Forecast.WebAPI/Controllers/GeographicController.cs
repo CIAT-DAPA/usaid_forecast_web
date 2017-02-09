@@ -34,6 +34,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 var states = await db.state.listEnableAsync();
                 var municipalities = await db.municipality.listEnableVisibleAsync();
                 var weatherstations = await db.weatherStation.listEnableVisibleAsync();
+                var crops = await db.crop.listEnableAsync();
                 List<StateEntity> json = new List<StateEntity>();
                 StateEntity geo_s;
                 MunicipalityEntity geo_m;
@@ -44,7 +45,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     {
                         geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
                         foreach (var w in weatherstations.Where(p => p.municipality == m.id))
-                            geo_m.weather_stations.Add(new WeatherStationEntity() { id = w.id.ToString(), name = w.name, origin = w.origin, ranges = w.ranges });
+                            geo_m.weather_stations.Add(new WeatherStationEntity()
+                            {
+                                id = w.id.ToString(),
+                                name = w.name,
+                                origin = w.origin,
+                                ranges = w.ranges.Select(p => new YieldRangeEntity()
+                                {
+                                    crop_id = p.crop.ToString(),
+                                    label = p.label,
+                                    lower = p.lower,
+                                    upper = p.upper,
+                                    crop_name = crops.Single(p2 => p2.id == p.crop).name
+                                })
+                            });
                         geo_s.municipalities.Add(geo_m);
                     }
                     json.Add(geo_s);

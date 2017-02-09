@@ -11,6 +11,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities
         public string id { get; set; }
         public string name { get; set; }
         public string origin { get; set; }
-        public IEnumerable<YieldRange> ranges { get; set; }
+        public IEnumerable<YieldRangeEntity> ranges { get; set; }
     }
 }

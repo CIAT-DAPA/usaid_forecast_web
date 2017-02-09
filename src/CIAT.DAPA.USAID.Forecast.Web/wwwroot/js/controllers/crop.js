@@ -34,6 +34,8 @@ angular.module('ForecastApp')
       $scope.data_f = null;
       // Yield crop filtered by weather station
       $scope.yield_ws = null;
+      // Yiel ranges for the weather station
+      $scope.yield_ranges = null;
 
       // Load data from web web api
       // Get all geographic data able with information
@@ -43,6 +45,9 @@ angular.module('ForecastApp')
           $scope.municipalities = MunicipalityFactory.listByIds(data_m, $scope.gv_municipalities);
           // Search the weather station
           $scope.ws_entity = WeatherStationFactory.getByMunicipality(data_m, $scope.municipality_name);
+          // Get yield ranges
+          $scope.yield_ranges = WeatherStationFactory.getRanges($scope.ws_entity, $scope.crop_name);
+
           // Load the agronomic information
           AgronomicFactory.get().success(function (data_a) {
               $scope.data_a = data_a;
