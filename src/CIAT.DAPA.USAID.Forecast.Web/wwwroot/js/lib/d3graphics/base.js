@@ -57,6 +57,17 @@ function Base(container, data) {
     this.month_names = [];
     this.days_names = [];
 
+    // Class CSS
+    this.class = '';
+
+}
+
+/*
+ * Method that set the class for the graphic
+ * (string) class_name: String with the name of the class
+*/
+Base.prototype.setClass = function (class_name) {
+    this.class = class_name;
 }
 
 /*

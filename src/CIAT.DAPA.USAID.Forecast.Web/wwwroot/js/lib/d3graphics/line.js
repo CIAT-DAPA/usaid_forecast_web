@@ -64,7 +64,7 @@ Line.prototype.render = function () {
 
     // Add the line path.
     this.base.svg.append('g')
-            .attr('class', 'line_area_line')
+            .attr('class', 'line_area_line_'  + that.base.class)
             .append('path')
             .datum(startData)
             .attr('d', line)
@@ -90,24 +90,24 @@ Line.prototype.render = function () {
                     .data(that.base.data.raw)
                     .enter()
                     .append('circle')
-                    .attr('class', 'line_area_circle')
+                    .attr('class', 'line_area_circle_' + that.base.class)
                     .attr('r', 5)
                     .attr('cx', function (d) { return x(d.date); })
                     .attr('cy', function (d) { return y(d.value); })
                     .on("mouseover", function (d, i) {
-                        d3.select(this).attr('class', 'line_area_circle_highlighted');
+                        d3.select(this).attr('class', 'line_area_circle_highlighted_' + that.base.class);
                         var content = 'Año: ' + d.year + '<br / >Valor: ' + that.base.formats.float(d.value);
                         that.base.tooltip_show(d3.event.pageX, d3.event.pageY-50, content);
                     })
                     .on("mouseout", function (d, i) {
-                        d3.select(this).attr('class', 'line_area_circle');
+                        d3.select(this).attr('class', 'line_area_circle_' + that.base.class);
                         that.base.tooltip_hide();
                     });
             });
 
     // Add the area path.
     this.base.svg.append('g')
-        .attr('class', 'line_area_area')
+        .attr('class', 'line_area_area_' + that.base.class)
         .append('path')
         .datum(startData)
         .attr('d', area)

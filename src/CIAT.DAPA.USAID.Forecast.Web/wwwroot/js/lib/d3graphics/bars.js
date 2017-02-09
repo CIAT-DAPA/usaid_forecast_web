@@ -43,7 +43,7 @@ Bars.prototype.render = function () {
         .attr("y", function (d) { return y(d.value); })
         .attr("width", x.rangeBand())
         .attr("height", function (d) { return (that.base.height) - y(d.value); })
-        .attr('class', 'bar_color');
+        .attr('class', that.base.class);
 
     //Create the frequency labels above the rectangles.
     bars.append("text").text(function (d) { return that.base.formats.float(d.value) })
