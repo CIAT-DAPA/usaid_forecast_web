@@ -44,7 +44,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     {
                         geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
                         foreach (var w in weatherstations.Where(p => p.municipality == m.id))
-                            geo_m.weather_stations.Add(new WeatherStationEntity() { id = w.id.ToString(), name = w.name, origin = w.origin });
+                            geo_m.weather_stations.Add(new WeatherStationEntity() { id = w.id.ToString(), name = w.name, origin = w.origin, ranges = w.ranges });
                         geo_s.municipalities.Add(geo_m);
                     }
                     json.Add(geo_s);
