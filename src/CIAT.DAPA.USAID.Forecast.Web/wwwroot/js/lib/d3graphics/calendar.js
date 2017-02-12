@@ -8,8 +8,9 @@
  * (string) forward: Id button with the forward function
  * (string) label: Id of the title
  * (object[]) ranges: Array with levels of yield standard
+ * (string) alias: Alias to call all items inside of the graphic
  */
-function Calendar(base, months_names, days_names, measure, back, forward, label, ranges) {
+function Calendar(base, months_names, days_names, measure, back, forward, label, ranges, alias) {
     this.base = base;
     this.counter = 0;
     this.current_month = new Date().getMonth();
@@ -21,6 +22,7 @@ function Calendar(base, months_names, days_names, measure, back, forward, label,
     this.label = label;
     this.setted = false;
     this.ranges = ranges;
+    this.alias = alias;
 
     this.color_current_month = '#EAEAEA';
     this.color_previous_month = '#FFFFFF';
@@ -29,14 +31,18 @@ function Calendar(base, months_names, days_names, measure, back, forward, label,
 /*
  * Method that return a function to interpolate the values to color
 */
-Calendar.prototype.color = function () {
-    var domain = this.ranges.treashold;
+Calendar.prototype.color = function (value) {
+    /*var domain = this.ranges.treashold;
     var generator = d3.scale.linear()
                       .domain([0, domain.length - 1])
                       .range([d3.hsl("rgb(199, 107, 107)"), d3.hsl("rgb(107, 199, 113)")])
                      .interpolate(d3.interpolateCubehelix);
     var range = d3.range(domain.length).map(generator);
-    return d3.scale.threshold().domain(domain).range(range);
+    return d3.scale.threshold().domain(domain).range(range);*/
+    var domain = this.ranges.treashold.map(function (d) { return d + 1;});
+    var range = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
+    var color = d3.scale.threshold().domain(domain).range(range);
+    return color(value);
 }
 
 /*
@@ -69,7 +75,6 @@ Calendar.prototype.month_display = function () {
     dateToDisplay.setMonth(this.current_month + this.counter);
     return dateToDisplay.getMonth();
 }
-//function monthToDisplayAsText() { return monthNames[monthToDisplay()]; }
 /*
  * Method that return the year to display in the calendar
 */
@@ -241,19 +246,19 @@ Calendar.prototype.render_month = function () {
                 text = that.base.formats.float(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
             return text;
         }); // Render text for the day of the week
-
+    
     // Paint the cells 
     this.base.svg
-            .selectAll("rect")
+            .selectAll(".calendar_days rect")
             .data(days_to_display)
             // Here we change the color depending on whether the day is in the current month, the previous month or the next month.
             // The function that generates the dates for any given month will also specify the colors for days that are not part of the
             // current month. We just have to use it to fill the rectangle
-            .style("fill", function (d, i) {
+            .style("fill", function (d, i) {                
                 var bg = '';
                 if (d[1].indexOf('FFFFFF')) {
-                    if (data_month[i] != null) 
-                        bg = that.color()(data_month[i].data.filter(function (item) { return item.measure === that.measure; })[0].median);
+                    if (data_month[i] != null)
+                        bg = that.color(data_month[i].data.filter(function (item) { return item.measure === that.measure; })[0].median);
                     else
                         bg = d[1];
                 }
@@ -261,6 +266,7 @@ Calendar.prototype.render_month = function () {
                     bg += d[1];
                 return bg;
             });
+            
 },
 
 /*
@@ -281,6 +287,35 @@ Calendar.prototype.render = function () {
     // The first row is for the header
     var cells = this.generate_grid();
 
+    // Add legend colors  
+    var array_labels = Array.apply(null, { length: that.ranges.labels.length }).map(Number.call, Number);
+    this.base.svg
+        .append("g")
+        .attr("class", "legend_colors")
+        .selectAll("legend_colors")
+        .data(array_labels)
+        .enter()
+        .append("rect")
+        .attr("x", function (d) { return cells[d][0]; })
+        .attr("y", 0)
+        .attr("width", this.cell_width())
+        .attr("height", (that.cell_height() / 2) )
+        .style("fill", function (d) {
+            return that.color(that.ranges.treashold[d]);
+        });
+
+    // Add legend labels
+    this.base.svg
+        .append("g")
+        .attr("class", "legend_labels")
+        .selectAll("legend_labels")
+        .data(array_labels)
+        .enter()
+        .append("text")
+        .attr("x", function (d) { return cells[d][0]; })
+        .attr("y", 20)
+        .text(function (d) { return that.ranges.labels[d]; });
+
     // This adds the day of the week headings on top of the grid
     this.base.svg
         .append("g")
@@ -291,7 +326,7 @@ Calendar.prototype.render = function () {
         .append("text")
         .attr("x", function (d) { return cells[d][0]; })
         .attr("y", "0")
-        .attr("dy", "30")
+        .attr("dy", that.cell_height() - 5)
         .text(function (d) { return that.days_names[d]; });
 
     // Draw rectangles at the appropriate postions, starting from the top left corner. Since we want to leave some room for the heading and buttons
@@ -308,97 +343,7 @@ Calendar.prototype.render = function () {
         .attr("width", this.cell_width())
         .attr("height", this.cell_height());
 
-    // Create a new svg group to store the chart elements and store it globally. Again, as the user navigates through the months by pressing 
-    // the "back" and "forward" buttons on the page, we clear the chart elements from this group and re add them again.
-    //D3Graphics.CalendarGoogle.vars.chartsGroup = D3Graphics.CalendarGoogle.vars.calendar.append("svg:g");
-
+    // Render the current month
     this.render_month();
 
-    // Print de color scale 
-    //D3Graphics.CalendarGoogle.tools.drawLegend();
 }
-/*
-D3Graphics.CalendarGoogle.tools = {
-    drawLegend: function () {
-
-
-        var boxmargin = 4,
-            lineheight = 14,
-            keyheight = 10,
-            keywidth = 40,
-            boxwidth = 2 * (keywidth * 1.3),
-            formatPercent = d3.format(".0f");
-
-        var sevenshadesofgold = ["#A50026", "#F46D43", "#FEE08B", "#D9EF8B", "#66BD63", "#006837"];
-
-        var title = ['Niveles de', 'rendimiento (kg/ha)'],
-            titleheight = title.length * lineheight + boxmargin;
-
-        var x = d3.scale.linear()
-            .domain([0, 1]);
-
-        var rendimiento = d3.scale.linear()
-                            .domain([0, 1])
-                            .range([9000, 11000]);
-        //.range([0, 12000]);
-
-        var quantize = d3.scale.quantize()
-            .domain([0, 1])
-            .range(sevenshadesofgold);
-
-        var ranges = quantize.range().length;
-
-        // return quantize thresholds for the key    
-        var qrange = function (max, num) {
-            var a = [];
-            for (var i = 0; i < num; i++) {
-                a.push(i * max / num);
-            }
-            return a;
-        }
-
-        var legend = D3Graphics.CalendarGoogle.vars.calendar.append("svg:g")
-            .attr('transform', 'translate(' + D3Graphics.CalendarGoogle.vars.calendarWidth + ',0)')
-            .attr("class", "legend-calendar");
-
-        legend.selectAll("text")
-            .data(title)
-            .enter().append("text")
-            .attr("class", "legend-title")
-            .attr("y", function (d, i) { return (i + 1) * lineheight - 2; })
-            .text(function (d) { return d; })
-
-        var lb = legend.append("rect")
-            .attr("transform", "translate (0," + titleheight + ")")
-            .attr("class", "legend-box")
-            .attr("width", boxwidth)
-            .attr("height", ranges * lineheight + 2 * boxmargin + lineheight - keyheight);
-
-        // make quantized key legend items
-        var li = legend.append("g")
-             .attr("transform", "translate (8," + (titleheight + boxmargin) + ")")
-            .attr("class", "legend-items");
-
-        li.selectAll("rect")
-            .data(quantize.range().map(function (color) {
-                var d = quantize.invertExtent(color);
-                if (d[0] == null) d[0] = x.domain()[0];
-                if (d[1] == null) d[1] = x.domain()[1];
-                return d;
-            }))
-            .enter().append("rect")
-            .attr("y", function (d, i) { return i * lineheight + lineheight - keyheight; })
-            .attr("width", keywidth)
-            .attr("height", keyheight)
-            .style("fill", function (d) { return quantize(d[0]); });
-
-        var round = d3.format(",.0f");
-
-        li.selectAll("text")
-            .data(qrange(quantize.domain()[1], ranges))
-            .enter().append("text")
-            .attr("x", 48)
-            .attr("y", function (d, i) { return (i + 1) * lineheight - 2; })
-            .text(function (d) { return round(rendimiento(d)); });
-    }
-}*/

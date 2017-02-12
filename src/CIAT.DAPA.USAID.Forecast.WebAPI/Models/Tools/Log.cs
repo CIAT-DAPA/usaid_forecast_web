@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools
             {
                 try
                 {
-                    File.AppendAllText(path, data.ToString() + "\n");
+                    File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), data.ToString() + "\n");
                 }
                 catch (Exception ex2)
                 {

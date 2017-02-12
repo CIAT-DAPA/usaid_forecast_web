@@ -211,6 +211,10 @@
     font-size:large;
 }
 
+.legend_labels{
+    color: #ffffff;
+}
+
 /* Trend */
 
 .trend_yield .area {
