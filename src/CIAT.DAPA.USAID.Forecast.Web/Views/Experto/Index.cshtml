@@ -32,6 +32,9 @@
                     <li role="presentation">
                         <a href="#content_agronomic" id="tab_agronomic" role="tab" data-toggle="tab" aria-controls="content_agronomic">Datos agronómicos</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#content_climatology" id="tab_climatology" role="tab" data-toggle="tab" aria-controls="content_climatology">Climatología</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="content_filters">
                     <div class="fade tab-pane active in" role="tabpanel" id="content_geographic" aria-labelledby="tab_geographic">
@@ -71,20 +74,45 @@
                             </div>
                         </form>
                     </div>
+                    <div class="fade tab-pane" role="tabpanel" id="content_climatology" aria-labelledby="tab_climatology">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" for="cmd_agronomic_source">
+                                    Tipo de busqueda:
+                                </label>
+                                <div class="col-lg-10">
+                                    <label class="radio-inline">
+                                        <input type="radio" ng-model="agronomic_source" value="cultivar" checked>Cultivares
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" ng-model="agronomic_source" value="soil">Suelos
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cmd_agronomic" class="col-lg-11 text-left">
+                                    <a href="{{url.agronomic}}" target="_blank">{{url.agronomic}}</a>
+                                </label>
+                                <div class="col-lg-1 text-right">
+                                    <button id="cmd_agronomic" type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </article>
     </section>
     <!-- End Description -->
     <!-- End Data -->
-    <section id="expert_filters" class="row section-content">
+    <section id="expert_data" class="row section-content">
         <article class="col-lg-12 article_content">
             <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
             <div class="text-right">
-                <button type="button" class="btn btn-success" ng-click="">Descargar</button>
+                <a role="button" class="btn btn-success" id="exportCsv">Descargar</a>
             </div>
-            <h2></h2>
-            <table class="table">
+            <h2 class="text-center">{{data_title}}</h2>
+            <table class="table" id="data_raw">
                 <tr>
                     <th ng-repeat="th in headers">{{th}}</th>
                 </tr>
@@ -100,4 +128,5 @@
 
 @section Scripts {
     <script src="~/js/controllers/expert.js"></script>
+    <script src="~/js/lib/export/csv.js"></script>
 }

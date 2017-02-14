@@ -13,6 +13,8 @@ angular.module('ForecastApp')
       $scope.url.geographic = GeographicFactory.getUrl();
       $scope.url.agronomic = AgronomicFactory.getUrl();
 
+      $scope.data_title = '';
+
       // Vars of the data
       // Data municipalities
       $scope.data_m = null;
@@ -44,25 +46,6 @@ angular.module('ForecastApp')
           // Load the agronomic information
           AgronomicFactory.get().success(function (data_a) {
               $scope.data_a = data_a;
-              /*
-              // Load the list of the cultivars and soils from the agronomic configuration
-              $scope.cultivars = CultivarsFactory.getByCrop($scope.data_a, $scope.crop_name);
-              $scope.soils = SoilFactory.getByCrop($scope.data_a, $scope.crop_name);
-              // Load the historical information
-              HistoricalFactory.get($scope.ws_entity.id).success(function (data_h) {
-                  $scope.data_h = data_h;
-                  // Load the Forecast information
-                  ForecastFactory.get().success(function (data_f) {
-                      $scope.data_f = data_f;
-                      // Filter data for weather station
-                      $scope.yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
-                      $scope.cultivars = CultivarsFactory.getCultivarsAvailableForecast($scope.cultivars, $scope.yield_ws);                      
-                  }).error(function (error) {
-                      console.log(error);
-                  });
-              }).error(function (error) {
-                  console.log(error);
-              });*/
           }).error(function (error) {
               console.log(error);
           });
@@ -73,6 +56,7 @@ angular.module('ForecastApp')
       $scope.getData = function (source) {
           var rows = [];
           if (source === 'geographic') {
+              $scope.data_title = 'Datos geográficos';
               $scope.headers = ['country_name', 'state_id', 'state_name', 'municipality_id', 'municipality_name', 'ws_id', 'ws_name', 'ws_origin'];
               for (var i = 0; i < $scope.data_m.length; i++) {
                   var s = $scope.data_m[i];
@@ -86,17 +70,18 @@ angular.module('ForecastApp')
               }
           }
           else if (source === 'agronomic') {
+              $scope.data_title = 'Datos agronómicos';
               if ($scope.agronomic_source === 'cultivar') {
                   $scope.headers = ['crop_id', 'crop_name', 'cultivar_id', 'cultivar_name', 'cultivar_rainfed'];
                   for (var i = 0; i < $scope.data_a.length; i++) {
                       var cp = $scope.data_a[i];
                       for (var j = 0; j < cp.cultivars.length; j++) {
                           var cu = cp.cultivars[j];
-                          rows.push([cp.cp_id,cp.cp_name, cu.id, cu.name, cu.rainfed]);
+                          rows.push([cp.cp_id, cp.cp_name, cu.id, cu.name, cu.rainfed]);
                       }
                   }
               }
-              else{
+              else {
                   $scope.headers = ['crop_id', 'crop_name', 'soil_id', 'soil_name'];
                   for (var i = 0; i < $scope.data_a.length; i++) {
                       var cp = $scope.data_a[i];
@@ -109,5 +94,19 @@ angular.module('ForecastApp')
           }
           $scope.content = rows;
       }
+
+      /*
+       * Method that export data to csv file
+      */
+      $("#exportCsv").click(function () {
+          // var outputFile = 'export'
+          var outputFile = window.prompt($scope.data_title);
+          if (outputFile == null || outputFile === '')
+              outputFile = 'export';
+          outputFile = outputFile.replace('.csv', '') + '.csv'
+
+          // CSV
+          exportTableToCSV.apply(this, [$('#data_raw'), outputFile]);
+      });
 
   });
