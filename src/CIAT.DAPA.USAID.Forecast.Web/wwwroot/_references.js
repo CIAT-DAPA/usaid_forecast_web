@@ -2,6 +2,7 @@
 /// <reference path="js/app.js" />
 /// <reference path="js/controllers/climate.js" />
 /// <reference path="js/controllers/crop.js" />
+/// <reference path="js/controllers/expert.js" />
 /// <reference path="js/lib/d3graphics/bars.js" />
 /// <reference path="js/lib/d3graphics/base.js" />
 /// <reference path="js/lib/d3graphics/calendar.js" />

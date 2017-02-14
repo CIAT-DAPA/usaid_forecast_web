@@ -10,12 +10,19 @@
 angular.module('ForecastApp')
     .factory('GeographicFactory', ['$http', 'config', function ($http, config) {
         var dataFactory = {};
+
+        /*
+         * Method that return the url to get data geographic
+        */
+        dataFactory.getUrl = function () {
+            return config.api_fs + config.api_fs_geographic;
+        }
         /*
         * Method that request all geographic information available from the forecast service
         */
         dataFactory.get = function () {
             if (dataFactory.raw == null) {
-                dataFactory.raw = $http.get(config.api_fs + config.api_fs_geographic);
+                dataFactory.raw = $http.get(dataFactory.getUrl());
             }
             return dataFactory.raw;
         }
@@ -103,11 +110,18 @@ angular.module('ForecastApp')
     .factory('AgronomicFactory', ['$http', 'config', function ($http, config) {
         var dataFactory = {};
         /*
+         * Method that return the url to get data geographic
+        */
+        dataFactory.getUrl = function () {
+            return config.api_fs + config.api_fs_agronomic;
+        }
+
+        /*
         * Method that request all agronomic information available from the forecast service
         */
         dataFactory.get = function () {
             if (dataFactory.raw == null) {
-                dataFactory.raw = $http.get(config.api_fs + config.api_fs_agronomic);
+                dataFactory.raw = $http.get(dataFactory.getUrl());
             }
             return dataFactory.raw;
         }
