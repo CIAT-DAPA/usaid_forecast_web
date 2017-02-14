@@ -12,7 +12,7 @@ angular.module('ForecastApp')
       $scope.url = {};
       $scope.url.geographic = GeographicFactory.getUrl();
       $scope.url.agronomic = AgronomicFactory.getUrl();
-                  
+
       // Vars of the data
       // Data municipalities
       $scope.data_m = null;
@@ -27,6 +27,9 @@ angular.module('ForecastApp')
       // Yiel ranges for the weather station
       $scope.yield_ranges = null;
 
+      // Form binding
+      $scope.agronomic_source = 'cultivar';
+
       // Load data from web web api
       // Get all geographic data able with information
       GeographicFactory.get().success(function (data_m) {
@@ -37,10 +40,11 @@ angular.module('ForecastApp')
           $scope.ws_entity = WeatherStationFactory.getByMunicipality(data_m, $scope.municipality_name);
           // Get yield ranges
           $scope.yield_ranges = WeatherStationFactory.getRanges($scope.ws_entity, $scope.crop_name);
-
+          */
           // Load the agronomic information
           AgronomicFactory.get().success(function (data_a) {
               $scope.data_a = data_a;
+              /*
               // Load the list of the cultivars and soils from the agronomic configuration
               $scope.cultivars = CultivarsFactory.getByCrop($scope.data_a, $scope.crop_name);
               $scope.soils = SoilFactory.getByCrop($scope.data_a, $scope.crop_name);
@@ -58,17 +62,17 @@ angular.module('ForecastApp')
                   });
               }).error(function (error) {
                   console.log(error);
-              });
+              });*/
           }).error(function (error) {
               console.log(error);
-          });*/
+          });
       }).error(function (error) {
           console.log(error);
       });
 
       $scope.getData = function (source) {
           var rows = [];
-          if (source === 'geographic') {              
+          if (source === 'geographic') {
               $scope.headers = ['country_name', 'state_id', 'state_name', 'municipality_id', 'municipality_name', 'ws_id', 'ws_name', 'ws_origin'];
               for (var i = 0; i < $scope.data_m.length; i++) {
                   var s = $scope.data_m[i];
@@ -79,9 +83,31 @@ angular.module('ForecastApp')
                           rows.push([s.country, s.id, s.name, m.id, m.name, w.id, w.name, w.origin]);
                       }
                   }
-              }              
+              }
+          }
+          else if (source === 'agronomic') {
+              if ($scope.agronomic_source === 'cultivar') {
+                  $scope.headers = ['crop_id', 'crop_name', 'cultivar_id', 'cultivar_name', 'cultivar_rainfed'];
+                  for (var i = 0; i < $scope.data_a.length; i++) {
+                      var cp = $scope.data_a[i];
+                      for (var j = 0; j < cp.cultivars.length; j++) {
+                          var cu = cp.cultivars[j];
+                          rows.push([cp.cp_id,cp.cp_name, cu.id, cu.name, cu.rainfed]);
+                      }
+                  }
+              }
+              else{
+                  $scope.headers = ['crop_id', 'crop_name', 'soil_id', 'soil_name'];
+                  for (var i = 0; i < $scope.data_a.length; i++) {
+                      var cp = $scope.data_a[i];
+                      for (var j = 0; j < cp.soils.length; j++) {
+                          var so = cp.soils[j];
+                          rows.push([cp.cp_id, cp.cp_name, so.id, so.name]);
+                      }
+                  }
+              }
           }
           $scope.content = rows;
       }
-      
+
   });

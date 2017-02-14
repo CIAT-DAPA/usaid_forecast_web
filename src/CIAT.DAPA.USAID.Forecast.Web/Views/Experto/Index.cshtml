@@ -37,11 +37,11 @@
                     <div class="fade tab-pane active in" role="tabpanel" id="content_geographic" aria-labelledby="tab_geographic">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-lg-11 text-left">
+                                <label for="cmd_geographic" class="col-lg-11 text-left">
                                     <a href="{{url.geographic}}" target="_blank">{{url.geographic}}</a>
                                 </label>
                                 <div class="col-lg-1 text-right">
-                                    <button type="button" class="btn btn-primary" ng-click="getData('geographic')">Buscar</button>
+                                    <button id="cmd_geographic" type="button" class="btn btn-primary" ng-click="getData('geographic')">Buscar</button>
                                 </div>
                             </div>
                         </form>
@@ -49,11 +49,24 @@
                     <div class="fade tab-pane" role="tabpanel" id="content_agronomic" aria-labelledby="tab_agronomic">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-lg-11 text-left">
+                                <label class="col-lg-2 control-label" for="cmd_agronomic_source">
+                                    Tipo de busqueda:
+                                </label>
+                                <div class="col-lg-10">
+                                    <label class="radio-inline">
+                                        <input type="radio" ng-model="agronomic_source" value="cultivar" checked>Cultivares
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" ng-model="agronomic_source" value="soil">Suelos
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cmd_agronomic" class="col-lg-11 text-left">
                                     <a href="{{url.agronomic}}" target="_blank">{{url.agronomic}}</a>
                                 </label>
                                 <div class="col-lg-1 text-right">
-                                    <button type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
+                                    <button id="cmd_agronomic" type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
                                 </div>
                             </div>
                         </form>
