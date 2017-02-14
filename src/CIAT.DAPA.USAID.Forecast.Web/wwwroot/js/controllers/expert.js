@@ -12,6 +12,7 @@ angular.module('ForecastApp')
       $scope.url = {};
       $scope.url.geographic = GeographicFactory.getUrl();
       $scope.url.agronomic = AgronomicFactory.getUrl();
+      $scope.url.climatology = HistoricalFactory.getUrl('');
 
       $scope.data_title = '';
 

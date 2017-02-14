@@ -12,12 +12,19 @@ angular.module('ForecastApp')
         var dataFactory = {};
 
         /*
+         * Method that return the url to get data geographic
+        */
+        dataFactory.getUrl = function (ws) {
+            return config.api_fs + config.api_fs_historical + ws;
+        }
+
+        /*
         * Method that request the climatology to the web api
         * (string) ws: String with the id of the weather stations splited by comma
         */
         dataFactory.get = function (ws) {
             if (dataFactory.raw == null) {
-                dataFactory.raw = $http.get(config.api_fs + config.api_fs_historical + ws);
+                dataFactory.raw = $http.get(dataFactory.getUrl(ws));
             }
             return dataFactory.raw;
         }
