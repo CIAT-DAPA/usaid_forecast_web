@@ -70,6 +70,7 @@ angular.module('ForecastApp')
        * (string) source: Type of filter
       */
       $scope.getData = function (source) {
+          $(".icon_loading").fadeIn();
           var rows = [];
           if (source === 'geographic') {
               $scope.data_title = 'Datos geográficos';
@@ -126,6 +127,7 @@ angular.module('ForecastApp')
                   console.log(error);
               });
           }
+          $(".icon_loading").fadeOut();
           $scope.content = rows;
       }
 

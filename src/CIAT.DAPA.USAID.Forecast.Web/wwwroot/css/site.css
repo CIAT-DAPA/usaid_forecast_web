@@ -79,6 +79,12 @@
         fill: #00cc44;
     }
 
+.icon_loading {
+    width: 30px;
+    height: 30px;
+    display: none;
+}
+
 /* Axis Charts */
 
 .x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
@@ -100,19 +106,19 @@
 }
 
 /* Helper class for the graphics */
-/*.prec,*/ .bar_prec, .line_area_area_prec, .line_area_circle_prec{
+/*.prec,*/ .bar_prec, .line_area_area_prec, .line_area_circle_prec {
     fill: #6bb7c7;
 }
 
-/*.t_max,*/ .bar_t_max, .line_area_area_t_max, .line_area_circle_t_max{
+/*.t_max,*/ .bar_t_max, .line_area_area_t_max, .line_area_circle_t_max {
     fill: #c76b6b;
 }
 
-/*.t_min,*/ .bar_t_min, .line_area_area_t_min, .line_area_circle_t_min{
+/*.t_min,*/ .bar_t_min, .line_area_area_t_min, .line_area_circle_t_min {
     fill: #c7c76b;
 }
 
-/*.sol_rad,*/ .bar_sol_rad, .line_area_area_sol_rad, .line_area_circle_sol_rad{
+/*.sol_rad,*/ .bar_sol_rad, .line_area_area_sol_rad, .line_area_circle_sol_rad {
     fill: #c7966b;
 }
 
@@ -159,40 +165,40 @@
 }
 
 /* Line */
-.line_area_line_prec,  .line_area_line_t_max, .line_area_line_t_min, .line_area_line_sol_rad{
+.line_area_line_prec, .line_area_line_t_max, .line_area_line_t_min, .line_area_line_sol_rad {
     fill: none;
     stroke-width: 3;
 }
 
-.line_area_line_prec, .line_area_circle_highlighted_prec{
+.line_area_line_prec, .line_area_circle_highlighted_prec {
     stroke: #6bb7c7;
 }
 
-.line_area_line_t_max, .line_area_circle_highlighted_t_max{
+.line_area_line_t_max, .line_area_circle_highlighted_t_max {
     stroke: #c76b6b;
 }
 
-.line_area_line_t_min, .line_area_circle_highlighted_t_min{
+.line_area_line_t_min, .line_area_circle_highlighted_t_min {
     stroke: #c7c76b;
 }
 
-.line_area_line_sol_rad, .line_area_circle_highlighted_sol_rad{
+.line_area_line_sol_rad, .line_area_circle_highlighted_sol_rad {
     stroke: #c7966b;
 }
 
-.line_area_area_prec, .line_area_area_t_max, .line_area_area_t_min, .line_area_area_sol_rad{
+.line_area_area_prec, .line_area_area_t_max, .line_area_area_t_min, .line_area_area_sol_rad {
     fill-opacity: 0.5;
 }
 
 .line_area_circle_prec, .line_area_circle_t_max, .line_area_circle_t_min, .line_area_circle_sol_rad {
     stroke: #fff;
     stroke-width: 3;
-    cursor : pointer;
+    cursor: pointer;
 }
 
-.line_area_circle_highlighted_prec, .line_area_circle_highlighted_t_max, .line_area_circle_highlighted_t_min, .line_area_circle_highlighted_sol_rad  {
+.line_area_circle_highlighted_prec, .line_area_circle_highlighted_t_max, .line_area_circle_highlighted_t_min, .line_area_circle_highlighted_sol_rad {
     fill: #fff;
-    cursor : pointer;
+    cursor: pointer;
 }
 
 .line_area_splitted {
@@ -208,33 +214,33 @@
 }
 
 .days_yield {
-    font-size:large;
+    font-size: large;
 }
 
-.legend_labels{
+.legend_labels {
     color: #ffffff;
 }
 
 /* Trend */
 
 .trend_yield .area {
-  stroke-width: 1;
+    stroke-width: 1;
 }
 
-.trend_yield .area .outer {
-  fill: rgba(230, 230, 255, 0.8);
-  stroke: rgba(216, 216, 255, 0.8);
-}
+    .trend_yield .area .outer {
+        fill: rgba(230, 230, 255, 0.8);
+        stroke: rgba(216, 216, 255, 0.8);
+    }
 
-.trend_yield .area .inner {
-  fill: rgba(127, 127, 255, 0.8);
-  stroke: rgba(96, 96, 255, 0.8);
-}
+    .trend_yield .area .inner {
+        fill: rgba(127, 127, 255, 0.8);
+        stroke: rgba(96, 96, 255, 0.8);
+    }
 
 .trend_yield .median-line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 3;
+    fill: none;
+    stroke: #000;
+    stroke-width: 3;
 }
 
 /* Hide/rearrange for smaller screens */
