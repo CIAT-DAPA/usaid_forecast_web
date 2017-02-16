@@ -35,6 +35,9 @@
                     <li role="presentation">
                         <a href="#content_climatology" id="tab_climatology" role="tab" data-toggle="tab" aria-controls="content_climatology">Climatología</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#content_historical_climate" id="tab_historical_climate" role="tab" data-toggle="tab" aria-controls="content_historical_climate">Histórico Climático</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="content_filters">
                     <div class="fade tab-pane active in" role="tabpanel" id="content_geographic" aria-labelledby="tab_geographic">
@@ -105,6 +108,35 @@
                                         <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('climatology')">Buscar</button>
                                         <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
                                     </div>                                    
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="fade tab-pane" role="tabpanel" id="content_historical_climate" aria-labelledby="tab_historical_climate">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" for="climatology_states">Departamentos:</label>
+                                <div class="col-lg-2">
+                                    <select class="form-control" id="climatology_states" ng-model="historical_climate.state" ng-options="s.name for s in data_m" ng-change="updateClimatology()" required></select>
+                                </div>
+                                <label class="col-lg-2 control-label" for="climatology_municipalities">Municipios:</label>
+                                <div class="col-lg-2">
+                                    <select class="form-control col-lg-2" id="climatology_municipalities" ng-model="historical_climate.municipality" ng-options="m.name for m in historical_climate.state.municipalities" ng-change="updateHistoricalClimate()" required></select>
+                                </div>
+                                <label class="col-lg-2 control-label" for="climatology_ws">Estaciones climatologicas:</label>
+                                <div class="col-lg-2">
+                                    <select class="form-control col-lg-2" id="climatology_ws" ng-model="historical_climate.ws" ng-options="ws.name for ws in historical_climate.municipality.weather_stations" ng-change="updateHistoricalClimate()" required></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cmd_climatology" class="col-lg-11 text-left">
+                                    <a href="{{url.historical_climate}}" target="_blank">{{url.historical_climate}}</a>
+                                </label>
+                                <div class="col-lg-1">
+                                    <div class="row">
+                                        <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('historical_climate')">Buscar</button>
+                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                    </div>
                                 </div>
                             </div>
                         </form>

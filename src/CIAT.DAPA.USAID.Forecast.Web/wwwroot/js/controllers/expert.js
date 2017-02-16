@@ -13,10 +13,12 @@ angular.module('ForecastApp')
       $scope.url.geographic = GeographicFactory.getUrl();
       $scope.url.agronomic = AgronomicFactory.getUrl();
       $scope.url.climatology = HistoricalFactory.getUrl('');
+      $scope.url.historical_climate = HistoricalFactory.getUrl('');
 
       $scope.data_title = '';
 
       $scope.climatology = {};
+      $scope.historical_climate = {};
 
       // Vars of the data
       // Data municipalities
@@ -39,11 +41,18 @@ angular.module('ForecastApp')
       // Get all geographic data able with information
       GeographicFactory.get().success(function (data_m) {
           $scope.data_m = data_m;
+
           // Set the first item in the select controls
           $scope.climatology.state = data_m[0];
           $scope.climatology.municipality = data_m[0].municipalities[0];
           $scope.climatology.ws = data_m[0].municipalities[0].weather_stations[0];
           $scope.url.climatology = HistoricalFactory.getUrl($scope.climatology.ws.id);
+          //
+          $scope.historical_climate.state = data_m[0];
+          $scope.historical_climate.municipality = data_m[0].municipalities[0];
+          $scope.historical_climate.ws = data_m[0].municipalities[0].weather_stations[0];
+          $scope.url.historical_climate = HistoricalFactory.getUrl($scope.historical_climate.ws.id);
+
           // Load the agronomic information
           AgronomicFactory.get().success(function (data_a) {
               $scope.data_a = data_a;
@@ -62,6 +71,16 @@ angular.module('ForecastApp')
           if ($scope.climatology.ws != undefined)
               ws_id = $scope.climatology.ws.id;
           $scope.url.climatology = HistoricalFactory.getUrl(ws_id);
+      }
+
+      /*
+       * Event to change value in climatology
+      */
+      $scope.updateHistoricalClimate = function () {
+          var ws_id = '';
+          if ($scope.historical_climate.ws != undefined)
+              ws_id = $scope.historical_climate.ws.id;
+          $scope.url.historical_climate = HistoricalFactory.getUrl(ws_id);
       }
 
 
@@ -109,7 +128,7 @@ angular.module('ForecastApp')
                   }
               }
           }
-          if (source === 'climatology') {
+          else if (source === 'climatology') {
               $scope.data_title = 'Climatología';
               $scope.headers = ['ws_id', 'month', 'measure', 'value'];
               HistoricalFactory.get($scope.climatology.ws.id).success(function (data_h) {
@@ -120,6 +139,24 @@ angular.module('ForecastApp')
                           for (var k = 0; k < m.data.length; k++) {
                               var d = m.data[k];
                               rows.push([w.weather_station, m.month, d.measure, d.value]);
+                          }
+                      }
+                  }
+              }).error(function (error) {
+                  console.log(error);
+              });
+          }
+          else if (source === 'historical_climate') {
+              $scope.data_title = 'Histórico climático';
+              $scope.headers = ['ws_id', 'year', 'month', 'measure', 'value'];
+              HistoricalFactory.get($scope.historical_climate.ws.id).success(function (data_h) {
+                  for (var i = 0; i < data_h.climate.length; i++) {
+                      var w = data_h.climate[i];
+                      for (var j = 0; j < w.monthly_data.length; j++) {
+                          var m = w.monthly_data[j];
+                          for (var k = 0; k < m.data.length; k++) {
+                              var d = m.data[k];
+                              rows.push([w.weather_station, w.year, m.month, d.measure, d.value]);
                           }
                       }
                   }
