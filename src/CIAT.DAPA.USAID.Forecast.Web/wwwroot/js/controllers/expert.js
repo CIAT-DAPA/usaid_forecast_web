@@ -14,6 +14,7 @@ angular.module('ForecastApp')
       $scope.url.agronomic = AgronomicFactory.getUrl();
       $scope.url.climatology = HistoricalFactory.getUrl('');
       $scope.url.historical_climate = HistoricalFactory.getUrl('');
+      $scope.url.forecast_climate = ForecastFactory.getUrl();
 
       $scope.data_title = '';
 
@@ -74,7 +75,7 @@ angular.module('ForecastApp')
       }
 
       /*
-       * Event to change value in climatology
+       * Event to change value in historical climate
       */
       $scope.updateHistoricalClimate = function () {
           var ws_id = '';
@@ -157,6 +158,24 @@ angular.module('ForecastApp')
                           for (var k = 0; k < m.data.length; k++) {
                               var d = m.data[k];
                               rows.push([w.weather_station, w.year, m.month, d.measure, d.value]);
+                          }
+                      }
+                  }
+              }).error(function (error) {
+                  console.log(error);
+              });
+          }
+          else if (source === 'forecast_climate') {
+              $scope.data_title = 'Predicción climática';
+              $scope.headers = ['ws_id', 'year', 'month', 'measure', 'lower', 'normal', 'upper'];
+              ForecastFactory.get().success(function (data_f) {
+                  for (var i = 0; i < data_f.climate.length; i++) {
+                      var w = data_f.climate[i];
+                      for (var j = 0; j < w.data.length; j++) {
+                          var d = w.data[j];
+                          for (var k = 0; k < d.probabilities.length; k++) {
+                              var p = d.probabilities[k];
+                              rows.push([w.weather_station, d.year, d.month, p.measure, p.lower, p.normal, p.upper]);
                           }
                       }
                   }

@@ -10,12 +10,19 @@
 angular.module('ForecastApp')
     .factory('ForecastFactory', ['$http', 'config', function ($http, config) {
         var dataFactory = {};
+
+        /*
+         * Method that return the url to get data forecast
+        */
+        dataFactory.getUrl = function () {
+            return config.api_fs + config.api_fs_forecast;
+        }
         /*
         * Method that request the last forecast to the web api
         */
         dataFactory.get = function () {
             if (dataFactory.raw == null) {
-                dataFactory.raw = $http.get(config.api_fs + config.api_fs_forecast);
+                dataFactory.raw = $http.get(dataFactory.getUrl());
             }
             return dataFactory.raw;
         }
