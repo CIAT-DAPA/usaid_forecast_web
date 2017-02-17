@@ -47,6 +47,14 @@
                 </ul>
                 <div class="tab-content" id="content_filters">
                     <div class="fade tab-pane active in" role="tabpanel" id="content_geographic" aria-labelledby="tab_geographic">
+                        <h3>
+                            Descripción
+                        </h3>
+                        <p class="text-justify">
+                            Esta base de datos contiene información sobre la configuración geográfica de los pronósticos y datos históricos
+                            que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos
+                            que están disponibles en esta aplicación.
+                        </p>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label for="cmd_geographic" class="col-lg-11 text-left">
@@ -62,6 +70,14 @@
                         </form>
                     </div>
                     <div class="fade tab-pane" role="tabpanel" id="content_agronomic" aria-labelledby="tab_agronomic">
+                        <h3>
+                            Descripción
+                        </h3>
+                        <p class="text-justify">
+                            Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos
+                            que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los
+                            cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.
+                        </p>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-lg-2 control-label" for="cmd_agronomic_source">
@@ -90,6 +106,14 @@
                         </form>
                     </div>
                     <div class="fade tab-pane" role="tabpanel" id="content_climatology" aria-labelledby="tab_climatology">
+                        <h3>
+                            Descripción
+                        </h3>
+                        <p class="text-justify">
+                            En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología.
+                            Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras.
+                            Puede establecer una relación con los datos obtenidos en la sección de datos geográficos.
+                        </p>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-lg-2 control-label" for="climatology_states">Departamentos:</label>
@@ -100,7 +124,7 @@
                                 <div  class="col-lg-2">
                                     <select class="form-control col-lg-2" id="climatology_municipalities" ng-model="climatology.municipality" ng-options="m.name for m in climatology.state.municipalities" ng-change="updateClimatology()" required></select>
                                 </div>                                
-                                <label class="col-lg-2 control-label" for="climatology_ws">Estaciones climatologicas:</label>
+                                <label class="col-lg-2 control-label" for="climatology_ws">Estaciones climáticas:</label>
                                 <div class="col-lg-2">
                                     <select class="form-control col-lg-2" id="climatology_ws" ng-model="climatology.ws" ng-options="ws.name for ws in climatology.municipality.weather_stations" ng-change="updateClimatology()" required></select>
                                 </div>                                
@@ -119,6 +143,14 @@
                         </form>
                     </div>
                     <div class="fade tab-pane" role="tabpanel" id="content_historical_climate" aria-labelledby="tab_historical_climate">
+                        <h3>
+                            Descripción
+                        </h3>
+                        <p class="text-justify">
+                            Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar
+                            la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación
+                            y radiación solar de cada mes durante un intervalo de tiempo.
+                        </p>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-lg-2 control-label" for="historical_climate_states">Departamentos:</label>
@@ -129,7 +161,7 @@
                                 <div class="col-lg-2">
                                     <select class="form-control col-lg-2" id="historical_climate_municipalities" ng-model="historical_climate.municipality" ng-options="m.name for m in historical_climate.state.municipalities" ng-change="updateHistoricalClimate()" required></select>
                                 </div>
-                                <label class="col-lg-2 control-label" for="historical_climate_ws">Estaciones climatologicas:</label>
+                                <label class="col-lg-2 control-label" for="historical_climate_ws">Estaciones climáticas:</label>
                                 <div class="col-lg-2">
                                     <select class="form-control col-lg-2" id="historical_climate_ws" ng-model="historical_climate.ws" ng-options="ws.name for ws in historical_climate.municipality.weather_stations" ng-change="updateHistoricalClimate()" required></select>
                                 </div>
@@ -148,6 +180,14 @@
                         </form>
                     </div>
                     <div class="fade tab-pane" role="tabpanel" id="content_forecast_climate" aria-labelledby="tab_forecast_climate">
+                        <h3>
+                            Descripción
+                        </h3>
+                        <p class="text-justify">
+                            Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas.
+                            Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo,
+                            dentro o por encima del intervalo normal. 
+                        </p>
                         <form class="form-horizontal">                            
                             <div class="form-group">
                                 <label for="cmd_forecast_climate" class="col-lg-11 text-left">
@@ -163,6 +203,14 @@
                         </form>
                     </div>
                     <div class="fade tab-pane" role="tabpanel" id="content_forecast_yield" aria-labelledby="tab_forecast_yield">
+                        <h3>
+                            Descripción
+                        </h3>
+                        <p class="text-justify">
+                            Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción
+                            organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado 
+                            bajo varios escenarios climáticos.
+                        </p>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label for="cmd_forecast_yield" class="col-lg-11 text-left">
@@ -190,7 +238,7 @@
                 <a role="button" class="btn btn-success" id="exportCsv">Descargar</a>
             </div>
             <h2 class="text-center">{{data_title}}</h2>
-            <table class="table" id="data_raw">
+            <table class="table table-responsive" id="data_raw">
                 <tr>
                     <th ng-repeat="th in headers">{{th}}</th>
                 </tr>
