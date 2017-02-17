@@ -41,6 +41,9 @@
                     <li role="presentation">
                         <a href="#content_forecast_climate" id="tab_forecast_climate" role="tab" data-toggle="tab" aria-controls="content_forecast_climate">Predicción Climática</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#content_forecast_yield" id="tab_forecast_yield" role="tab" data-toggle="tab" aria-controls="content_forecast_yield">Pronóstico de producción</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="content_filters">
                     <div class="fade tab-pane active in" role="tabpanel" id="content_geographic" aria-labelledby="tab_geographic">
@@ -159,6 +162,21 @@
                             </div>
                         </form>
                     </div>
+                    <div class="fade tab-pane" role="tabpanel" id="content_forecast_yield" aria-labelledby="tab_forecast_yield">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="cmd_forecast_yield" class="col-lg-11 text-left">
+                                    <a href="{{url.forecast_climate}}" target="_blank">{{url.forecast_climate}}</a>
+                                </label>
+                                <div class="col-lg-1">
+                                    <div class="row">
+                                        <button id="cmd_forecast_yield" type="button" class="btn btn-primary" ng-click="getData('forecast_yield')">Buscar</button>
+                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </article>
@@ -177,7 +195,7 @@
                     <th ng-repeat="th in headers">{{th}}</th>
                 </tr>
                 <tr ng-repeat="row in content">
-                    <td ng-repeat="cell in row">{{cell}}</td>
+                    <td ng-repeat="cell in row track by $index">{{cell}}</td>
                 </tr>
             </table>
         </article>

@@ -183,6 +183,24 @@ angular.module('ForecastApp')
                   console.log(error);
               });
           }
+          else if (source === 'forecast_yield') {
+              $scope.data_title = 'Predicción climática';
+              $scope.headers = ['ws_id', 'cultivar', 'soil', 'start', 'end', 'measure', 'median','avg','min','max','quar_1','quar_2','quar_3','conf_lower','conf_upper','sd','perc_5','perc_95','coef_var'];
+              ForecastFactory.get().success(function (data_f) {
+                  for (var i = 0; i < data_f.yield.length; i++) {
+                      var w = data_f.yield[i];                      
+                      for (var j = 0; j < w.yield.length; j++) {
+                          var y = w.yield[j];                          
+                          for (var k = 0; k < y.data.length; k++) {
+                              var d = y.data[k];
+                              rows.push([w.weather_station, y.cultivar, y.soil, y.start, y.end, d.measure, d.median, d.avg, d.min, d.max, d.quar_1, d.quar_2, d.quar_3, d.conf_lower, d.conf_upper, d.sd, d.perc_5, d.perc_95, d.coef_var]);                              
+                          }
+                      }
+                  }
+              }).error(function (error) {
+                  console.log(error);
+              });
+          }
           $(".icon_loading").fadeOut();
           $scope.content = rows;
       }
