@@ -31,14 +31,7 @@ function Calendar(base, months_names, days_names, measure, back, forward, label,
 /*
  * Method that return a function to interpolate the values to color
 */
-Calendar.prototype.color = function (value) {
-    /*var domain = this.ranges.treashold;
-    var generator = d3.scale.linear()
-                      .domain([0, domain.length - 1])
-                      .range([d3.hsl("rgb(199, 107, 107)"), d3.hsl("rgb(107, 199, 113)")])
-                     .interpolate(d3.interpolateCubehelix);
-    var range = d3.range(domain.length).map(generator);
-    return d3.scale.threshold().domain(domain).range(range);*/
+Calendar.prototype.color = function (value) {    
     var domain = this.ranges.treashold.map(function (d) { return d + 1;});
     var range = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
     var color = d3.scale.threshold().domain(domain).range(range);
