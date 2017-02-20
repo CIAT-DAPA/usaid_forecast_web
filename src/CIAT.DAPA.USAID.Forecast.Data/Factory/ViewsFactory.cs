@@ -54,7 +54,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                     cp_name = c.name,
                     // Filter only the cultivars for the crop
                     cultivars = cultivars.Where(p => p.crop == c.id).OrderByDescending(p => p.order)
-                      .Select(p => new CultivarView() { id = p.id.ToString(), name = p.name, rainfed = p.rainfed }),
+                      .Select(p => new CultivarView() { id = p.id.ToString(), name = p.name, rainfed = p.rainfed, national = p.national }),
                     // Filter only the soils for the crop
                     soils = soils.Where(p => p.crop == c.id).OrderByDescending(p => p.order)
                       .Select(p => new SoilView() { id = p.id.ToString(), name = p.name })

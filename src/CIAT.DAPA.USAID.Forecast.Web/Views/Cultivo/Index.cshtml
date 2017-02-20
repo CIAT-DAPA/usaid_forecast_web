@@ -152,6 +152,7 @@
         </div>        
     </section>
     <!-- End Cultivars -->
+    <!-- Start Historical -->
     <section id="historical">
         <article class="row section-content">
             <div class="col-lg-12">
@@ -174,20 +175,7 @@
                             Esta base de datos contiene información sobre la configuración geográfica de los pronósticos y datos históricos
                             que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos
                             que están disponibles en esta aplicación.
-                        </p>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="cmd_geographic" class="col-lg-11 text-left">
-                                    <a href="{{url.geographic}}" target="_blank">{{url.geographic}}</a>
-                                </label>
-                                <div class="col-lg-1">
-                                    <div class="row">
-                                        <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('geographic')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </p>                        
                     </div>
                     <div class="fade tab-pane" role="tabpanel" id="content_agronomic" aria-labelledby="tab_agronomic">
                         <h3>
@@ -198,37 +186,12 @@
                             que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los
                             cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.
                         </p>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label" for="cmd_agronomic_source">
-                                    Tipo de busqueda:
-                                </label>
-                                <div class="col-lg-10">
-                                    <label class="radio-inline">
-                                        <input type="radio" ng-model="agronomic_source" value="cultivar" checked>Cultivares
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" ng-model="agronomic_source" value="soil">Suelos
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cmd_agronomic" class="col-lg-11 text-left">
-                                    <a href="{{url.agronomic}}" target="_blank">{{url.agronomic}}</a>
-                                </label>
-                                <div class="col-lg-1">
-                                    <div class="row">
-                                        <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </article>
     </section>
+    <!-- End Historical -->
 </div>
 
 

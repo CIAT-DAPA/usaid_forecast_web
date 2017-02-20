@@ -42,6 +42,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public bool rainfed { get; set; }
         /// <summary>
+        /// Sets whether the variety is national or imported
+        /// </summary>
+        [Display(Name = "Is national"), Required(ErrorMessage = "The national is required")]
+        [BsonRequired]
+        public bool national { get; set; }
+        /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
         [BsonRequired]
