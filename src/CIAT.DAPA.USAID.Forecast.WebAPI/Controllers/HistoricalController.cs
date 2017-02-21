@@ -22,9 +22,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         {
         }
 
-        // GET: api/[controller]/Climatology
+        // GET: api/Historical/Climatology
         [HttpGet]
-        [Route("api/[controller]/Climatology")]
+        [Route("api/Historical/Climatology")]
         public async Task<IActionResult> Climatology(string weatherstations)
         {
             try
@@ -61,9 +61,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             }
         }
 
-        // GET: api/[controller]/HistoricalClimatic
+        // GET: api/Historical/HistoricalClimatic
         [HttpGet]
-        [Route("api/[controller]/HistoricalClimatic")]
+        [Route("api/Historical/HistoricalClimatic")]
         public async Task<IActionResult> HistoricalClimatic(string weatherstations)
         {
             try
@@ -101,10 +101,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             }
         }
 
-        // GET: api/[controller]/HistoricalYield
+        // GET: api/Historical/HistoricalYield
         [HttpGet]
-        [Route("api/[controller]/HistoricalYield")]
-        public async Task<IActionResult> HistoricalYield(string weatherstations)
+        [Route("api/Historical/HistoricalYieldYears")]
+        public async Task<IActionResult> HistoricalYieldYears(string weatherstations)
         {
             try
             {
@@ -117,7 +117,38 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     ws[i] = getId(parameters[i]);
                     ids += weatherstations[i] + ",";
                 }
-                var json = (await db.historicalYield.byWeatherStationsAsync(ws)).Select(p => new
+                var json = (await db.historicalYield.getYearsAvailableAsync(ws));
+                writeEvent("Historical yield years ids: [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
+                return Json(json);
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        // GET: api/Historical/HistoricalYield
+        [HttpGet]
+        [Route("api/Historical/HistoricalYield")]
+        public async Task<IActionResult> HistoricalYield(string weatherstations, string years)
+        {
+            try
+            {
+                // Transform the string id to object id
+                string[] ws_parameter = weatherstations.Split(',');                
+                ObjectId[] ws = new ObjectId[ws_parameter.Length];
+                for (int i = 0; i < ws_parameter.Length; i++)
+                    ws[i] = getId(ws_parameter[i]);
+
+                // Transform the string years to int
+                string[] year_parameter = years.Split(',');
+                List<int> y = new List<int>();
+                for (int i = 0; i < year_parameter.Length; i++)
+                    y.Add(int.Parse(year_parameter[i]));
+
+                // Search data
+                var json = (await db.historicalYield.byWeatherStationsAsync(ws,y)).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
                     source = p.source,
@@ -146,7 +177,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         })
                     })
                 });
-                writeEvent("Historical yield ids: [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
+                writeEvent("Historical yield ids: [" + weatherstations + "] count: " + json.Count().ToString(), LogEvent.lis);
                 return Json(json);
             }
             catch (Exception ex)
@@ -156,9 +187,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             }
         }
 
-        // GET: api/[controller]/Get
+        // GET: api/Historical/Get
         [HttpGet]
-        [Route("api/[controller]/Get")]
+        [Route("api/Historical/Get")]
         public async Task<IActionResult> Get(string weatherstations)
         {
             try

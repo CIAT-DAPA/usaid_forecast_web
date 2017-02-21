@@ -45,14 +45,31 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// by the weather stations
         /// </summary>
         /// <param name="ws">Array of the weather stations ids</param>
+        /// <param name="years">Array of the years to search information</param>
         /// <returns>List of the historical yield data</returns>
-        public async virtual Task<List<HistoricalYield>> byWeatherStationsAsync(ObjectId[] ws)
+        public async virtual Task<List<HistoricalYield>> byWeatherStationsAsync(ObjectId[] ws, List<int> years)
         {
             // Filter all entities available.
             var query = from hc in collection.AsQueryable()
                         where ws.Contains(hc.weather_station)
                         select hc;
-            return query.ToList();
+            return query.ToList().Where(p => p.yield.Where(p2 => years.Contains(p2.start.Year)).Count() > 0).ToList();
+        }
+
+        /// <summary>
+        /// Method that return all year that have information in the database 
+        /// by the weather stations
+        /// </summary>
+        /// <param name="ws">Array of the weather stations ids</param>
+        /// <returns>List of years with information</returns>
+        public async virtual Task<List<int>> getYearsAvailableAsync(ObjectId[] ws)
+        {
+            // Filter all entities available.            
+            List<int> years = new List<int>();
+            var yields = collection.Find(p => ws.Contains(p.weather_station)).Project(x => x.yield).ToListAsync().Result;
+            foreach (var y in yields)
+                years.AddRange(y.Select(p => p.start.Year));
+            return years.Distinct().ToList();
         }
     }
 }

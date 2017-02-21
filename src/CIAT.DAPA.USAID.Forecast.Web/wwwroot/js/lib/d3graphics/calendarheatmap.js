@@ -68,39 +68,41 @@ CalendarHeatmap.prototype.render = function () {
         .attr("height", that.cell_size())
         .attr("x", function (d) { return d3.time.weekOfYear(d) * that.cell_size(); })
         .attr("y", function (d) { return d.getDay() * that.cell_size(); })
-        .datum(format);
+        .datum(that.base.formats.date);
 
-    var legend = svg.selectAll(".legend")
-        .data(month)
+    var legend = this.base.svg.append("g")
+        .attr("class", "month_names")
+        .selectAll(".legend")
+        .data(that.base.month_names)
         .enter().append("g")
         .attr("class", "legend")
         .attr("transform", function (d, i) { return "translate(" + (((i + 1) * 50) + 8) + ",0)"; });
 
     legend.append("text")
-        .attr("class", function (d, i) { return month[i] })
+        .attr("class", function (d, i) { return that.base.month_names[i] })
         .style("text-anchor", "end")
         .attr("dy", "-.25em")
-        .text(function (d, i) { return month[i] });
+        .text(function (d, i) { return that.base.month_names[i] });
 
-    svg.selectAll(".month")
+    this.base.svg.selectAll(".month")
         .data(function (d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
         .enter().append("path")
         .attr("class", "month")
-        .attr("id", function (d, i) { return month[i] })
+        .attr("id", function (d, i) { return that.base.month_names[i] })
         .attr("d", monthPath);
 
-    var data = d3.nest()
+    /*var data = d3.nest()
         .key(function (d) { return d.Fecha; })
         .rollup(function (d) { return d[0].RendimientoPromedio; })
         .map(items);
 
     rect.filter(function (d) { return d in data; })
-        .attr("class", function (d) { return "day " + color(data[d]); })
+        .attr("class", function (d) { return "day " + that.color(data[d]); })
         .select("title")
         .text(function (d) { return d + ": " + round(data[d]); });
 
     //  Tooltip Object
-    var tooltip = d3.select("body")
+    /*var tooltip = d3.select("body")
         .append("div").attr("id", "tooltip")
         .style("position", "absolute")
         .style("z-index", "10")
@@ -126,7 +128,7 @@ CalendarHeatmap.prototype.render = function () {
             .style("opacity", 0);
         var $tooltip = $("#tooltip");
         $tooltip.empty();
-    });
+    });*/
 
     function monthPath(t0) {
         var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
