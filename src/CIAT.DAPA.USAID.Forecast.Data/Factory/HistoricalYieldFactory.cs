@@ -12,13 +12,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
     /// <summary>
     /// This class allow to get information about historical yield collection
     /// </summary>
-    public class HistoricalYieldFactory: FactoryDB<HistoricalYield>
+    public class HistoricalYieldFactory : FactoryDB<HistoricalYield>
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
-        public HistoricalYieldFactory(IMongoDatabase database): base(database, LogEntity.hs_historical_yield)
+        public HistoricalYieldFactory(IMongoDatabase database) : base(database, LogEntity.hs_historical_yield)
         {
 
         }
@@ -65,11 +65,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <returns>List of the historical yield data</returns>
         public async virtual Task<List<HistoricalYield>> byWeatherStationsYearsAsync(ObjectId[] ws, List<int> years)
         {
-            // Filter all entities available.
-            var query = from hc in collection.AsQueryable()
-                        where ws.Contains(hc.weather_station)
-                        select hc;
-            return query.ToList().Where(p => p.yield.Where(p2 => years.Contains(p2.start.Year)).Count() > 0).ToList();
+            List<HistoricalYield> answer = new List<HistoricalYield>();
+            // Filter by weather station.
+            var query = collection.AsQueryable().Where(p=> ws.Contains(p.weather_station)).ToList();
+            // Get only the years needed
+            foreach (var hy in query)
+                answer.Add(new HistoricalYield()
+                {
+                    id = hy.id,
+                    source = hy.source,
+                    weather_station = hy.weather_station,
+                    yield = hy.yield.Where(p2 => years.Contains(p2.start.Year)).OrderBy(p=>p.start)
+                });
+            return answer;
         }
 
         /// <summary>
