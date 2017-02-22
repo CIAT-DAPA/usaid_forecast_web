@@ -8,11 +8,13 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory) {
+  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory) {
       $scope.crop_name = tools.search('cultivo');
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
-      $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);      
+      $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
+      // Get the guild
+      $scope.guild = GuildFactory.getByCrop($scope.crop_name);
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       $scope.municipalities = [];
@@ -29,7 +31,9 @@ angular.module('ForecastApp')
       // Agronomic data
       $scope.data_a = null;
       // Historical data
+      $scope.data_h_years = null;
       $scope.data_h = null;
+      $scope.historical_yield = {};
       // Forecast data
       $scope.data_f = null;
       // Yield crop filtered by weather station
@@ -54,25 +58,30 @@ angular.module('ForecastApp')
               // Load the list of the cultivars and soils from the agronomic configuration
               $scope.cultivars = CultivarsFactory.getByCrop($scope.data_a, $scope.crop_name);
               $scope.soils = SoilFactory.getByCrop($scope.data_a, $scope.crop_name);
+
+              // Load the Forecast information
+              ForecastFactory.get().success(function (data_f) {
+                  $scope.data_f = data_f;
+                  // Filter data for weather station
+                  $scope.yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
+                  $scope.cultivars = CultivarsFactory.getCultivarsAvailableForecast($scope.cultivars, $scope.yield_ws);
+                  // Set the period of the forecast
+                  var temp_date = $scope.gv_months[0].split('-');
+                  $scope.period_start = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
+                  temp_date = $scope.gv_months[1].split('-');
+                  $scope.period_end = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
+                  // Draw the graphics
+                  fixed_data_forecast();
+              }).error(function (error) {
+                  console.log(error);
+              });
+
+              
               // Load the historical information
-              HistoricalFactory.get($scope.ws_entity.id).success(function (data_h) {
-                  $scope.data_h = data_h;
-                  // Load the Forecast information
-                  ForecastFactory.get().success(function (data_f) {
-                      $scope.data_f = data_f;
-                      // Filter data for weather station
-                      $scope.yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
-                      $scope.cultivars = CultivarsFactory.getCultivarsAvailableForecast($scope.cultivars, $scope.yield_ws);
-                      // Set the period of the forecast
-                      var temp_date = $scope.gv_months[0].split('-');
-                      $scope.period_start = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
-                      temp_date = $scope.gv_months[1].split('-');
-                      $scope.period_end = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
-                      // Draw the graphics
-                      fixed_data();
-                  }).error(function (error) {
-                      console.log(error);
-                  });
+              HistoricalYieldFactory.getYears($scope.ws_entity.id).success(function (data_h_years) {                  
+                  $scope.data_h_years = data_h_years;
+                  $scope.historical_yield.model = $scope.data_h_years[0];
+                  fixed_data_historical('model');
               }).error(function (error) {
                   console.log(error);
               });
@@ -86,7 +95,7 @@ angular.module('ForecastApp')
       /*
        * Method that filter the data to show the information in the screen getted from the web api
       */
-      function fixed_data() {          
+      function fixed_data_forecast() {          
 
           // Forecast for every cultivar
           for (var i = 0; i < $scope.cultivars.length; i++) {
@@ -104,7 +113,7 @@ angular.module('ForecastApp')
                   });
 
                   // Draw the graphic in the screen
-                  draw(cu, $scope.cultivars[i].soils[0]);
+                  draw_forecast(cu, $scope.cultivars[i].soils[0]);
               }
               catch (err) {
                   console.log(err);
@@ -116,11 +125,11 @@ angular.module('ForecastApp')
       }
 
       /*
-       * Method that draw the graphics by a cultivar and soil
+       * Method that draw the graphics by a cultivar and soil of the forecast
        * (object) cu: Cultivar entity
        * (object) so: Soil entity
       */
-      function draw(cu, so) {
+      function draw_forecast(cu, so) {
           // Set default color for all buttons of the soil by the cultivar
           $('#navbar_cultivar_' + cu.id + ' button').removeClass('btn-primary');
           $('#soil_'+ cu.id + '_' + so.id).addClass('btn-primary');
@@ -163,4 +172,25 @@ angular.module('ForecastApp')
           }
       }
 
+      /*
+      */
+      function fixed_data_historical(source) {          
+          if (source === 'model') {
+              // Load the historical information
+              HistoricalYieldFactory.getByWeatherStationYear($scope.ws_entity.id, $scope.historical_yield.model).success(function (data_h) {                  
+                  $scope.data_h = data_h;
+
+                  // Draw calendar heatmap
+                  var base_chm = new Base('#cultivar_heatmap_model', $scope.data_h);
+                  base_chm.setMargin(10, 30, 10, 10);
+                  base_chm.setDateNames(config.month_names, config.days_names);
+                  var c_heatmap = new CalendarHeatmap(base_chm, $scope.yield_ranges);
+                  c_heatmap.render();
+              }).error(function (error) {
+                  console.log(error);
+              });
+          }
+      }
+
+      $scope.search_historical = fixed_data_historical;
   });

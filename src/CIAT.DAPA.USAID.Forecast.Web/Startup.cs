@@ -45,6 +45,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                 options.api_fs_agronomic = Configuration.GetSection("API_Forecast:api_fs_agronomic").Value;
                 options.api_fs_forecast = Configuration.GetSection("API_Forecast:api_fs_forecast").Value;
                 options.api_fs_historical = Configuration.GetSection("API_Forecast:api_fs_historical").Value;
+                options.api_fs_historical_yield_years = Configuration.GetSection("API_Forecast:api_fs_historical_yield_years").Value;
+                options.api_fs_historical_yield = Configuration.GetSection("API_Forecast:api_fs_historical_yield").Value;
             });
 
             services.AddMvc();

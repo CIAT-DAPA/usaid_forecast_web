@@ -23,7 +23,7 @@ CalendarHeatmap.prototype.color = function (value) {
 /*
  * Get the size of a cell in the graphic
 */
-Calendar.prototype.cell_size = function () { return 12; }
+CalendarHeatmap.prototype.cell_size = function () { return 12; }
 
 /*
  * Method that render the graphic in a container
@@ -31,7 +31,7 @@ Calendar.prototype.cell_size = function () { return 12; }
 CalendarHeatmap.prototype.render = function () {
     var that = this;
 
-    this.base.init(true, 0.5);
+    this.base.init(false, 105);
 
     this.base.svg
         .data(d3.range(2016, 2017))

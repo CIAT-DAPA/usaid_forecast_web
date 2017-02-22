@@ -37,6 +37,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Get or set the path to get historical information
         /// </summary>
         public string historical { get; set; }
+        /// <summary>
+        /// Get or set the path to get yield historical years information
+        /// </summary>
+        public string historical_yield_years { get; set; }
+        /// <summary>
+        /// Get or set the path to get yield historical information
+        /// </summary>
+        public string historical_yield { get; set; }
 
         /// <summary>
         /// Method Construct

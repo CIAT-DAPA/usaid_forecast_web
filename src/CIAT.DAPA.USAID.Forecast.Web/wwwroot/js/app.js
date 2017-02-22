@@ -17,6 +17,8 @@ angular
       api_fs_agronomic: $('#api_fs_agronomic').val(),
       api_fs_forecast: $('#api_fs_forecast').val(),
       api_fs_historical: $('#api_fs_historical').val(),
+      api_fs_historical_yield: $('#api_fs_historical_yield').val(),
+      api_fs_historical_yield_years: $('#api_fs_historical_yield_years').val(),
       /* Names in spanish about dates */
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
@@ -31,22 +33,26 @@ angular
       /* Yield vars */
       yield_default_var: [
           {
-              crop: "arroz", vars:
-                  [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/héc', default: true },
+              crop: "arroz",
+              vars: [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/héc', default: true },
                    { name: "d_har", label: "Cosecha", metric: 'día', default: false },
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }]
+                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }],
+              guild: { name: "FEDEARROZ" },
+              model: { name: "Oryza 2000" }
           },
           {
-              crop: "maiz", vars:
-                  [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/héc', default: true },
+              crop: "maiz",
+              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/héc', default: true },
                    { name: "d_har", label: "Cosecha", metric: 'día', default: false },
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },
                   { name: "d_dry", label: "Secado", metric: 'día', default: false },
-                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }]
+                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }],
+              guild: { name: "FENALCE" },
+              model: { name: "DSSAT" }
           }]
   })
   .factory('tools', function () {
