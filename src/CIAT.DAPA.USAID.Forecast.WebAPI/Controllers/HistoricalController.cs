@@ -148,7 +148,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     y.Add(int.Parse(year_parameter[i]));
 
                 // Search data
-                var json = (await db.historicalYield.byWeatherStationsAsync(ws,y)).Select(p => new
+                var json = (await db.historicalYield.byWeatherStationsYearsAsync(ws,y)).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
                     source = p.source,

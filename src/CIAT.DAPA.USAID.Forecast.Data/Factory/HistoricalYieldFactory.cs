@@ -42,12 +42,28 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         /// <summary>
         /// Method that return all registers in the database 
-        /// by the weather stations
+        /// by the weather station and source
+        /// </summary>
+        /// <param name="ws">ID weather station</param>
+        /// <param name="source">Name of source</param>
+        /// <returns>List of the historical yield data</returns>
+        public async virtual Task<HistoricalYield> byWeatherStationSourceAsync(ObjectId ws, string source)
+        {
+            // Filter all entities available.
+            var query = from hc in collection.AsQueryable()
+                        where ws == hc.weather_station && hc.source.Equals(source)
+                        select hc;
+            return query.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Method that return all registers in the database 
+        /// by the weather stations and years
         /// </summary>
         /// <param name="ws">Array of the weather stations ids</param>
         /// <param name="years">Array of the years to search information</param>
         /// <returns>List of the historical yield data</returns>
-        public async virtual Task<List<HistoricalYield>> byWeatherStationsAsync(ObjectId[] ws, List<int> years)
+        public async virtual Task<List<HistoricalYield>> byWeatherStationsYearsAsync(ObjectId[] ws, List<int> years)
         {
             // Filter all entities available.
             var query = from hc in collection.AsQueryable()

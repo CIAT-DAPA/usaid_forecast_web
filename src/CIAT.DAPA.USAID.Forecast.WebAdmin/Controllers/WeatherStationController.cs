@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Import;
 using MongoDB.Bson;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
+using CIAT.DAPA.USAID.Forecast.Data.Database;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -525,7 +526,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         }
                     }
                     // Import to the database
-                    HistoricalYield hy_new;
+                    HistoricalYield hy_new, hy_entity;
                     YieldCrop yc_entity;
                     List<YieldCrop> yc_entities;
                     List<YieldData> yd_entities;
@@ -535,10 +536,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     // 
                     foreach (var ws in raw.Select(p => p.weather_station).Distinct())
                     {
-                        hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
+                        hy_entity = await db.historicalYield.byWeatherStationSourceAsync(ForecastDB.parseId(ws), source);
+                        if (hy_entity == null)
+                            hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
+                        else
+                            hy_new = new HistoricalYield() { id = hy_entity.id, source = hy_entity.source, weather_station = hy_entity.weather_station, yield = hy_entity.yield };
                         var yield_crop = raw.Where(p => p.weather_station == ws);
                         yc_entities = new List<YieldCrop>();
-                        int count_yc = yield_crop.Count();
+                        //int count_yc = yield_crop.Count();
                         foreach (var yc in yield_crop)
                         {
                             yc_entity = new YieldCrop() { cultivar = getId(yc.cultivar), soil = getId(yc.soil), start = yc.start, end = yc.end };
@@ -567,7 +572,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             yc_entities.Add(yc_entity);
                         }
                         hy_new.yield = yc_entities;
-                        await db.historicalYield.insertAsync(hy_new);
+                        if (hy_entity == null)
+                            await db.historicalYield.insertAsync(hy_new);
+                        else
+                            await db.historicalYield.updateAsync(hy_entity, hy_new);
+
                     }
                     msg = new Message()
                     {
@@ -649,7 +658,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     label = form["label"],
                     lower = int.Parse(form["lower"]),
                     upper = int.Parse(form["upper"])
-                };               
+                };
                 await db.weatherStation.addRangeAsync(entity_new, range);
                 writeEvent(id + "range add: " + range.crop.ToString() + "-" + range.label + "-" + range.lower.ToString() + "-" + range.upper.ToString(), LogEvent.upd);
                 return RedirectToAction("Range", new { id = id });
@@ -671,7 +680,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Get original crop data
                 WeatherStation entity_new = await db.weatherStation.byIdAsync(ws);
                 // Delete the setup
-                await db.weatherStation.deleteRangeAsync(entity_new, crop,label, lower, upper);
+                await db.weatherStation.deleteRangeAsync(entity_new, crop, label, lower, upper);
                 writeEvent(ws + "range del: " + crop + "-" + label + "-" + lower.ToString() + "-" + upper.ToString(), LogEvent.upd);
                 return RedirectToAction("Range", new { id = ws });
             }
