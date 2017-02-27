@@ -13,7 +13,8 @@ angular.module('ForecastApp')
       $scope.gv_municipalities = [];
 
       // Get the municipality from the url
-      $scope.municipality_name = tools.search('municipio');      
+      $scope.municipality_name = tools.search('municipio');
+      $scope.crop_name = tools.search('cultivo');
 
       $(".navbar-default li").removeClass("active");
       if ($scope.type === 'climate') {
