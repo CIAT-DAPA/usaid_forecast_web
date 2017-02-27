@@ -8,7 +8,7 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('ClimateCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory) {      
+  .controller('ClimateCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory) {
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       $scope.municipalities = [];
@@ -57,7 +57,13 @@ angular.module('ForecastApp')
       function draw() {
           // Forecast
           var months = ClimateFactory.getProbabilities($scope.data_f, $scope.ws_entity.id, 'prec');
-          var ctrs = '';
+          var ctrs = '<div id="climate_carousel" class="carousel slide" data-ride="carousel">' +
+                        '<ol class="carousel-indicators">' +
+                            '<li data-target="#climate_carousel" data-slide-to="0" class="active"></li>' +
+                            '<li data-target="#climate_carousel" data-slide-to="1"></li>' +
+                            '<li data-target="#climate_carousel" data-slide-to="2"></li>' +
+                        '</ol>' +
+                        '<div class="carousel-inner" role="listbox">';
           var period = '';
           // This cicle add the html code for the graphic pie.
           for (var i = 0; i < months.length; i++) {
@@ -66,7 +72,9 @@ angular.module('ForecastApp')
                   period = m.month_name + ', ' + m.year + ' a ';
               else if (i == (months.length - 1))
                   period = period + m.month_name + ', ' + m.year;
-              ctrs = ctrs + '<article class="col-lg-2 article_content">' +
+              if (i == 0 || i == 2 || i == 4)
+                  ctrs = ctrs + '<section class="item active">';
+              ctrs = ctrs + '<article class="col-lg-4 article_content ' + ((i == 0 || i == 2 || i == 4) ? 'col-lg-offset-2' : '') + '">' +
                                 '<div class="section-content">' +
                                     '<h3 class="text-center">' + m.year + '-' + m.month_name + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
@@ -75,7 +83,18 @@ angular.module('ForecastApp')
                                     '</p>' +
                                 '</div>' +
                             '</article>';
+              if (i == 1 || i == 3 || i == 5)
+                  ctrs = ctrs + '</section>';
           }
+          ctrs = ctrs + '<a class="left carousel-control" href="#climate_carousel" role="button" data-slide="prev"> ' +
+                            '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>' +
+                            '<span class="sr-only">Previous</span>' +
+                        '</a>' +
+                        '<a class="right carousel-control" href="#climate_carousel" role="button" data-slide="next">' +
+                            '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>' +
+                            '<span class="sr-only">Next</span>' +
+                        '</a>' +
+                 '</div>';
           $('#climate-period').html(period);
           $("#probabilities_pies").html(ctrs);
           // This cicle add the graphic pie and render the information of the forecast
@@ -87,7 +106,7 @@ angular.module('ForecastApp')
                   $scope.period_end = m.month_name + ', ' + m.year;
               var id = '#pie' + m.year + '-' + m.month;
               var climatology_lower = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.lower);
-              var climatology_upper = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.upper);              
+              var climatology_upper = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.upper);
               var data = { percentages: m.probabilities, center: '[' + climatology_lower[0].value.toFixed(0) + ' - ' + climatology_upper[0].value.toFixed(0) + ']' };
               var base = new Base(id, data);
               var pie = new Pie(base);
@@ -96,12 +115,15 @@ angular.module('ForecastApp')
               // Add summary
               var summary = ClimateFactory.summary(m.raw);
               var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
-                                 'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> '+
+                                 'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
                                  'lo normal es que haya una precipitación entre <span class="text-bold">' + climatology_lower[0].value.toFixed(0) +
                                  ' mm y ' + climatology_upper[0].value.toFixed(0) + ' mm</span>, la predicción climática determina que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
           }
+
+          $('#probabilities_pies section').removeClass('active');
+          $('#probabilities_pies section:first').addClass('active');
 
           // Historical data for every climate variable
           for (var i = 0; i < $scope.climate_vars.length; i++) {
@@ -123,7 +145,7 @@ angular.module('ForecastApp')
                   var bar = new Bars(base_c);
                   bar.render();
                   var compute_c = ClimatologyFactory.summary(climatology);
-                  
+
                   cv.month_start = climatology[0].month_name;
                   cv.month_end = climatology[climatology.length - 1].month_name;
                   cv.max = compute_c.max;
@@ -138,7 +160,7 @@ angular.module('ForecastApp')
                   var tab_enable = '';
                   for (var j = 0; j < cv.historical_months.length; j++) {
                       var cvm = cv.historical_months[j];
-                      tabs += '<li role="presentation"' + (j==0 ? ' class="active"' : '') + '>' +
+                      tabs += '<li role="presentation"' + (j == 0 ? ' class="active"' : '') + '>' +
                                 '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content"> ' + cvm + '</a>' +
                              '</li>';
                       content += '<div class="tab-pane fade active in ' + cv.value + '" role="tabpanel" id="' + cv.value + '_' + cvm + '_content" aria-labelledby="' + cv.value + '_' + cvm + '_tab">' +
@@ -151,7 +173,7 @@ angular.module('ForecastApp')
                           tab_enable = cv.value + '_' + cvm + '_content';
                   }
                   tabs += '</ul>';
-                  content += '</div>';                  
+                  content += '</div>';
                   $('#climatic_history_content_' + cv.value).html(tabs + content);
                   // Add the event to show the tabs on click
                   $('#' + cv.value + '_tabs a').click(function (e) {

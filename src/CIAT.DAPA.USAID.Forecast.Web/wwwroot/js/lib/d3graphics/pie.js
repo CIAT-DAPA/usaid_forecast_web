@@ -58,7 +58,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
 */
 Pie.prototype.render = function () {
 
-    this.base.init(true, 1);
+    this.base.init(true, 0.6);
     this.radius = Math.min(this.base.width, this.base.height) / 2;
     var pie = this.base.svg.append('g')
                   .attr('transform', 'translate(' + this.base.width / 2 + ',' + this.base.height / 2 + ')');
