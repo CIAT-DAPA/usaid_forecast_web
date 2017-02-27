@@ -11,26 +11,7 @@
     <input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
     <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
     <!-- End global variables -->
-    <!-- Start weather station -->
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_municipality">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span class="navbar-brand navbar-text">Municipios</span>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar_municipality">
-                <ul class="nav navbar-nav">
-                    <li ng-repeat="m in municipalities"><a href="/Clima?municipio={{m.name}}">{{m.name}}</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- End weather station -->
+    
     <!-- Start Probabilities -->
     <section id="probabilities">
         <div class="row section-content">

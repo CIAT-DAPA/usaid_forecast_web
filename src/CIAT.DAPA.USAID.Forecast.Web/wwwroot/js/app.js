@@ -65,5 +65,14 @@ angular
           if (!results[2]) return '';
           return decodeURIComponent(results[2].replace(/\+/g, " "));
       }
+
+      _tools.source = function () {          
+          if (window.location.href.includes('Clima') || window.location.href.includes('clima'))
+              return 'climate';
+          else if (window.location.href.includes('Cultivo') || window.location.href.includes('cultivo'))
+              return 'crop';
+          else
+              return 'expert';
+      }
       return _tools;
   });

@@ -1,25 +1,7 @@
 ﻿body {
     margin: 0 auto;
     width: 100%;
-}
-
-/* Navbar */
-.navbar-text {
-    display: none;
-}
-
-.navbar-collapse, .navbar-location {
-    text-align: center;
-}
-
-.navbar-nav {
-    display: inline-block;
-    float: none;
-}
-
-.navbar {
-    margin: 0px;
-    border: 0;
+    font-family: 'Segoe UI', 'Arial', 'Helvetica';
 }
 
 /* Body content */
@@ -245,24 +227,18 @@
 
 /* Calendar Heatmap */
 .heatmap_day {
-  fill: #fff;
-  stroke: #ccc;
+    fill: #fff;
+    stroke: #ccc;
 }
 
 .heatmap_month {
-  fill: none;
-  stroke: #000;
-  stroke-width: 2px;
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
 }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-    /* Hide header logo */
-    .header-logo {
-        display: none;
-    }
-
-    .navbar-text {
-        display: block;
-    }
+    
+    
 }

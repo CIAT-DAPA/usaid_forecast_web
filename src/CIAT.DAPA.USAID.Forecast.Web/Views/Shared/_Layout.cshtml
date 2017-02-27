@@ -8,18 +8,19 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="shortcut icon" href="http://www.aclimatecolombia.org/wp-content/uploads/2013/06/CONVENIO3.png">
 
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
-<body>
+<body ng-app="ForecastApp">
     <header class="header-logo">
         <h1 class="text-center">
             <a href="http://www.aclimatecolombia.org"><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
         </h1>
     </header>
-    <nav class="navbar navbar-default">
-        <div class="container">
+    <nav class="navbar navbar-default" id="mainMenu">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_main">
                     <span class="sr-only">Toggle navigation</span>
@@ -27,20 +28,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand navbar-text">Aclímate Colombia - Pronósticos</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
             </div>
-            <div class="navbar-collapse collapse" id="navbar_main">
+            <div class="navbar-collapse collapse" id="navbar_main" ng-controller="LocationCtrl">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Clima","Index","Clima")</li>
-                    <li>@Html.ActionLink("Arroz", "Index", "Cultivo",new { cultivo = "arroz" })</li>
-                    <li>@Html.ActionLink("Maíz", "Index", "Cultivo", new { cultivo = "maíz" })</li>
-                    <li>@Html.ActionLink("Experto", "Index", "Experto")</li>
+                    <li id="menu_main_climate">@Html.ActionLink("Clima","Index","Clima")</li>
+                    <li id="menu_main_rice">@Html.ActionLink("Arroz", "Index", "Cultivo",new { cultivo = "arroz" })</li>
+                    <li id="menu_main_maize">@Html.ActionLink("Maíz", "Index", "Cultivo", new { cultivo = "maíz" })</li>
+                    <li id="menu_main_expert">@Html.ActionLink("Experto", "Index", "Experto")</li>
                 </ul>
+                <!-- Start weather station -->                
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{municipality_name}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" ng-switch="type">
+                            <li ng-switch-when="climate"  ng-repeat="m in municipalities"><a href="/Clima?municipio={{m.name}}">{{m.name}}</a></li>
+                            <li ng-switch-when="crop" ng-repeat="m in municipalities"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- End weather station -->                
             </div>
         </div>
     </nav>
 
-    <div class="body-content" ng-app="ForecastApp">
+    <div class="body-content">
         <div class="container-fluid">
             @RenderBody()
         </div>
@@ -69,10 +81,12 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/js/menu.js"></script>
     <script src="~/js/app.js"></script>
     <script src="~/js/services/forecast.js"></script>
     <script src="~/js/services/historical.js"></script>
     <script src="~/js/services/base.js"></script>
+    <script src="~/js/controllers/location.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

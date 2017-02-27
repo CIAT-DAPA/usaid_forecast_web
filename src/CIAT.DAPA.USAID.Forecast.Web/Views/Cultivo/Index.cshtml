@@ -14,26 +14,7 @@
     <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
     <input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
     <!-- End global variables -->
-    <!-- Start weather station -->
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_municipality">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span class="navbar-brand navbar-text">Municipios</span>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar_municipality">
-                <ul class="nav navbar-nav">
-                    <li ng-repeat="m in municipalities"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- End weather station -->
+    
     <!-- Start Description -->
     <section id="description">
         <div class="row section-content">

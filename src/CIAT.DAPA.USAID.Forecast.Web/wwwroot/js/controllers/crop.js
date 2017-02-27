@@ -9,7 +9,7 @@
  */
 angular.module('ForecastApp')
   .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory) {
-      $scope.crop_name = tools.search('cultivo');
+      $scope.crop_name = tools.search('cultivo');      
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
       $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
