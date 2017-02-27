@@ -157,6 +157,22 @@ angular.module('ForecastApp')
             return data;
         }
 
+        /*
+        * Method that filter all cultivars of the crop
+        * (object) raw: Json with all agronomic data
+        * (string) crop: Crop's name
+        * (bool) national: True for national cultivar, false for imported cultivar
+        */
+        dataFactory.getByCropNational = function (raw, crop, national) {
+            var data = raw.filter(function (item) {
+                return item.cp_name.toLowerCase() === crop.toLowerCase();
+            })[0];
+            var cultivars = data.cultivars.filter(function (item) {
+                return item.national == national;
+            });
+            return cultivars;
+        }
+
         return dataFactory;
     }])
     .factory('SoilFactory', ['config', function (config) {

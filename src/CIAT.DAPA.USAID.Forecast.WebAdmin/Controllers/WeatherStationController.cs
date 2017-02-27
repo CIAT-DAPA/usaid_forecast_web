@@ -536,11 +536,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     // 
                     foreach (var ws in raw.Select(p => p.weather_station).Distinct())
                     {
+                        /*
                         hy_entity = await db.historicalYield.byWeatherStationSourceAsync(ForecastDB.parseId(ws), source);
                         if (hy_entity == null)
                             hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
                         else
-                            hy_new = new HistoricalYield() { id = hy_entity.id, source = hy_entity.source, weather_station = hy_entity.weather_station, yield = hy_entity.yield };
+                            hy_new = new HistoricalYield() { id = hy_entity.id, source = hy_entity.source, weather_station = hy_entity.weather_station, yield = hy_entity.yield };*/
+                        hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
                         var yield_crop = raw.Where(p => p.weather_station == ws);
                         yc_entities = new List<YieldCrop>();
                         //int count_yc = yield_crop.Count();
@@ -572,10 +574,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             yc_entities.Add(yc_entity);
                         }
                         hy_new.yield = yc_entities;
+                        await db.historicalYield.insertAsync(hy_new);
+                        /*
                         if (hy_entity == null)
                             await db.historicalYield.insertAsync(hy_new);
                         else
-                            await db.historicalYield.updateAsync(hy_entity, hy_new);
+                            await db.historicalYield.updateAsync(hy_entity, hy_new);*/
 
                     }
                     msg = new Message()

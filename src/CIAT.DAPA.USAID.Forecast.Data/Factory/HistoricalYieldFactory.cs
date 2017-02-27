@@ -93,7 +93,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var yields = collection.Find(p => ws.Contains(p.weather_station)).Project(x => x.yield).ToListAsync().Result;
             foreach (var y in yields)
                 years.AddRange(y.Select(p => p.start.Year));
-            return years.Distinct().ToList();
+            return years.Distinct().OrderBy(p=> p).ToList();
         }
     }
 }

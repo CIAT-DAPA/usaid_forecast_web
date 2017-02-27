@@ -243,6 +243,18 @@
     stroke-width: 3;
 }
 
+/* Calendar Heatmap */
+.heatmap_day {
+  fill: #fff;
+  stroke: #ccc;
+}
+
+.heatmap_month {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2px;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide header logo */

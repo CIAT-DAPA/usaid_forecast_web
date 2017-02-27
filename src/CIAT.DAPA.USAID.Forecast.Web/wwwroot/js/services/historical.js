@@ -147,7 +147,7 @@ angular.module('ForecastApp')
         }
         return dataFactory;
     }])
-    .factory('HistoricalYieldFactory', ['$http','config', function ($http, config) {
+    .factory('HistoricalYieldFactory', ['$http', 'config', function ($http, config) {
 
         var dataFactory = {};
 
@@ -155,7 +155,7 @@ angular.module('ForecastApp')
          * Method that return the url to get yield historical years
          * (string) ws: Concatenate string with ids of the weather stations
         */
-        dataFactory.getUrlYears = function (ws) {            
+        dataFactory.getUrlYears = function (ws) {
             return config.api_fs + config.api_fs_historical_yield_years + ws;
         }
 
@@ -189,6 +189,62 @@ angular.module('ForecastApp')
                 dataFactory.raw = $http.get(dataFactory.getUrl(ws, years));
             }
             return dataFactory.raw;
+        }
+
+        /*
+        * Method that filter the cultivars and make a summary by specific cultivar
+        * (object) raw: Json with all yield historical
+        * (object[]) cultivars: Cultivars list to summary data
+        * (string) measure: Cultivars list to summary data
+        */
+        dataFactory.getByCultivars = function (raw, cultivars, measure) {
+            var summary = [];
+            var j = 0;
+            var yield_row = null;
+
+            // Get only yield data
+            var yield_h = raw.map(function (item) { return item.yield; });
+            // Filter by cultivar
+            var data = yield_h[0].filter(function (item) {
+                return cultivars.filter(function (item2) { return item2.id === item.cultivar }).length > 0;
+            });
+
+            for (var i = 0; i < data.length; i++) {
+                j = indexByDate(summary, data[i].start);
+                // Get yield var
+                yield_row = data[i].data.filter(function (item) { return item.measure === measure; });                
+                // Create a new row by every start date
+                if (j < 0 && yield_row.length > 0) {
+                    var obj = {
+                        start: data[i].start,
+                        end: data[i].end,
+                        avg_acu: yield_row[0].avg,
+                        count: 1
+                    };
+                    summary.push(obj);
+                }
+                else if (yield_row.length > 0) {
+                    summary[j].avg_acu += yield_row[0].avg;
+                    summary[j].count += 1;
+                }
+            }
+            // Calculate the avg for every date
+            for (var i = 0; i < summary.length; i++)
+                summary[i].avg = summary[i].avg_acu / summary[i].count;
+            return summary;
+        }
+
+        /*
+        * Method that search a yield crop data by its start date.
+        * If the date doesn't exist in the array, it will return -1
+        * (object[]) data_yield: array of yield crop
+        * (string) date: Date to search in data yield
+        */
+        function indexByDate(data_yield, date) {
+            for (var i = 0; i < data_yield.length; i++)
+                if (data_yield[i].start === date)
+                    return i;
+            return -1;
         }
 
         return dataFactory;

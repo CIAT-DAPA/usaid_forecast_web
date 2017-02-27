@@ -2,12 +2,14 @@
  * This class draws a line graphic
  * (Base) base: Configuration to render the graphic
  * (object[]) ranges: Array with levels of yield standard
+ * (int) year: Year to draw
  */
-function CalendarHeatmap(base, ranges) {
+function CalendarHeatmap(base, ranges, year) {
     this.base = base;
 
     this.ranges = ranges;
 
+    this.year = year;
 }
 
 /*
@@ -23,7 +25,23 @@ CalendarHeatmap.prototype.color = function (value) {
 /*
  * Get the size of a cell in the graphic
 */
-CalendarHeatmap.prototype.cell_size = function () { return 12; }
+CalendarHeatmap.prototype.cell_size = function () { return this.base.width / 53; }
+
+/*
+ * Metho to draw the limit for every month
+ * (date) t0: Init date of month
+ * (CalendarHeatmap) that: Current instance
+*/
+CalendarHeatmap.prototype.month_path = function (t0, that) {
+    var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+        d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
+        d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+    return "M" + (w0 + 1) * this.cell_size() + "," + d0 * this.cell_size()
+        + "H" + w0 * this.cell_size() + "V" + 7 * this.cell_size()
+        + "H" + w1 * this.cell_size() + "V" + (d1 + 1) * this.cell_size()
+        + "H" + (w1 + 1) * this.cell_size() + "V" + 0
+        + "H" + (w0 + 1) * this.cell_size() + "Z";
+}
 
 /*
  * Method that render the graphic in a container
@@ -31,73 +49,79 @@ CalendarHeatmap.prototype.cell_size = function () { return 12; }
 CalendarHeatmap.prototype.render = function () {
     var that = this;
 
-    this.base.init(false, 105);
+    this.base.init(false, 500);
 
     this.base.svg
-        .data(d3.range(2016, 2017))
+        .data(d3.range(that.year, that.year + 1))
         .enter();
     /*    .attr("width", '100%')
         .attr("data-height", '0.5678')
         .attr("viewBox", '0 0 900 105')
         .attr("class", "RdYlGn")
         .append("g")
-        .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");*/
+        .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
 
     this.base.svg.append("text")
         .attr("transform", "translate(-38," + that.cell_size() * 3.5 + ")rotate(-90)")
         .style("text-anchor", "middle")
-        .text(function (d) { return d; });
+        .text(function (d) { return d; });*/
 
-    for (var i = 0; i < 7; i++) {
-        this.base.svg.append("text")
-            .attr("transform", "translate(-5," + that.cell_size() * (i + 1) + ")")
-            .style("text-anchor", "end")
-            .attr("dy", "-.25em")
-            .text(function (d) { return that.base.days_names[i]; });
-    }
+    // Add the days names
+    this.base.svg.append("g")
+        .attr("class", "days_names")
+        .selectAll(".days_names")
+        .data([0, 1, 2, 3, 4, 5, 6])
+        .enter()
+        .append("text")
+        .attr("transform", function (i) { return "translate(-5," + that.cell_size() * (i + 1) + ")"; })
+        .style("text-anchor", "end")
+        .attr("dy", "-.25em")
+        .text(function (d) { return that.base.days_names[d]; });
 
-    // Create the rect
+    // Add the month names
+    this.base.svg.append("g")
+        .attr("class", "month_names")
+        .selectAll(".month_names")
+        .data(that.base.month_names)
+        .enter()
+        .append("text")
+        .attr("transform", function (d, i) { return "translate(" + (((i + 1) * 50) + 8) + ",0)"; })
+        .style("text-anchor", "end")
+        .attr("dy", "-.25em")
+        .text(function (d, i) { return that.base.month_names[i] });
+        
+    // Create the rects of every day of year
     var rect = this.base.svg.append("g")
         .attr("class", "rect_days")
-        .selectAll(".day")
+        .selectAll(".rect_days")
         .data(function (d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
         .enter()
         .append("rect")
-        .attr("class", "day")
+        .attr("class", "heatmap_day")
         .attr("width", that.cell_size())
         .attr("height", that.cell_size())
         .attr("x", function (d) { return d3.time.weekOfYear(d) * that.cell_size(); })
         .attr("y", function (d) { return d.getDay() * that.cell_size(); })
-        .datum(that.base.formats.date);
-
-    var legend = this.base.svg.append("g")
-        .attr("class", "month_names")
-        .selectAll(".legend")
-        .data(that.base.month_names)
-        .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function (d, i) { return "translate(" + (((i + 1) * 50) + 8) + ",0)"; });
-
-    legend.append("text")
-        .attr("class", function (d, i) { return that.base.month_names[i] })
-        .style("text-anchor", "end")
-        .attr("dy", "-.25em")
-        .text(function (d, i) { return that.base.month_names[i] });
-
-    this.base.svg.selectAll(".month")
+        .datum(that.base.formats.date_format);
+    
+    // Create the region for every month
+    this.base.svg.append("g")
+        .attr("class","month_path")
+        .selectAll(".month_path")
         .data(function (d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
-        .enter().append("path")
-        .attr("class", "month")
+        .enter()
+        .append("path")
+        .attr("class","heatmap_month")
         .attr("id", function (d, i) { return that.base.month_names[i] })
-        .attr("d", monthPath);
+        .attr("d", function (d) { return that.month_path(d, that); });
 
-    /*var data = d3.nest()
-        .key(function (d) { return d.Fecha; })
-        .rollup(function (d) { return d[0].RendimientoPromedio; })
-        .map(items);
-
+    var data = d3.nest()
+        .key(function (d) { return d.start.substring(0,10); })
+        .rollup(function (d) { return d.avg; })
+        .map(that.base.data);
+    
     rect.filter(function (d) { return d in data; })
-        .attr("class", function (d) { return "day " + that.color(data[d]); })
+        .attr("class", function (d) { console.log(data[d]); return "day " + that.color(data[d]); })
         .select("title")
         .text(function (d) { return d + ": " + round(data[d]); });
 
@@ -129,15 +153,4 @@ CalendarHeatmap.prototype.render = function () {
         var $tooltip = $("#tooltip");
         $tooltip.empty();
     });*/
-
-    function monthPath(t0) {
-        var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
-            d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
-            d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
-        return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
-            + "H" + w0 * cellSize + "V" + 7 * cellSize
-            + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
-            + "H" + (w1 + 1) * cellSize + "V" + 0
-            + "H" + (w0 + 1) * cellSize + "Z";
-    }
 }
