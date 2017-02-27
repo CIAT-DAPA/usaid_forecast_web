@@ -25,6 +25,7 @@ angular.module('ForecastApp')
       }
       else {
           $('#menu_main_expert').addClass('active');
+          $('#mn_municipalities').hide();
       }     
       
       // Vars of the data
