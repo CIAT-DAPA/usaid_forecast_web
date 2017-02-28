@@ -743,7 +743,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 {
                     date = DateTime.Now,
                     path = configurationPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + id + "-" + form.Files[0].FileName,
-                    name = form.Files[0].FileName
+                    name = form["name"]
                 };
                 // Save a copy of the file in the server
                 await form.Files[0].CopyToAsync(new FileStream(file_temp.path, FileMode.Create));

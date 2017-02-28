@@ -10,6 +10,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
     /// </summary>
     public class Settings
     {
+        public char splitted { get; set; }
         /// <summary>
         /// String to connect with the database
         /// </summary>
@@ -30,5 +31,18 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Name of directory to export the setup for the yield forecast
         /// </summary>
         public string Out_PATH_FS_FILES { get; set; }
+
+        /// <summary>
+        /// Name of directory to import the probabilities of the forecast
+        /// </summary>
+        public string In_PATH_FS_PROBABILITIES { get; set; }
+        /// <summary>
+        /// Name of directory to import the scenarios of the forecast
+        /// </summary>
+        public string In_PATH_FS_SCENARIOS { get; set; }
+        /// <summary>
+        /// Name of directory to import the yield of the forecast
+        /// </summary>
+        public string In_PATH_FS_YIELD { get; set; }
     }
 }

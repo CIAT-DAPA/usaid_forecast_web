@@ -1,0 +1,46 @@
+﻿ForecastApp
+It is a tool to export and import data about forecast platform
+-----------------------------------------------------------------
+Export Data
+
+-out			Mandatory parameter. It indicates to the app the
+				action export.
+
+-p	"value"		Mandatory parameter. It is the absolute path
+				where the data will be exported.
+
+-s	"value"		Export the climate historical data of all states.
+				Every state is exported in a file with its name.
+				You should add the parameter "-start" and "-end".
+
+-start "value"	This parameter indicates the start year to export
+				data. It is integer value.
+
+-end "value"	This parameter indicates the end year to export
+				data. It is integer value.
+
+-wf				Export the configuration file of the weather 
+				stations. You should add the parameter "-name".
+
+-name "value"	This parameter is the filter of the of the file
+				name to export.
+
+-fs				Export the setup of every crop for the forecast
+				process. It creates a folder by every crop,
+				inside, the app will create a folder called
+				by idweatherstation_idcultivar_idsoil
+-----------------------------------------------------------------
+Import Data
+
+-in				Mandatory parameter. It indicates to the app the
+				action import
+
+-p	"value"		Mandatory parameter. It is the absolute path
+				where the data will be located to import.
+
+-fs				Import forecast data. You should add the 
+				parameter -cf
+
+-cf "value"		This parameter indicates the confidence value for
+				the intervals confidence. It is a float value.
+
