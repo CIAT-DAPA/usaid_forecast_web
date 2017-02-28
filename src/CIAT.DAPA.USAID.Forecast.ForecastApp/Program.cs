@@ -4,17 +4,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp
 {
     public class Program
     {
-        public static string cnn { get; set; }
-        public static string db { get; set; }
+        public static Settings settings { get; set; }
         public static void Main(string[] args)
         {
-            Program.cnn = "mongodb://localhost:27017";
-            Program.db = "forecast_db";
+            try
+            {
+                // Load the configuration file
+                var builder = new ConfigurationBuilder()
+                    .AddJsonFile($"appsettings.json", true, true)
+                    .AddEnvironmentVariables();
+                var conf = builder.Build();
+                Program.settings = new Settings()
+                {
+                    ConnectionString = conf["ConnectionString"],
+                    Database = conf["Database"],
+                    Out_PATH_FS_FILES = conf["Out_PATH_FS_FILES"],
+                    Out_PATH_STATES = conf["Out_PATH_STATES"],
+                    Out_PATH_WS_FILES = conf["Out_PATH_WS_FILES"],
+                };
+            }
+            catch (Exception ex)
+            {
+
+            }
+            // Execute the program
             MainAsync(args).GetAwaiter().GetResult();
             Console.WriteLine();
             Console.WriteLine("Press Enter");

@@ -14,10 +14,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
     /// This Class export data from database
     /// </summary>
     public class COut
-    {
-        public const string PATH_STATES = "estacionesMensuales";
-        public const string PATH_WS_FILES = "dailyData";
-        public const string PATH_FS_FILES = "forecast";
+    {  
 
         private ForecastDB db { get; set; }
 
@@ -26,7 +23,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// </summary>
         public COut()
         {
-            db = new ForecastDB(Program.cnn, Program.db);
+            db = new ForecastDB(Program.settings.ConnectionString, Program.settings.Database);
         }
 
         /// <summary>
@@ -41,8 +38,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             StringBuilder csv;
             string header, line;
             // Create directory
-            if (!Directory.Exists(path + COut.PATH_STATES))
-                Directory.CreateDirectory(path + COut.PATH_STATES);
+            if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
             var states = await db.state.listEnableAsync();
             foreach (var s in states)
             {
@@ -90,7 +87,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     }
                 }
                 // Create the physical file
-                File.WriteAllText(path + COut.PATH_STATES + @"\" + s.name + ".csv", header + "\n" + csv.ToString());
+                File.WriteAllText(path + Program.settings.Out_PATH_STATES + @"\" + s.name + ".csv", header + "\n" + csv.ToString());
             }
             return true;
         }
@@ -103,15 +100,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         public async Task<bool> exportFilesWeatherStationAsync(string path, string name)
         {
             // Create directory
-            if (!Directory.Exists(path + COut.PATH_WS_FILES))
-                Directory.CreateDirectory(path + COut.PATH_WS_FILES);
+            if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
             var weather_stations = await db.weatherStation.listEnableAsync();
             foreach (var ws in weather_stations.Where(p => p.visible))
             {
                 Console.WriteLine("Exporting " + ws.name);
-                var f = ws.conf_files.Where(p=>p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
+                var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                 if (f != null)
-                    File.Copy(f.path, path + COut.PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + COut.getExtension(f.path));
+                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + COut.getExtension(f.path));
                 else
                     Console.WriteLine("File not found");
             }
@@ -125,19 +122,19 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         public async Task<bool> exportForecastSetupnAsync(string path)
         {
             // Create directory
-            if (!Directory.Exists(path + COut.PATH_FS_FILES))
-                Directory.CreateDirectory(path + COut.PATH_FS_FILES);
+            if (!Directory.Exists(path + Program.settings.Out_PATH_FS_FILES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_FS_FILES);
             var crops = await db.crop.listEnableAsync();
             foreach (var cp in crops)
             {
                 Console.WriteLine("Exporting " + cp.name);
-                string dir_crop = path + COut.PATH_FS_FILES + @"\" + cp.name;
+                string dir_crop = path + Program.settings.Out_PATH_FS_FILES + @"\" + cp.name;
                 Directory.CreateDirectory(dir_crop);
                 foreach (var st in cp.setup.Where(p => p.track.enable))
                 {
                     string dir_setup = dir_crop + @"\" + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString();
                     Directory.CreateDirectory(dir_setup);
-                    foreach(var f in st.conf_files)
+                    foreach (var f in st.conf_files)
                         File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path));
                 }
             }
