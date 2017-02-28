@@ -16,6 +16,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
     public class COut
     {
         public const string PATH_STATES = "estacionesMensuales";
+        public const string PATH_WS_FILES = "dailyData";
+        public const string PATH_FS_FILES = "forecast";
+
         private ForecastDB db { get; set; }
 
         /// <summary>
@@ -33,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// <param name="measure">Measure to export</param>
         /// <param name="start">Year to start</param>
         /// <param name="end">Year to end</param>
-        public async Task<bool> exportStatesHistoricalAsync(string path, MeasureClimatic measure, int start, int end)
+        public async Task<bool> exportStatesHistoricalClimateAsync(string path, MeasureClimatic measure, int start, int end)
         {
             StringBuilder csv;
             string header, line;
@@ -55,9 +58,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
                 // get historical climate data
                 var hc = await db.historicalClimatic.byWeatherStationsAsync(weather_stations.Select(p => p.id).Distinct().ToArray());
-                
+
                 // This code search by every year and month the data of every weather station
-                for(int y=start; y<=end; y++)
+                for (int y = start; y <= end; y++)
                 {
                     for (int i = 1; i <= 12; i++)
                     {
@@ -91,6 +94,47 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
             return true;
         }
-        
+
+        /// <summary>
+        /// Method to export the historical data of the weather stations by states
+        /// </summary>
+        /// <param name="path">Path where the files will located</param>
+        /// <param name="name">Name of file</param>
+        public async Task<bool> exportFilesWeatherStationAsync(string path, string name)
+        {
+            // Create directory
+            if (!Directory.Exists(path + COut.PATH_WS_FILES))
+                Directory.CreateDirectory(path + COut.PATH_WS_FILES);
+            var weather_stations = await db.weatherStation.listEnableAsync();
+            foreach (var ws in weather_stations.Where(p => p.visible))
+            {
+                Console.WriteLine("Exporting " + ws.name);
+                var f = ws.conf_files.Where(p=>p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
+                if (f != null)
+                    File.Copy(f.path, path + COut.PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + ".csv");
+                else
+                    Console.WriteLine("File not found");
+            }
+            return true;
+        }
+
+        public async Task<bool> exportForecastSetupnAsync(string path)
+        {
+            // Create directory
+            if (!Directory.Exists(path + COut.PATH_WS_FILES))
+                Directory.CreateDirectory(path + COut.PATH_WS_FILES);
+            var weather_stations = await db.weatherStation.listEnableAsync();
+            foreach (var ws in weather_stations.Where(p => p.visible))
+            {
+                Console.WriteLine("Exporting " + ws.name);
+                var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
+                if (f != null)
+                    File.Copy(f.path, path + COut.PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + ".csv");
+                else
+                    Console.WriteLine("File not found");
+            }
+            return true;
+        }
+
     }
 }

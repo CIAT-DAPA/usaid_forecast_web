@@ -36,15 +36,33 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     // Export states
                     // -out -s "prec" -p "C:\Users\hsotelo\Desktop\test export\\" -start 1981 -end 2013
                     int s = Program.searchParameter(args, "-s");
-                    if(s >= 0)
+                    if (s >= 0)
                     {
                         int start = Program.searchParameter(args, "-start");
                         Program.validateParameter(start, "-start");
                         int end = Program.searchParameter(args, "-end");
                         Program.validateParameter(end, "-end");
 
-                        Console.WriteLine("Exporting states");
-                        await output.exportStatesHistoricalAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1], true), int.Parse(args[start + 1]),int.Parse(args[end + 1]));
+                        Console.WriteLine("Exporting historical climate by states");
+                        await output.exportStatesHistoricalClimateAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1], true), int.Parse(args[start + 1]), int.Parse(args[end + 1]));
+                    }
+                    // Export configuration files from weather stations
+                    // -out -wf -p "C:\Users\hsotelo\Desktop\test export\\" -name "daily"
+                    int wf = Program.searchParameter(args, "-wf");
+                    if (wf >= 0)
+                    {
+                        int name = Program.searchParameter(args, "-name");
+                        Program.validateParameter(name, "-name");
+                        Console.WriteLine("Exporting configuration file by weather station");
+                        await output.exportFilesWeatherStationAsync(args[path + 1], args[name + 1]);
+                    }
+                    // Export forecast setup
+                    // -out -fs -p "C:\Users\hsotelo\Desktop\test export\\"
+                    int fs = Program.searchParameter(args, "-fs");
+                    if (fs >= 0)
+                    {                        
+                        Console.WriteLine("Exporting forecast setup");
+                        //await output.exportFilesWeatherStationAsync(args[path + 1], args[name + 1]);
                     }
                 }
                 else if (Program.searchParameter(args, "-in") == 0)
