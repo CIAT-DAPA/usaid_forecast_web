@@ -60,9 +60,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     // -out -fs -p "C:\Users\hsotelo\Desktop\test export\\"
                     int fs = Program.searchParameter(args, "-fs");
                     if (fs >= 0)
-                    {                        
+                    {
                         Console.WriteLine("Exporting forecast setup");
-                        //await output.exportFilesWeatherStationAsync(args[path + 1], args[name + 1]);
+                        await output.exportForecastSetupnAsync(args[path + 1]);
                     }
                 }
                 else if (Program.searchParameter(args, "-in") == 0)

@@ -96,10 +96,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         }
 
         /// <summary>
-        /// Method to export the historical data of the weather stations by states
+        /// Method to export the configuration files by weather station
         /// </summary>
-        /// <param name="path">Path where the files will located</param>
-        /// <param name="name">Name of file</param>
+        /// <param name="path">Path where the files will be located</param>
+        /// <param name="name">Name of file to filter</param>
         public async Task<bool> exportFilesWeatherStationAsync(string path, string name)
         {
             // Create directory
@@ -111,29 +111,47 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Exporting " + ws.name);
                 var f = ws.conf_files.Where(p=>p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                 if (f != null)
-                    File.Copy(f.path, path + COut.PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + ".csv");
+                    File.Copy(f.path, path + COut.PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + COut.getExtension(f.path));
                 else
                     Console.WriteLine("File not found");
             }
             return true;
         }
 
+        /// <summary>
+        /// Method that exports the configuration for the forecast 
+        /// </summary>
+        /// <param name="path">Path where the files will be located</param>
         public async Task<bool> exportForecastSetupnAsync(string path)
         {
             // Create directory
-            if (!Directory.Exists(path + COut.PATH_WS_FILES))
-                Directory.CreateDirectory(path + COut.PATH_WS_FILES);
-            var weather_stations = await db.weatherStation.listEnableAsync();
-            foreach (var ws in weather_stations.Where(p => p.visible))
+            if (!Directory.Exists(path + COut.PATH_FS_FILES))
+                Directory.CreateDirectory(path + COut.PATH_FS_FILES);
+            var crops = await db.crop.listEnableAsync();
+            foreach (var cp in crops)
             {
-                Console.WriteLine("Exporting " + ws.name);
-                var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
-                if (f != null)
-                    File.Copy(f.path, path + COut.PATH_WS_FILES + @"\" + ws.id.ToString() + "-" + f.name + ".csv");
-                else
-                    Console.WriteLine("File not found");
+                Console.WriteLine("Exporting " + cp.name);
+                string dir_crop = path + COut.PATH_FS_FILES + @"\" + cp.name;
+                Directory.CreateDirectory(dir_crop);
+                foreach (var st in cp.setup.Where(p => p.track.enable))
+                {
+                    string dir_setup = dir_crop + @"\" + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString();
+                    Directory.CreateDirectory(dir_setup);
+                    foreach(var f in st.conf_files)
+                        File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path));
+                }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Method that return the extension name of the file
+        /// </summary>
+        /// <param name="path">Path of file</param>
+        /// <returns></returns>
+        public static string getExtension(string path)
+        {
+            return path.Substring(path.Length - 4, 4);
         }
 
     }
