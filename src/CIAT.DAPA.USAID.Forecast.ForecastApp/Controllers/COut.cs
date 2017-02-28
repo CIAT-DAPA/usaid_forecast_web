@@ -14,7 +14,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
     /// This Class export data from database
     /// </summary>
     public class COut
-    {  
+    {
         /// <summary>
         /// Database object
         /// </summary>
@@ -89,7 +89,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     }
                 }
                 // Create the physical file
-                File.WriteAllText(path + Program.settings.Out_PATH_STATES + @"\" + s.name + ".csv", header + "\n" + csv.ToString());
+                string file_name = path + Program.settings.Out_PATH_STATES + @"\" + s.name + ".csv";
+                if (File.Exists(file_name))
+                    File.Delete(file_name);
+                File.WriteAllText(file_name, header + "\n" + csv.ToString());
             }
             return true;
         }
@@ -110,7 +113,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Exporting " + ws.name);
                 var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                 if (f != null)
-                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + COut.getExtension(f.path));
+                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + COut.getExtension(f.path), true);
                 else
                     Console.WriteLine("File not found");
             }
@@ -137,7 +140,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     string dir_setup = dir_crop + @"\" + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString();
                     Directory.CreateDirectory(dir_setup);
                     foreach (var f in st.conf_files)
-                        File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path));
+                        File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path), true);
                 }
             }
             return true;
