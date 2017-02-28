@@ -1,11 +1,12 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "emitEntryPoint": true
+    "emitEntryPoint": true,
+    "copyToOutput": "appsettings.json"
   },
 
   "publishOptions": {
-    "include": [      
+    "include": [
       "appsettings.json"
     ]
   },

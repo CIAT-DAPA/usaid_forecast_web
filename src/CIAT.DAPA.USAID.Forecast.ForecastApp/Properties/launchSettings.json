@@ -2,7 +2,7 @@
   "profiles": {
     "CIAT.DAPA.USAID.Forecast.ForecastApp": {
       "commandName": "Project",
-      "commandLineArgs": "-out -fs -p \"C:\\Users\\hsotelo\\Desktop\\test export\\\\\""
+      "commandLineArgs": "-out -fs -p \"C:\\Users\\hsotelo\\Desktop\\test\\\\\""
     }
   }
 }

@@ -15,7 +15,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
     /// </summary>
     public class COut
     {  
-
+        /// <summary>
+        /// Database object
+        /// </summary>
         private ForecastDB db { get; set; }
 
         /// <summary>
