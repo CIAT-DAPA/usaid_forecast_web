@@ -178,6 +178,99 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     }).ToList()
                 });
 
+            // Load yield data
+            Console.WriteLine("Getting yield");
+            // Get folder of the scenarios
+            var d_crops = Directory.EnumerateDirectories(path + Program.settings.In_PATH_FS_YIELD);
+            List<ImportYield> yields = new List<ImportYield>();
+            foreach (var dc in d_crops)
+            {
+                var d_f_yield = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_YIELD + @"\" + dc);
+                foreach (var f_yield in d_f_yield)
+                {
+                    Console.WriteLine("Working in " + f_yield);
+                    using (file = File.OpenText(path + Program.settings.In_PATH_FS_YIELD + @"\" + dc + @"\" + f_yield))
+                    {
+                        int count = 0;
+                        while ((line = file.ReadLine()) != null)
+                        {
+                            // Omitted the file's header
+                            if (count != 0 && !string.IsNullOrEmpty(line))
+                            {
+                                // Get the data from the file in a temp memmory
+                                var fields = line.Split(Program.settings.splitted);
+                                yields.Add(new ImportYield()
+                                {
+                                    weather_station = fields[0],
+                                    soil = fields[1],
+                                    cultivar = fields[2],
+                                    start = DateTime.Parse(fields[3]),
+                                    end = DateTime.Parse(fields[4]),
+                                    measure = fields[5],
+                                    median = double.Parse(fields[6]),
+                                    avg = double.Parse(fields[7]),
+                                    min = double.Parse(fields[8]),
+                                    max = double.Parse(fields[9]),
+                                    quar_1 = double.Parse(fields[10]),
+                                    quar_2 = double.Parse(fields[11]),
+                                    quar_3 = double.Parse(fields[12]),
+                                    conf_lower = double.Parse(fields[13]),
+                                    conf_upper = double.Parse(fields[14]),
+                                    sd = double.Parse(fields[15]),
+                                    perc_5 = double.Parse(fields[16]),
+                                    perc_95 = double.Parse(fields[17]),
+                                    coef_var = double.Parse(fields[18])
+                                });
+                            }
+                            count += 1;
+                        }
+                    }
+                }
+            }
+            // Create the records of the yield in the database
+            Console.WriteLine("Saving the yield in the database");
+            ForecastYield fy_new;
+            YieldCrop yc_entity;
+            List<YieldCrop> yc_entities;
+            List<YieldData> yd_entities;
+            foreach (var ws in yields.Select(p => p.weather_station).Distinct())
+            {
+                fy_new = new ForecastYield() { forecast = forecast.id, weather_station = ForecastDB.parseId(ws) };
+                var yield_crop = yields.Where(p => p.weather_station == ws);
+                yc_entities = new List<YieldCrop>();
+                int count_yc = yield_crop.Count();
+                foreach (var yc in yield_crop)
+                {
+                    yc_entity = new YieldCrop() { cultivar = ForecastDB.parseId(yc.cultivar), soil = ForecastDB.parseId(yc.soil), start = yc.start, end = yc.end };
+                    var yield_data = yield_crop.Where(p => p.cultivar == yc.cultivar && p.soil == yc.soil && p.start == yc.start && p.end == yc.end);
+                    int count_yd = yield_data.Count();
+                    yd_entities = new List<YieldData>();
+                    foreach (var yd in yield_data)
+                        yd_entities.Add(new YieldData()
+                        {
+                            measure = (MeasureYield)Enum.Parse(typeof(MeasureYield), yd.measure, true),
+                            median = yd.median,
+                            avg = yd.avg,
+                            min = yd.min,
+                            max = yd.max,
+                            quar_1 = yd.quar_1,
+                            quar_2 = yd.quar_2,
+                            quar_3 = yd.quar_3,
+                            conf_lower = yd.conf_lower,
+                            conf_upper = yd.conf_upper,
+                            sd = yd.sd,
+                            perc_5 = yd.perc_5,
+                            perc_95 = yd.perc_95,
+                            coef_var = yd.coef_var
+                        });
+                    yc_entity.data = yd_entities;
+                    yc_entities.Add(yc_entity);
+                }
+                fy_new.yield = yc_entities;
+                await db.forecastYield.insertAsync(fy_new);
+            }
+
+            Console.WriteLine("Forecast imported");
             return true;
         }
     }
