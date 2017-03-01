@@ -31,6 +31,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             string line;
 
             // Create a forecast
+            Console.WriteLine("Creating forecast");
             var forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
             {
                 start = DateTime.Now,
@@ -39,6 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             });
 
             // Load probabilities
+            Console.WriteLine("Getting probabilities");
             // Get all files from directory
             var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_PROBABILITIES);
             List<ImportProbability> probabilities = new List<ImportProbability>();
@@ -48,14 +50,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 // Filter only the csv files
                 if (f.EndsWith(".csv"))
                 {
+                    Console.WriteLine("Processing: " + f);
                     // Reading the file
                     using (file = File.OpenText(f))
                     {
                         int count = 0;
                         while ((line = file.ReadLine()) != null)
                         {
-                            if (count != 0)
+                            // Omitted the file's header
+                            if (count != 0 && !string.IsNullOrEmpty(line))
                             {
+                                // Get the probabilities from the file in a temp memmory
                                 var fields = line.Split(Program.settings.splitted);
                                 probabilities.Add(new ImportProbability()
                                 {
@@ -73,6 +78,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 }
             }
             // Create the records of the probabilities in the database
+            Console.WriteLine("Saving the probabilities in the database");
             foreach (var ws in probabilities.Select(p => p.ws).Distinct())
                 await db.forecastClimate.insertAsync(new ForecastClimate()
                 {
@@ -96,9 +102,81 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 });
 
             // Load scenarios
+            Console.WriteLine("Getting scenarios");
             // Get folder of the scenarios
+            var d_scenarios = Directory.EnumerateDirectories(path + Program.settings.In_PATH_FS_SCENARIOS);
+            List<ImportScenario> scenarios = new List<ImportScenario>();
+            foreach (var ds in d_scenarios)
+            {
+                // Filter the folders of the scenarios
+                if (ds.StartsWith(Program.settings.In_PATH_FS_D_SCENARIO))
+                {
+                    Console.WriteLine("Searching scenarios in " + ds);
+                    // Get a list of files of the scenarios
+                    var d_f_scenario = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_SCENARIOS + @"\" + ds);
+                    // This cicle goes through of the scenarios (max, min, avg)
+                    foreach (var s in Enum.GetNames(typeof(ScenarioName)))
+                    {
+                        // This cicle goes through of the measure (t_max, t_min, )
+                        foreach (var m in Enum.GetNames(typeof(MeasureClimatic)))
+                        {
+                            var f_scenario = d_f_scenario.SingleOrDefault(p => p.Contains(s) && p.Contains(m));
+                            if (f_scenario != null)
+                            {
+                                Console.WriteLine("Getting scenario: " + s + " measure: " + m);
+                                // Reading the file
+                                using (file = File.OpenText(path + Program.settings.In_PATH_FS_SCENARIOS + @"\" + ds + @"\" + f_scenario))
+                                {
+                                    int count = 0;
+                                    while ((line = file.ReadLine()) != null)
+                                    {
+                                        // Omitted the file's header
+                                        if (count != 0 && !string.IsNullOrEmpty(line))
+                                        {
+                                            // Get the data from the file in a temp memmory
+                                            var fields = line.Split(Program.settings.splitted);
+                                            scenarios.Add(new ImportScenario()
+                                            {
+                                                year = int.Parse(fields[0]),
+                                                month = int.Parse(fields[1]),
+                                                ws = ds.Replace(Program.settings.In_PATH_FS_D_SCENARIO, ""),
+                                                scenario = s,
+                                                measure = m,
+                                                value = double.Parse(fields[2])
+                                            });
+                                        }
+                                        count += 1;
+                                    }
+                                }
+                            }
+                            else
+                                Console.WriteLine("File not found. scenario: " + s + " measure: " + m);
 
-
+                        }
+                    }
+                }
+            }
+            // Create the records of the scenarios in the database
+            Console.WriteLine("Saving the scenarios in the database");
+            foreach (var data in scenarios.Select(p => new { p.ws, p.year, p.scenario }).Distinct())
+                await db.forecastScenario.insertAsync(new ForecastScenario()
+                {
+                    forecast = forecast.id,
+                    weather_station = ForecastDB.parseId(data.ws),
+                    name = (ScenarioName)Enum.Parse(typeof(ScenarioName), data.scenario, true),
+                    year = data.year,
+                    monthly_data = scenarios.Where(p => p.ws == data.ws && p.scenario == data.scenario && p.year == data.year)
+                                    .Select(p => new MonthlyDataStation()
+                                    {
+                                        month = p.month,
+                                        data = scenarios.Where(p2 => p2.ws == data.ws && p2.scenario == data.scenario && p2.year == data.year)
+                                                .Select(p2 => new ClimaticData()
+                                                {
+                                                    measure = (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), p2.measure, true),
+                                                    value = p2.value
+                                                }).ToList()
+                                    }).ToList()
+                });
 
             return true;
         }

@@ -41,6 +41,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string In_PATH_FS_SCENARIOS { get; set; }
         /// <summary>
+        /// Name of directory to import a scenario
+        /// </summary>
+        public string In_PATH_FS_D_SCENARIO { get; set; }
+        /// <summary>
         /// Name of directory to import the yield of the forecast
         /// </summary>
         public string In_PATH_FS_YIELD { get; set; }

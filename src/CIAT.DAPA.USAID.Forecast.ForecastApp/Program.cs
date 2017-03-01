@@ -13,7 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
     public class Program
     {
         public static Settings settings { get; set; }
-        
+
         public static void Main(string[] args)
         {
             try
@@ -33,6 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_PATH_WS_FILES = conf["Out_PATH_WS_FILES"],
                     In_PATH_FS_PROBABILITIES = conf["In_PATH_FS_PROBABILITIES"],
                     In_PATH_FS_SCENARIOS = conf["In_PATH_FS_SCENARIOS"],
+                    In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],
                     In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"]
                 };
             }
