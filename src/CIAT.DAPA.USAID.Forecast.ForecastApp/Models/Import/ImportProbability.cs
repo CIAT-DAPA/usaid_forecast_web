@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
 {
-    public class Probability
+    public class ImportProbability
     {
         public int year { get; set; }
         public int month { get; set; }
+        public string ws { get; set; }
+        public double below { get; set; }
+        public double normal { get; set; }
+        public double above { get; set; }
     }
 }
