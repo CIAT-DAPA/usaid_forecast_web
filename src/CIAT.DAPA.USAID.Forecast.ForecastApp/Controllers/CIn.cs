@@ -40,46 +40,108 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             });
 
             // Load probabilities
-            Console.WriteLine("Getting probabilities");
-            // Get all files from directory
+            Console.WriteLine("Getting probabilities and performance");
             var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_PROBABILITIES);
+            // Get the probabilities file
             List<ImportProbability> probabilities = new List<ImportProbability>();
-            // This cicle goes through all files in the directory
-            foreach (string f in f_probabilities)
+            string fp = f_probabilities.SingleOrDefault(p => p.Equals(Program.settings.In_PATH_FS_FILE_PROBABILITY));
+            if (!string.IsNullOrEmpty(fp))
             {
-                // Filter only the csv files
-                if (f.EndsWith(".csv"))
+                Console.WriteLine("Processing: probabilities");
+                // Reading the file
+                using (file = File.OpenText(path + Program.settings.In_PATH_FS_PROBABILITIES + @"\" + fp))
                 {
-                    Console.WriteLine("Processing: " + f);
-                    // Reading the file
-                    using (file = File.OpenText(f))
+                    int count = 0;
+                    while ((line = file.ReadLine()) != null)
                     {
-                        int count = 0;
-                        while ((line = file.ReadLine()) != null)
+                        // Omitted the file's header
+                        if (count != 0 && !string.IsNullOrEmpty(line))
                         {
-                            // Omitted the file's header
-                            if (count != 0 && !string.IsNullOrEmpty(line))
+                            // Get the probabilities from the file in a temp memmory
+                            var fields = line.Split(Program.settings.splitted);
+                            probabilities.Add(new ImportProbability()
                             {
-                                // Get the probabilities from the file in a temp memmory
-                                var fields = line.Split(Program.settings.splitted);
-                                probabilities.Add(new ImportProbability()
-                                {
-                                    year = int.Parse(fields[0]),
-                                    month = int.Parse(fields[1]),
-                                    ws = fields[2],
-                                    below = double.Parse(fields[3]),
-                                    normal = double.Parse(fields[4]),
-                                    above = double.Parse(fields[5])
-                                });
-                            }
-                            count += 1;
+                                year = int.Parse(fields[0]),
+                                month = int.Parse(fields[1]),
+                                ws = fields[2],
+                                below = double.Parse(fields[3]),
+                                normal = double.Parse(fields[4]),
+                                above = double.Parse(fields[5])
+                            });
                         }
+                        count += 1;
                     }
                 }
             }
+            else
+                Console.WriteLine("Probabilities not found");
+            // Get the probabilities file
+            List<ImportPerformance> performances = new List<ImportPerformance>();
+            string fpe = f_probabilities.SingleOrDefault(p => p.Equals(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
+            if (!string.IsNullOrEmpty(fpe))
+            {
+                Console.WriteLine("Processing: performance");
+                // Reading the file
+                using (file = File.OpenText(path + Program.settings.In_PATH_FS_PROBABILITIES + @"\" + fpe))
+                {
+                    int count = 0;
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        // Omitted the file's header
+                        if (count != 0 && !string.IsNullOrEmpty(line))
+                        {
+                            // Get the probabilities from the file in a temp memmory
+                            var fields = line.Split(Program.settings.splitted);
+                            performances.Add(new ImportPerformance()
+                            {
+                                year = int.Parse(fields[0]),
+                                month = int.Parse(fields[1]),
+                                ws = fields[2],
+                                pearson = double.Parse(fields[3]),
+                                kendall = double.Parse(fields[4]),
+                                goodness = double.Parse(fields[5])
+                            });
+                        }
+                        count += 1;
+                    }
+                }
+            }
+            else
+                Console.WriteLine("Performances not found");
             // Create the records of the probabilities in the database
-            Console.WriteLine("Saving the probabilities in the database");
+            Console.WriteLine("Saving the probabilities and metrics in the database");
             foreach (var ws in probabilities.Select(p => p.ws).Distinct())
+            {
+                // Casting the metrics
+                List<PerformanceMetric> metrics = new List<PerformanceMetric>();
+                foreach (var m in Enum.GetValues(typeof(MeasurePerformance)).Cast<MeasurePerformance>())
+                {
+                    if (m == MeasurePerformance.goodness)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.goodness
+                        }).ToList());
+                    else if (m == MeasurePerformance.kendall)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.kendall
+                        }).ToList());
+                    else if (m == MeasurePerformance.pearson)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.pearson
+                        }).ToList());
+                }
+                // Saving in the database
                 await db.forecastClimate.insertAsync(new ForecastClimate()
                 {
                     forecast = forecast.id,
@@ -98,8 +160,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 upper = p.above
                             }
                         }
-                    }).ToList()
+                    }).ToList(),
+                    performance = metrics
                 });
+            }
+
 
             // Load scenarios
             Console.WriteLine("Getting scenarios");

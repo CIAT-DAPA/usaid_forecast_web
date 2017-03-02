@@ -14,6 +14,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     public class PerformanceMetric
     {
         /// <summary>
+        /// Year forecast
+        /// </summary>
+        [BsonRequired]
+        public int year { get; set; }
+        /// <summary>
+        /// Month forecast
+        /// </summary>
+        [BsonRequired]
+        public int month { get; set; }
+        /// <summary>
         /// Metric name
         /// </summary>
         [BsonRepresentation(BsonType.String)]

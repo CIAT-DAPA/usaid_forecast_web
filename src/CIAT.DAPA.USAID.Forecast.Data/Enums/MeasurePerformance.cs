@@ -7,6 +7,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
     /// </summary>
     public enum MeasurePerformance
     {
-        goodnessindex
+        goodness,
+        kendall,
+        pearson
     }
 }
