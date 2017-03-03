@@ -32,12 +32,15 @@ namespace CIAT.DAPA.USAID.Forecast.Test
                     new Time(){ year = 2017, month = 6 }};
                 int[] months = new int[] { 1, 2, 3, 4, 5, 6 };
                 // Create a forecast
-                var forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
+                /*var forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
                 {
                     start = DateTime.Now,
                     end = DateTime.Now,
                     confidence = 0.5
-                });
+                });*/
+                var forecast = (await db.forecast.listEnableAsync()).FirstOrDefault();
+
+
                 // Create forecast climate
                 foreach (var ws in weatherStations)
                 {
@@ -50,7 +53,7 @@ namespace CIAT.DAPA.USAID.Forecast.Test
                         pc.probabilities = new List<Probability>() { new Probability() { measure = MeasureClimatic.prec, lower = 0.7, normal = 0.2, upper = 0.1 } };
                         data.Add(pc);
                     }
-                    performance.Add(new PerformanceMetric() { name = MeasurePerformance.goodnessindex, value = 0.5 });
+                    performance.Add(new PerformanceMetric() { name = MeasurePerformance.goodness, value = 0.5 });
                     ForecastClimate fc = new ForecastClimate() { forecast = forecast.id, weather_station = ws.id, data = data, performance = performance };
                     await db.forecastClimate.insertAsync(fc);
                 }

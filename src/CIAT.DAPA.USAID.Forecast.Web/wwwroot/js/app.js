@@ -34,7 +34,7 @@ angular
       yield_default_var: [
           {
               crop: "arroz",
-              vars: [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/héc', default: true },
+              vars: [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/ha', default: true },
                    { name: "d_har", label: "Cosecha", metric: 'día', default: false },
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
@@ -44,7 +44,7 @@ angular
           },
           {
               crop: "maiz",
-              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/héc', default: true },
+              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },
                    { name: "d_har", label: "Cosecha", metric: 'día', default: false },
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },

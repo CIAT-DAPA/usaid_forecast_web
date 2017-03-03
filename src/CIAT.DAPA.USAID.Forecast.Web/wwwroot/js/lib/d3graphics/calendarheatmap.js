@@ -116,28 +116,29 @@ CalendarHeatmap.prototype.render = function () {
         .attr("d", function (d) { return that.month_path(d, that); });
 
     var data = d3.nest()
-        .key(function (d) { return d.start.substring(0,10); })
-        .rollup(function (d) { return d.avg; })
+        .key(function (d) { return d.date; })
+        .rollup(function (d) { return d[0].avg; })
         .map(that.base.data);
     
     rect.filter(function (d) { return d in data; })
-        .attr("class", function (d) { console.log(data[d]); return "day " + that.color(data[d]); })
-        .select("title")
+        .attr("class", function (d) { return that.color(data[d]); })
+        .attr("fill", function (d) { return that.color(data[d]); })
+        .select("title")        
         .text(function (d) { return d + ": " + round(data[d]); });
 
     //  Tooltip Object
-    /*var tooltip = d3.select("body")
+    var tooltip = d3.select("body")
         .append("div").attr("id", "tooltip")
         .style("position", "absolute")
         .style("z-index", "10")
         .style("visibility", "hidden")
-        .text("a simple tooltip");
+        .text("tooltip");
 
-    rect.on("mouseover", function (d) {
+    rect.on("mouseover", function (d) {        
         tooltip.style("visibility", "visible");
-        var value = ((data[d] !== undefined) ? round(data[d]) : round(0)) + ' Kg/ha';
+        var value = that.base.formats.round((data[d] !== undefined) ? data[d] : 0) + ' Kg/ha';
         var purchase_text = d + ": " + value;
-
+        
         tooltip.transition()
             .duration(200)
             .style("opacity", .9);
@@ -145,12 +146,12 @@ CalendarHeatmap.prototype.render = function () {
             .style("left", (d3.event.pageX) + 30 + "px")
             .style("top", (d3.event.pageY) + "px");
     });
-
+    
     rect.on("mouseout", function (d) {
         tooltip.transition()
             .duration(500)
             .style("opacity", 0);
         var $tooltip = $("#tooltip");
         $tooltip.empty();
-    });*/
+    });
 }

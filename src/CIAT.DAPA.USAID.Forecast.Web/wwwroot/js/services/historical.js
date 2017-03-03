@@ -192,6 +192,22 @@ angular.module('ForecastApp')
         }
 
         /*
+        * Method that join all yield historical data
+        * (object) raw: Json with all yield historical
+        */
+        dataFactory.consolidateHistoricalData = function (raw) {
+            var data = null;
+            for (var i = 0; i < raw.length; i++) {
+                if (i == 0)
+                    data = raw[0];
+                else
+                    data.yield = data.yield.concat(raw[i].yield);
+            }
+
+            return data;
+        }
+
+        /*
         * Method that filter the cultivars and make a summary by specific cultivar
         * (object) raw: Json with all yield historical
         * (object[]) cultivars: Cultivars list to summary data
@@ -201,18 +217,15 @@ angular.module('ForecastApp')
             var summary = [];
             var j = 0;
             var yield_row = null;
-
-            // Get only yield data
-            var yield_h = raw.map(function (item) { return item.yield; });
             // Filter by cultivar
-            var data = yield_h[0].filter(function (item) {
+            var data = raw.yield.filter(function (item) {
                 return cultivars.filter(function (item2) { return item2.id === item.cultivar }).length > 0;
             });
-
+            // This cicle acum data by th
             for (var i = 0; i < data.length; i++) {
                 j = indexByDate(summary, data[i].start);
                 // Get yield var
-                yield_row = data[i].data.filter(function (item) { return item.measure === measure; });                
+                yield_row = data[i].data.filter(function (item) { return item.measure === measure; });
                 // Create a new row by every start date
                 if (j < 0 && yield_row.length > 0) {
                     var obj = {
@@ -228,10 +241,20 @@ angular.module('ForecastApp')
                     summary[j].count += 1;
                 }
             }
-            // Calculate the avg for every date
-            for (var i = 0; i < summary.length; i++)
+            // Calculate the avg for every date            
+            var answer = [];
+            for (var i = 0; i < summary.length; i++) {
                 summary[i].avg = summary[i].avg_acu / summary[i].count;
-            return summary;
+                // This cicle add the new dates
+                for (var d = new Date(summary[i].start) ; d <= new Date(summary[i].end) ; d.setDate(d.getDate() + 1)) {
+                    var obj_y = {
+                        date: d.toISOString().slice(0, 10).replace(/-/g, "-"),
+                        avg: summary[i].avg,
+                    };
+                    answer.push(obj_y);
+                }
+            }
+            return answer;
         }
 
         /*

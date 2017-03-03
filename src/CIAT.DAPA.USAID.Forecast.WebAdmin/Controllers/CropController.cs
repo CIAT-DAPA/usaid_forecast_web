@@ -270,7 +270,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     file_temp = new ConfigurationFile()
                     {
                         date = DateTime.Now,
-                        path = configurationPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + id + "-" + f.FileName,
+                        path = configurationPath + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + id + "-" + f.FileName,
                         name = form["name_f_" + i.ToString()]
                     };
                     // Save a copy of the file in the server

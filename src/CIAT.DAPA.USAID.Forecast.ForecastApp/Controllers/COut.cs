@@ -1,6 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Database;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using CIAT.DAPA.USAID.Forecast.ForecastApp.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -133,11 +134,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var cp in crops)
             {
                 Console.WriteLine("Exporting " + cp.name);
-                string dir_crop = path + Program.settings.Out_PATH_FS_FILES + @"\" + cp.name;
+                string dir_crop = path + Program.settings.Out_PATH_FS_FILES + @"\" + Tools.folderCropName(cp.name);
                 Directory.CreateDirectory(dir_crop);
                 foreach (var st in cp.setup.Where(p => p.track.enable))
                 {
-                    string dir_setup = dir_crop + @"\" + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString();
+                    string dir_setup = dir_crop + @"\" + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
                     Directory.CreateDirectory(dir_setup);
                     foreach (var f in st.conf_files)
                         File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path), true);
