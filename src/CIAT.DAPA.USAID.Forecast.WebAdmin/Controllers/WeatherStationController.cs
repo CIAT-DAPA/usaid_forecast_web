@@ -746,7 +746,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     name = form["name"]
                 };
                 // Save a copy of the file in the server
-                await form.Files[0].CopyToAsync(new FileStream(file_temp.path, FileMode.Create));
+                using (var stream = new FileStream(file_temp.path, FileMode.Create))
+                {
+                    stream.Position = 0;
+                    await form.Files[0].CopyToAsync(stream);
+                }               
 
                 await db.weatherStation.addConfigurationFileAsync(entity_new, file_temp);
                 writeEvent(id + "file add: " + entity_new.id.ToString() + "-" + form.Files[0].FileName, LogEvent.upd);

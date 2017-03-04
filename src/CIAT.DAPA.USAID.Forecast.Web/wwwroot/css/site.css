@@ -237,8 +237,9 @@
     stroke-width: 2px;
 }
 
+.rect_days {
+    cursor: pointer;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-    
-    
 }

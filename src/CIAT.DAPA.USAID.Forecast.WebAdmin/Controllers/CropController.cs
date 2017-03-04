@@ -274,7 +274,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         name = form["name_f_" + i.ToString()]
                     };
                     // Save a copy of the file in the server
-                    await f.CopyToAsync(new FileStream(file_temp.path, FileMode.Create));
+                    using (var stream = new FileStream(file_temp.path, FileMode.Create))
+                    {
+                        stream.Position = 0;
+                        await f.CopyToAsync(stream);
+                    }
                     files.Add(file_temp);
                 }
                 // Set the files to the setup entity
