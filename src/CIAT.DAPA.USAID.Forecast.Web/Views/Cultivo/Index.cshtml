@@ -14,12 +14,11 @@
     <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
     <input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
     <!-- End global variables -->
-    
     <!-- Start Description -->
     <section id="description">
         <div class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_forecast')"  data-toggle="modal" data-target="#assit_modal"/>
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_forecast')" data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
                 <p class="text-justify">
                     Para el municipio de <span class="text-bold">{{municipality_name}}</span>
@@ -42,14 +41,11 @@
                 <p class="text-justify">
                     El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> que
                     <span ng-show="cu.rainfed" class="text-bold">requiere riego</span><span ng-hide="cu.rainfed" class="text-bold">no requiere riego</span>,
-                    presenta los siguientes indicadores para el período <span class="text-bold">{{period_start}} a {{period_end}}</span>:                    
+                    presenta los <span class="text-bold">los rendimientos potenciales esperados</span>
+                    para el final del ciclo del cultivo del
+                    período <span class="text-bold">{{period_start}} a {{period_end}}</span>
+                    en el suelo que seleccione a continuación:
                 </p>
-                <ul>
-                    <li>
-                        La fecha <span class="text-bold">más favorable</span> para sembrar es:                        
-                    </li>
-
-                </ul>
                 <div class="navbar nav-justified">
                     <div class="container">
                         <div class="navbar-header">
@@ -72,15 +68,10 @@
         <div class="row">
             <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_potential')"  data-toggle="modal" data-target="#assit_modal"/>
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_potential')" data-toggle="modal" data-target="#assit_modal" />
                     <h3 class="text-center">Rendimientos Potenciales</h3>
                     <p class="text-justify">
-                        En el siguiente calendario puede observar
-                        <span class="text-bold">los rendimientos potenciales esperados</span>
-                        en el municipio <span class="text-bold">{{municipality_name}}</span>
-                        para el final del ciclo del cultivo del
-                        período <span class="text-bold">{{period_start}} a {{period_end}}</span>
-                        de la variedad <span class="text-bold">{{cu.name}}</span> en el suelo seleccionado anteriormente.
+                        Indicadores de <span class="text-bold">los rendimientos potenciales esperados</span>
                         <ul>
                             <li>
                                 La fecha <span class="text-bold">más favorable</span> para sembrar es:
@@ -106,7 +97,7 @@
             </article>
             <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_variation')"  data-toggle="modal" data-target="#assit_modal"/>
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_variation')" data-toggle="modal" data-target="#assit_modal" />
                     <h3 class="text-center">Análisis de cultivar</h3>
                     <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
                         <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
@@ -116,9 +107,7 @@
                     <div class="tab-content" id="content_{{cu.id}}">
                         <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
                             <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
-                                <span class="text-bold">{{vr.label}}</span> del cultivar <span class="text-bold">{{cu.name}}</span>
-                                para el período <span class="text-bold">{{period_start}} a {{period_end}}</span>
-                                en el municipio <span class="text-bold">{{municipality_name}}</span> presenta la siguiente variación:
+                                Indicadores agroclimáticos para <span class="text-bold">{{vr.label}}</span>
                                 <ul>
                                     <li>
                                         La fecha <span class="text-bold">con mayor variación</span>
@@ -141,14 +130,14 @@
                     </div>
                 </div>
             </article>
-        </div>        
+        </div>
     </section>
     <!-- End Cultivars -->
     <!-- Start Historical -->
     <section id="historical">
         <article class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_historical')"  data-toggle="modal" data-target="#assit_modal"/>
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_historical')" data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">Histórico de rendimiento</h2>
                 <ul class="nav nav-tabs nav-justified" id="tabs_filters" role="tablist">
                     <li role="presentation" class="active">
@@ -163,11 +152,11 @@
                         <h3>
                             Descripción
                         </h3>
-                        <p class="text-justify">  
-                            Los datos históricos presentados a continuación son el resultado de los datos generados 
+                        <p class="text-justify">
+                            Los datos históricos presentados a continuación son el resultado de los datos generados
                             por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
                             son promediados de acuerdo a su clasificación (nacional o importada).
-                        </p>    
+                        </p>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-lg-1 control-label" for="sel_model_years">Ano:</label>
@@ -176,7 +165,7 @@
                                         <option ng-repeat="y in data_h_years" value="{{y}}">{{y}}</option>
                                     </select>
                                 </div>
-                                <label class="col-lg-2 control-label" >
+                                <label class="col-lg-2 control-label">
                                     Tipo de cultivar:
                                 </label>
                                 <div class="col-lg-2">

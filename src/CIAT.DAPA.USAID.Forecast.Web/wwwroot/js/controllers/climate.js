@@ -218,12 +218,20 @@ angular.module('ForecastApp')
           }
       }
 
+      /*
+       * Method to search assist data and show in the modal window
+       * (string) id: Helper name
+      */
       $scope.assist = function (id) {
           var data = AssistFactory.getById(id);
           tools.show_assist(data.title, data.text, data.url);
           return false;
       }
 
+      /*
+       * Method to search assist data and show in the modal window
+       * (string) id: Helper name
+      */
       $scope.assist_alt = function (id, alt) {
           var data = AssistFactory.getByIdAlt(id,alt);
           tools.show_assist(data.title, data.text, data.url);
