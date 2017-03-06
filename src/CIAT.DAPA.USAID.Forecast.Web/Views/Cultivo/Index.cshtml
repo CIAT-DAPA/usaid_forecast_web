@@ -40,7 +40,19 @@
                 <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
                 <h2 class="text-center">{{cu.name}}</h2>
                 <p class="text-justify">
+                    El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> que
+                    <span ng-show="cu.rainfed" class="text-bold">requiere riego</span><span ng-hide="cu.rainfed" class="text-bold">no requiere riego</span>,
+                    presenta los siguientes indicadores para el período <span class="text-bold">{{period_start}} a {{period_end}}</span>:                    
                 </p>
+                <ul>
+                    <li>
+                        La fecha <span class="text-bold">más favorable</span> para sembrar es:
+                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
+                        con un <span class="text-bold">rendimiento potencial promedio</span>
+                        al final del ciclo del cultivo de
+                        <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
+                    </li>
+                </ul>
                 <div class="navbar nav-justified">
                     <div class="container">
                         <div class="navbar-header">
@@ -154,7 +166,10 @@
                         <h3>
                             Descripción
                         </h3>
-                        <p class="text-justify">                            
+                        <p class="text-justify">  
+                            Los datos históricos presentados a continuación son el resultado de los datos generados 
+                            por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
+                            son promediados de acuerdo a su clasificación (nacional o importada).
                         </p>    
                         <form class="form-horizontal">
                             <div class="form-group">

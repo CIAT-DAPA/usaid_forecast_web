@@ -174,6 +174,8 @@ angular.module('ForecastApp')
       }
 
       /*
+       * Method that draw the yield historical data by source
+       * (string) source: Indicates the source of the data
       */
       function fixed_data_historical(source) {          
           if (source === 'model') {
