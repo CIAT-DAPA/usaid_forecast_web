@@ -8,7 +8,9 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('ClimateCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory, ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory) {
+  .controller('ClimateCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory,
+                                    ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory,
+                                    WeatherStationFactory, AssistFactory) {
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       $scope.municipalities = [];
@@ -216,4 +218,15 @@ angular.module('ForecastApp')
           }
       }
 
+      $scope.assist = function (id) {
+          var data = AssistFactory.getById(id);
+          tools.show_assist(data.title, data.text, data.url);
+          return false;
+      }
+
+      $scope.assist_alt = function (id, alt) {
+          var data = AssistFactory.getByIdAlt(id,alt);
+          tools.show_assist(data.title, data.text, data.url);
+          return false;
+      }
   });

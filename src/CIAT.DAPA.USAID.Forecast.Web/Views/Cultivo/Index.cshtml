@@ -19,7 +19,7 @@
     <section id="description">
         <div class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_forecast')"  data-toggle="modal" data-target="#assit_modal"/>
                 <h2 class="text-center">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
                 <p class="text-justify">
                     Para el municipio de <span class="text-bold">{{municipality_name}}</span>
@@ -37,7 +37,7 @@
     <section ng-repeat="cu in cultivars" id="{{cu.id}}">
         <article class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_cultivar')" data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">{{cu.name}}</h2>
                 <p class="text-justify">
                     El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> que
@@ -46,12 +46,9 @@
                 </p>
                 <ul>
                     <li>
-                        La fecha <span class="text-bold">más favorable</span> para sembrar es:
-                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
-                        con un <span class="text-bold">rendimiento potencial promedio</span>
-                        al final del ciclo del cultivo de
-                        <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
+                        La fecha <span class="text-bold">más favorable</span> para sembrar es:                        
                     </li>
+
                 </ul>
                 <div class="navbar nav-justified">
                     <div class="container">
@@ -75,7 +72,7 @@
         <div class="row">
             <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_potential')"  data-toggle="modal" data-target="#assit_modal"/>
                     <h3 class="text-center">Rendimientos Potenciales</h3>
                     <p class="text-justify">
                         En el siguiente calendario puede observar
@@ -109,7 +106,7 @@
             </article>
             <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_variation')"  data-toggle="modal" data-target="#assit_modal"/>
                     <h3 class="text-center">Análisis de cultivar</h3>
                     <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
                         <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
@@ -151,7 +148,7 @@
     <section id="historical">
         <article class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('crop_historical')"  data-toggle="modal" data-target="#assit_modal"/>
                 <h2 class="text-center">Histórico de rendimiento</h2>
                 <ul class="nav nav-tabs nav-justified" id="tabs_filters" role="tablist">
                     <li role="presentation" class="active">

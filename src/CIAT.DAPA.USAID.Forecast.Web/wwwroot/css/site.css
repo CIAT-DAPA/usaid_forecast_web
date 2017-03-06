@@ -51,14 +51,13 @@
     cursor: pointer;
     position: absolute;
     margin-top: 5px;
-    fill: #ccc;
-    transition: all 0.6s ease-in-out;
+    fill: #00BFFF;
     width: 24px;
     height: 24px;
 }
 
     .icon_help:hover {
-        fill: #00cc44;
+        fill: #0080FF;
     }
 
 .icon_loading {

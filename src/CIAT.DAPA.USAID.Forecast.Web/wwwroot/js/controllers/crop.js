@@ -8,7 +8,10 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory) {
+  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, 
+                                    MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, 
+                                    SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory,
+                                    AssistFactory) {
       $scope.crop_name = tools.search('cultivo');      
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
@@ -200,4 +203,10 @@ angular.module('ForecastApp')
       }
 
       $scope.search_historical = fixed_data_historical;
+
+      $scope.assist = function (id) {
+          var data = AssistFactory.getById(id);
+          tools.show_assist(data.title, data.text, data.url);
+          return false;
+      }
   });

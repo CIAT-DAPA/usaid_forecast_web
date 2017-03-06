@@ -15,6 +15,7 @@
 /// <reference path="js/menu.js" />
 /// <reference path="js/services/base.js" />
 /// <reference path="js/services/forecast.js" />
+/// <reference path="js/services/helpers.js" />
 /// <reference path="js/services/historical.js" />
 /// <reference path="js/site.min.js" />
 /// <reference path="lib/angular/angular.js" />

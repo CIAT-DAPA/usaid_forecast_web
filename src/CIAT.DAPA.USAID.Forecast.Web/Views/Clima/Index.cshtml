@@ -15,7 +15,7 @@
     <section id="probabilities">
         <div class="row section-content">            
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_forecast')"  data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">Predicción climática</h2>
                 <p class="text-justify">
                     Para la ciudad de <span class="text-bold">{{municipality_name}}</span>
@@ -34,7 +34,7 @@
     <section ng-repeat="cv in climate_vars" id="{{cv.value}}">
         <div class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist_alt('climate_var',cv.value)"  data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">{{cv.name}}</h2>
                 <p class="text-justify">
                     {{cv.description}}
@@ -45,7 +45,7 @@
             <!-- Start Climatology -->
             <article id="climatology" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_climatology')"  data-toggle="modal" data-target="#assit_modal" />
                     <h3 class="text-center">Climatología</h3>
                     <p class="text-justify">
                         La climatología para <span class="text-bold">{{cv.name}}</span>
@@ -69,7 +69,7 @@
             <!-- Start Historical -->
             <article id="climatic_history" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" />
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_historical')"  data-toggle="modal" data-target="#assit_modal" />
                     <h3 class="text-center">Histórico climático</h3>
                     <div id="climatic_history_content_{{cv.value}}" class="article_content">
                     </div>
