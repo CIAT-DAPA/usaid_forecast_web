@@ -49,7 +49,9 @@ CalendarHeatmap.prototype.month_path = function (t0, that) {
 CalendarHeatmap.prototype.render = function () {
     var that = this;
 
-    this.base.init(false, 500);
+    var element = document.getElementById(that.base.container.replace('#', ''));
+    var height = (element.clientWidth / 53) * 8;
+    this.base.init(false, height);
 
     this.base.svg
         .data(d3.range(that.year, that.year + 1))
@@ -69,27 +71,30 @@ CalendarHeatmap.prototype.render = function () {
     // Add the days names
     this.base.svg.append("g")
         .attr("class", "days_names")
+        .attr("transform", function (i) { return "translate(0," + that.base.margin.top + ")"; })
         .selectAll(".days_names")
         .data([0, 1, 2, 3, 4, 5, 6])
         .enter()
         .append("text")
-        .attr("transform", function (i) { return "translate(-5," + that.cell_size() * (i + 1) + ")"; })
-        .style("text-anchor", "end")
-        .attr("dy", "-.25em")
-        .text(function (d) { return that.base.days_names[d]; });
+        .attr("transform", function (i) { return "translate(0," + that.cell_size() * (i + 1) + ")"; })
+        //.style("text-anchor", "end")
+        //.attr("dy", "-.25em")
+        .text(function (d) { return that.base.days_names[d].substring(0,3) + "."; });
 
     // Add the month names
     this.base.svg.append("g")
         .attr("class", "month_names")
+        .attr("transform", function (i) { return "translate(" + that.base.margin.left + ",0)"; })
         .selectAll(".month_names")
         .data(that.base.month_names)
         .enter()
         .append("text")
-        .attr("transform", function (d, i) { return "translate(" + (((i + 1) * 50) + 8) + ",0)"; })
+        .attr("transform", function (d, i) { return "translate(" + ((i+1) * (that.cell_size() * 4)) + ",0)"; })
         .style("text-anchor", "end")
-        .attr("dy", "-.25em")
+        .attr("dy", ".9em")
         .text(function (d, i) { return that.base.month_names[i] });
         
+
     // Create the rects of every day of year
     var rect = this.base.svg.append("g")
         .attr("class", "rect_days")
@@ -100,58 +105,42 @@ CalendarHeatmap.prototype.render = function () {
         .attr("class", "heatmap_day")
         .attr("width", that.cell_size())
         .attr("height", that.cell_size())
-        .attr("x", function (d) { return d3.time.weekOfYear(d) * that.cell_size(); })
-        .attr("y", function (d) { return d.getDay() * that.cell_size(); })
-        .datum(that.base.formats.date_format);
-    
+        .attr("x", function (d) { return (d3.time.weekOfYear(d) * that.cell_size()); })
+        .attr("y", function (d) { return (d.getDay() * that.cell_size()); })
+        .datum(that.base.formats.date_format)
+        .attr("transform", function (i) { return "translate(" + that.base.margin.left + "," + that.base.margin.top + ")"; });
+
     // Create the region for every month
     this.base.svg.append("g")
-        .attr("class","month_path")
+        .attr("class", "month_path")
         .selectAll(".month_path")
         .data(function (d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
         .enter()
         .append("path")
-        .attr("class","heatmap_month")
+        .attr("class", "heatmap_month")
         .attr("id", function (d, i) { return that.base.month_names[i] })
-        .attr("d", function (d) { return that.month_path(d, that); });
+        .attr("d", function (d) { return that.month_path(d, that); })
+        .attr("transform", function (i) { return "translate(" + that.base.margin.left + "," + that.base.margin.top + ")"; });
+        
 
     var data = d3.nest()
         .key(function (d) { return d.date; })
         .rollup(function (d) { return d[0].avg; })
         .map(that.base.data);
-    
+
     rect.filter(function (d) { return d in data; })
         .attr("class", function (d) { return that.color(data[d]); })
         .attr("fill", function (d) { return that.color(data[d]); })
-        .select("title")        
+        .select("title")
         .text(function (d) { return d + ": " + round(data[d]); });
 
-    //  Tooltip Object
-    var tooltip = d3.select("body")
-        .append("div").attr("id", "tooltip")
-        .style("position", "absolute")
-        .style("z-index", "10")
-        .style("visibility", "hidden")
-        .text("tooltip");
-
-    rect.on("mouseover", function (d) {        
-        tooltip.style("visibility", "visible");
+    rect.on("mouseover", function (d) {
         var value = that.base.formats.round((data[d] !== undefined) ? data[d] : 0) + ' Kg/ha';
-        var purchase_text = d + ": " + value;
-        
-        tooltip.transition()
-            .duration(200)
-            .style("opacity", .9);
-        tooltip.html(purchase_text)
-            .style("left", (d3.event.pageX) + 30 + "px")
-            .style("top", (d3.event.pageY) + "px");
+        var content = d + ": " + value;
+        that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, content);        
     });
-    
+
     rect.on("mouseout", function (d) {
-        tooltip.transition()
-            .duration(500)
-            .style("opacity", 0);
-        var $tooltip = $("#tooltip");
-        $tooltip.empty();
+        that.base.tooltip_hide();
     });
 }

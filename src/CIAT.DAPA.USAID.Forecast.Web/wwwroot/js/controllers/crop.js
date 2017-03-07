@@ -192,7 +192,7 @@ angular.module('ForecastApp')
                   var data_cultivar = HistoricalYieldFactory.getByCultivars($scope.data_h, cultivars, $scope.crop_yield_var.name);
                   // Draw calendar heatmap
                   var base_chm = new Base('#cultivar_heatmap_model', data_cultivar);
-                  base_chm.setMargin(10, 30, 10, 10);
+                  base_chm.setMargin(30, 30, 40, 10);
                   base_chm.setDateNames(config.month_names, config.days_names);
                   var c_heatmap = new CalendarHeatmap(base_chm, $scope.yield_ranges, $scope.historical_yield.model);
                   c_heatmap.render();
@@ -204,6 +204,10 @@ angular.module('ForecastApp')
 
       $scope.search_historical = fixed_data_historical;
 
+      /*
+       * Method to search assist data and show in the modal window
+       * (string) id: Helper name
+      */
       $scope.assist = function (id) {
           var data = AssistFactory.getById(id);
           tools.show_assist(data.title, data.text, data.url);
