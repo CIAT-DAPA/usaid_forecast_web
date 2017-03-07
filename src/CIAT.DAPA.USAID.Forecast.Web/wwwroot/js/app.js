@@ -19,6 +19,8 @@ angular
       api_fs_historical: $('#api_fs_historical').val(),
       api_fs_historical_yield: $('#api_fs_historical_yield').val(),
       api_fs_historical_yield_years: $('#api_fs_historical_yield_years').val(),
+      /* Data format */
+      float: 0,
       /* Names in spanish about dates */
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],

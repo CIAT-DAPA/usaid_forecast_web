@@ -55,11 +55,11 @@
                         <ul>
                             <li>
                                 El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 1}} {{cv.metric}})</span>.
+                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 0}} {{cv.metric}})</span>.
                             </li>
                             <li>
                                 El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 1}} {{cv.metric}})</span>.
+                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 0}} {{cv.metric}})</span>.
                             </li>
                         </ul>
                     </p>

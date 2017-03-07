@@ -236,7 +236,7 @@ Calendar.prototype.render_month = function () {
         .text(function (d) {
             var text = '';
             if (d != null)
-                text = that.base.formats.float(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
+                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
             return text;
         }); // Render text for the day of the week
     

@@ -46,7 +46,7 @@ Bars.prototype.render = function () {
         .attr('class', that.base.class);
 
     //Create the frequency labels above the rectangles.
-    bars.append("text").text(function (d) { return that.base.formats.float(d.value) })
+    bars.append("text").text(function (d) { return that.base.formats.round(d.value) })
         .attr("x", function (d) { return x(d.month_name) + x.rangeBand() / 2; })
         .attr("y", function (d) { return y(d.value) - 5; })
         .attr("text-anchor", "normaldle");
