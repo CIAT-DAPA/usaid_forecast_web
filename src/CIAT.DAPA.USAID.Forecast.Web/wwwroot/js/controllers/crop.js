@@ -83,7 +83,7 @@ angular.module('ForecastApp')
               
               // Load the historical information
               HistoricalYieldFactory.getYears($scope.ws_entity.id).success(function (data_h_years) {                  
-                  $scope.data_h_years = data_h_years;
+                  $scope.data_h_years = data_h_years;                  
                   $scope.historical_yield.model = $scope.data_h_years[0];
                   fixed_data_historical('model');
               }).error(function (error) {

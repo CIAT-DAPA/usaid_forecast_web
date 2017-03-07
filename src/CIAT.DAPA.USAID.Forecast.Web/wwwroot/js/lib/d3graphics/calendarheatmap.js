@@ -56,17 +56,6 @@ CalendarHeatmap.prototype.render = function () {
     this.base.svg
         .data(d3.range(that.year, that.year + 1))
         .enter();
-    /*    .attr("width", '100%')
-        .attr("data-height", '0.5678')
-        .attr("viewBox", '0 0 900 105')
-        .attr("class", "RdYlGn")
-        .append("g")
-        .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
-
-    this.base.svg.append("text")
-        .attr("transform", "translate(-38," + that.cell_size() * 3.5 + ")rotate(-90)")
-        .style("text-anchor", "middle")
-        .text(function (d) { return d; });*/
 
     // Add the days names
     this.base.svg.append("g")

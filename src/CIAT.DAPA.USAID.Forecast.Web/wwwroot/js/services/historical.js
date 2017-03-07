@@ -185,9 +185,10 @@ angular.module('ForecastApp')
         * (string) years: Concatenate string with years to search data
         */
         dataFactory.getByWeatherStationYear = function (ws, years) {
-            if (dataFactory.raw == null) {
+            dataFactory.raw = $http.get(dataFactory.getUrl(ws, years));
+            /*if (dataFactory.raw == null) {
                 dataFactory.raw = $http.get(dataFactory.getUrl(ws, years));
-            }
+            }*/
             return dataFactory.raw;
         }
 
