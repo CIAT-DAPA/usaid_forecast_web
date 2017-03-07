@@ -55,5 +55,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Name of directory to import the yield of the forecast
         /// </summary>
         public string In_PATH_FS_YIELD { get; set; }
+        /// <summary>
+        /// Name of directory to import the climate of the forecast
+        /// </summary>
+        public string In_PATH_FS_CLIMATE { get; set; }
     }
 }

@@ -78,7 +78,7 @@ angular.module('ForecastApp')
                   ctrs = ctrs + '<section class="item active">';
               ctrs = ctrs + '<article class="col-lg-4 article_content ' + ((i == 0 || i == 2 || i == 4) ? 'col-lg-offset-2' : '') + '">' +
                                 '<div class="section-content">' +
-                                    '<h3 class="text-center">' + m.year + '-' + m.month_name + '</h3>' +
+                                    '<h3 class="text-center">' + m.month_name + '-' + m.year + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
                                     '<div id="pie' + m.year + '-' + m.month + '"></div>' +
                                     '<p class="text-justify article_content" id="summary_' + m.year + '-' + m.month + '">' +

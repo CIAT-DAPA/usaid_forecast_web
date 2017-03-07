@@ -36,7 +36,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     In_PATH_FS_FILE_PERFORMANCE = conf["In_PATH_FS_FILE_PERFORMANCE"],
                     In_PATH_FS_SCENARIOS = conf["In_PATH_FS_SCENARIOS"],
                     In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],
-                    In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"]
+                    In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"],
+                    In_PATH_FS_CLIMATE = conf["In_PATH_FS_CLIMATE"]
                 };
             }
             catch (Exception ex)
@@ -95,7 +96,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 {
                     CIn cin = new CIn();
                     // Import forecast
-                    // -in -fs -p "C:\Users\hsotelo\Desktop\test export\\"
+                    // -in -fs -p "C:\Users\hsotelo\Desktop\test export\\" -cf 0.5
                     int fs = Program.searchParameter(args, "-fs");
                     if (fs >= 0)
                     {
