@@ -61,6 +61,19 @@ function Base(container, data) {
     // Class CSS
     this.class = '';
 
+    // labels axis
+    this.axis_labels = {
+        y: ''
+    };
+
+}
+
+/*
+ * Method that set the value of the y axis label
+ * (string) y: String with the label
+*/
+Base.prototype.setAxisLabelY = function (y) {
+    this.axis_labels.y = y;
 }
 
 /*
@@ -177,6 +190,19 @@ Base.prototype.addAxis = function (x, y, ticks) {
         .attr("class", "y_axis")
         .attr("transform", "translate(" + this.margin.right + ",0)")
         .call(this.getYAxis(y, ticks));
+
+    // Add y label axis
+    if (this.axis_labels.y !== '')
+        this.svg.append('g')
+            .attr('class', 'y_axis_label')
+            .call(y)
+            .append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', this.margin.right + 15)
+            //.attr('dx', this.margin.right)
+            //.attr('dy', '.71em')
+            .style('text-anchor', 'end')            
+            .text(this.axis_labels.y);
 }
 
 /*

@@ -144,6 +144,7 @@ angular.module('ForecastApp')
                   var base_c = new Base('#' + cv.value + '_bar_climatology', climatology);
                   base_c.setMargin(10, 30, 10, 10);
                   base_c.setClass('bar_' + cv.value);
+                  base_c.setAxisLabelY(cv.metric);
                   var bar = new Bars(base_c);
                   bar.render();
                   var compute_c = ClimatologyFactory.summary(climatology);
@@ -192,6 +193,7 @@ angular.module('ForecastApp')
                       // Build the graphic for every month
                       base_h.setMargin(10, 30, 10, 10);
                       base_h.setClass(cv.value);
+                      base_h.setAxisLabelY(cv.metric);
                       var line = new Line(base_h);
                       line.render();
                       h_month_start += 1;

@@ -164,6 +164,7 @@ angular.module('ForecastApp')
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
               base_t.setMargin(10, 50, 10, 20);
               base_t.setDateNames(config.month_names, config.days_names);
+              base_t.setAxisLabelY(vr.metric);
               var trend = new Trend(base_t);
               trend.render();
 
