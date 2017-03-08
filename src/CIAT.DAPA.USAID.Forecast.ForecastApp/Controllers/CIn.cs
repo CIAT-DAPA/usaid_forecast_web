@@ -341,7 +341,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
 
             Console.WriteLine("Forecast imported");
-            Console.ReadLine();
             return true;
         }
     }
