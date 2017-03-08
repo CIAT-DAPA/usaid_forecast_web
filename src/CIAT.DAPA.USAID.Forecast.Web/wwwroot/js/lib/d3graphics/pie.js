@@ -38,19 +38,22 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .attr('fill', '#fff');
 
     centerContainer.append("text")
-      /*.attr('dx', function (d) {
-          var l = content.toString().length;
-          return l >= 3 ? -17 : (l == 2 ? -10 : -5);
-      })*/
+      .attr('dy', function (d) { return -10; })
+      .attr('class', 'pie_center_text_small')
+      .style("text-anchor", "middle")
+      .text(function (d) { return 'Rango normal'; });
+
+    centerContainer.append("text")
+      .attr('dy', function (d) { return 10; })
       .attr('class', 'pie_center_text_high')
       .style("text-anchor", "middle")
       .text(function (d) { return content; });
 
     centerContainer.append("text")
-      .attr('dx', function (d) { return -16; })
-      .attr('dy', function (d) { return 10; })
+      .attr('dy', function (d) { return 25; })
       .attr('class', 'pie_center_text_small')
-      .text(function (d) { return 'Normal'; });
+      .style("text-anchor", "middle")
+      .text(function (d) { return 'Mílimetros en lluvía'; });
 }
 
 /*
