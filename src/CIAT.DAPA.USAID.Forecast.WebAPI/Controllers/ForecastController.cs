@@ -44,7 +44,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         performance = p.performance.Select(p2 => new
                         {
                             measure = Enum.GetName(typeof(MeasurePerformance), p2.name),
-                            value = p2.value
+                            value = p2.value,
+                            year = p2.year,
+                            month = p2.month
                         }),
                         data = p.data.Select(p2 => new
                         {
