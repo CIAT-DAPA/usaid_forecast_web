@@ -41,7 +41,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             // Load probabilities
             Console.WriteLine("Getting probabilities and performance");
-            var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_PROBABILITIES);
+            var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES);
             // Get the probabilities file
             List<ImportProbability> probabilities = new List<ImportProbability>();
             string fp = f_probabilities.SingleOrDefault(p => p.Equals(Program.settings.In_PATH_FS_FILE_PROBABILITY));
@@ -49,7 +49,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             {
                 Console.WriteLine("Processing: probabilities");
                 // Reading the file
-                using (file = File.OpenText(path + Program.settings.In_PATH_FS_PROBABILITIES + @"\" + fp))
+                using (file = File.OpenText(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES + @"\" + fp))
                 {
                     int count = 0;
                     while ((line = file.ReadLine()) != null)
@@ -169,56 +169,48 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             // Load scenarios
             Console.WriteLine("Getting scenarios");
             // Get folder of the scenarios
-            var d_scenarios = Directory.EnumerateDirectories(path + Program.settings.In_PATH_FS_SCENARIOS);
             List<ImportScenario> scenarios = new List<ImportScenario>();
-            foreach (var ds in d_scenarios)
+            Console.WriteLine("Searching scenarios");
+            // Get a list of files of the scenarios
+            var d_f_scenario = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS);
+            // This cicle goes through of the scenarios (max, min, avg)
+            foreach (var s in Enum.GetNames(typeof(ScenarioName)))
             {
-                // Filter the folders of the scenarios
-                if (ds.StartsWith(Program.settings.In_PATH_FS_D_SCENARIO))
+                // This cicle goes through of the measure (t_max, t_min, )
+                foreach (var m in Enum.GetNames(typeof(MeasureClimatic)))
                 {
-                    Console.WriteLine("Searching scenarios in " + ds);
-                    // Get a list of files of the scenarios
-                    var d_f_scenario = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_SCENARIOS + @"\" + ds);
-                    // This cicle goes through of the scenarios (max, min, avg)
-                    foreach (var s in Enum.GetNames(typeof(ScenarioName)))
+                    var f_scenario = d_f_scenario.SingleOrDefault(p => p.Contains(s) && p.Contains(m));
+                    if (f_scenario != null)
                     {
-                        // This cicle goes through of the measure (t_max, t_min, )
-                        foreach (var m in Enum.GetNames(typeof(MeasureClimatic)))
+                        Console.WriteLine("Getting scenario: " + s + " measure: " + m);
+                        // Reading the file
+                        using (file = File.OpenText(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS + @"\" + f_scenario))
                         {
-                            var f_scenario = d_f_scenario.SingleOrDefault(p => p.Contains(s) && p.Contains(m));
-                            if (f_scenario != null)
+                            int count = 0;
+                            while ((line = file.ReadLine()) != null)
                             {
-                                Console.WriteLine("Getting scenario: " + s + " measure: " + m);
-                                // Reading the file
-                                using (file = File.OpenText(path + Program.settings.In_PATH_FS_SCENARIOS + @"\" + ds + @"\" + f_scenario))
+                                // Omitted the file's header
+                                if (count != 0 && !string.IsNullOrEmpty(line))
                                 {
-                                    int count = 0;
-                                    while ((line = file.ReadLine()) != null)
+                                    // Get the data from the file in a temp memmory
+                                    var fields = line.Split(Program.settings.splitted);
+                                    scenarios.Add(new ImportScenario()
                                     {
-                                        // Omitted the file's header
-                                        if (count != 0 && !string.IsNullOrEmpty(line))
-                                        {
-                                            // Get the data from the file in a temp memmory
-                                            var fields = line.Split(Program.settings.splitted);
-                                            scenarios.Add(new ImportScenario()
-                                            {
-                                                year = int.Parse(fields[0]),
-                                                month = int.Parse(fields[1]),
-                                                ws = ds.Replace(Program.settings.In_PATH_FS_D_SCENARIO, ""),
-                                                scenario = s,
-                                                measure = m,
-                                                value = double.Parse(fields[2])
-                                            });
-                                        }
-                                        count += 1;
-                                    }
+                                        year = int.Parse(fields[0]),
+                                        month = int.Parse(fields[1]),
+                                        ws = f_scenario.Replace(s, "").Replace(m, "").Replace("_", ""),
+                                        scenario = s,
+                                        measure = m,
+                                        value = double.Parse(fields[2])
+                                    });
                                 }
+                                count += 1;
                             }
-                            else
-                                Console.WriteLine("File not found. scenario: " + s + " measure: " + m);
-
                         }
                     }
+                    else
+                        Console.WriteLine("File not found. scenario: " + s + " measure: " + m);
+
                 }
             }
             // Create the records of the scenarios in the database
@@ -251,7 +243,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var dc in d_crops)
             {
                 var d_f_yield = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_YIELD + @"\" + dc);
-                foreach (var f_yield in d_f_yield)
+                foreach (var f_yield in d_f_yield.Where(p => p.EndsWith(".csv")))
                 {
                     Console.WriteLine("Working in " + f_yield);
                     using (file = File.OpenText(path + Program.settings.In_PATH_FS_YIELD + @"\" + dc + @"\" + f_yield))

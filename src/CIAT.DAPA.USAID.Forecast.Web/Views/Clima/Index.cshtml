@@ -13,15 +13,16 @@
     <!-- End global variables -->
     <!-- Start Probabilities -->
     <section id="probabilities">
-        <div class="row section-content">            
+        <div class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_forecast')"  data-toggle="modal" data-target="#assit_modal" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_forecast')" data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">Predicción climática</h2>
-                <p class="text-justify">
-                    Para la ciudad de <span class="text-bold">{{municipality_name}}</span>
-                    se presenta la predicción del clima para el período comprendido de
-                    <span class="text-bold">{{period_start}} a {{period_end}}</span>.
-                    La estación meteorológica que provee los datos para realizar los cálculos es
+                <p class="text-justify">                    
+                    Se presenta la predicción del clima,
+                    para la ciudad de <span class="text-bold">{{municipality_name}}</span>, 
+                    para el período comprendido de
+                    <span class="text-bold">{{period_start}} y {{period_end}}</span>.
+                    La estación meteorológica de referencia para hacer estas predicciones 
                     <span class="text-bold">{{ws_entity.name}}</span>,
                     provista por <span class="text-bold">{{ws_entity.origin}}</span>.
                 </p>
@@ -34,7 +35,7 @@
     <section ng-repeat="cv in climate_vars" id="{{cv.value}}">
         <div class="row section-content">
             <div class="col-lg-12">
-                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist_alt('climate_var',cv.value)"  data-toggle="modal" data-target="#assit_modal" />
+                <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist_alt('climate_var',cv.value)" data-toggle="modal" data-target="#assit_modal" />
                 <h2 class="text-center">{{cv.name}}</h2>
                 <p class="text-justify">
                     {{cv.description}}
@@ -45,20 +46,21 @@
             <!-- Start Climatology -->
             <article id="climatology" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_climatology')"  data-toggle="modal" data-target="#assit_modal" />
-                    <h3 class="text-center">Climatología</h3>
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_climatology')" data-toggle="modal" data-target="#assit_modal" />
+                    <h3 class="text-center">Promedio de {{cv.name}} mensual histórico</h3>
                     <p class="text-justify">
+                        {{cv.description_climatology}}.
                         La climatología para <span class="text-bold">{{cv.name}}</span>
                         en el período de <span class="text-bold">{{cv.month_start}} a {{cv.month_end}}</span>
                         en el municipio <span class="text-bold">{{municipality_name}}</span> nos indica que:
                         <ul>
                             <li>
                                 El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 1}} {{cv.metric}})</span>.
+                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 0}} {{cv.metric}})</span>.
                             </li>
                             <li>
                                 El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
-                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 1}} {{cv.metric}})</span>.
+                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 0}} {{cv.metric}})</span>.
                             </li>
                         </ul>
                     </p>
@@ -69,8 +71,11 @@
             <!-- Start Historical -->
             <article id="climatic_history" class="col-lg-6 article_content">
                 <div class="section-content">
-                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_historical')"  data-toggle="modal" data-target="#assit_modal" />
-                    <h3 class="text-center">Histórico climático</h3>
+                    <img src="~/images/icon_help.svg" class="icon_help" alt="Ayuda" ng-click="assist('climate_historical')" data-toggle="modal" data-target="#assit_modal" />
+                    <h3 class="text-center">Comportamiento histórico mensual de {{cv.name}}</h3>
+                    <p class="text-justify">
+                        {{cv.description_historical}}. 
+                    </p>
                     <div id="climatic_history_content_{{cv.value}}" class="article_content">
                     </div>
                 </div>

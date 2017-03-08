@@ -39,8 +39,8 @@
                 </ul>
                 <!-- Start weather station -->
                 <ul class="nav navbar-nav navbar-right" id="mn_municipalities">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{municipality_name}} <span class="caret"></span></a>
+                    <li class="dropdown text-bold" >
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >{{municipality_name}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" ng-switch="type">
                             <li ng-switch-when="climate" ng-repeat="m in municipalities"><a href="/Clima?municipio={{m.name}}">{{m.name}}</a></li>
                             <li ng-switch-when="crop" ng-repeat="m in municipalities"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>

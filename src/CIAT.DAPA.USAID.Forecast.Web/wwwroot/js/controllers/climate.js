@@ -78,7 +78,7 @@ angular.module('ForecastApp')
                   ctrs = ctrs + '<section class="item active">';
               ctrs = ctrs + '<article class="col-lg-4 article_content ' + ((i == 0 || i == 2 || i == 4) ? 'col-lg-offset-2' : '') + '">' +
                                 '<div class="section-content">' +
-                                    '<h3 class="text-center">' + m.year + '-' + m.month_name + '</h3>' +
+                                    '<h3 class="text-center">' + m.month_name + '-' + m.year + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
                                     '<div id="pie' + m.year + '-' + m.month + '"></div>' +
                                     '<p class="text-justify article_content" id="summary_' + m.year + '-' + m.month + '">' +
@@ -109,7 +109,7 @@ angular.module('ForecastApp')
               var id = '#pie' + m.year + '-' + m.month;
               var climatology_lower = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.lower);
               var climatology_upper = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.upper);
-              var data = { percentages: m.probabilities, center: '[' + climatology_lower[0].value.toFixed(0) + ' - ' + climatology_upper[0].value.toFixed(0) + ']' };
+              var data = { percentages: m.probabilities, center: '[' + climatology_lower[0].value.toFixed(config.float) + ' - ' + climatology_upper[0].value.toFixed(config.float) + ']' };
               var base = new Base(id, data);
               var pie = new Pie(base);
               pie.render();
@@ -118,8 +118,8 @@ angular.module('ForecastApp')
               var summary = ClimateFactory.summary(m.raw);
               var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
                                  'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
-                                 'lo normal es que haya una precipitación entre <span class="text-bold">' + climatology_lower[0].value.toFixed(0) +
-                                 ' mm y ' + climatology_upper[0].value.toFixed(0) + ' mm</span>, la predicción climática determina que ' +
+                                 'lo normal es que haya una precipitación entre <span class="text-bold">' + climatology_lower[0].value.toFixed(config.float) +
+                                 ' mm y ' + climatology_upper[0].value.toFixed(config.float) + ' mm</span>, la predicción climática sugiere que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
           }
@@ -144,6 +144,7 @@ angular.module('ForecastApp')
                   var base_c = new Base('#' + cv.value + '_bar_climatology', climatology);
                   base_c.setMargin(10, 30, 10, 10);
                   base_c.setClass('bar_' + cv.value);
+                  base_c.setAxisLabelY(cv.metric);
                   var bar = new Bars(base_c);
                   bar.render();
                   var compute_c = ClimatologyFactory.summary(climatology);
@@ -163,7 +164,7 @@ angular.module('ForecastApp')
                   for (var j = 0; j < cv.historical_months.length; j++) {
                       var cvm = cv.historical_months[j];
                       tabs += '<li role="presentation"' + (j == 0 ? ' class="active"' : '') + '>' +
-                                '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content"> ' + cvm + '</a>' +
+                                '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content" class="text-bold"> ' + cvm + '</a>' +
                              '</li>';
                       content += '<div class="tab-pane fade active in ' + cv.value + '" role="tabpanel" id="' + cv.value + '_' + cvm + '_content" aria-labelledby="' + cv.value + '_' + cvm + '_tab">' +
                                     '<p class="text-justify" id="' + cv.value + '_' + cvm + '_summary">' +
@@ -192,6 +193,7 @@ angular.module('ForecastApp')
                       // Build the graphic for every month
                       base_h.setMargin(10, 30, 10, 10);
                       base_h.setClass(cv.value);
+                      base_h.setAxisLabelY(cv.metric);
                       var line = new Line(base_h);
                       line.render();
                       h_month_start += 1;
@@ -200,8 +202,8 @@ angular.module('ForecastApp')
                       var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
                                     'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
                                     '<ul>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
+                                        '<li>Se han presentado <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
+                                        '<li>Se han presentado <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
                                     '</ul>';
                       $('#' + cv.value + '_' + cvm + '_summary').html(summary);
                   }

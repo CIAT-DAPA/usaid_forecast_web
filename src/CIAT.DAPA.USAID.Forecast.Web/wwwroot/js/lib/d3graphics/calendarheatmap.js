@@ -121,7 +121,7 @@ CalendarHeatmap.prototype.render = function () {
         .attr("class", function (d) { return that.color(data[d]); })
         .attr("fill", function (d) { return that.color(data[d]); })
         .select("title")
-        .text(function (d) { return d + ": " + round(data[d]); });
+        .text(function (d) { return d + ": " + that.base.formats.round(data[d]); });
 
     rect.on("mouseover", function (d) {
         var value = that.base.formats.round((data[d] !== undefined) ? data[d] : 0) + ' Kg/ha';

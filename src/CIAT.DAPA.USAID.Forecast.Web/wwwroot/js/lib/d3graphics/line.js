@@ -96,7 +96,7 @@ Line.prototype.render = function () {
                     .attr('cy', function (d) { return y(d.value); })
                     .on("mouseover", function (d, i) {
                         d3.select(this).attr('class', 'line_area_circle_highlighted_' + that.base.class);
-                        var content = 'Año: ' + d.year + '<br / >Valor: ' + that.base.formats.float(d.value);
+                        var content = 'Año: ' + d.year + '<br / >Valor: ' + that.base.formats.round(d.value);
                         that.base.tooltip_show(d3.event.pageX, d3.event.pageY-50, content);
                     })
                     .on("mouseout", function (d, i) {

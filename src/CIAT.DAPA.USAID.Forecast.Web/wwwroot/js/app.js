@@ -19,15 +19,34 @@ angular
       api_fs_historical: $('#api_fs_historical').val(),
       api_fs_historical_yield: $('#api_fs_historical_yield').val(),
       api_fs_historical_yield_years: $('#api_fs_historical_yield_years').val(),
+      /* Data format */
+      float: 0,
       /* Names in spanish about dates */
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
       /* Climate vars */
       climate_vars: [
-          { name: 'Precipitación', value: 'prec', metric: 'mm', historical_months: [] },
-          { name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [] },
-          { name: 'Temperatura minima', value: 't_min', metric: '°C', historical_months: [] },
-          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', historical_months: [] }
+          {
+              name: 'Precipitación', value: 'prec', metric: 'mm', historical_months: [],
+              description_climatology: 'Esta gráfica muestra la precipitación promedio ocurrida en los últimos 30 años para cada mes',
+              description_historical: ' Esta grafica muestra la precipitación ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
+          },
+          {
+              name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [],
+              description_climatology: 'Esta gráfica muestra la temperatura máxima promedio ocurrida en los últimos 30 años para cada mes',
+              description_historical: ' Esta grafica muestra la temperatura máxima ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
+              
+          },
+          {
+              name: 'Temperatura mínima', value: 't_min', metric: '°C', historical_months: [],
+              description_climatology: 'Esta gráfica muestra la temperatura mínima promedio ocurrida en los últimos 30 años para cada mes',
+              description_historical: ' Esta grafica muestra la temperatura mínima ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
+          },
+          {
+              name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', historical_months: [],
+              description_climatology: 'Esta gráfica muestra la radiación solar promedio ocurrida en los últimos 30 años para cada mes',
+              description_historical: ' Esta grafica muestra la radiación solar ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
+          }
       ],
       climatology_forecast: { lower: 'prec_ter_1', upper: 'prec_ter_2' },
       /* Yield vars */
@@ -89,7 +108,7 @@ angular
       /*
        * Method to determinate which is the current webpage
       */
-      _tools.source = function () {          
+      _tools.source = function () {
           if (window.location.href.includes('Clima') || window.location.href.includes('clima'))
               return 'climate';
           else if (window.location.href.includes('Cultivo') || window.location.href.includes('cultivo'))
