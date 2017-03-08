@@ -149,7 +149,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 {
                     forecast = forecast.id,
                     weather_station = ForecastDB.parseId(ws),
-                    data = probabilities.Where(p => p.Equals(ws)).Select(p => new ProbabilityClimate()
+                    data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
                     {
                         year = p.year,
                         month = p.month,
