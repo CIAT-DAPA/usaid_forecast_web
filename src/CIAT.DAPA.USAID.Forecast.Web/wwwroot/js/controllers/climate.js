@@ -119,7 +119,7 @@ angular.module('ForecastApp')
               var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
                                  'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
                                  'lo normal es que haya una precipitación entre <span class="text-bold">' + climatology_lower[0].value.toFixed(config.float) +
-                                 ' mm y ' + climatology_upper[0].value.toFixed(config.float) + ' mm</span>, la predicción climática determina que ' +
+                                 ' mm y ' + climatology_upper[0].value.toFixed(config.float) + ' mm</span>, la predicción climática sugiere que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
           }
@@ -163,7 +163,7 @@ angular.module('ForecastApp')
                   for (var j = 0; j < cv.historical_months.length; j++) {
                       var cvm = cv.historical_months[j];
                       tabs += '<li role="presentation"' + (j == 0 ? ' class="active"' : '') + '>' +
-                                '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content"> ' + cvm + '</a>' +
+                                '<a href="#' + cv.value + '_' + cvm + '_content" id="' + cv.value + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.value + '_' + cvm + '_content" class="text-bold"> ' + cvm + '</a>' +
                              '</li>';
                       content += '<div class="tab-pane fade active in ' + cv.value + '" role="tabpanel" id="' + cv.value + '_' + cvm + '_content" aria-labelledby="' + cv.value + '_' + cvm + '_tab">' +
                                     '<p class="text-justify" id="' + cv.value + '_' + cvm + '_summary">' +
@@ -200,8 +200,8 @@ angular.module('ForecastApp')
                       var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
                                     'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
                                     '<ul>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
-                                        '<li>Han habido <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
+                                        '<li>Se han presentado <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
+                                        '<li>Se han presentado <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
                                     '</ul>';
                       $('#' + cv.value + '_' + cvm + '_summary').html(summary);
                   }
