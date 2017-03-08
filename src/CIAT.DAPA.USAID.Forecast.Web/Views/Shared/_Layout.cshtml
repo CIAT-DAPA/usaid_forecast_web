@@ -32,15 +32,15 @@
             </div>
             <div class="navbar-collapse collapse" id="navbar_main" ng-controller="LocationCtrl">
                 <ul class="nav navbar-nav">
-                    <li id="menu_main_climate">@Html.ActionLink("Clima", "Index", "Clima")</li>
-                    <li id="menu_main_rice">@Html.ActionLink("Arroz", "Index", "Cultivo", new { cultivo = "arroz" })</li>
-                    <li id="menu_main_maize">@Html.ActionLink("Maíz", "Index", "Cultivo", new { cultivo = "maíz" })</li>
-                    <li id="menu_main_expert">@Html.ActionLink("Datos", "Index", "Experto")</li>
+                    <li id="menu_main_climate"><a href="/Clima"><span class="glyphicon glyphicon-asterisk"></span> Clima</a></li>
+                    <li id="menu_main_rice"><a href="/Cultivo?cultivo=arroz"><span class="glyphicon glyphicon-grain"></span> Arroz</a></li>
+                    <li id="menu_main_maize"><a href="/Cultivo?cultivo=maíz"><span class="glyphicon glyphicon-grain"></span> Maíz</a></li>
+                    <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Datos</a></li>
                 </ul>
                 <!-- Start weather station -->
                 <ul class="nav navbar-nav navbar-right" id="mn_municipalities">
                     <li class="dropdown text-bold" >
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >{{municipality_name}} <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ><span class="glyphicon glyphicon-globe"></span> {{municipality_name}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" ng-switch="type">
                             <li ng-switch-when="climate" ng-repeat="m in municipalities"><a href="/Clima?municipio={{m.name}}">{{m.name}}</a></li>
                             <li ng-switch-when="crop" ng-repeat="m in municipalities"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>
