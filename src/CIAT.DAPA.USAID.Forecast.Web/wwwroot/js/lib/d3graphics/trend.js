@@ -30,7 +30,8 @@ Trend.prototype.render = function () {
     this.base.addAxisDate(x, y, 10, 45);
 
     // Add the ticks
-    this.base.addAxisTicks(x, y, this.base.data.length, 12);
+    //this.base.addAxisTicks(x, y, this.base.data.length, 12);
+    this.base.addAxisTicks(x, y, 12, 12);
 
     // clipping to start chart hidden and slide it in later
     this.base.svg.append('clipPath')
