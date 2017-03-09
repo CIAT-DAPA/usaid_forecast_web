@@ -41,15 +41,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             // Load probabilities
             Console.WriteLine("Getting probabilities and performance");
+            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES);
             var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES);
             // Get the probabilities file
             List<ImportProbability> probabilities = new List<ImportProbability>();
-            string fp = f_probabilities.SingleOrDefault(p => p.Equals(Program.settings.In_PATH_FS_FILE_PROBABILITY));
+            string fp = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PROBABILITY));
             if (!string.IsNullOrEmpty(fp))
             {
                 Console.WriteLine("Processing: probabilities");
+                Console.WriteLine(fp);
                 // Reading the file
-                using (file = File.OpenText(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES + @"\" + fp))
+                using (file = File.OpenText(fp))
                 {
                     int count = 0;
                     while ((line = file.ReadLine()) != null)
@@ -77,12 +79,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Probabilities not found");
             // Get the probabilities file
             List<ImportPerformance> performances = new List<ImportPerformance>();
-            string fpe = f_probabilities.SingleOrDefault(p => p.Equals(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
+            string fpe = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
             if (!string.IsNullOrEmpty(fpe))
             {
                 Console.WriteLine("Processing: performance");
+                Console.WriteLine(fpe);
                 // Reading the file
-                using (file = File.OpenText(path + Program.settings.In_PATH_FS_PROBABILITIES + @"\" + fpe))
+                using (file = File.OpenText(fpe))
                 {
                     int count = 0;
                     while ((line = file.ReadLine()) != null)
@@ -146,7 +149,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 {
                     forecast = forecast.id,
                     weather_station = ForecastDB.parseId(ws),
-                    data = probabilities.Where(p => p.Equals(ws)).Select(p => new ProbabilityClimate()
+                    data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
                     {
                         year = p.year,
                         month = p.month,
@@ -171,6 +174,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             // Get folder of the scenarios
             List<ImportScenario> scenarios = new List<ImportScenario>();
             Console.WriteLine("Searching scenarios");
+            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS);
             // Get a list of files of the scenarios
             var d_f_scenario = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS);
             // This cicle goes through of the scenarios (max, min, avg)
@@ -179,12 +183,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 // This cicle goes through of the measure (t_max, t_min, )
                 foreach (var m in Enum.GetNames(typeof(MeasureClimatic)))
                 {
-                    var f_scenario = d_f_scenario.SingleOrDefault(p => p.Contains(s) && p.Contains(m));
-                    if (f_scenario != null)
+                    var f_scenarios = d_f_scenario.Where(p => p.Contains(s) && p.Contains(m));
+                    if (f_scenarios == null)
+                        Console.WriteLine("File not found. scenario: " + s + " measure: " + m);
+                    foreach (var fs in f_scenarios)
                     {
                         Console.WriteLine("Getting scenario: " + s + " measure: " + m);
+                        Console.WriteLine(fs);
+                        var ws_fs = fs.Split('\\')[fs.Split('\\').Length - 1].Substring(0, 24);
+                        Console.WriteLine(ws_fs);
                         // Reading the file
-                        using (file = File.OpenText(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS + @"\" + f_scenario))
+                        using (file = File.OpenText(fs))
                         {
                             int count = 0;
                             while ((line = file.ReadLine()) != null)
@@ -198,7 +207,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     {
                                         year = int.Parse(fields[0]),
                                         month = int.Parse(fields[1]),
-                                        ws = f_scenario.Replace(s, "").Replace(m, "").Replace("_", ""),
+                                        ws = ws_fs,
                                         scenario = s,
                                         measure = m,
                                         value = double.Parse(fields[2])
@@ -208,14 +217,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             }
                         }
                     }
-                    else
-                        Console.WriteLine("File not found. scenario: " + s + " measure: " + m);
-
                 }
             }
             // Create the records of the scenarios in the database
             Console.WriteLine("Saving the scenarios in the database");
-            foreach (var data in scenarios.Select(p => new { p.ws, p.year, p.scenario }).Distinct())
+            foreach (var data in scenarios.Select(p => new
+            {
+                p.ws,
+                p.year,
+                p.scenario
+            }).Distinct())
                 await db.forecastScenario.insertAsync(new ForecastScenario()
                 {
                     forecast = forecast.id,
@@ -237,16 +248,18 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             // Load yield data
             Console.WriteLine("Getting yield");
+            Console.WriteLine(path + Program.settings.In_PATH_FS_YIELD);
             // Get folder of the scenarios
             var d_crops = Directory.EnumerateDirectories(path + Program.settings.In_PATH_FS_YIELD);
             List<ImportYield> yields = new List<ImportYield>();
             foreach (var dc in d_crops)
             {
-                var d_f_yield = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_YIELD + @"\" + dc);
+                Console.WriteLine("Crop " + dc);
+                var d_f_yield = Directory.EnumerateFiles(dc);
                 foreach (var f_yield in d_f_yield.Where(p => p.EndsWith(".csv")))
                 {
                     Console.WriteLine("Working in " + f_yield);
-                    using (file = File.OpenText(path + Program.settings.In_PATH_FS_YIELD + @"\" + dc + @"\" + f_yield))
+                    using (file = File.OpenText(f_yield))
                     {
                         int count = 0;
                         while ((line = file.ReadLine()) != null)

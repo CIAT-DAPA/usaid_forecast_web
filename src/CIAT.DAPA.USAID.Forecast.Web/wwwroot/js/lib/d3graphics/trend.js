@@ -30,7 +30,8 @@ Trend.prototype.render = function () {
     this.base.addAxisDate(x, y, 10, 45);
 
     // Add the ticks
-    this.base.addAxisTicks(x, y, this.base.data.length, 12);
+    //this.base.addAxisTicks(x, y, this.base.data.length, 12);
+    this.base.addAxisTicks(x, y, 12, 12);
 
     // clipping to start chart hidden and slide it in later
     this.base.svg.append('clipPath')
@@ -72,27 +73,31 @@ Trend.prototype.render = function () {
         .y1(function (d) { return y(d.data.perc_5); });
 
     this.base.svg.append('path')
-        .attr('class', 'area upper outer')
+        //.attr('class', 'area upper outer')
+        .attr('class', 'trend_yield_area_outer')
         .attr('d', upperOuterArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        .attr('class', 'area lower outer')
+        //.attr('class', 'area lower outer')
+        .attr('class', 'trend_yield_area_outer')
         .attr('d', lowerOuterArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        .attr('class', 'area upper inner')
+        //.attr('class', 'area upper inner')
+        .attr('class', 'trend_yield_area_inner')
         .attr('d', upperInnerArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        .attr('class', 'area lower inner')
+        //.attr('class', 'area lower inner')
+        .attr('class', 'trend_yield_area_inner')
         .attr('d', lowerInnerArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        .attr('class', 'median-line')
+        .attr('class', 'trend_yield_median_line')
         .attr('d', medianLine)
         .attr('clip-path', 'url(#trend_clip)');
 

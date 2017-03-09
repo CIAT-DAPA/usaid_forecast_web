@@ -41,7 +41,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .attr('dy', function (d) { return -10; })
       .attr('class', 'pie_center_text_small')
       .style("text-anchor", "middle")
-      .text(function (d) { return 'Rango normal'; });
+      .text(function (d) { return 'Cerca a lo normal'; });
 
     centerContainer.append("text")
       .attr('dy', function (d) { return 10; })

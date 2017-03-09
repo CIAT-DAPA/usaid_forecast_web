@@ -62,9 +62,8 @@ angular
               model: { name: "Oryza 2000" }
           },
           {
-              crop: "maiz",
-              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },
-                   { name: "d_har", label: "Cosecha", metric: 'día', default: false },
+              crop: "maíz",
+              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },                   
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },

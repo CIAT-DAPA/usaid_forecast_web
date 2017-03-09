@@ -157,8 +157,8 @@ Calendar.prototype.get_data_month = function () {
         date = new Date(this.year_display(), this.month_display() + 1, i);
         value = this.search(date);
         data.push(value);
-    }
-    return data;
+    }    
+    return data.slice(0,35);
 }
 /*
  * Dispatch the event to show next month
@@ -193,7 +193,7 @@ Calendar.prototype.render_month = function () {
     // the forward or backward button.
     var days_to_display = this.days_month();
     var cells = this.generate_grid();
-
+    
     // Clear the calendar data
     this.base.svg
         .selectAll(".days_month")
@@ -220,7 +220,7 @@ Calendar.prototype.render_month = function () {
         .text(function (d) { return d[0]; }); // Render text for the day of the week
 
     var data_month = this.get_data_month();
-
+    
     this.base.svg
         .append("g")
         .attr("class", "days_yield")
