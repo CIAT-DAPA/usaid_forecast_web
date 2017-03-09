@@ -204,25 +204,51 @@
 
 /* Trend */
 
-.trend_yield .area {
+/*.trend_yield .area {
+    stroke-width: 1;
+}*/
+
+.trend_yield_area {
     stroke-width: 1;
 }
 
+/*
     .trend_yield .area .outer {
         fill: rgba(230, 230, 255, 0.8);
         stroke: rgba(216, 216, 255, 0.8);
-    }
+    }*/
 
-    .trend_yield .area .inner {
-        fill: rgba(127, 127, 255, 0.8);
-        stroke: rgba(96, 96, 255, 0.8);
-    }
+.trend_yield_area_outer {
+    /*fill: rgba(230, 230, 255, 0.8);*/
+    fill: #ad5858;
+    stroke: rgba(216, 216, 255, 0.8);
+}
+
+.trend_yield_area_inner {
+    /*fill: rgba(230, 230, 255, 0.8);*/
+    fill: #69ad58;
+    stroke: rgba(216, 216, 255, 0.8);
+}
+
+.trend_yield_median_line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 3;
+}
+
+
+/*
+.trend_yield .area .inner {
+    fill: rgba(127, 127, 255, 0.8);
+    stroke: rgba(96, 96, 255, 0.8);
+}
 
 .trend_yield .median-line {
     fill: none;
     stroke: #000;
     stroke-width: 3;
 }
+    */
 
 /* Calendar Heatmap */
 .heatmap_day {
