@@ -8,7 +8,10 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('ExpertCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory) {
+  .controller('ExpertCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory,
+                                    GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory,
+                                    CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory,
+                                    AssistFactory) {
       // Menu bar
       $(".navbar-default li").removeClass("active");
       $('#menu_main_expert').addClass('active');
@@ -222,5 +225,15 @@ angular.module('ForecastApp')
           // CSV
           exportTableToCSV.apply(this, [$('#data_raw'), outputFile]);
       });
+
+      /*
+       * Method to search assist data and show in the modal window
+       * (string) id: Helper name
+      */
+      $scope.assist = function (id) {
+          var data = AssistFactory.getById(id);
+          tools.show_assist(data.title, data.text, data.url);
+          return false;
+      }
 
   });

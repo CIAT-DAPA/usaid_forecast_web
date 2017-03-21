@@ -60,6 +60,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
  * Method that render the graphic in a container
 */
 Pie.prototype.render = function () {
+    var that = this;
 
     this.base.init(true, 0.6);
     this.radius = Math.min(this.base.width, this.base.height) / 2;
@@ -98,6 +99,6 @@ Pie.prototype.render = function () {
     this.drawChartCenter(pie, this.base.data.center);
     // Draw the legend
     this.base.addLegend('bottom', this.base.data.percentages.map(function (item) {
-        return { title: item.label, value: (item.value * 100) + '%', class: 'pie_' + item.type };
+        return { title: item.label, value: that.base.formats.round((item.value * 100)) + '%', class: 'pie_' + item.type };
     }));
 }
