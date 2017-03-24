@@ -119,7 +119,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 var crops = await db.crop.listEnableAsync();
-                ViewBag.crop = new SelectList(crops, "id", "name");
+                ViewBag.crop = new SelectList(crops, "id", "name", entity.crop);
                 writeEvent("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
