@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools;
 using System.IO;
+using CIAT.DAPA.USAID.Forecast.Data.Database;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp
 {
@@ -53,12 +54,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
         static async Task MainAsync(string[] args)
         {
             try
-            {
-                int path = Program.searchParameter(args, "-p");
-                Program.validateParameter(path, "-p");
-                // Check the first parameter to validate if the action is export (-out) or import (-in)
-                if (Program.searchParameter(args, "-out") == 0)
+            {                
+                if (Program.searchParameter(args, "-test") == 0)
                 {
+                    await (new ForecastDB(Program.settings.ConnectionString, Program.settings.Database)).testConnectionAsync();
+                }
+                // Check the first parameter to validate if the action is export (-out) or import (-in)
+                else if (Program.searchParameter(args, "-out") == 0)
+                {
+                    int path = Program.searchParameter(args, "-p");
+                    Program.validateParameter(path, "-p");
                     COut output = new COut();
                     // Export states
                     // -out -s "prec" -p "C:\Users\hsotelo\Desktop\test export\\" -start 1981 -end 2013
@@ -94,6 +99,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 }
                 else if (Program.searchParameter(args, "-in") == 0)
                 {
+                    int path = Program.searchParameter(args, "-p");
+                    Program.validateParameter(path, "-p");
                     CIn cin = new CIn();
                     // Import forecast
                     // -in -fs -p "C:\Users\hsotelo\Desktop\test export\\" -cf 0.5

@@ -1,6 +1,12 @@
 ﻿ForecastApp
 It is a tool to export and import data about forecast platform
 -----------------------------------------------------------------
+Test connection
+
+-test			Mandatory parameter. It indicates to the app that
+				is necessary test the connection with the 
+				database
+-----------------------------------------------------------------
 Export Data
 
 -out			Mandatory parameter. It indicates to the app the

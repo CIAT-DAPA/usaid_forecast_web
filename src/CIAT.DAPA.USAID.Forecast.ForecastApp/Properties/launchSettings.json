@@ -2,7 +2,7 @@
   "profiles": {
     "CIAT.DAPA.USAID.Forecast.ForecastApp": {
       "commandName": "Project",
-      "commandLineArgs": "-in -fs -p \"C:\\Users\\hsotelo\\Desktop\\outputs\\\\\" -cf 0.5"
+      "commandLineArgs": "-test"
     }
   }
 }

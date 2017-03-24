@@ -139,6 +139,29 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         }
 
         /// <summary>
+        /// Method to test the connection to the database
+        /// </summary>
+        /// <returns>True if connected with database, otherwise false</returns>
+        public async Task<bool> testConnectionAsync()
+        {
+            bool answer = false;
+            try
+            {
+                var collections = await db.ListCollectionsAsync();
+                answer = collections != null;
+                Console.WriteLine("Connected with the database");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Connection refuse");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            return answer;
+            
+        }
+
+        /// <summary>
         /// Method that return a object id from a string
         /// </summary>
         /// <param name="id">String hash to convert in ObjectId</param>
