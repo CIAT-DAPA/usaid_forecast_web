@@ -20,12 +20,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [Display(Name = "Date register"), Required(ErrorMessage = "The date register is required")]
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime register { get; set; }
         /// <summary>
         /// Date on which the last update of the entity was carried out in the database
         /// </summary>
         [Display(Name = "Date updated"), Required(ErrorMessage = "The date updated is required")]
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime updated { get; set; }
     }
 }

@@ -186,6 +186,7 @@ angular.module('ForecastApp')
         */
         dataFactory.getByWeatherStationYear = function (ws, years) {
             dataFactory.raw = $http.get(dataFactory.getUrl(ws, years));
+            console.log(dataFactory.getUrl(ws, years));
             /*if (dataFactory.raw == null) {
                 dataFactory.raw = $http.get(dataFactory.getUrl(ws, years));
             }*/
@@ -219,9 +220,10 @@ angular.module('ForecastApp')
             var j = 0;
             var yield_row = null;
             // Filter by cultivar
-            var data = raw.yield.filter(function (item) {
+            var data = raw.yield.filter(function (item) {                
                 return cultivars.filter(function (item2) { return item2.id === item.cultivar; }).length > 0;
             });
+            
             // This cicle acum data by th
             for (var i = 0; i < data.length; i++) {
                 j = indexByDate(summary, data[i].start);

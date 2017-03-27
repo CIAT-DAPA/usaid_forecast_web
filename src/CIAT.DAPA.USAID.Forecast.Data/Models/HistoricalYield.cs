@@ -34,6 +34,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Date when the historical was added
         /// </summary>
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime date { get; set; }
     }
 }
