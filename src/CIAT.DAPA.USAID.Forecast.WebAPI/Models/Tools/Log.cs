@@ -66,6 +66,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools
                 catch (Exception ex2)
                 {
                     Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex2.Message);
                 }
 
             }
