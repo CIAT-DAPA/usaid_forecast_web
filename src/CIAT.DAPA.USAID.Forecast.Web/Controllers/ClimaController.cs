@@ -26,18 +26,25 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         // GET: /Clima/Index/?municipio=
         public async Task<IActionResult> Index(string municipio)
         {
-            // Section to get a default municipality if it doesn't exist
-            var m = await apiForecast.getMunicipalitiesAsync();
-            if (string.IsNullOrEmpty(municipio) || m.Where(p=>p.name.Equals(municipio)).Count() < 1)
+            try
             {
-                municipio = m.FirstOrDefault().name;
-                return RedirectToAction("Index", new { municipio = municipio });
+                // Section to get a default municipality if it doesn't exist
+                var m = await apiForecast.getMunicipalitiesAsync();
+                if (string.IsNullOrEmpty(municipio) || m.Where(p => p.name.Equals(municipio)).Count() < 1)
+                {
+                    municipio = m.FirstOrDefault().name;
+                    return RedirectToAction("Index", new { municipio = municipio });
+                }
+                // Load the urls of the web api's
+                loadAPIs();
+                // Load the dates of the forecast
+                loadMonthsClimate();
+                return View();
             }
-            // Load the urls of the web api's
-            loadAPIs();
-            // Load the dates of the forecast
-            loadMonthsClimate();
-            return View();
+            catch(Exception ex)
+            {
+                return View("Error");
+            }
         }
     }
 }

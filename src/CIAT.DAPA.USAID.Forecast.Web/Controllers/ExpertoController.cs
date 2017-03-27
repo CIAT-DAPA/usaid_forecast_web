@@ -25,12 +25,19 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         // GET: /Experto/Index/
         public async Task<IActionResult> Index()
-        {            
-            // Load the urls of the web api's
-            loadAPIs();
-            // Load the dates of the forecast
-            loadMonthsClimate();
-            return View();
+        {
+            try
+            {
+                // Load the urls of the web api's
+                loadAPIs();
+                // Load the dates of the forecast
+                loadMonthsClimate();
+                return View();
+            }
+            catch(Exception ex)
+            {
+                return View("Error");
+            }
         }
     }
 }
