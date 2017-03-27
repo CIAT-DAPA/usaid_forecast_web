@@ -36,6 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<HistoricalYield> insertAsync(HistoricalYield entity)
         {
+            entity.date = DateTime.Now;
             await collection.InsertOneAsync(entity);
             return entity;
         }

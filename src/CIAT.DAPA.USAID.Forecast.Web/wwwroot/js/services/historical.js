@@ -220,7 +220,7 @@ angular.module('ForecastApp')
             var yield_row = null;
             // Filter by cultivar
             var data = raw.yield.filter(function (item) {
-                return cultivars.filter(function (item2) { return item2.id === item.cultivar }).length > 0;
+                return cultivars.filter(function (item2) { return item2.id === item.cultivar; }).length > 0;
             });
             // This cicle acum data by th
             for (var i = 0; i < data.length; i++) {
