@@ -24,11 +24,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Start date of the result of prediction
         /// </summary>
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime start { get; set; }
         /// <summary>
         /// End date of the result of prediction
         /// </summary>
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime end { get; set; }
         /// <summary>
         /// List of variables results yield forecasts

@@ -36,6 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<HistoricalYield> insertAsync(HistoricalYield entity)
         {
+            entity.date = DateTime.Now;
             await collection.InsertOneAsync(entity);
             return entity;
         }
@@ -67,7 +68,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             List<HistoricalYield> answer = new List<HistoricalYield>();
             // Filter by weather station.
-            var query = collection.AsQueryable().Where(p=> ws.Contains(p.weather_station)).ToList();
+            var query = collection.AsQueryable().Where(p => ws.Contains(p.weather_station)).ToList();
             // Get only the years needed
             foreach (var hy in query)
                 answer.Add(new HistoricalYield()
@@ -75,8 +76,17 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                     id = hy.id,
                     source = hy.source,
                     weather_station = hy.weather_station,
-                    yield = hy.yield.Where(p2 => years.Contains(p2.start.Year)).OrderBy(p=>p.start)
+                    yield = hy.yield.Where(p2 => years.Contains(p2.start.Year)).OrderBy(p => p.start).Select(p => new YieldCrop()
+                    {
+                        cultivar = p.cultivar,
+                        soil = p.soil,
+                        data = p.data,
+                        start = DateTime.SpecifyKind(p.start, DateTimeKind.Utc),
+                        end = DateTime.SpecifyKind(p.end, DateTimeKind.Utc)
+
+                    })
                 });
+
             return answer;
         }
 
@@ -93,7 +103,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var yields = collection.Find(p => ws.Contains(p.weather_station)).Project(x => x.yield).ToListAsync().Result;
             foreach (var y in yields)
                 years.AddRange(y.Select(p => p.start.Year));
-            return years.Distinct().OrderBy(p=> p).ToList();
+            return years.Distinct().OrderBy(p => p).ToList();
         }
     }
 }

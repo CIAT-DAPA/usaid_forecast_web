@@ -15,11 +15,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Start date of the process
         /// </summary>
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime start { get; set; }
         /// <summary>
         /// End date of the process
         /// </summary>
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime end { get; set; }
         /// <summary>
         /// Level of confidence for the generation of the intervals

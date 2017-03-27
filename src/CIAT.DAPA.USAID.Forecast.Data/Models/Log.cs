@@ -18,6 +18,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Date event
         /// </summary>
         [BsonRequired]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime date { get; set; }
         /// <summary>
         /// User that executed the event

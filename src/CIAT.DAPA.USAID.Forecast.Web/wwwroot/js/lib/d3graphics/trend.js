@@ -8,9 +8,6 @@ function Trend(base) {
 
 Trend.prototype.dateParse = function (date) {
     return this.base.translate.toDateFromJson(date);
-    /*var date_temp = this.base.translate.toDateFromJson(date);        
-    var answer = this.base.days_names[date_temp.getDay()].substring(0,3) + ' ' + date_temp.getDate();
-    return answer;*/
 }
 
 /*
@@ -24,7 +21,7 @@ Trend.prototype.render = function () {
     var x = d3.time.scale().range([that.base.margin.right, that.base.width_full - that.base.margin.left])
             .domain(d3.extent(that.base.data, function (d) { return that.dateParse(d.date); }));
     var y = d3.scale.linear().range([that.base.height, 0])
-            .domain([0, d3.max(that.base.data, function (d) { return d.data.max * 1.1; })]);
+            .domain([d3.min(that.base.data, function (d) { return d.data.min; }), d3.max(that.base.data, function (d) { return d.data.max; }) * 1.05]);
 
     // Add the axis
     this.base.addAxisDate(x, y, 10, 45);

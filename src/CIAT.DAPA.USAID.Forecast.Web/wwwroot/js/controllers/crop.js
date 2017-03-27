@@ -185,11 +185,11 @@ angular.module('ForecastApp')
           if (source === 'model') {
               // Load the historical information
               HistoricalYieldFactory.getByWeatherStationYear($scope.ws_entity.id, $scope.historical_yield.model).success(function (data_h) {
-                  // Join all yield data in a single object
-                  $scope.data_h = HistoricalYieldFactory.consolidateHistoricalData(data_h);
+                  // Join all yield data in a single object                  
+                  $scope.data_h = HistoricalYieldFactory.consolidateHistoricalData(data_h);                  
                   // Get cultivars (national or imported)
                   var cultivars = CultivarsFactory.getByCropNational($scope.data_a, $scope.crop_name, $scope.historical_yield.model_type === 'national');
-                  // 
+                  // Get the yield historical by 
                   var data_cultivar = HistoricalYieldFactory.getByCultivars($scope.data_h, cultivars, $scope.crop_yield_var.name);
                   // Draw calendar heatmap
                   var base_chm = new Base('#cultivar_heatmap_model', data_cultivar);
