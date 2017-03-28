@@ -32,6 +32,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_PATH_FS_FILES = conf["Out_PATH_FS_FILES"],
                     Out_PATH_STATES = conf["Out_PATH_STATES"],
                     Out_PATH_WS_FILES = conf["Out_PATH_WS_FILES"],
+                    Out_CROPS_COORDINATES = conf["Out_CROPS_COORDINATES"].Split(','),
+                    Out_PATH_FILE_COORDINATES = conf["Out_PATH_FILE_COORDINATES"],
                     In_PATH_FS_PROBABILITIES = conf["In_PATH_FS_PROBABILITIES"],
                     In_PATH_FS_FILE_PROBABILITY = conf["In_PATH_FS_FILE_PROBABILITY"],
                     In_PATH_FS_FILE_PERFORMANCE = conf["In_PATH_FS_FILE_PERFORMANCE"],
@@ -54,7 +56,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
         static async Task MainAsync(string[] args)
         {
             try
-            {                
+            {
                 if (Program.searchParameter(args, "-test") == 0)
                 {
                     await (new ForecastDB(Program.settings.ConnectionString, Program.settings.Database)).testConnectionAsync();

@@ -142,6 +142,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     Directory.CreateDirectory(dir_setup);
                     foreach (var f in st.conf_files)
                         File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path), true);
+                    // Add csv file with geolocation for rice crop only
+                    if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
+                    {
+                        WeatherStation ws = await db.weatherStation.byIdAsync(st.weather_station.ToString());
+                        StringBuilder coords = new StringBuilder();
+                        coords.Append("name,value");
+                        coords.Append("lat," + ws.latitude.ToString());
+                        coords.Append("long," + ws.longitude.ToString());
+                        coords.Append("elev," + ws.elevation.ToString());
+                        File.WriteAllText(dir_setup + @"\" + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
+                    }
                 }
             }
             return true;
