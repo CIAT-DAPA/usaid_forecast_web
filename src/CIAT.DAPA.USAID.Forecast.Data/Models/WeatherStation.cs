@@ -53,6 +53,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public double longitude { get; set; }
         /// <summary>
+        /// Elevation of the weather station
+        /// </summary>
+        [Display(Name = "Elevation")]
+        public double elevation { get; set; }
+        /// <summary>
         /// Array of configuration files
         /// </summary>
         [BsonRequired]

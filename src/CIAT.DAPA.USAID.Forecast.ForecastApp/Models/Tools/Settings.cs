@@ -32,6 +32,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string Out_PATH_FS_FILES { get; set; }
         /// <summary>
+        /// Arrays with the crops list that neeed the coordinates file
+        /// </summary>
+        public string[] Out_CROPS_COORDINATES { get; set; }
+        /// <summary>
+        /// Name of file to export the coordinates of the weather stations
+        /// </summary>
+        public string Out_PATH_FILE_COORDINATES { get; set; }
+        /// <summary>
         /// Name of directory to import the probabilities of the forecast
         /// </summary>
         public string In_PATH_FS_PROBABILITIES { get; set; }
