@@ -73,7 +73,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            generateListStatesAsync(string.Empty);
+            await generateListStatesAsync(string.Empty);
             return View();
         }
 
@@ -92,13 +92,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
-                generateListStatesAsync(string.Empty);
+                await generateListStatesAsync(string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                generateListStatesAsync(string.Empty);
+                await generateListStatesAsync(string.Empty);
                 return View(entity);
             }
         }
@@ -122,13 +122,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }                
                 writeEvent("Search id: " + id, LogEvent.rea);
-                generateListStatesAsync(entity.state.ToString());
+                await generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                generateListStatesAsync(entity.state.ToString());
+                await generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
         }
@@ -151,13 +151,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
-                generateListStatesAsync(entity.state.ToString());
+                await generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                generateListStatesAsync(entity.state.ToString());
+                await generateListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
         }
@@ -212,13 +212,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Method that create a select list with the states available
         /// </summary>
         /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
-        private async void generateListStatesAsync(string selected)
+        private async Task<bool> generateListStatesAsync(string selected)
         {
             var states = (await db.state.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
             if(string.IsNullOrEmpty(selected))
                 ViewData["state"] = new SelectList(states, "id", "name");
             else
                 ViewData["state"] = new SelectList(states, "id", "name", selected);
+            return states.Count() > 0;
         }
     }
 }
