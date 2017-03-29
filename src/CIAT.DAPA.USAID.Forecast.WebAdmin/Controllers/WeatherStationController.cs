@@ -78,7 +78,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            generateListMunicipalitiesAsync(string.Empty);
+            await generateListMunicipalitiesAsync(string.Empty);
             return View();
         }
 
@@ -97,13 +97,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
-                generateListMunicipalitiesAsync(string.Empty);
+                await generateListMunicipalitiesAsync(string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                generateListMunicipalitiesAsync(string.Empty);
+                await generateListMunicipalitiesAsync(string.Empty);
                 return View(entity);
             }
         }
@@ -127,13 +127,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 writeEvent("Search id: " + id, LogEvent.rea);
-                generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
         }
@@ -156,13 +156,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 writeEvent(ModelState.ToString(), LogEvent.err);
-                generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 writeException(ex);
-                generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
         }
@@ -778,13 +778,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Method that create a select list with the municipalities available
         /// </summary>
         /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
-        private async void generateListMunicipalitiesAsync(string selected)
+        private async Task<bool> generateListMunicipalitiesAsync(string selected)
         {
             var municipalities = (await db.municipality.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
             if (string.IsNullOrEmpty(selected))
                 ViewData["municipality"] = new SelectList(municipalities, "id", "name");
             else
                 ViewData["municipality"] = new SelectList(municipalities, "id", "name", selected);
+            return municipalities.Count() > 0;
         }
     }
 }
