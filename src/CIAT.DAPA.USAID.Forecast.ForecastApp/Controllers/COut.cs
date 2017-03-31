@@ -147,10 +147,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     {
                         WeatherStation ws = await db.weatherStation.byIdAsync(st.weather_station.ToString());
                         StringBuilder coords = new StringBuilder();
-                        coords.Append("name,value");
-                        coords.Append("lat," + ws.latitude.ToString());
-                        coords.Append("long," + ws.longitude.ToString());
-                        coords.Append("elev," + ws.elevation.ToString());
+                        coords.Append("name,value\n");
+                        coords.Append("lat," + ws.latitude.ToString() + "\n");
+                        coords.Append("long," + ws.longitude.ToString() + "\n");
+                        coords.Append("elev," + ws.elevation.ToString() + "\n");
                         File.WriteAllText(dir_setup + @"\" + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
                     }
                 }
