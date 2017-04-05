@@ -13,6 +13,7 @@
 /// <reference path="js/lib/d3graphics/trend.js" />
 /// <reference path="js/lib/export/csv.js" />
 /// <reference path="js/menu.js" />
+/// <reference path="js/seo/analytics.js" />
 /// <reference path="js/services/base.js" />
 /// <reference path="js/services/forecast.js" />
 /// <reference path="js/services/helpers.js" />
