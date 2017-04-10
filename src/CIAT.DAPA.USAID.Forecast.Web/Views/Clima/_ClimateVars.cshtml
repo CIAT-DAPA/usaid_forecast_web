@@ -1,0 +1,56 @@
+﻿<div ng-controller="ClimateCtrl">
+    <h2 class="text-center" style="color: white;">{{cv.name}}</h2>
+    <!-- Start precipitation -->
+    <section ng-repeat="cv in climate_vars" id="{{cv.value}}">
+        <div class="row section-content">
+            <div class="col-lg-12">
+                <a href="#" class="icon_help" ng-click="assist_alt('climate_var',cv.value)" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                <h2 class="text-center">{{cv.name}}</h2>
+                <p class="text-justify">
+                    {{cv.description}}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Start Climatology -->
+            <article id="climatology" class="col-lg-6 article_content">
+                <div class="section-content">
+                    <a href="#" class="icon_help" ng-click="assist('climate_climatology')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                    <h3 class="text-center">Promedio de {{cv.name}} mensual histórico</h3>
+                    <p class="text-justify">
+                        {{cv.description_climatology}}.
+                        La climatología para <span class="text-bold">{{cv.name}}</span>
+                        en el período de <span class="text-bold">{{cv.month_start}} a {{cv.month_end}}</span>
+                        en el municipio <span class="text-bold">{{municipality_name}}</span> nos indica que:
+                        <ul>
+                            <li>
+                                El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
+                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 0}} {{cv.metric}})</span>.
+                            </li>
+                            <li>
+                                El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
+                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 0}} {{cv.metric}})</span>.
+                            </li>
+                        </ul>
+                    </p>
+                    <div id="{{cv.value}}_bar_climatology" class="bar_climatology"></div>
+                </div>
+            </article>
+            <!-- End Climatology -->
+            <!-- Start Historical -->
+            <article id="climatic_history" class="col-lg-6 article_content">
+                <div class="section-content">
+                    <a href="#" class="icon_help" ng-click="assist('climate_historical')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                    <h3 class="text-center">Comportamiento histórico mensual de {{cv.name}}</h3>
+                    <p class="text-justify">
+                        {{cv.description_historical}}.
+                    </p>
+                    <div id="climatic_history_content_{{cv.value}}" class="article_content">
+                    </div>
+                </div>
+            </article>
+            <!-- End Historical -->
+        </div>
+    </section>
+    <!-- End precipitation -->
+</div>
