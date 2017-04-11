@@ -8,36 +8,23 @@
 <input type="hidden" id="api_fs_forecast" name="api_fs_forecast" value="@ViewBag.api_fs_forecast" />
 <input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
 <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-<input type="hidden" id="mn_select" name="mn_select" value="probabilities" />
-<input type="hidden" id="climate_section" name="climate_section" value="" />
+<input type="hidden" id="mn_select" name="mn_select" value="prob" />
+<input type="hidden" id="climate_section" name="climate_section" value="0" />
 <!-- End global variables -->
 
 @Html.Partial("_Menu")
 
-<h2 class="text-center" style="color: white;">Predicción Climática</h2>
+<h2 class="text-center sectionTitle" style="color: white;">Predicción Climática</h2>
 <div id="containerBlock">
+    @Html.Partial("_Forecast")
 </div>
 
 @section Scripts {
-    <script type="text/javascript">
-        var climate_content = $("#containerBlock");
-        //console.log()
-        if ($("#mn_select").val() === 'probabilities') {
-            $.get('/Clima/Forecast', function (data) {
-                climate_content.html(data);
-            });
-        }
-        else {
-            $.get('/Clima/ClimateVars', function (data) {
-                climate_content.html(data);
-            });
-
-        }
-    </script>
     <script src="~/lib/d3/d3.min.js"></script>
     <script src="~/js/lib/d3graphics/base.js"></script>
     <script src="~/js/lib/d3graphics/pie.js"></script>
     <script src="~/js/lib/d3graphics/bars.js"></script>
     <script src="~/js/lib/d3graphics/line.js"></script>
-    <script src="~/js/controllers/climate.js"></script>
+    <script src="~/js/controllers/forecast.js"></script>
+    <script src="~/js/controllers/subMenu.js"></script>
 }

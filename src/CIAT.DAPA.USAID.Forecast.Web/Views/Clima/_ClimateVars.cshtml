@@ -1,16 +1,6 @@
 ﻿<div ng-controller="ClimateCtrl">
-    <h2 class="text-center" style="color: white;">{{cv.name}}</h2>
     <!-- Start precipitation -->
-    <section ng-repeat="cv in climate_vars" id="{{cv.value}}">
-        <div class="row section-content">
-            <div class="col-lg-12">
-                <a href="#" class="icon_help" ng-click="assist_alt('climate_var',cv.value)" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                <h2 class="text-center">{{cv.name}}</h2>
-                <p class="text-justify">
-                    {{cv.description}}
-                </p>
-            </div>
-        </div>
+    <section  id="{{cv.value}}">
         <div class="row">
             <!-- Start Climatology -->
             <article id="climatology" class="col-lg-6 article_content">

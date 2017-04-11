@@ -95,23 +95,25 @@
     margin:5px 0 5px 0;
     padding:5px;
     text-align:center;
+    cursor:pointer;
+    color:white;
+}
+
+.leftMenu-wrapper li:hover{
+    border-bottom:3px solid #1f3c56;
     
 }
 
-.leftMenu-wrapper li a {
-    text-decoration: none;
-    color: white;
-}
-
-li.active{
-    background-color:#3f76a9;
+.leftMenu-wrapper li.active{
+    background-color: #295884;
+    border-bottom:3px solid #1f3c56;
 }
 
 .leftMenu-wrapper li > .active > a,
     .leftMenu-wrapper li > .active > a:hover,
     .leftMenu-wrapper li > .active > a:focus {
         color: #d1ffed;
-        background-color: #27ae60;
+        
     }
 
 .borderBox{

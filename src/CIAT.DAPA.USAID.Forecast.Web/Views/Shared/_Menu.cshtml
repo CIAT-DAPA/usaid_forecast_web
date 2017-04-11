@@ -1,12 +1,9 @@
-﻿<div id="secundaryMenu">
+﻿<div id="secundaryMenu" ng-controller="SubMenuCtrl">
     <div id="leftMenu">
         <h3 class="text-center" style="color: white;">Información</h3>
         <div class="leftMenu-wrapper col-md-12">
             <ul class="row">
-                <li class="col-md-12 active"><a href="#">Predicción climática</a></li>
-                <li class="col-md-12"><a href="/Clima">Precipitación</a></li>
-                <li class="col-md-12"><a href="#">Temperatura</a></li>
-                <li class="col-md-12"><a href="#">Radiación solar</a></li>
+                <li ng-repeat="sb in subSections" class="col-md-12" ng-click="renderView(sb.value,$index)">{{sb.name}}</li>
             </ul>
         </div>
     </div>
