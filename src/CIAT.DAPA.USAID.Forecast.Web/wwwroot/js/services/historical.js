@@ -155,7 +155,7 @@ angular.module('ForecastApp')
          * Method that return the url to get yield historical years
          * (string) ws: Concatenate string with ids of the weather stations
         */
-        dataFactory.getUrlYears = function (ws) {
+        dataFactory.getUrlYears = function (ws) {            
             return config.api_fs + config.api_fs_historical_yield_years + ws;
         }
 
