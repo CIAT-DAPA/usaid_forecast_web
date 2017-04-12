@@ -11,7 +11,7 @@ angular.module('ForecastApp')
   .controller('ExpertCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory,
                                     GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory,
                                     CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory,
-                                    AssistFactory) {
+                                    AssistFactory, HistoricalYieldFactory) {
       // Menu bar
       $(".navbar-default li").removeClass("active");
       $('#menu_main_expert').addClass('active');
@@ -21,12 +21,16 @@ angular.module('ForecastApp')
       $scope.url.agronomic = AgronomicFactory.getUrl();
       $scope.url.climatology = HistoricalFactory.getUrl('');
       $scope.url.historical_climate = HistoricalFactory.getUrl('');
+      $scope.url.historical_yield = HistoricalFactory.getUrl('');
       $scope.url.forecast_climate = ForecastFactory.getUrl();
 
+      // title of the dataset
       $scope.data_title = '';
-
+      // Objects for the parameters in the forms
       $scope.climatology = {};
       $scope.historical_climate = {};
+      $scope.historical_yield = {};
+      $scope.historical_yield_year = { raw: [], select: 0 };
 
       // Vars of the data
       // Data municipalities
@@ -51,15 +55,21 @@ angular.module('ForecastApp')
           $scope.data_m = data_m;
 
           // Set the first item in the select controls
+          // Climatology
           $scope.climatology.state = data_m[0];
           $scope.climatology.municipality = data_m[0].municipalities[0];
           $scope.climatology.ws = data_m[0].municipalities[0].weather_stations[0];
           $scope.url.climatology = HistoricalFactory.getUrl($scope.climatology.ws.id);
-          //
+          // Historical climate
           $scope.historical_climate.state = data_m[0];
           $scope.historical_climate.municipality = data_m[0].municipalities[0];
           $scope.historical_climate.ws = data_m[0].municipalities[0].weather_stations[0];
           $scope.url.historical_climate = HistoricalFactory.getUrl($scope.historical_climate.ws.id);
+          // Historical yield
+          $scope.historical_yield.state = data_m[0];
+          $scope.historical_yield.municipality = data_m[0].municipalities[0];
+          $scope.historical_yield.ws = data_m[0].municipalities[0].weather_stations[0];
+          $scope.url.historical_yield = "{}";
 
           // Load the agronomic information
           AgronomicFactory.get().success(function (data_a) {
@@ -89,6 +99,41 @@ angular.module('ForecastApp')
           if ($scope.historical_climate.ws != undefined)
               ws_id = $scope.historical_climate.ws.id;
           $scope.url.historical_climate = HistoricalFactory.getUrl(ws_id);
+      }
+
+      /*
+       * Event to change value in historical yield
+      */
+      $scope.updateHistoricalYield = function () {
+          var ws_id = '';
+          if ($scope.historical_climate.ws != undefined)
+              ws_id = $scope.historical_climate.ws.id;
+          $scope.url.historical_climate = HistoricalFactory.getUrl(ws_id);
+      }
+
+      /*
+       * Event to change value in the years for historical yield
+      */
+      $scope.updateHistoricalYieldYears = function () {
+          var ws_id = '';
+          if ($scope.historical_yield.ws != undefined) {
+              ws_id = $scope.historical_yield.ws.id;
+              HistoricalYieldFactory.getYears(ws_id).success(function (data) {                  
+                  $scope.historical_yield_year.raw = data;                  
+                  $scope.historical_yield_year.select = data[0];
+                  $scope.url.historical_yield = HistoricalYieldFactory.getByWeatherStationYear($scope.historical_yield.ws.id, data[0]);
+              }).error(function (error) {
+                  console.log(error);
+              });
+              
+          }
+      }
+
+      /*
+       * Event to change the url in historical yield
+      */
+      $scope.updateUrlHistoricalYield = function () {
+          $scope.url.historical_yield = HistoricalYieldFactory.getUrl($scope.historical_yield.ws.id, $scope.historical_yield_year.select);
       }
 
 
@@ -172,6 +217,24 @@ angular.module('ForecastApp')
                   console.log(error);
               });
           }
+          else if (source === 'historical_yield') {
+              $scope.data_title = 'Histórico de producción';
+              $scope.headers = ['source', 'ws_id', 'cultivar_id', 'soil_id', 'start', 'end', 'measure', 'median', 'avg', 'min', 'max', 'quar_1', 'quar_2', 'quar_3', 'conf_lower', 'conf_upper', 'sd', 'perc_5', 'perc_95', 'coef_var'];
+              HistoricalYieldFactory.getByWeatherStationYear($scope.historical_yield.ws.id, $scope.historical_yield_year.select).success(function (data_f) {
+                  for (var i = 0; i < data_f.length; i++) {
+                      var w = data_f[i];
+                      for (var j = 0; j < w.yield.length; j++) {
+                          var y = w.yield[j];
+                          for (var k = 0; k < y.data.length; k++) {
+                              var d = y.data[k];
+                              rows.push([w.source, w.weather_station, y.cultivar, y.soil, y.start, y.end, d.measure, d.median, d.avg, d.min, d.max, d.quar_1, d.quar_2, d.quar_3, d.conf_lower, d.conf_upper, d.sd, d.perc_5, d.perc_95, d.coef_var]);
+                          }
+                      }
+                  }
+              }).error(function (error) {
+                  console.log(error);
+              });
+          }
           else if (source === 'forecast_climate') {
               $scope.data_title = 'Predicción climática';
               $scope.headers = ['ws_id', 'year', 'month', 'measure', 'lower', 'normal', 'upper'];
@@ -192,15 +255,15 @@ angular.module('ForecastApp')
           }
           else if (source === 'forecast_yield') {
               $scope.data_title = 'Predicción climática';
-              $scope.headers = ['ws_id', 'cultivar', 'soil', 'start', 'end', 'measure', 'median','avg','min','max','quar_1','quar_2','quar_3','conf_lower','conf_upper','sd','perc_5','perc_95','coef_var'];
+              $scope.headers = ['ws_id', 'cultivar_id', 'soil_id', 'start', 'end', 'measure', 'median', 'avg', 'min', 'max', 'quar_1', 'quar_2', 'quar_3', 'conf_lower', 'conf_upper', 'sd', 'perc_5', 'perc_95', 'coef_var'];
               ForecastFactory.get().success(function (data_f) {
                   for (var i = 0; i < data_f.yield.length; i++) {
-                      var w = data_f.yield[i];                      
+                      var w = data_f.yield[i];
                       for (var j = 0; j < w.yield.length; j++) {
-                          var y = w.yield[j];                          
+                          var y = w.yield[j];
                           for (var k = 0; k < y.data.length; k++) {
                               var d = y.data[k];
-                              rows.push([w.weather_station, y.cultivar, y.soil, y.start, y.end, d.measure, d.median, d.avg, d.min, d.max, d.quar_1, d.quar_2, d.quar_3, d.conf_lower, d.conf_upper, d.sd, d.perc_5, d.perc_95, d.coef_var]);                              
+                              rows.push([w.weather_station, y.cultivar, y.soil, y.start, y.end, d.measure, d.median, d.avg, d.min, d.max, d.quar_1, d.quar_2, d.quar_3, d.conf_lower, d.conf_upper, d.sd, d.perc_5, d.perc_95, d.coef_var]);
                           }
                       }
                   }
