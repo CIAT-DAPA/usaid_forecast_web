@@ -11,7 +11,21 @@ angular.module('ForecastApp')
   .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, 
                                     MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, 
                                     SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory,
-                                    AssistFactory) {
+                                    AssistFactory, $rootScope) {
+
+      $scope.collapsable = function (item) {
+          var $this=$("#"+item).find(".blockTitle");
+          if ($($this).hasClass('closed')) {
+              $($this).parent().find('.blockTitle').removeClass('opened').addClass('closed');
+              $($this).removeClass('closed').addClass('opened');
+          } else {
+              $($this).removeClass('opened').addClass('closed');
+          }
+          $($this).next().slideToggle('slow', function () {
+              fixed_data_forecast();
+          });
+          
+      }
       $scope.crop_name = tools.search('cultivo');      
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
@@ -214,4 +228,9 @@ angular.module('ForecastApp')
           tools.show_assist(data.title, data.text, data.url);
           return false;
       }
+
+      $rootScope.drawFunction = function () {
+          console.log("test");
+      }
+      
   });

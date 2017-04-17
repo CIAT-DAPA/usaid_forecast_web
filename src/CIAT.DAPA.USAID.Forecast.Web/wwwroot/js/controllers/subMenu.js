@@ -8,7 +8,7 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('SubMenuCtrl', function ($scope, config,tools) {
+  .controller('SubMenuCtrl', function ($scope, $compile, config, tools, $rootScope) {
       
       $scope.type = tools.source();
 
@@ -29,20 +29,33 @@ angular.module('ForecastApp')
           ];
       }
       else if ($scope.type === 'crop') {
-          $scope.subSections = config.yield_default_var;
+          $scope.subSections = [
+          {
+              name: 'Pronóstico agroclimático', value: 'pronA'
+          },
+          {
+              name: 'Histórico de rendimiento', value: 'hist'
+          }
+          ];
       }
       else {
 
       }
 
-      $scope.renderView = function ($value, $index) {
-          console.log($value);
-          console.log($index);
-          var climate_content = $("#containerBlock");
+      $scope.renderView = function ($value, $name) {
+          
+          $(".subMenuItem").removeClass("active");
+          $("#subMenu-" + $value).addClass("active");
+          $(".sections").hide();
+          $("#" + $value).show();
+          $("#sectionTitle").text($name);
+          $rootScope.drawFunction();
+          /*var climate_content = $("#containerBlock");
           if ($value === 'prob') {
               $(".sectionTitle").text("Predicción Climática");
               $.get('/Clima/Forecast', function (data) {
                   climate_content.html(data);
+
               });
           }
           else {
@@ -51,5 +64,8 @@ angular.module('ForecastApp')
               });
 
           }
+                  $compile(climate_content.html());
+                  */
+
       }
   });

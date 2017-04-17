@@ -11,6 +11,7 @@ angular.module('ForecastApp')
   .controller('ForecastCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory,
                                     ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory,
                                     WeatherStationFactory, AssistFactory) {
+      console.log("test");
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       $scope.municipalities = [];

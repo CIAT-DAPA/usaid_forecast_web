@@ -46,7 +46,7 @@
     }
     .body-content{
         background-image:url(/images/imageTest.jpg); 
-        background-size:100% 100%; 
+        background-size:1600px 860px; 
         background-color:white; 
         padding:0 25px;
     }
@@ -117,10 +117,33 @@
     }
 
 .borderBox{
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    border:1px solid #eee;
+    border: 1px solid #D1D1D1;
+    margin: 10px -15px 10px -15px;
+    border-radius: 4px;
+    position: relative;
+    transition: box-shadow 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.borderBox:hover{
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+  border: 1px solid #C7C7C7;
+}
+
+.blockTitle.opened {
+  opacity: 0.5;
+  background-image: url(../images/arrow-up.png);
+   cursor: pointer;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-position: -5px 2px;
+}
+
+.blockTitle.closed {
+  background-image: url(../images/arrow-down.png);
+    cursor: pointer;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-position: -5px 2px;
 }
 
 /*Custom carousel*/

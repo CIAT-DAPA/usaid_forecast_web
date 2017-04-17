@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Cultivo";
 }
-<div ng-controller="CropCtrl">
+
 
     <!-- Start global variables -->
     <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
@@ -15,189 +15,183 @@
     <input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
     <!-- End global variables -->
     <!-- Start Description -->
-    <section id="description">
-        <div class="row section-content">
-            <div class="col-lg-12">
-                <a href="#" class="icon_help" ng-click="assist('crop_forecast')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                <h2 class="text-center">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
-                <p class="text-justify">
-                    Para el municipio de <span class="text-bold">{{municipality_name}}</span>
-                    se presenta el pronóstico agroclimático para el período comprendido de
-                    <span class="text-bold">{{period_start}} a {{period_end}}</span>.
-                    La estación meteorológica que provee los datos para realizar los cálculos es
-                    <span class="text-bold">{{ws_entity.name}}</span>,
-                    provista por <span class="text-bold">{{ws_entity.origin}}</span>.
-                </p>
-            </div>
-        </div>
-    </section>
-    <!-- End Description -->
-    <!-- Start Cultivars -->
-    <section ng-repeat="cu in cultivars" id="{{cu.id}}">
-        <article class="row section-content">
-            <div class="col-lg-12">
-                <a href="#" class="icon_help" ng-click="assist('crop_cultivar')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                <h2 class="text-center">{{cu.name}}</h2>
-                <p class="text-justify">
-                    El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> que
-                    <span ng-show="cu.rainfed" class="text-bold">requiere riego</span><span ng-hide="cu.rainfed" class="text-bold">no requiere riego</span>,
-                    presenta los <span class="text-bold">los rendimientos potenciales esperados</span>
-                    para el final del ciclo del cultivo del
-                    período <span class="text-bold">{{period_start}} a {{period_end}}</span>
-                    en el suelo que seleccione a continuación:
-                </p>
-                <div class="navbar nav-justified">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_cultivar_{{cu.id}}">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>
-                        <div class="navbar-collapse collapse" id="navbar_cultivar_{{cu.id}}">
+
+    @Html.Partial("_Menu")
+<div ng-controller="CropCtrl">
+    <h2 class="text-center" id="sectionTitle" style="color: white;">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
+    <div  id="containerBlock">
+        <div class="sections" id="pronA">
+            <section class="col-md-12" id="description">
+                <div class="row section-content">
+                    <div class="col-lg-12">
+                        <p class="text-justify">
+                            Para el municipio de <span class="text-bold">{{municipality_name}}</span>
+                            se presenta el pronóstico agroclimático para el período comprendido de
+                            <span class="text-bold">{{period_start}} a {{period_end}}</span>.
+                            La estación meteorológica que provee los datos para realizar los cálculos es
+                            <span class="text-bold">{{ws_entity.name}}</span>,
+                            provista por <span class="text-bold">{{ws_entity.origin}}</span>.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <!-- End Description -->
+            <!-- Start Cultivars -->
+            <section class="col-md-12">
+                <article class="row section-content borderBox" ng-repeat="cu in cultivars" id="{{cu.id}}">
+                    <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id)">
+                        <label style="font-size:1.2em;">{{cu.name}}</label>
+                        <p class="text-justify">
+                            El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> que
+                            <span ng-show="cu.rainfed" class="text-bold">requiere riego</span><span ng-hide="cu.rainfed" class="text-bold">no requiere riego</span>,
+                            presenta los <span class="text-bold">los rendimientos potenciales esperados</span>
+                            para el final del ciclo del cultivo del
+                            período <span class="text-bold">{{period_start}} a {{period_end}}</span>
+                            en el suelo que seleccione a continuación:
+                        </p>
+                    </div>
+                    <section class="graphs" style="display:none;">
+                        <div class="col-md-12">
                             <button type="button" ng-repeat="so in cu.soils" ng-class="{'btn':true, 'btn-default':true, 'btn-primary':$first }" id="soil_{{cu.id}}_{{so.id}}" ng-click="draw(cu,so)">
                                 {{so.name}}
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </article>
-        <div class="row">
-            <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
-                <div class="section-content">
-                    <a href="#" class="icon_help" ng-click="assist('crop_potential')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                    <h3 class="text-center">Rendimientos Potenciales</h3>
-                    <p class="text-justify">
-                        Indicadores de <span class="text-bold">los rendimientos potenciales esperados</span>
-                        <ul>
-                            <li>
-                                La fecha <span class="text-bold">más favorable</span> para sembrar es:
-                                <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
-                                con un <span class="text-bold">rendimiento potencial promedio</span>
-                                al final del ciclo del cultivo de
-                                <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
-                            </li>
-                            <li>
-                                La fecha <span class="text-bold">menos favorable</span> para sembrar es:
-                                <span class="text-bold" id="yield_{{cu.id}}_min_date"></span>
-                                con un <span class="text-bold">rendimiento potencial promedio</span>
-                                al final del ciclo del cultivo de
-                                <span class="text-bold" id="yield_{{cu.id}}_min_yield"></span>
-                            </li>
-                        </ul>
-                    </p>
-                    <button id="back_{{cu.id}}" class="btn btn-warning"><</button>
-                    <button id="forward_{{cu.id}}" class="btn btn-warning">></button>
-                    <label id="current_month_{{cu.id}}"></label>
-                    <div id="calendar_{{cu.id}}"></div>
-                </div>
-            </article>
-            <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
-                <div class="section-content">
-                    <a href="#" class="icon_help" ng-click="assist('crop_variation')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                    <h3 class="text-center">Análisis de cultivar</h3>
-                    <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
-                        <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
-                            <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}" class="text-bold">{{vr.label}}</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="content_{{cu.id}}">
-                        <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
-                            <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
-                                Indicadores agroclimáticos para <span class="text-bold">{{vr.label}}</span>
-                                <ul>
-                                    <li>
-                                        La fecha <span class="text-bold">con mayor variación</span>
-                                        de <span class="text-bold">{{vr.label}}</span>, es
-                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_date"></span>
-                                        con una desviación standar de
-                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_yield"></span>
-                                    </li>
-                                    <li>
-                                        La fecha <span class="text-bold">con menor variación</span>
-                                        de <span class="text-bold">{{vr.label}}</span>, es
-                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_date"></span>
-                                        con una desviación standar de
-                                        <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_yield"></span>
+                        <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
+                            <div class="section-content">
+                                <a href="#" class="icon_help" ng-click="assist('crop_potential')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                                <h3 class="text-center">Rendimientos Potenciales</h3>
+                                <p class="text-justify">
+                                    Indicadores de <span class="text-bold">los rendimientos potenciales esperados</span>
+                                    <ul>
+                                        <li>
+                                            La fecha <span class="text-bold">más favorable</span> para sembrar es:
+                                            <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
+                                            con un <span class="text-bold">rendimiento potencial promedio</span>
+                                            al final del ciclo del cultivo de
+                                            <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
+                                        </li>
+                                        <li>
+                                            La fecha <span class="text-bold">menos favorable</span> para sembrar es:
+                                            <span class="text-bold" id="yield_{{cu.id}}_min_date"></span>
+                                            con un <span class="text-bold">rendimiento potencial promedio</span>
+                                            al final del ciclo del cultivo de
+                                            <span class="text-bold" id="yield_{{cu.id}}_min_yield"></span>
+                                        </li>
+                                    </ul>
+                                </p>
+                                <button id="back_{{cu.id}}" class="btn btn-warning"><</button>
+                                <button id="forward_{{cu.id}}" class="btn btn-warning">></button>
+                                <label id="current_month_{{cu.id}}"></label>
+                                <div id="calendar_{{cu.id}}"></div>
+                            </div>
+                        </article>
+                        <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
+                            <div class="section-content">
+                                <a href="#" class="icon_help" ng-click="assist('crop_variation')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                                <h3 class="text-center">Análisis de cultivar</h3>
+                                <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
+                                    <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}" style="font-size:0.6em;">
+                                        <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}" class="text-bold">{{vr.label}}</a>
                                     </li>
                                 </ul>
-                            </p>
-                            <div id="trend_{{cu.id}}_{{vr.name}}" class="trend_yield"></div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </section>
-    <!-- End Cultivars -->
-    <!-- Start Historical -->
-    <section id="historical">
-        <article class="row section-content">
-            <div class="col-lg-12">
-                <a href="#" class="icon_help" ng-click="assist('crop_historical')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                <h2 class="text-center">Histórico de rendimiento</h2>
-                <ul class="nav nav-tabs nav-justified" id="tabs_filters" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#content_model" id="tab_model" role="tab" data-toggle="tab" aria-controls="content_model">Modelo</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#content_guild" id="tab_guild" role="tab" data-toggle="tab" aria-controls="content_guild">{{guild.name}}</a>
-                    </li>
-                </ul>
-                <div class="tab-content" id="content_filters">
-                    <div class="fade tab-pane active in" role="tabpanel" id="content_model" aria-labelledby="tab_model">
-                        <h3>
-                            Descripción
-                        </h3>
-                        <p class="text-justify">
-                            Los datos históricos presentados a continuación son el resultado de los datos generados
-                            por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
-                            son promediados de acuerdo a su clasificación (nacional o importada).
-                        </p>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-lg-1 control-label" for="sel_model_years">Ano:</label>
-                                <div class="col-lg-2">
-                                    <select class="form-control" id="sel_model_years" ng-model="historical_yield.model">
-                                        <option ng-repeat="y in data_h_years" value="{{y}}">{{y}}</option>
-                                    </select>
-                                </div>
-                                <label class="col-lg-2 control-label">
-                                    Tipo de cultivar:
-                                </label>
-                                <div class="col-lg-2">
-                                    <label class="radio-inline">
-                                        <input type="radio" ng-model="historical_yield.model_type" value="national" checked="checked">Nacional
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" ng-model="historical_yield.model_type" value="imported">Importada
-                                    </label>
-                                </div>
-                                <div class="col-lg-1">
-                                    <div class="row">
-                                        <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical('model')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                <div class="tab-content" id="content_{{cu.id}}">
+                                    <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
+                                        <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
+                                            Indicadores agroclimáticos para <span class="text-bold">{{vr.label}}</span>
+                                            <ul>
+                                                <li>
+                                                    La fecha <span class="text-bold">con mayor variación</span>
+                                                    de <span class="text-bold">{{vr.label}}</span>, es
+                                                    <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_date"></span>
+                                                    con una desviación standar de
+                                                    <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_yield"></span>
+                                                </li>
+                                                <li>
+                                                    La fecha <span class="text-bold">con menor variación</span>
+                                                    de <span class="text-bold">{{vr.label}}</span>, es
+                                                    <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_date"></span>
+                                                    con una desviación standar de
+                                                    <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_yield"></span>
+                                                </li>
+                                            </ul>
+                                        </p>
+                                        <div id="trend_{{cu.id}}_{{vr.name}}" class="trend_yield"></div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <div id="cultivar_heatmap_model"></div>
+                        </article>
+                    </section>
+                    
+                </article>
+            </section>
+        </div>
+            <!-- End Cultivars -->
+            <!-- Start Historical -->
+            <section class="col-md-12 sections" id="hist" style="display:none;">
+                <article class="row section-content">
+                    <div class="col-lg-12">
+                        <a href="#" class="icon_help" ng-click="assist('crop_historical')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                        <h2 class="text-center">Histórico de rendimiento</h2>
+                        <ul class="nav nav-tabs nav-justified" id="tabs_filters" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#content_model" id="tab_model" role="tab" data-toggle="tab" aria-controls="content_model">Modelo</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#content_guild" id="tab_guild" role="tab" data-toggle="tab" aria-controls="content_guild">{{guild.name}}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="content_filters">
+                            <div class="fade tab-pane active in" role="tabpanel" id="content_model" aria-labelledby="tab_model">
+                                <h3>
+                                    Descripción
+                                </h3>
+                                <p class="text-justify">
+                                    Los datos históricos presentados a continuación son el resultado de los datos generados
+                                    por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
+                                    son promediados de acuerdo a su clasificación (nacional o importada).
+                                </p>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-lg-1 control-label" for="sel_model_years">Ano:</label>
+                                        <div class="col-lg-2">
+                                            <select class="form-control" id="sel_model_years" ng-model="historical_yield.model">
+                                                <option ng-repeat="y in data_h_years" value="{{y}}">{{y}}</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-lg-2 control-label">
+                                            Tipo de cultivar:
+                                        </label>
+                                        <div class="col-lg-2">
+                                            <label class="radio-inline">
+                                                <input type="radio" ng-model="historical_yield.model_type" value="national" checked="checked">Nacional
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" ng-model="historical_yield.model_type" value="imported">Importada
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <div class="row">
+                                                <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical('model')">Buscar</button>
+                                                <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="cultivar_heatmap_model"></div>
+                            </div>
+                            <div class="fade tab-pane" role="tabpanel" id="content_guild" aria-labelledby="tab_guild">
+                                <h3>
+                                    Descripción
+                                </h3>
+                                <p class="text-justify">
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="fade tab-pane" role="tabpanel" id="content_guild" aria-labelledby="tab_guild">
-                        <h3>
-                            Descripción
-                        </h3>
-                        <p class="text-justify">
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </section>
-    <!-- End Historical -->
+                </article>
+            </section>
+            <!-- End Historical -->
+</div>
 </div>
 
 
@@ -208,4 +202,11 @@
     <script src="~/js/lib/d3graphics/trend.js"></script>
     <script src="~/js/lib/d3graphics/calendarheatmap.js"></script>
     <script src="~/js/controllers/crop.js"></script>
+    <script src="~/js/controllers/subMenu.js"></script>
+<script>
+    console.log($('div.blockTitle'));
+    $('.blockTitle').on('click', function () {
+        console.log("test");
+        });
+</script>
 }
