@@ -56,7 +56,7 @@
                                 {{so.name}}
                             </button>
                         </div>
-                        <article id="cultivar_calendar_{{cu.name}}" class="col-lg-6 article_content">
+                        <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
                             <div class="section-content">
                                 <a href="#" class="icon_help" ng-click="assist('crop_potential')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
                                 <h3 class="text-center">Rendimientos Potenciales</h3>
@@ -82,15 +82,15 @@
                                 <button id="back_{{cu.id}}" class="btn btn-warning"><</button>
                                 <button id="forward_{{cu.id}}" class="btn btn-warning">></button>
                                 <label id="current_month_{{cu.id}}"></label>
-                                <div id="calendar_{{cu.id}}"></div>
+                                <div id="calendar_{{cu.id}}" style="font-size:0.8em;"></div>
                             </div>
                         </article>
-                        <article id="cultivar_variation_{{cu.name}}" class="col-lg-6 article_content">
+                        <article id="cultivar_variation_{{cu.name}}" class="col-lg-12 article_content">
                             <div class="section-content">
                                 <a href="#" class="icon_help" ng-click="assist('crop_variation')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
                                 <h3 class="text-center">Análisis de cultivar</h3>
                                 <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
-                                    <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}" style="font-size:0.6em;">
+                                    <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}" >
                                         <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}" class="text-bold">{{vr.label}}</a>
                                     </li>
                                 </ul>
