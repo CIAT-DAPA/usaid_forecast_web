@@ -47,6 +47,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.ConfigurationPath = Configuration.GetSection("Data:Configuration").Value;
             });
 
+            // Register identity framework services and also Mongo storage. 
+            services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
+                .AddDefaultTokenProviders();
+
+            // Add application services.
+            //services.AddTransient<IEmailSender, AuthMessageSender>();
+
             // Add framework services
             services.AddMvc();
         }

@@ -66,7 +66,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Climate forecast table
         /// </summary>
-        fs_forecast_climate
-
+        fs_forecast_climate,
+        /// <summary>
+        /// Users table
+        /// </summary>
+        users
     }
 }

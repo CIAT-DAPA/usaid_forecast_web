@@ -21,7 +21,8 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-    "CIAT.DAPA.USAID.Forecast.Data": "1.0.0-*"
+    "CIAT.DAPA.USAID.Forecast.Data": "1.0.0-*",
+    "Microsoft.AspNetCore.Identity.MongoDB": "1.0.2"
   },
 
   "tools": {
