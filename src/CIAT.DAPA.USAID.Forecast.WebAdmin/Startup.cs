@@ -8,6 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Services;
+using Microsoft.AspNetCore.Identity.MongoDB;
+using Microsoft.AspNetCore.Identity;
+using CIAT.DAPA.USAID.Forecast.Data.Database;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 {
@@ -31,12 +36,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 
         public IConfigurationRoot Configuration { get; }
 
+        private ConfigContext confContext { get; set; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-            
+
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
@@ -47,12 +53,34 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.ConfigurationPath = Configuration.GetSection("Data:Configuration").Value;
             });
 
+            // Register the configuration settings
+            confContext = new Models.Tools.ConfigContext(Configuration.GetSection("ForecastConnection:ConnectionString").Value, Configuration.GetSection("ForecastConnection:Database").Value, Configuration.GetSection("Security:AdminUser").Value, Configuration.GetSection("Security:AdminPassword").Value);
+
             // Register identity framework services and also Mongo storage. 
             services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
                 .AddDefaultTokenProviders();
 
+            // Settings to manage user
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                // Cookie settings
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(5);
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
+                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+                // User settings
+                options.User.RequireUniqueEmail = true;
+                // Signin settings
+                options.SignIn.RequireConfirmedEmail = true;
+            });
+
             // Add application services.
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<IEmailSender, AuthMessageSender>();
 
             // Add framework services
             services.AddMvc();
@@ -85,6 +113,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+            // Setting the users and roles for the app
+            Task.Run(async () =>
+            {
+                await confContext.CreateRolesAndUserAsync();
             });
         }
     }

@@ -70,6 +70,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Users table
         /// </summary>
-        users
+        users,
+        /// <summary>
+        /// Roles table
+        /// </summary>
+        roles
     }
 }
