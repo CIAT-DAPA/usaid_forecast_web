@@ -11,7 +11,7 @@ angular.module('ForecastApp')
   .controller('ExpertCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory,
                                     GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory,
                                     CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory,
-                                    AssistFactory) {
+                                    AssistFactory, $rootScope) {
       // Menu bar
       $(".navbar-default li").removeClass("active");
       $('#menu_main_expert').addClass('active');
@@ -209,7 +209,13 @@ angular.module('ForecastApp')
               });
           }
           $(".icon_loading").fadeOut();
+          $("#expert_data article").show();
           $scope.content = rows;
+      }
+
+      /*rootscope function*/
+      $rootScope.drawFunction = function () {
+          console.log("test");
       }
 
       /*

@@ -39,7 +39,26 @@ angular.module('ForecastApp')
           ];
       }
       else {
-
+          $scope.subSections = [
+          {
+              name: 'Datos geográficos', value: 'content_geographic'
+          },
+          {
+              name: 'Datos agronómicos', value: 'content_agronomic'
+          },
+          {
+              name: 'Climatología', value: 'content_climatology'
+          },
+          {
+              name: 'Hitórico climático', value: 'content_historical_climate'
+          },
+          {
+              name: 'Predicción climática', value: 'content_forecast_climate'
+          },
+          {
+              name: 'Pronóstico de producción', value: 'content_forecast_yield'
+          }
+          ];
       }
 
       $scope.renderView = function ($value, $name) {
@@ -50,22 +69,6 @@ angular.module('ForecastApp')
           $("#" + $value).show();
           $("#sectionTitle").text($name);
           $rootScope.drawFunction();
-          /*var climate_content = $("#containerBlock");
-          if ($value === 'prob') {
-              $(".sectionTitle").text("Predicción Climática");
-              $.get('/Clima/Forecast', function (data) {
-                  climate_content.html(data);
-
-              });
-          }
-          else {
-              $.get('/Clima/ClimateVars', function (data) {
-                  climate_content.html(data);
-              });
-
-          }
-                  $compile(climate_content.html());
-                  */
-
+          $("#expert_data article").hide();
       }
   });

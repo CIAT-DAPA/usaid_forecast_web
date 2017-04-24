@@ -28,6 +28,7 @@
         background-color:white; 
         padding:0 25px;
         background-repeat: no-repeat;
+        background-attachment: fixed;
     }
 }
 
@@ -49,6 +50,7 @@
         background-size:1600px 860px; 
         background-color:white; 
         padding:0 25px;
+        background-attachment: fixed;
     }
 }
 
@@ -70,6 +72,7 @@
         background-size:100% 100%; 
         background-color:white; 
         padding:0 25px;
+        background-attachment: fixed;
     }
 }
 

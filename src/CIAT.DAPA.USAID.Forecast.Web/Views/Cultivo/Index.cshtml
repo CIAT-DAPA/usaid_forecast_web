@@ -52,6 +52,7 @@
                     </div>
                     <section class="graphs" style="display:none;">
                         <div class="col-md-12">
+                            
                             <button type="button" ng-repeat="so in cu.soils" ng-class="{'btn':true, 'btn-default':true, 'btn-primary':$first }" id="soil_{{cu.id}}_{{so.id}}" ng-click="draw(cu,so)">
                                 {{so.name}}
                             </button>
@@ -203,10 +204,4 @@
     <script src="~/js/lib/d3graphics/calendarheatmap.js"></script>
     <script src="~/js/controllers/crop.js"></script>
     <script src="~/js/controllers/subMenu.js"></script>
-<script>
-    console.log($('div.blockTitle'));
-    $('.blockTitle').on('click', function () {
-        console.log("test");
-        });
-</script>
 }
