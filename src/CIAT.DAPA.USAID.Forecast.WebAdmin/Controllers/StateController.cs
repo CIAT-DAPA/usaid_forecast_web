@@ -13,11 +13,13 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
+    [Authorize(Roles = "admin,climatologist")]
     public class StateController : WebAdminBaseController
     {
         /// <summary>

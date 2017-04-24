@@ -46,7 +46,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         {
             try
             {
-                db.role.manager = new UserManager<User>(new UserStore<User>(db.user.collection));
+                
                 // The following cicle search if the roles were created in the database.
                 // If the role wasn't created, it will register in the database
                 foreach (string role in Role.ROLES_PLATFORM)

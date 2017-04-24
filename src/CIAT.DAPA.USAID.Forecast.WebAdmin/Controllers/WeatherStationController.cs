@@ -15,9 +15,11 @@ using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Import;
 using MongoDB.Bson;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 using CIAT.DAPA.USAID.Forecast.Data.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
+    [Authorize(Roles = "admin,climatologist")]
     public class WeatherStationController : WebAdminBaseController
     {
         /// <summary>

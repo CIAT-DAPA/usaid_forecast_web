@@ -40,9 +40,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
-
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
@@ -51,10 +48,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.LogPath = Configuration.GetSection("Data:Log").Value;
                 options.ImportPath = Configuration.GetSection("Data:Imports").Value;
                 options.ConfigurationPath = Configuration.GetSection("Data:Configuration").Value;
+                options.Installed = bool.Parse(Configuration.GetSection("Installed").Value);
             });
-
-            // Register the configuration settings
-            confContext = new Models.Tools.ConfigContext(Configuration.GetSection("ForecastConnection:ConnectionString").Value, Configuration.GetSection("ForecastConnection:Database").Value, Configuration.GetSection("Security:AdminUser").Value, Configuration.GetSection("Security:AdminPassword").Value);
 
             // Register identity framework services and also Mongo storage. 
             services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
@@ -82,6 +77,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
 
+            // Register the configuration settings
+            // confContext = new Models.Tools.ConfigContext(Configuration.GetSection("ForecastConnection:ConnectionString").Value, Configuration.GetSection("ForecastConnection:Database").Value, Configuration.GetSection("Security:AdminUser").Value, Configuration.GetSection("Security:AdminPassword").Value);
+
             // Add framework services
             services.AddMvc();
         }
@@ -91,8 +89,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
             {
@@ -104,9 +100,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {
@@ -114,11 +110,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
             // Setting the users and roles for the app
-            Task.Run(async () =>
+            /*Task.Run(async () =>
             {
                 await confContext.CreateRolesAndUserAsync();
-            });
+            });*/
         }
     }
 }

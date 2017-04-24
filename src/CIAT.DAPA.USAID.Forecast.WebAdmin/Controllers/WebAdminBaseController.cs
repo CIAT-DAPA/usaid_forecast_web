@@ -40,6 +40,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Path where the configuration files are located
         /// </summary>
         protected string configurationPath { get; set; }
+        /// <summary>
+        /// Get if the application was installed or not
+        /// </summary>
+        protected bool installed { get; private set; }
 
         /// <summary>
         /// Method Construct
@@ -56,6 +60,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             log = new Log(hostingEnvironment.ContentRootPath + settings.Value.LogPath, db.logAdministrative);
             importPath = hostingEnvironment.ContentRootPath + settings.Value.ImportPath;
             configurationPath = hostingEnvironment.ContentRootPath + settings.Value.ConfigurationPath;
+            installed = settings.Value.Installed;
         }
 
         /// <summary>

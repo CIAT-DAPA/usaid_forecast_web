@@ -30,5 +30,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// Path where the configuration files are located
         /// </summary>
         public string ConfigurationPath { get; set; }
+        /// <summary>
+        /// Get or set if the application was installed
+        /// </summary>
+        public bool Installed { get; set; }
     }
 }
