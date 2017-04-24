@@ -1,5 +1,7 @@
 ﻿ForecastApp
-It is a tool to export and import data about forecast platform
+It is a tool to export and import data about forecast platform.
+You can share parameters in the same context, you can combine
+parameters exporting or importing data, not in the same time.
 -----------------------------------------------------------------
 Test connection
 
@@ -35,6 +37,9 @@ Export Data
 				process. It creates a folder by every crop,
 				inside, the app will create a folder called
 				by idweatherstation_idcultivar_idsoil
+
+-co				Create a file by every weather station with their
+				coordinates.
 -----------------------------------------------------------------
 Import Data
 
@@ -49,4 +54,20 @@ Import Data
 
 -cf "value"		This parameter indicates the confidence value for
 				the intervals confidence. It is a float value.
+-----------------------------------------------------------------
+Examples
 
+#Export prec data of the states
+-out -s "prec" -p "C:\export\\" -start 1981 -end 2013
+
+#Export configuration files from weather stations
+-out -wf -p "C:\export\\" -name "daily"
+
+#Export coords from weather stations
+-out -co -p "C:\export\\"
+
+#Export forecast setup
+-out -fs -p "C:\export\\"
+
+#Import forecast
+-in -fs -p "C:\import\\" -cf 0.5

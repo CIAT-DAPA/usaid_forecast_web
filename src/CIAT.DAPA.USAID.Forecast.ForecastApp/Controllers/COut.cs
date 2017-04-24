@@ -111,12 +111,33 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             var weather_stations = await db.weatherStation.listEnableAsync();
             foreach (var ws in weather_stations.Where(p => p.visible))
             {
-                Console.WriteLine("Exporting " + ws.name);
+                Console.WriteLine("Exporting files ws: " + ws.name);
                 var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                 if (f != null)
                     File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + COut.getExtension(f.path), true);
                 else
                     Console.WriteLine("File not found");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Method to export the configuration files by weather station
+        /// </summary>
+        /// <param name="path">Path where the files will be located</param>
+        public async Task<bool> exportCoordsWeatherStationAsync(string path)
+        {
+            // Create directory
+            if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
+            var weather_stations = await db.weatherStation.listEnableAsync();
+            foreach (var ws in weather_stations.Where(p => p.visible))
+            {
+                Console.WriteLine("Exporting coords ws: " + ws.name);
+                StringBuilder coords = new StringBuilder();
+                coords.Append("lat,lon\n");
+                coords.Append(ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + "_coords.csv", coords.ToString());
             }
             return true;
         }
