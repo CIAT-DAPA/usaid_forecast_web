@@ -90,6 +90,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Exporting configuration file by weather station");
                         await output.exportFilesWeatherStationAsync(args[path + 1], args[name + 1]);
                     }
+                    // Export coords from weather stations
+                    // -out -co -p "C:\Users\hsotelo\Desktop\test export\\" -name "daily"
+                    int co = Program.searchParameter(args, "-co");
+                    if (co >= 0)
+                    {
+                        Console.WriteLine("Exporting coordinates of the weather stations");
+                        await output.exportCoordsWeatherStationAsync(args[path + 1]);
+                    }
                     // Export forecast setup
                     // -out -fs -p "C:\Users\hsotelo\Desktop\test export\\"
                     int fs = Program.searchParameter(args, "-fs");
@@ -130,6 +138,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
+                Console.WriteLine("For more information you can execute the following command:");
+                Console.WriteLine("-help");
             }
         }
 
