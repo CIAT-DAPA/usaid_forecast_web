@@ -3,23 +3,23 @@
 }
 
 
-    <!-- Start global variables -->
-    <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-    <input type="hidden" id="api_fs_geographic" name="api_fs_geographic" value="@ViewBag.api_fs_geographic" />
-    <input type="hidden" id="api_fs_agronomic" name="api_fs_agronomic" value="@ViewBag.api_fs_agronomic" />
-    <input type="hidden" id="api_fs_forecast" name="api_fs_forecast" value="@ViewBag.api_fs_forecast" />
-    <input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
-    <input type="hidden" id="api_fs_historical_yield" name="api_fs_historical_yield" value="@ViewBag.api_fs_historical_yield" />
-    <input type="hidden" id="api_fs_historical_yield_years" name="api_fs_historical_yield_years" value="@ViewBag.api_fs_historical_yield_years" />
-    <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-    <input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
-    <!-- End global variables -->
-    <!-- Start Description -->
+<!-- Start global variables -->
+<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
+<input type="hidden" id="api_fs_geographic" name="api_fs_geographic" value="@ViewBag.api_fs_geographic" />
+<input type="hidden" id="api_fs_agronomic" name="api_fs_agronomic" value="@ViewBag.api_fs_agronomic" />
+<input type="hidden" id="api_fs_forecast" name="api_fs_forecast" value="@ViewBag.api_fs_forecast" />
+<input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
+<input type="hidden" id="api_fs_historical_yield" name="api_fs_historical_yield" value="@ViewBag.api_fs_historical_yield" />
+<input type="hidden" id="api_fs_historical_yield_years" name="api_fs_historical_yield_years" value="@ViewBag.api_fs_historical_yield_years" />
+<input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
+<input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
+<!-- End global variables -->
+<!-- Start Description -->
 
-    @Html.Partial("_Menu")
+@Html.Partial("_Menu")
 <div ng-controller="CropCtrl">
     <h2 class="text-center" id="sectionTitle" style="color: white;">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
-    <div  id="containerBlock">
+    <div id="containerBlock">
         <div class="sections" id="pronA">
             <section class="col-md-12" id="description">
                 <div class="row section-content">
@@ -39,7 +39,7 @@
             <!-- Start Cultivars -->
             <section class="col-md-12">
                 <article class="row section-content borderBox" ng-repeat="cu in cultivars" id="{{cu.id}}">
-                    <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id)">
+                    <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id,$index)">                    
                         <label style="font-size:1.2em;">{{cu.name}}</label>
                         <p class="text-justify">
                             El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> que
@@ -52,14 +52,12 @@
                     </div>
                     <section class="graphs" style="display:none;">
                         <div class="col-md-12">
-                            
-                            <button type="button" ng-repeat="so in cu.soils" ng-class="{'btn':true, 'btn-default':true, 'btn-primary':$first }" id="soil_{{cu.id}}_{{so.id}}" ng-click="draw(cu,so)">
-                                {{so.name}}
-                            </button>
+                            <select class="form-control">
+                                <option ng-repeat="so in cu.soils" value="{{cu.id}}" id="soil_{{cu.id}}_{{so.id}}" ng-click="draw(cu,so)">{{so.name}}</option>
+                            </select>
                         </div>
                         <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
                             <div class="section-content">
-                                <a href="#" class="icon_help" ng-click="assist('crop_potential')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
                                 <h3 class="text-center">Rendimientos Potenciales</h3>
                                 <p class="text-justify">
                                     Indicadores de <span class="text-bold">los rendimientos potenciales esperados</span>
@@ -88,10 +86,9 @@
                         </article>
                         <article id="cultivar_variation_{{cu.name}}" class="col-lg-12 article_content">
                             <div class="section-content">
-                                <a href="#" class="icon_help" ng-click="assist('crop_variation')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
                                 <h3 class="text-center">Análisis de cultivar</h3>
                                 <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
-                                    <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}" >
+                                    <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
                                         <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}" class="text-bold">{{vr.label}}</a>
                                     </li>
                                 </ul>
@@ -122,77 +119,77 @@
                             </div>
                         </article>
                     </section>
-                    
+
                 </article>
             </section>
         </div>
-            <!-- End Cultivars -->
-            <!-- Start Historical -->
-            <section class="col-md-12 sections" id="hist" style="display:none;">
-                <article class="row section-content">
-                    <div class="col-lg-12">
-                        <a href="#" class="icon_help" ng-click="assist('crop_historical')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
-                        <h2 class="text-center">Histórico de rendimiento</h2>
-                        <ul class="nav nav-tabs nav-justified" id="tabs_filters" role="tablist">
-                            <li role="presentation" class="active">
-                                <a href="#content_model" id="tab_model" role="tab" data-toggle="tab" aria-controls="content_model">Modelo</a>
-                            </li>
-                            <li role="presentation">
-                                <a href="#content_guild" id="tab_guild" role="tab" data-toggle="tab" aria-controls="content_guild">{{guild.name}}</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="content_filters">
-                            <div class="fade tab-pane active in" role="tabpanel" id="content_model" aria-labelledby="tab_model">
-                                <h3>
-                                    Descripción
-                                </h3>
-                                <p class="text-justify">
-                                    Los datos históricos presentados a continuación son el resultado de los datos generados
-                                    por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
-                                    son promediados de acuerdo a su clasificación (nacional o importada).
-                                </p>
-                                <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-lg-1 control-label" for="sel_model_years">Ano:</label>
-                                        <div class="col-lg-2">
-                                            <select class="form-control" id="sel_model_years" ng-model="historical_yield.model">
-                                                <option ng-repeat="y in data_h_years" value="{{y}}">{{y}}</option>
-                                            </select>
-                                        </div>
-                                        <label class="col-lg-2 control-label">
-                                            Tipo de cultivar:
+        <!-- End Cultivars -->
+        <!-- Start Historical -->
+        <section class="col-md-12 sections" id="hist" style="display:none;">
+            <article class="row section-content">
+                <div class="col-lg-12">
+                    <a href="#" class="icon_help" ng-click="assist('crop_historical')" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                    <h2 class="text-center">Histórico de rendimiento</h2>
+                    <ul class="nav nav-tabs nav-justified" id="tabs_filters" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#content_model" id="tab_model" role="tab" data-toggle="tab" aria-controls="content_model">Modelo</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#content_guild" id="tab_guild" role="tab" data-toggle="tab" aria-controls="content_guild">{{guild.name}}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="content_filters">
+                        <div class="fade tab-pane active in" role="tabpanel" id="content_model" aria-labelledby="tab_model">
+                            <h3>
+                                Descripción
+                            </h3>
+                            <p class="text-justify">
+                                Los datos históricos presentados a continuación son el resultado de los datos generados
+                                por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
+                                son promediados de acuerdo a su clasificación (nacional o importada).
+                            </p>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-lg-1 control-label" for="sel_model_years">Ano:</label>
+                                    <div class="col-lg-2">
+                                        <select class="form-control" id="sel_model_years" ng-model="historical_yield.model">
+                                            <option ng-repeat="y in data_h_years" value="{{y}}">{{y}}</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-lg-2 control-label">
+                                        Tipo de cultivar:
+                                    </label>
+                                    <div class="col-lg-2">
+                                        <label class="radio-inline">
+                                            <input type="radio" ng-model="historical_yield.model_type" value="national" checked="checked">Nacional
                                         </label>
-                                        <div class="col-lg-2">
-                                            <label class="radio-inline">
-                                                <input type="radio" ng-model="historical_yield.model_type" value="national" checked="checked">Nacional
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" ng-model="historical_yield.model_type" value="imported">Importada
-                                            </label>
-                                        </div>
-                                        <div class="col-lg-1">
-                                            <div class="row">
-                                                <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical('model')">Buscar</button>
-                                                <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                            </div>
+                                        <label class="radio-inline">
+                                            <input type="radio" ng-model="historical_yield.model_type" value="imported">Importada
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <div class="row">
+                                            <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical('model')">Buscar</button>
+                                            <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
                                         </div>
                                     </div>
-                                </form>
-                                <div id="cultivar_heatmap_model"></div>
-                            </div>
-                            <div class="fade tab-pane" role="tabpanel" id="content_guild" aria-labelledby="tab_guild">
-                                <h3>
-                                    Descripción
-                                </h3>
-                                <p class="text-justify">
-                                </p>
-                            </div>
+                                </div>
+                            </form>
+                            <div id="cultivar_heatmap_model"></div>
+                        </div>
+                        <div class="fade tab-pane" role="tabpanel" id="content_guild" aria-labelledby="tab_guild">
+                            <h3>
+                                Descripción
+                            </h3>
+                            <p class="text-justify">
+                            </p>
                         </div>
                     </div>
-                </article>
-            </section>
-            <!-- End Historical -->
-</div>
+                </div>
+            </article>
+        </section>
+        <!-- End Historical -->
+    </div>
 </div>
 
 

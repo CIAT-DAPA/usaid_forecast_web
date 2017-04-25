@@ -149,6 +149,11 @@
     background-position: -5px 2px;
 }
 
+/*Footer images*/
+footer img{
+    background-color:white;
+}
+
 /*Custom carousel*/
 
 #probabilities_pies{

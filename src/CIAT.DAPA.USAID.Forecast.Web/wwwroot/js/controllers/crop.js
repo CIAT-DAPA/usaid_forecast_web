@@ -13,7 +13,7 @@ angular.module('ForecastApp')
                                     SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory,
                                     AssistFactory, $rootScope) {
 
-      $scope.collapsable = function (item) {
+      $scope.collapsable = function (item,index) {
           var $this=$("#"+item).find(".blockTitle");
           if ($($this).hasClass('closed')) {
               $($this).parent().find('.blockTitle').removeClass('opened').addClass('closed');
@@ -22,7 +22,8 @@ angular.module('ForecastApp')
               $($this).removeClass('opened').addClass('closed');
           }
           $($this).next().slideToggle('slow', function () {
-              fixed_data_forecast();
+              console.log(index);
+              fixed_data_forecast(index);
           });
           
       }
@@ -76,12 +77,13 @@ angular.module('ForecastApp')
               // Load the list of the cultivars and soils from the agronomic configuration
               $scope.cultivars = CultivarsFactory.getByCrop($scope.data_a, $scope.crop_name);
               $scope.soils = SoilFactory.getByCrop($scope.data_a, $scope.crop_name);
-
+              
               // Load the Forecast information
               ForecastFactory.get().success(function (data_f) {
                   $scope.data_f = data_f;
                   // Filter data for weather station
                   $scope.yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
+                  
                   $scope.cultivars = CultivarsFactory.getCultivarsAvailableForecast($scope.cultivars, $scope.yield_ws);
                   // Set the period of the forecast
                   var temp_date = $scope.gv_months[0].split('-');
@@ -89,7 +91,7 @@ angular.module('ForecastApp')
                   temp_date = $scope.gv_months[1].split('-');
                   $scope.period_end = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
                   // Draw the graphics
-                  fixed_data_forecast();
+                  //fixed_data_forecast(0);
               }).error(function (error) {
                   console.log(error);
               });
@@ -113,10 +115,10 @@ angular.module('ForecastApp')
       /*
        * Method that filter the data to show the information in the screen getted from the web api
       */
-      function fixed_data_forecast() {          
-
+      function fixed_data_forecast(i) {          
+          console.log(i);
           // Forecast for every cultivar
-          for (var i = 0; i < $scope.cultivars.length; i++) {
+          //for (var i = 0; i < $scope.cultivars.length; i++) {
               try {
                   var cu = $scope.cultivars[i];
 
@@ -131,12 +133,13 @@ angular.module('ForecastApp')
                   });
 
                   // Draw the graphic in the screen
+                  console.log($scope.cultivars[i].soils[0]);
                   draw_forecast(cu, $scope.cultivars[i].soils[0]);
               }
               catch (err) {
                   console.log(err);
               }
-          }
+          //}
           // Hide the content of the tabs variation
           $('.disable_tab').removeClass('active');
           $('.disable_tab').removeClass('in');
