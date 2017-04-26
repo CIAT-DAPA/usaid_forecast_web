@@ -10,11 +10,7 @@ using System.Threading.Tasks;
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
     public class RoleFactory : FactoryDB<Role>
-    {
-        /// <summary>
-        /// Get or set de manager user
-        /// </summary>
-        public RoleManager<Role> manager { get; set; }
+    {        
 
         /// <summary>
         /// Method Construct
@@ -23,41 +19,21 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public RoleFactory(IMongoDatabase database) : base(database, LogEntity.roles)
         {
         }
-
-        /// <summary>
-        /// Method Construct
-        /// </summary>
-        /// <param name="database">Database connected to mongo</param>
-        /// <param name="manager">Manager of web application</param>
-        public RoleFactory(IMongoDatabase database, RoleManager<Role> manager) : base(database, LogEntity.users)
-        {
-            this.manager = manager;
-        }
+               
 
         public override Task<bool> deleteAsync(Role entity)
         {
             throw new NotImplementedException();
         }
 
-        public async override Task<Role> insertAsync(Role entity)
+        public override Task<Role> insertAsync(Role entity)
         {
-            var result = await manager.CreateAsync(entity);
-            return result.Succeeded ? await byNameAsync(entity.Name) : null;
+            throw new NotImplementedException();
         }
 
         public override Task<bool> updateAsync(Role entity, Role newEntity)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Method that validate if the role exist in the database
-        /// </summary>
-        /// <param name="name">Role name</param>
-        /// <returns>True if exist, otherwise false</returns>
-        public async Task<bool> existAsync(string name)
-        {
-            return await manager.RoleExistsAsync(name);
         }
 
         /// <summary>

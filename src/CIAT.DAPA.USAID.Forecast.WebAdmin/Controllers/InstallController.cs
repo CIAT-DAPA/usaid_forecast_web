@@ -1,4 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account;
+using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Install;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -14,8 +16,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
     public class InstallController : WebAdminBaseController
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
         /// <summary>
         /// Method Construct
@@ -23,16 +23,41 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
         public InstallController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager) : base(settings, LogEntity.users, hostingEnvironment)
+            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : base(settings, LogEntity.users, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
 
-        //
-        // GET: /Account/Login
+
+        // GET: /Install/Index
         [HttpGet]
         public IActionResult Index()
+        {
+            if (installed)
+                return RedirectToAction("Index", "Home");
+            return View();
+        }
+
+
+        // POST: /Install/Index
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(InstallViewModel model)
+        {
+            if (installed)
+                return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                bool admin_registered = await registerUserAsync(model.Email, model.Password);
+
+                return RedirectToAction("Installed");
+            }
+                
+            return View(model);
+        }
+
+        // GET: /Install/Installed
+        [HttpGet]
+        public IActionResult Installed()
         {
             if (installed)
                 return RedirectToAction("Index", "Home");

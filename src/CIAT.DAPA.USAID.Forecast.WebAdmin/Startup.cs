@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
-using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Services;
 using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Identity;
 using CIAT.DAPA.USAID.Forecast.Data.Database;
@@ -35,8 +34,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
         }
 
         public IConfigurationRoot Configuration { get; }
-
-        private ConfigContext confContext { get; set; }
+                
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -77,9 +75,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
 
-            // Register the configuration settings
-            // confContext = new Models.Tools.ConfigContext(Configuration.GetSection("ForecastConnection:ConnectionString").Value, Configuration.GetSection("ForecastConnection:Database").Value, Configuration.GetSection("Security:AdminUser").Value, Configuration.GetSection("Security:AdminPassword").Value);
-
             // Add framework services
             services.AddMvc();
         }
@@ -110,12 +105,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            // Setting the users and roles for the app
-            /*Task.Run(async () =>
-            {
-                await confContext.CreateRolesAndUserAsync();
-            });*/
         }
     }
 }

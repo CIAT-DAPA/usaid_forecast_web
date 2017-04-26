@@ -13,11 +13,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
     public class UserFactory : FactoryDB<User>
     {
         /// <summary>
-        /// Get or set de manager user
-        /// </summary>
-        public UserManager<User> manager { get; set; }
-
-        /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
@@ -25,40 +20,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
         }
 
-        /// <summary>
-        /// Method Construct
-        /// </summary>
-        /// <param name="database">Database connected to mongo</param>
-        /// <param name="manager">Manager of web application</param>
-        public UserFactory(IMongoDatabase database, UserManager<User> manager) : base(database, LogEntity.users)
-        {
-            this.manager = manager;
-        }
-
         public override Task<bool> deleteAsync(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public async override Task<User> insertAsync(User entity)
+        public override Task<User> insertAsync(User entity)
         {
-            var result = await manager.CreateAsync(entity, entity.password);
-            return result.Succeeded ? await byIdAsync(entity.UserName) : null;
+            throw new NotImplementedException();
         }
 
         public override Task<bool> updateAsync(User entity, User newEntity)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Method that search if exist a user by its email
-        /// </summary>
-        /// <param name="email">User email</param>
-        /// <returns>True if it exists, otherwise false</returns>
-        public async Task<bool> existByEmailAsync(string email)
-        {
-            return (await manager.FindByEmailAsync(email)) != null;
         }
 
         /// <summary>
