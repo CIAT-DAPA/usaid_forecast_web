@@ -47,6 +47,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.ImportPath = Configuration.GetSection("Data:Imports").Value;
                 options.ConfigurationPath = Configuration.GetSection("Data:Configuration").Value;
                 options.Installed = bool.Parse(Configuration.GetSection("Installed").Value);
+                options.NotifyAccount = Configuration.GetSection("Notification:Account").Value;
+                options.NotifyPassword = Configuration.GetSection("Notification:Password").Value;
+                options.NotifyPort = int.Parse(Configuration.GetSection("Notification:Port").Value);
+                options.NotifyServer = Configuration.GetSection("Notification:Server").Value;
+                options.NotifySsl = bool.Parse(Configuration.GetSection("Notification:Ssl").Value);
             });
 
             // Register identity framework services and also Mongo storage. 
