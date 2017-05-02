@@ -195,11 +195,11 @@ angular.module('ForecastApp')
         * (string) cultivar: Cultivar id
         * (string) yield_forecast: Json with yield data of the weather station
         */
-        dataFactory.getSoilsAvailableForecast = function (soils, cultivar, yield_forecast) {
+        dataFactory.getSoilsAvailableForecast = function (soils, cultivar, yield_forecast) {            
             var data = [];
             for (var i = 0; i < soils.length; i++) {
                 var so = soils[i];
-                var filtered = yield_forecast.yield.filter(function (item) { return item.soil === so.id && item.cultivar === cultivar; });
+                var filtered = yield_forecast.yield.filter(function (item) { return item.soil === so.id && item.cultivar === cultivar; });                
                 if (filtered.length >= 1)
                     data.push(so);
             }

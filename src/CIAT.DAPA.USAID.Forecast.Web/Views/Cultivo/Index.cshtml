@@ -53,9 +53,9 @@
                         </p>
                     </div>
                     <section class="graphs" style="display:none;">
-                        <div class="col-md-12">
+                        <div class="col-md-12">                            
                             <select class="form-control">
-                                <option ng-repeat="so in cu.soils" value="{{cu.id}}" id="soil_{{cu.id}}_{{so.id}}" ng-click="draw(cu,so)">{{so.name}}</option>
+                                <option ng-repeat="so in cu.soils" value="{{so.id}}" id="soil_{{cu.id}}_{{so.id}}">{{so.name}}</option>
                             </select>
                         </div>
                         <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
