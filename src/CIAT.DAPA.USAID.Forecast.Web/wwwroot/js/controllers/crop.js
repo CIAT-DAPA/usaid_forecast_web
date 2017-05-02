@@ -54,8 +54,10 @@ angular.module('ForecastApp')
               $($this).removeClass('opened').addClass('closed');
           }
           $($this).next().slideToggle('slow', function () {
-              if ($($this).hasClass('opened'))
+              if ($($this).hasClass('opened')) {
+                  $(".tab-content").find("div.tab-pane").addClass("active");
                   fixed_data_forecast(index);
+              }
           });
 
       }
