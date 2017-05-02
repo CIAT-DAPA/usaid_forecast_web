@@ -1,6 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Database;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Factory;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
@@ -29,7 +30,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <summary>
         /// Get or set object to write the events occurring on the website 
         /// </summary>
-        protected Log log { get; set; }
+        protected CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools.Log log { get; set; }
         /// <summary>
         /// List of the entities affected
         /// </summary>
@@ -101,7 +102,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             entities = new List<LogEntity>() { entity };
             hostingEnvironment = environment;
             db = new ForecastDB(settings.Value.ConnectionString, settings.Value.Database);
-            log = new Log(hostingEnvironment.ContentRootPath + settings.Value.LogPath, db.logAdministrative);
+            log = new CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools.Log(hostingEnvironment.ContentRootPath + settings.Value.LogPath, db.logAdministrative);
             importPath = hostingEnvironment.ContentRootPath + settings.Value.ImportPath;
             configurationPath = hostingEnvironment.ContentRootPath + settings.Value.ConfigurationPath;
             installed = settings.Value.Installed;
@@ -152,15 +153,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="email">Email user</param>
         /// <param name="password">Password user</param>
+        /// <param name="role">Role name</param>
         /// <returns></returns>
-        protected async Task<bool> registerUserAsync(string email, string password)
+        protected async Task<bool> registerUserAsync(string email, string password, string role)
         {
             try
             {
                 var user = new IdentityUser { UserName = email, Email = email };
                 var result = await managerUser.CreateAsync(user, password);
                 if (result.Succeeded)
-                {                    
+                {
+                    await managerUser.AddToRoleAsync(user, role);
                     // Send an email with this link
                     var code = await managerUser.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
@@ -174,6 +177,28 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 return false;
             }            
+        }
+
+        /// <summary>
+        /// Method that create all roles for the platform
+        /// </summary>
+        /// <returns>True if it creates all roles, otherwise false</returns>
+        protected async Task<bool> registerRoles()
+        {
+            try
+            {
+                foreach(var role in Role.ROLES_PLATFORM)
+                {
+                    var r = await db.role.byNameAsync(role);
+                    if (r == null)
+                        await managerRole.CreateAsync(new IdentityRole(role));
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

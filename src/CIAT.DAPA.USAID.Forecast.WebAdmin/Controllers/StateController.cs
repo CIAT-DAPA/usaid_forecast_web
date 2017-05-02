@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "admin,climatologist")]
+    [Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
     public class StateController : WebAdminBaseController
     {
         /// <summary>

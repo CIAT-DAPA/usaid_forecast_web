@@ -11,6 +11,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Get the list of the roles in the web platform
         /// </summary>
         public static readonly string[] ROLES_PLATFORM = { "admin", "climatologist", "improver", "tech" };
+        /// <summary>
+        /// Get the admin role in the web platform
+        /// </summary>
+        public static readonly string ROLE_ADMIN = "admin";
 
         /// <summary>
         /// Method Construct

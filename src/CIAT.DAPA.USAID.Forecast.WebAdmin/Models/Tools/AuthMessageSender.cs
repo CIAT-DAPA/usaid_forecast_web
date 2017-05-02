@@ -1,8 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using MailKit.Net.Smtp;
-using MailKit.Security;
-using Microsoft.Extensions.Options;
 using MimeKit;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,10 +47,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
             {
                 //client.ServerCertificateValidationCallback = (s, c, h, e) => options.NotifySsl;
                 //await client.ConnectAsync(options.NotifyServer, options.NotifyPort, SecureSocketOptions.StartTlsWhenAvailable).ConfigureAwait(false);
-                await client.ConnectAsync(options.NotifyServer, options.NotifyPort, options.NotifySsl).ConfigureAwait(false);
+                client.Connect(options.NotifyServer, options.NotifyPort, options.NotifySsl);
                 // Note: since we don't have an OAuth2 token, disable
                 // the XOAUTH2 authentication mechanism.
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                //client.AuthenticationMechanisms.Remove("XOAUTH2");
                 // Note: only needed if the SMTP server requires authentication
                 client.Authenticate(options.NotifyAccount, options.NotifyPassword);
                 client.Send(content);

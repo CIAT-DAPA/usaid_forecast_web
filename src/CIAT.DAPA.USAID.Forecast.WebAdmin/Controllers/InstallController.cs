@@ -1,4 +1,5 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Install;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
@@ -47,7 +48,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
-                bool admin_registered = await registerUserAsync(model.Email, model.Password);
+                await registerRoles();
+                await registerUserAsync(model.Email, model.Password, Role.ROLE_ADMIN);
                 return RedirectToAction("Installed");
             }
                 

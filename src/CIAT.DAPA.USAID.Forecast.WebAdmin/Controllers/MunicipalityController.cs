@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "admin,climatologist")]
+    [Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
     public class MunicipalityController : WebAdminBaseController
     {
         /// <summary>

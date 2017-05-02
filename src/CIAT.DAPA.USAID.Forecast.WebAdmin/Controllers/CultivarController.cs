@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "admin,improver")]
+    [Authorize(Roles = "ADMIN,IMPROVER")]
     public class CultivarController : WebAdminBaseController
     {
         /// <summary>
