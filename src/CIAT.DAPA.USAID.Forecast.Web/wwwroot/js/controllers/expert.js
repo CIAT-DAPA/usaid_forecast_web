@@ -11,11 +11,7 @@ angular.module('ForecastApp')
   .controller('ExpertCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory,
                                     GeographicFactory, MunicipalityFactory, WeatherStationFactory, AgronomicFactory,
                                     CultivarsFactory, SoilFactory, YieldForecastFactory, CropVarsFactory,
-<<<<<<< HEAD
-                                    AssistFactory, HistoricalYieldFactory) {
-=======
-                                    AssistFactory, $rootScope) {
->>>>>>> frontend
+                                    AssistFactory, HistoricalYieldFactory, $rootScope) {
       // Menu bar
       $(".navbar-default li").removeClass("active");
       $('#menu_main_expert').addClass('active');
