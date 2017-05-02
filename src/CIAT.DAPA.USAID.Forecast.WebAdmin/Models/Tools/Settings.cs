@@ -30,5 +30,29 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// Path where the configuration files are located
         /// </summary>
         public string ConfigurationPath { get; set; }
+        /// <summary>
+        /// Get or set if the application was installed
+        /// </summary>
+        public bool Installed { get; set; }
+        /// <summary>
+        /// Get or set the email account of the notification
+        /// </summary>
+        public string NotifyAccount { get; set; }
+        /// <summary>
+        /// Get or set the password of the email account for the notifications
+        /// </summary>
+        public string NotifyPassword { get; set; }
+        /// <summary>
+        /// Get or set the server for the notifications
+        /// </summary>
+        public string NotifyServer { get; set; }
+        /// <summary>
+        /// Get or set the port of the notification server
+        /// </summary>
+        public int NotifyPort { get; set; }
+        /// <summary>
+        /// Get or set if the notification server uses ssl
+        /// </summary>
+        public bool NotifySsl { get; set; }
     }
 }

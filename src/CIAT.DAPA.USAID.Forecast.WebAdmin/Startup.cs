@@ -8,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using Microsoft.AspNetCore.Identity.MongoDB;
+using Microsoft.AspNetCore.Identity;
+using CIAT.DAPA.USAID.Forecast.Data.Database;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 {
@@ -30,13 +34,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
         }
 
         public IConfigurationRoot Configuration { get; }
-
+                
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
-            
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
@@ -45,7 +46,39 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.LogPath = Configuration.GetSection("Data:Log").Value;
                 options.ImportPath = Configuration.GetSection("Data:Imports").Value;
                 options.ConfigurationPath = Configuration.GetSection("Data:Configuration").Value;
+                options.Installed = bool.Parse(Configuration.GetSection("Installed").Value);
+                options.NotifyAccount = Configuration.GetSection("Notification:Account").Value;
+                options.NotifyPassword = Configuration.GetSection("Notification:Password").Value;
+                options.NotifyPort = int.Parse(Configuration.GetSection("Notification:Port").Value);
+                options.NotifyServer = Configuration.GetSection("Notification:Server").Value;
+                options.NotifySsl = bool.Parse(Configuration.GetSection("Notification:Ssl").Value);
             });
+
+            // Register identity framework services and also Mongo storage. 
+            services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
+                .AddDefaultTokenProviders();
+
+            // Settings to manage user
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                // Cookie settings
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(5);
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
+                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+                // User settings
+                options.User.RequireUniqueEmail = true;
+                // Signin settings
+                options.SignIn.RequireConfirmedEmail = true;
+            });
+
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
 
             // Add framework services
             services.AddMvc();
@@ -57,8 +90,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,9 +100,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

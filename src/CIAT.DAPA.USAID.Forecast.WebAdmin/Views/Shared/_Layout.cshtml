@@ -14,8 +14,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
+    </environment>    
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -38,6 +37,7 @@
                     <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">Cultivar</a></li>
                     <li><a asp-area="" asp-controller="Soil" asp-action="Index">Soil</a></li>
                 </ul>
+                @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
     </div>

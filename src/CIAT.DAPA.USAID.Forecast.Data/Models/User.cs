@@ -1,0 +1,19 @@
+﻿using Microsoft.AspNetCore.Identity.MongoDB;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CIAT.DAPA.USAID.Forecast.Data.Models
+{
+    /// <summary>
+    /// This entity has the platform users
+    /// </summary>
+    public class User : IdentityUser
+    {
+        /// <summary>
+        /// Get or set the user password
+        /// </summary>
+        public string password { get; set; }
+    }
+}

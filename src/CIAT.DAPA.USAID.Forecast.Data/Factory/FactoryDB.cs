@@ -22,7 +22,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <summary>
         /// Get or set the collection of the database
         /// </summary>
-        protected IMongoCollection<T> collection { get; private set; }        
+        public IMongoCollection<T> collection { get; private set; }        
 
         /// <summary>
         /// Method Construct

@@ -93,6 +93,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// Get or set the all views of the database. It has some complex queries to the database
         /// </summary>
         public ViewsFactory views { get; set; }
+        /// <summary>
+        /// Get or set the users entity in the database
+        /// </summary>
+        public UserFactory user { get; set; }
+        /// <summary>
+        /// Get or set the role entity in the database
+        /// </summary>
+        public RoleFactory role { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -134,6 +142,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             forecastClimate = new ForecastClimateFactory(db);
             forecastYield = new ForecastYieldFactory(db);
             forecastScenario = new ForecastScenarioFactory(db);
+            user = new UserFactory(db);
+            role = new RoleFactory(db);
             // views
             views = new ViewsFactory(db);
         }
