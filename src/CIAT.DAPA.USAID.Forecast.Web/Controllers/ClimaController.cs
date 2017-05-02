@@ -46,5 +46,17 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 return View("Error");
             }
         }
+
+        // GET: /Clima/Forecast
+        public async Task<IActionResult> Forecast()
+        {
+            return PartialView("_Forecast");
+        }
+
+        // GET: /Clima/ClimateVars
+        public async Task<IActionResult> ClimateVars()
+        {
+            return PartialView("_ClimateVars");
+        }
     }
 }

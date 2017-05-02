@@ -1,16 +1,7 @@
-﻿'use strict';
-
-/**
- * @ngdoc function
- * @name ForecastApp.controller:ClimateCtrl
- * @description
- * # ClimateCtrl
- * Controller of the ForecastApp
- */
-angular.module('ForecastApp')
+﻿angular.module('ForecastApp')
   .controller('ClimateCtrl', function ($scope, config, tools, HistoricalFactory, ClimatologyFactory, HistoricalClimateFactory,
                                     ForecastFactory, ClimateFactory, GeographicFactory, MunicipalityFactory,
-                                    WeatherStationFactory, AssistFactory) {
+                                    WeatherStationFactory, AssistFactory, $rootScope) {
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       $scope.municipalities = [];
@@ -52,6 +43,10 @@ angular.module('ForecastApp')
       }).error(function (error) {
           console.log(error);
       });
+
+      $rootScope.drawFunction = function () {
+          draw();
+      }
 
       /*
        * Method that draw in screen the information getted from the web api
@@ -235,7 +230,7 @@ angular.module('ForecastApp')
        * (string) id: Helper name
       */
       $scope.assist_alt = function (id, alt) {
-          var data = AssistFactory.getByIdAlt(id,alt);
+          var data = AssistFactory.getByIdAlt(id, alt);
           tools.show_assist(data.title, data.text, data.url);
           return false;
       }

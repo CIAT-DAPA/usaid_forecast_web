@@ -1,0 +1,22 @@
+﻿
+<div ng-controller="ForecastCtrl">
+    <!-- Start Probabilities -->
+    <section class="col-md-12" id="probabilities">
+        <div class="row section-content" style="padding-top:25px;">
+            <div class="col-lg-12">
+                <!--a href="#" class="icon_help" ng-click="assist('climate_forecast')" data-toggle="modal" data-target="#assit_modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></!--a -->
+                <p class="text-justify col-lg-12" style="font-size:1.1em;">
+                    Se presenta la predicción del clima,
+                    para la ciudad de <span class="text-bold">{{municipality_name}}</span>,
+                    para el período comprendido de
+                    <span class="text-bold">{{period_start}} y {{period_end}}</span>.
+                    La estación meteorológica de referencia para hacer estas predicciones
+                    <span class="text-bold">{{ws_entity.name}}</span>,
+                    provista por <span class="text-bold">{{ws_entity.origin}}</span>.
+                </p>
+            </div>
+        </div>
+        <div class="row" id="probabilities_pies"></div>
+    </section>
+    <!-- End Probabilities -->
+</div>
