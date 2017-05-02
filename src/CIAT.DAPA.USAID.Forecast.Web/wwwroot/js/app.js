@@ -35,7 +35,7 @@ angular
               name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [],
               description_climatology: 'Esta gráfica muestra la temperatura máxima promedio ocurrida en los últimos 30 años para cada mes',
               description_historical: ' Esta grafica muestra la temperatura máxima ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
-              
+
           },
           {
               name: 'Temperatura mínima', value: 't_min', metric: '°C', historical_months: [],
@@ -63,7 +63,7 @@ angular
           },
           {
               crop: "maíz",
-              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },                   
+              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },

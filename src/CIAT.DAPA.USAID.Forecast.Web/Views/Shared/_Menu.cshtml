@@ -1,0 +1,10 @@
+﻿<div id="secundaryMenu" ng-controller="SubMenuCtrl">
+    <div id="leftMenu">
+        <h3 class="text-center" style="color: white;">Información</h3>
+        <div class="leftMenu-wrapper col-md-12">
+            <ul class="row">
+                <li ng-repeat="sb in subSections" id="subMenu-{{sb.value}}" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView(sb.value,sb.name)">{{sb.name}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
