@@ -141,6 +141,7 @@
                   base_c.setClass('bar_' + cv.value);
                   base_c.setAxisLabelY(cv.metric);
                   var bar = new Bars(base_c);
+                  console.log(climatology);
                   bar.render();
                   var compute_c = ClimatologyFactory.summary(climatology);
 

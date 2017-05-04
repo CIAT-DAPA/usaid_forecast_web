@@ -133,7 +133,7 @@
 }
 
 .blockTitle.opened {
-  opacity: 0.5;
+  opacity: 1;
   background-image: url(../images/arrow-up.png);
    cursor: pointer;
     padding-left: 20px;
@@ -142,11 +142,16 @@
 }
 
 .blockTitle.closed {
-  background-image: url(../images/arrow-down.png);
+    opacity: 1;
+    background-image: url(../images/arrow-down.png);
     cursor: pointer;
     padding-left: 20px;
     background-repeat: no-repeat;
     background-position: -5px 2px;
+}
+
+.historical_content li{
+    font-size:0.85em;
 }
 
 /*Footer images*/
@@ -174,6 +179,10 @@ footer img{
     background: #222222;
     color: #777777;
     padding: 10px;
+}
+
+footer a{
+    color:#6f7477;
 }
 
 
