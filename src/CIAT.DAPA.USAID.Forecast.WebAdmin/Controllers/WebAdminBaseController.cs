@@ -168,7 +168,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     var code = await managerUser.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await notifyEmail.SendEmailAsync(email, "Confirmar cuenta",
-                        $"<p style='text-align:justify;'>Estimado usuario<br/><br/>Para confirmar su cuenta por favor presione click en el siguiente <a href='{callbackUrl}'>link</a></p>");                    
+                        $"<p style=\"text-align:justify;\">Estimado usuario<br/><br/>Para confirmar su cuenta por favor presione click en el siguiente <a href=\"{callbackUrl}\">link</a></p>");                    
                     return true;
                 }
                 return false;
