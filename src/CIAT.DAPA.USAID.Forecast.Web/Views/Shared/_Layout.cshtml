@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="shortcut icon" href="http://www.aclimatecolombia.org/wp-content/uploads/2013/06/CONVENIO3.png">
 
-    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body ng-app="ForecastApp">
     <header class="header-logo">
@@ -153,10 +152,11 @@
     <script src="~/lib/angular/angular.min.js"></script>
     <script src="~/js/menu.js"></script>
     <script src="~/js/app.js"></script>
+    <script src="~/js/services/setup.js"></script>
     <script src="~/js/services/forecast.js"></script>
     <script src="~/js/services/historical.js"></script>
     <script src="~/js/services/base.js"></script>
-    <script src="~/js/services/helpers.js"></script>
+    <script src="~/js/services/helpers.js"></script>    
     <script src="~/js/controllers/location.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

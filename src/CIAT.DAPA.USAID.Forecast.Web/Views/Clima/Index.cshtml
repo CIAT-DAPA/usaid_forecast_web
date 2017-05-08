@@ -18,10 +18,9 @@
 
 <h2 class="text-center" id="sectionTitle" style="color: white;">Predicción Climática</h2>
 <div id="containerBlock">
-
-    <div ng-controller="ForecastCtrl">
+    <div ng-controller="ClimateCtrl">
         <!-- Start Probabilities -->
-        <section class="col-md-12 sections"  id="prob">
+        <section class="col-md-12 sections" id="content_forecast">
             <div class="row section-content" style="padding-top:25px;">
                 <div class="col-lg-12">
                     <!--a href="#" class="icon_help" ng-click="assist('climate_forecast')" data-toggle="modal" data-target="#assit_modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></!--a -->
@@ -36,14 +35,15 @@
                     </p>
                 </div>
             </div>
-            <div class="row" id="probabilities_pies"></div>
+            <div class="row" id="probabilities_pies">
+
+            </div>
         </section>
         <!-- End Probabilities -->
-    </div>
-    <div ng-controller="ClimateCtrl">
-        <section class="col-md-12 sections" ng-repeat="cv in climate_vars" id="{{cv.value}}" id="section-{{cv.name}}" style="display:none;">
+
+        <!-- Start Historical -->
+        <section class="col-md-12 sections" ng-repeat="cv in climate_vars" id="content_{{cv.container}}" style="display:none;">
             <div class="row">
-                <!-- Start Climatology -->
                 <article id="climatology" class="col-lg-6 article_content">
                     <div class="section-content" style="min-height: 525px;">
                         <h3 class="text-center">Promedio de {{cv.name}} mensual histórico</h3>
@@ -63,25 +63,23 @@
                                 </li>
                             </ul>
                         </p>
-                        <div id="{{cv.value}}_bar_climatology" class="bar_climatology"></div>
+                        <div id="{{cv.container}}_bar_climatology" class="bar_climatology"></div>
                     </div>
                 </article>
-                <!-- End Climatology -->
-                <!-- Start Historical -->
                 <article id="climatic_history" class="col-lg-6 article_content">
-                    <div class="section-content" >
+                    <div class="section-content">
                         <h3 class="text-center">Comportamiento histórico mensual de {{cv.name}}</h3>
                         <p class="text-justify">
                             {{cv.description_historical}}.
                         </p>
-                        <div id="climatic_history_content_{{cv.value}}" class="article_content historical_content">
+                        <div id="climatic_history_content_{{cv.container}}" class="article_content historical_content">
                         </div>
                     </div>
                 </article>
-                <!-- End Historical -->
             </div>
         </section>
     </div>
+    <!-- End Historical -->
 
 </div>
 
@@ -90,8 +88,7 @@
     <script src="~/js/lib/d3graphics/base.js"></script>
     <script src="~/js/lib/d3graphics/pie.js"></script>
     <script src="~/js/lib/d3graphics/bars.js"></script>
-    <script src="~/js/lib/d3graphics/line.js"></script>
+    <script src="~/js/lib/d3graphics/line.js"></script>    
+    <script src="~/js/controllers/sub_menu.js"></script>
     <script src="~/js/controllers/climate.js"></script>
-    <script src="~/js/controllers/forecast.js"></script>
-    <script src="~/js/controllers/subMenu.js"></script>
 }

@@ -41,10 +41,9 @@ angular.module('ForecastApp')
           if ($scope.type === 'climate')
               $scope.municipalities = MunicipalityFactory.listAll(data_m);
               
-          else if ($scope.type === 'crop') 
+          else if ($scope.type === 'crop')
               $scope.municipalities = MunicipalityFactory.listByIds(data_m, $scope.gv_municipalities);
               
-          console.log(data_m);
       }).error(function (error) {
           console.log(error);
       });

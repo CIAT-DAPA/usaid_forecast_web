@@ -21,29 +21,45 @@ angular
       api_fs_historical_yield_years: $('#api_fs_historical_yield_years').val(),
       /* Data format */
       float: 0,
+      /* Lateral menu */
+      sub_menu: {
+          climate: [
+              { name: 'Predicción climática', value: 'forecast' },
+              { name: 'Precipitación', value: 'precipitation' },
+              { name: 'Temperatura', value: 'temperature' },
+              { name: 'Radiación solar', value: 'solar_radiation' }
+          ],
+          crop: [
+              { name: 'Pronóstico agroclimático', value: 'pronA' },
+              { name: 'Histórico de rendimiento', value: 'hist' }
+          ],
+          expert: [
+              { name: 'Datos geográficos', value: 'content_geographic' },
+              { name: 'Datos agronómicos', value: 'content_agronomic' },
+              { name: 'Climatología', value: 'content_climatology' },
+              { name: 'Hitórico climático', value: 'content_historical_climate' },
+              { name: 'Predicción climática', value: 'content_forecast_climate' },
+              { name: 'Pronóstico de producción', value: 'content_forecast_yield' }
+          ]
+      },
       /* Names in spanish about dates */
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
       /* Climate vars */
       climate_vars: [
           {
-              name: 'Precipitación', value: 'prec', metric: 'mm', historical_months: [],
+              name: 'Precipitación', container: 'precipitation', value: ['prec'], metric: 'mm', historical_months: [],
               description_climatology: 'Esta gráfica muestra la precipitación promedio ocurrida en los últimos 30 años para cada mes',
               description_historical: ' Esta grafica muestra la precipitación ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
           },
           {
-              name: 'Temperatura máxima', value: 't_max', metric: '°C', historical_months: [],
+              name: 'Temperatura', container: 'temperature', value: ['t_max', 't_min'], metric: '°C', historical_months: [],
               description_climatology: 'Esta gráfica muestra la temperatura máxima promedio ocurrida en los últimos 30 años para cada mes',
               description_historical: ' Esta grafica muestra la temperatura máxima ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
 
           },
           {
-              name: 'Temperatura mínima', value: 't_min', metric: '°C', historical_months: [],
-              description_climatology: 'Esta gráfica muestra la temperatura mínima promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra la temperatura mínima ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
-          },
-          {
-              name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d', historical_months: [],
+              name: 'Radiación solar', container: 'solar_radiation', value: ['sol_rad'], metric: 'MJ/m²d', historical_months: [],
               description_climatology: 'Esta gráfica muestra la radiación solar promedio ocurrida en los últimos 30 años para cada mes',
               description_historical: ' Esta grafica muestra la radiación solar ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual de clic sobre el mes de interés'
           }
@@ -90,48 +106,4 @@ angular
           { id: 'expert_download', alt: '', title: 'Descarga de datos', text: 'Descarga de datos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
       ]
   })
-  .factory('tools', function () {
-      var _tools = {};
-
-      /*
-       * Method that get the value of the parameter from url
-       * (string) name: Parameter name
-      */
-      _tools.search = function (name) {
-          var url = window.location.href;
-          name = name.replace(/[\[\]]/g, "\\$&");
-          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-          if (!results) return null;
-          if (!results[2]) return '';
-          return decodeURIComponent(results[2].replace(/\+/g, " "));
-      }
-
-      /*
-       * Method to determinate which is the current webpage
-      */
-      _tools.source = function () {
-          if (window.location.href.includes('Clima') || window.location.href.includes('clima'))
-              return 'climate';
-          else if (window.location.href.includes('Cultivo') || window.location.href.includes('cultivo'))
-              return 'crop';
-          else
-              return 'expert';
-      }
-
-      /*
-       * Method that changes the content of the modal window
-       * (string) title: Title of the modal window
-       * (string) text: Content in the modal window
-       * (string) url: Url to see a video, if it is null or empty, the video won't show
-      */
-      _tools.show_assist = function (title, text, url) {
-          $("#modal_title").html(title);
-          $("#modal_text").html(text);
-          if (url != null && url !== '')
-              $("#modal_video").attr("src", url);
-          else
-              $("#modal_video").remove();
-      }
-
-      return _tools;
-  });
+  ;
