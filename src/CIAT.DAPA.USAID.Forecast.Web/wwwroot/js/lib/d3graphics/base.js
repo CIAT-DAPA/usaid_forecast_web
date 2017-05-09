@@ -60,6 +60,7 @@ function Base(container, data) {
 
     // Class CSS
     this.class = '';
+    this.classes = [];
 
     // labels axis
     this.axis_labels = {
@@ -82,6 +83,14 @@ Base.prototype.setAxisLabelY = function (y) {
 */
 Base.prototype.setClass = function (class_name) {
     this.class = class_name;
+}
+
+/*
+ * Method that set the classes for the graphic
+ * (string[]) list: Array of String with the names of the classes
+*/
+Base.prototype.setClasses = function (list) {
+    this.classes = list;
 }
 
 /*

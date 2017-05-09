@@ -33,7 +33,7 @@ angular.module('ForecastApp')
         }
 
         /*
-        * Method that return all probabilities from the forecast of the weather station
+        * Method that return one climate var of the climatology by weather station
         * (string) ws: Id of the weather station
         * (int[]) months: Array of the months to filter
         * (string) measure: Name of measure climate
@@ -43,12 +43,10 @@ angular.module('ForecastApp')
 
             dataFactory.getByWeatherStation(ws).then(
                 function (filtered_ws) {
-                    var filtered_monthly = filtered_ws.monthly_data.filter(function (item) { return months.includes(item.month.toString()); });
-                    // Transform months (delete de first zero) if data doesn't have information
-                    if (filtered_monthly.length < 1) {
-                        months = months.map(function (m) { return m.startsWith('0') ? m.replace('0', '') : m; });
-                        filtered_monthly = filtered_ws.monthly_data.filter(function (item) { return months.includes(item.month.toString()); });
-                    }
+                    var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
+                        var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
+                        return months.includes(tm);
+                    });
                     var data = filtered_monthly.map(function (item) {
                         var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
                         var obj = {
@@ -57,6 +55,40 @@ angular.module('ForecastApp')
                             value: monthly.value
                         };
                         return obj;
+                    });
+                    defer.resolve(data);
+                },
+                function (err) {
+                    console.log(err);
+                });
+
+            return defer.promise;
+        }
+
+        /*
+        * Method that return all climate vars of the climatology by weather station
+        * (string) ws: Id of the weather station
+        * (string[]) months: Array of the months to filter
+        */
+        dataFactory.getMonthly = function (ws, months) {
+            var defer = $q.defer();
+
+            dataFactory.getByWeatherStation(ws).then(
+                function (filtered_ws) {
+
+                    var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
+                        var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();                        
+                        return months.includes(tm);
+                    });
+                    var data = filtered_monthly.map(function (item) {
+                        return item.data.map(function (item2) {
+                            return {
+                                month: item.month,
+                                month_name: config.month_names[item.month - 1],
+                                value: item2.value,
+                                measure: item2.measure
+                            }
+                        });
                     });
                     defer.resolve(data);
                 },

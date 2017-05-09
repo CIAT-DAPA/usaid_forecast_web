@@ -41,6 +41,57 @@
     </section>
     <!-- End Probabilities -->
    
+    <!-- Start Historical -->
+    <section class="col-md-12 sections" id="content_historical" style="display:none;" ng-controller="ClimateHistoryCtrl">
+        <div class="row">
+            <!-- Start Climatology -->
+            <article id="climatology" class="col-lg-6 article_content">
+                <div class="section-content" style="min-height: 525px;">
+                    <h3 class="text-center">Promedio {{cv.name}} mensual histórico</h3>
+                    <p class="text-justify">
+                        {{cv.description_climatology}}.
+                        La climatología para <span class="text-bold">{{cv.name}}</span>
+                        en el período de <span class="text-bold">{{cv.month_start}} a {{cv.month_end}}</span>
+                        en el municipio <span class="text-bold">{{municipality_name}}</span> nos indica que:
+                        <ul>
+                            <li>
+                                El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
+                                <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 0}} {{cv.metric}})</span>.
+                            </li>
+                            <li>
+                                El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
+                                <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 0}} {{cv.metric}})</span>.
+                            </li>
+                        </ul>
+                    </p>
+                    <div id="bar_climatology" class="bar_climatology"></div>
+                </div>
+            </article>
+            <!-- End Climatology -->
+            <!-- Start History -->
+            <article id="climatic_historical" class="col-lg-6 article_content">
+                <div class="section-content">
+                    <h3 class="text-center">Comportamiento histórico mensual de {{cv.name}}</h3>
+                    <p class="text-justify">
+                        {{cv.description_historical}}.
+                    </p>
+                    <div id="climatic_historical_content" class="article_content historical_content">
+                        <select class="form-control" ng-model="cv_month_selected" ng-change="drawHistorical()">
+                            <option ng-repeat="cv_month in historical_months track by $index" value="{{$index}}" id="climate_historical_month">{{cv_month}}</option>
+                        </select>
+                        <div class="tab-content" id="climate_historical_content">
+                            <p class="text-justify" id="historical_content_summary">
+                            </p>
+                            <div id="historical_content_line">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <!-- End History -->
+        </div>
+    </section>
+    <!-- End Historical -->
 </div>
 
 
@@ -52,4 +103,5 @@
     <script src="~/js/lib/d3graphics/bars.js"></script>
     <script src="~/js/lib/d3graphics/line.js"></script>    
     <script src="~/js/controllers/climate_forecast_ctr.js"></script>
+    <script src="~/js/controllers/climate_history_ctr.js"></script>
 }

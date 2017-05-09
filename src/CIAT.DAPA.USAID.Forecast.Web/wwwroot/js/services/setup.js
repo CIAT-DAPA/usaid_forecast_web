@@ -84,5 +84,13 @@ angular.module('ForecastApp')
         dataFactory.getFloat = function () {
             return config.float;
         }
+
+        /*
+         * Method that return all months in spanish
+        */
+        dataFactory.getMonths = function () {
+            return config.month_names;
+        }
+
         return dataFactory;
     }]);

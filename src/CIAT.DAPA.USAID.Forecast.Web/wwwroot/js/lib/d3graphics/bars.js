@@ -18,7 +18,7 @@ Bars.prototype.render = function () {
     //create svg for histogram.
     this.base.svg.append("g")
                 .attr("transform", "translate(0,0)");
-
+      
     // create function for x-axis mapping.
     var x = d3.scale.ordinal().rangeRoundBands([this.base.margin.right, this.base.width_full - this.base.margin.left], this.space)
                 .domain(this.base.data.map(function (d) { return d.month_name; }));
@@ -26,6 +26,10 @@ Bars.prototype.render = function () {
     // Create function for y-axis map.
     var y = d3.scale.linear().range([this.base.height, this.base.getMarginVertical()])
                 .domain([0, d3.max(this.base.data, function (d) { return d.value; }) * 1.1]);
+
+    // Interpolation for classes
+    var classes = d3.scale.ordinal().range(that.base.classes)
+                    .domain(that.base.data.map(function(d){ return d.measure;}));
 
     // Add the axis
     this.base.addAxis(x, y, 8);
@@ -43,7 +47,7 @@ Bars.prototype.render = function () {
         .attr("y", function (d) { return y(d.value); })
         .attr("width", x.rangeBand())
         .attr("height", function (d) { return (that.base.height) - y(d.value); })
-        .attr('class', that.base.class);
+        .attr('class', function (d) { return classes(d.measure); });
 
     //Create the frequency labels above the rectangles.
     bars.append("text").text(function (d) { return that.base.formats.round(d.value) })

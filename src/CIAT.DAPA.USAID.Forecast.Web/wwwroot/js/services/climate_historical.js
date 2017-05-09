@@ -20,7 +20,8 @@ angular.module('ForecastApp')
             ClimateHistoryFactory.cache = dataFactory.cache;
 
             ClimateHistoryFactory.get(ws).then(
-                function (raw) {
+                function (result) {
+                    var raw = result.data;
                     var data = raw.climate.filter(function (item) { return item.weather_station === ws; });
                     defer.resolve(data);
                 },
@@ -41,7 +42,8 @@ angular.module('ForecastApp')
             var defer = $q.defer();
 
             dataFactory.getByWeatherStation(raw, ws).then(
-                function (filtered_ws) {
+                function (result) {
+                    var filtered_ws = result.data;
                     var data = filtered_ws.map(function (item) {
                         var filtered_monthly = item.monthly_data.filter(function (item2) { return month.toString() === item2.month.toString(); });
                         var data2 = filtered_monthly.map(function (item2) {

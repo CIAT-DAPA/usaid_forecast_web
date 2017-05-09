@@ -7,7 +7,6 @@
       $scope.municipality_name = tools.search('municipio');
       $scope.period_start = null;
       $scope.period_end = null;
-      $scope.gv_months = $("#gv_months").val().split(',');
       // Vars of the data
       // Weather Station
       $scope.ws = null;
@@ -19,42 +18,53 @@
       // Months
       $scope.months = null;
 
-      // Load data from web web api
-      // Get data of the weather station
-      WeatherStationFactory.getByMunicipality($scope.municipality_name)
-        .then(function (data_ws) {
-            $scope.ws = data_ws;
-            // Get climate forecast data of the precipitation
-            ClimateForecastFactory.getProbabilities($scope.ws.id, 'prec').
-                then(function (data_fs) {
-                    $scope.forecast = data_fs;
-                    // Get the months of the forecast
-                    $scope.months = $scope.forecast.map(function (item) { return item.month.toString(); });
-                    // Get limit lower of the climatology for the months of the forecast 
-                    ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
-                        function (data_l) {
-                            $scope.climatology_lower = data_l;
-                            // Get limit upper of the climatology for the months of the forecast
-                            ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
-                            function (data_u) {
-                                $scope.climatology_upper = data_u;
-                                // Draw graphic
-                                draw_forecast();
-                            },
-                            function (err) { console.log(err); });
-                        },
-                        function (err) { console.log(err); });
-                },
-                function (err) { console.log(err);});
-        },
-        function (err) { console.log(err); });
+      $scope.loaded = false;
+
+      load_data();
 
       /*
        * Method that render the data in the screen
        * (string) section: Section name to draw
       */
       $rootScope.drawFunction = function (section) {
+          if (!$scope.loaded)
+              load_data();
           draw_forecast();
+      }
+
+      function load_data() {
+          // Load data from web web api
+          // Get data of the weather station
+          WeatherStationFactory.getByMunicipality($scope.municipality_name).then(
+          function (data_ws) {
+              $scope.ws = data_ws;
+              // Get climate forecast data of the precipitation
+              ClimateForecastFactory.getProbabilities($scope.ws.id, 'prec').then(
+              function (data_fs) {
+                  $scope.forecast = data_fs;
+                  // Get the months of the forecast
+                  $scope.months = $scope.forecast.map(function (item) {
+                      return item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
+                  });
+                  // Get limit lower of the climatology for the months of the forecast 
+                  ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
+                  function (data_l) {
+                      $scope.climatology_lower = data_l;
+                      // Get limit upper of the climatology for the months of the forecast
+                      ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
+                      function (data_u) {
+                          $scope.climatology_upper = data_u;
+
+                          // Draw graphic
+                          draw_forecast();
+                      },
+                      function (err) { console.log(err); });
+                  },
+                  function (err) { console.log(err); });
+              },
+              function (err) { console.log(err); });
+          },
+          function (err) { console.log(err); });
       }
 
       /*
