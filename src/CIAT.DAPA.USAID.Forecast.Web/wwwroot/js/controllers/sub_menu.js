@@ -19,12 +19,12 @@ angular.module('ForecastApp')
       else
           $scope.subSections = setup.listSubMenuOption('expert');
 
-      $scope.renderView = function ($value, $name) {
+      $scope.renderView = function ($value, $name, $section) {
           
           $(".subMenuItem").removeClass("active");
           $("#subMenu-" + $value).addClass("active");
           $(".sections").hide();
-          $("#content_" + $value).show();
+          $("#content_" + $section).show();
           $("#sectionTitle").text($name);
           $rootScope.drawFunction($value);
           //$("#expert_data article").hide();

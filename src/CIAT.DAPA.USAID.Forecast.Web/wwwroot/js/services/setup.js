@@ -64,5 +64,9 @@ angular.module('ForecastApp')
             return config.sub_menu[section];
         }
 
+        dataFactory.getClimateVars = function () {
+            return config.climate_vars;
+        }
+
         return dataFactory;
     }]);

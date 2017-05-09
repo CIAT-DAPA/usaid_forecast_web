@@ -14,81 +14,42 @@
 <input type="hidden" id="climate_section" name="climate_section" value="0" />
 <!-- End global variables -->
 
-@Html.Partial("_Menu")
+@Html.Partial("_SubMenu")
 
 <h2 class="text-center" id="sectionTitle" style="color: white;">Predicción Climática</h2>
 <div id="containerBlock">
-    <div ng-controller="ClimateCtrl">
-        <!-- Start Probabilities -->
-        <section class="col-md-12 sections" id="content_forecast">
-            <div class="row section-content" style="padding-top:25px;">
-                <div class="col-lg-12">
-                    <!--a href="#" class="icon_help" ng-click="assist('climate_forecast')" data-toggle="modal" data-target="#assit_modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></!--a -->
-                    <p class="text-justify col-lg-12" style="font-size:1.1em;">
-                        Se presenta la predicción del clima,
-                        para la ciudad de <span class="text-bold">{{municipality_name}}</span>,
-                        para el período comprendido de
-                        <span class="text-bold">{{period_start}} y {{period_end}}</span>.
-                        La estación meteorológica de referencia para hacer estas predicciones
-                        <span class="text-bold">{{ws_entity.name}}</span>,
-                        provista por <span class="text-bold">{{ws_entity.origin}}</span>.
-                    </p>
-                </div>
+    <!-- Start Probabilities -->
+    <section class="col-md-12 sections" id="content_forecast" ng-controller="ClimateForecastCtrl">
+        <div class="row section-content" style="padding-top:25px;">
+            <div class="col-lg-12">
+                <!--a href="#" class="icon_help" ng-click="assist('climate_forecast')" data-toggle="modal" data-target="#assit_modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></!--a -->
+                <p class="text-justify col-lg-12" style="font-size:1.1em;">
+                    Se presenta la predicción del clima,
+                    para la ciudad de <span class="text-bold">{{municipality_name}}</span>,
+                    para el período comprendido de
+                    <span class="text-bold">{{period_start}} y {{period_end}}</span>.
+                    La estación meteorológica de referencia para hacer estas predicciones
+                    <span class="text-bold">{{ws_entity.name}}</span>,
+                    provista por <span class="text-bold">{{ws_entity.origin}}</span>.
+                </p>
             </div>
-            <div class="row" id="probabilities_pies">
+        </div>
+        <div class="row" id="probabilities_pies">
 
-            </div>
-        </section>
-        <!-- End Probabilities -->
-
-        <!-- Start Historical -->
-        <section class="col-md-12 sections" ng-repeat="cv in climate_vars" id="content_{{cv.container}}" style="display:none;">
-            <div class="row">
-                <article id="climatology" class="col-lg-6 article_content">
-                    <div class="section-content" style="min-height: 525px;">
-                        <h3 class="text-center">Promedio de {{cv.name}} mensual histórico</h3>
-                        <p class="text-justify">
-                            {{cv.description_climatology}}.
-                            La climatología para <span class="text-bold">{{cv.name}}</span>
-                            en el período de <span class="text-bold">{{cv.month_start}} a {{cv.month_end}}</span>
-                            en el municipio <span class="text-bold">{{municipality_name}}</span> nos indica que:
-                            <ul>
-                                <li>
-                                    El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
-                                    <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 0}} {{cv.metric}})</span>.
-                                </li>
-                                <li>
-                                    El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
-                                    <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 0}} {{cv.metric}})</span>.
-                                </li>
-                            </ul>
-                        </p>
-                        <div id="{{cv.container}}_bar_climatology" class="bar_climatology"></div>
-                    </div>
-                </article>
-                <article id="climatic_history" class="col-lg-6 article_content">
-                    <div class="section-content">
-                        <h3 class="text-center">Comportamiento histórico mensual de {{cv.name}}</h3>
-                        <p class="text-justify">
-                            {{cv.description_historical}}.
-                        </p>
-                        <div id="climatic_history_content_{{cv.container}}" class="article_content historical_content">
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-    </div>
-    <!-- End Historical -->
-
+        </div>
+    </section>
+    <!-- End Probabilities -->
+   
 </div>
+
+
 
 @section Scripts {
     <script src="~/lib/d3/d3.min.js"></script>
     <script src="~/js/lib/d3graphics/base.js"></script>
     <script src="~/js/lib/d3graphics/pie.js"></script>
     <script src="~/js/lib/d3graphics/bars.js"></script>
-    <script src="~/js/lib/d3graphics/line.js"></script>    
+    <script src="~/js/lib/d3graphics/line.js"></script>
     <script src="~/js/controllers/sub_menu.js"></script>
-    <script src="~/js/controllers/climate.js"></script>
+    <script src="~/js/controllers/climate_forecast.js"></script>
 }

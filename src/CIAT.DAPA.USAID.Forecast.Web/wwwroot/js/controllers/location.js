@@ -8,7 +8,7 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('LocationCtrl', function ($scope, config, tools, GeographicFactory, MunicipalityFactory) {
+  .controller('LocationCtrl', function ($scope, tools, GeographicFactory, MunicipalityFactory) {
       $scope.type = tools.source();
       $scope.gv_municipalities = [];
 

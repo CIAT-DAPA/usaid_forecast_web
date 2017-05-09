@@ -24,10 +24,10 @@ angular
       /* Lateral menu */
       sub_menu: {
           climate: [
-              { name: 'Predicción climática', value: 'forecast' },
-              { name: 'Precipitación', value: 'precipitation' },
-              { name: 'Temperatura', value: 'temperature' },
-              { name: 'Radiación solar', value: 'solar_radiation' }
+              { name: 'Predicción climática', section: 'forecast', value: 'forecast' },
+              { name: 'Precipitación', section: 'historical', value: 'precipitation' },
+              { name: 'Temperatura', section: 'historical', value: 'temperature' },
+              { name: 'Radiación solar', section: 'historical', value: 'solar_radiation' }
           ],
           crop: [
               { name: 'Pronóstico agroclimático', value: 'pronA' },
@@ -106,4 +106,4 @@ angular
           { id: 'expert_download', alt: '', title: 'Descarga de datos', text: 'Descarga de datos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
       ]
   })
-  ;
+;

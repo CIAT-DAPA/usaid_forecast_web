@@ -4,26 +4,31 @@
                                     WeatherStationFactory, AssistFactory, $rootScope) {
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
-      $scope.municipalities = [];
+      //$scope.municipalities = [];
       $scope.ws_entity = null;
       $scope.gv_months = $("#gv_months").val().split(',');
       $scope.climate_vars = config.climate_vars;
       $scope.period_start = null;
       $scope.period_end = null;
+      // 
+      $scope.cv = null;
+      $scope.historical_months = null;
+      $scope.climatology = null;
+      $scope.cv_month_selected = null;
       // Vars of the data
       // Data municipalities
       $scope.data_m = null;
       // Historical data
       $scope.data_h = null;
       // Forecast data
-      $scope.data_f = null;
+      $scope.data_f = null;      
 
       // Load data from web web api
       // Get all geographic data able with information
       GeographicFactory.get().success(function (data_m) {
           $scope.data_m = data_m;
           // List all municipalities
-          $scope.municipalities = MunicipalityFactory.listAll(data_m);
+          //$scope.municipalities = MunicipalityFactory.listAll(data_m);
           // Search the weather station
           $scope.ws_entity = WeatherStationFactory.getByMunicipality(data_m, $scope.municipality_name);
           // Load the historical information
@@ -45,16 +50,19 @@
           console.log(error);
       });
 
+      $scope.drawHistorical = draw_historical;
       
       $rootScope.drawFunction = function (section) {
           if (section === 'forecast')
               draw_forecast();
-          else if (section === 'precipitation')
-              draw_historical(0);
-          else if (section === 'temperature')
-              draw_historical(1);
-          else if (section === 'solar_radiation')
-              draw_historical(2);
+          else{
+              if (section === 'precipitation')
+                  draw_climatology(0);
+              else if (section === 'temperature')
+                  draw_climatology(1);
+              else if (section === 'solar_radiation')
+                  draw_climatology(2);
+          }
       }
 
       /*
@@ -135,98 +143,63 @@
       /*
        * Method that draw in screen the information getted from the web api about
       */
-      function draw_historical(i) {
-          // Historical data for every climate variable
-          //for (var i = 0; i < $scope.climate_vars.length; i++) {
-          //try {
-          var cv = $scope.climate_vars[i];
-          // Set the months for historical data
-          var h_month_start = parseInt($scope.gv_months[0]);
-          var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
-          cv.historical_months = config.month_names.slice(h_month_start - 1, h_month_end);
+      function draw_climatology(i) {
+          $scope.cv = $scope.climate_vars[i];
 
           // Climatology
 
-          // Get data
-          var climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, $scope.gv_months, cv.value[0]);
+          // Get data          
+          $scope.climatology = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, $scope.gv_months, $scope.cv.value[0]);
+          console.log($scope.climatology);
           // Draw the graphic
-          var base_c = new Base('#' + cv.container + '_bar_climatology', climatology);
+          var base_c = new Base('#bar_climatology', $scope.climatology);
           base_c.setMargin(10, 30, 10, 10);
-          base_c.setClass('bar_' + cv.value[0]);
-          base_c.setAxisLabelY(cv.metric);
+          base_c.setClass('bar_' + $scope.cv.value[0]);
+          base_c.setAxisLabelY($scope.cv.metric);
           var bar = new Bars(base_c);
           bar.render();
-          var compute_c = ClimatologyFactory.summary(climatology);
+          var compute_c = ClimatologyFactory.summary($scope.climatology);
 
-          cv.month_start = climatology[0].month_name;
-          cv.month_end = climatology[climatology.length - 1].month_name;
-          cv.max = compute_c.max;
-          cv.min = compute_c.min;
+          $scope.cv.month_start = $scope.climatology[0].month_name;
+          $scope.cv.month_end = $scope.climatology[$scope.climatology.length - 1].month_name;
+          $scope.cv.max = compute_c.max;
+          $scope.cv.min = compute_c.min;
 
-          // Historical
+          $scope.historical_months = config.month_names.slice(h_month_start - 1, h_month_end);
+          $scope.cv_month_selected = 0;
+          draw_historical();         
+      }
 
-          // Build the html code for every month of the forecast in tabs.
-          // All content of tabs is enable, so this way later can draw the graphic
-          var tabs = '<ul class="nav nav-tabs nav-justified" id="' + cv.container + '_tabs" role="tablist">';
-          var content = '<div class="tab-content" id="' + cv.container + '_content">';
-          var tab_enable = '';
-          for (var j = 0; j < cv.historical_months.length; j++) {
-              var cvm = cv.historical_months[j];
-              tabs += '<li role="presentation"' + (j == 0 ? ' class="active"' : '') + '>' +
-                        '<a href="#' + cv.container + '_' + cvm + '_content" id="' + cv.container + '_' + cvm + '_tab" role="tab" data-toggle="tab" aria-controls="' + cv.container + '_' + cvm + '_content" class="text-bold"> ' + cvm + '</a>' +
-                     '</li>';
-              content += '<div class="tab-pane fade active in ' + cv.container + '" role="tabpanel" id="' + cv.container + '_' + cvm + '_content" aria-labelledby="' + cv.container + '_' + cvm + '_tab">' +
-                            '<p class="text-justify" id="' + cv.container + '_' + cvm + '_summary">' +
-                            '</p>' +
-                            '<div id="' + cv.container + '_line_historical_' + cvm + '">' +
-                            '</div>' +
-                        '</div>';
-              if (j == 0)
-                  tab_enable = cv.container + '_' + cvm + '_content';
-          }
-          tabs += '</ul>';
-          content += '</div>';
-          $('#climatic_history_content_' + cv.container).html(tabs + content);
-          // Add the event to show the tabs on click
-          $('#' + cv.container + '_tabs a').click(function (e) {
-              e.preventDefault();
-              $(this).tab('show');
-          });
-          // Add the line grapich for every month
-          for (var j = 0; j < cv.historical_months.length; j++) {
-              // Get data from month
-              var cvm = cv.historical_months[j];
-              var historical = HistoricalClimateFactory.getData($scope.data_h, $scope.ws_entity.id, h_month_start, cv.value[0]);
-              var data_h = { raw: historical, splitted: climatology[j].value };
-              var base_h = new Base('#' + cv.container + '_line_historical_' + cvm, data_h);
-              // Build the graphic for every month
-              base_h.setMargin(10, 30, 10, 10);
-              base_h.setClass(cv.value);
-              base_h.setAxisLabelY(cv.metric);
-              var line = new Line(base_h);
-              line.render();
-              h_month_start += 1;
-              // Add summary to the content tab
-              var summary_data = HistoricalClimateFactory.summary(historical, climatology[j].value);
-              var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
-                            'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
-                            '<ul>' +
-                                '<li>Se han presentado <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
-                                '<li>Se han presentado <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
-                            '</ul>';
-              $('#' + cv.container + '_' + cvm + '_summary').html(summary);
-          }
-          // Disable the content of tabs (hide the content)
-          $('.' + cv.container).removeClass('active');
-          $('.' + cv.container).removeClass('in');
-          // Enable the content of the first tab
-          $('#' + tab_enable).addClass('active');
-          $('#' + tab_enable).addClass('in');
-          /*}
-          catch (err) {
-              console.log(err);
-          }
-          }*/
+      function draw_historical() {
+          // Set the months for historical data          
+          var h_month_start = parseInt($scope.gv_months[0]);
+          var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);          
+
+          var j = $scope.cv_month_selected;
+          var h_month_start = parseInt($scope.gv_months[0]);
+          var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
+
+          var cvm = $scope.historical_months[j];
+          var historical = HistoricalClimateFactory.getData($scope.data_h, $scope.ws_entity.id, h_month_start, $scope.cv.value[0]);
+          console.log($scope.climatology[j]);
+          var data_h = { raw: historical, splitted: $scope.climatology[j].value };
+          var base_h = new Base('#historical_content_line', data_h);
+          // Build the graphic for every month
+          base_h.setMargin(10, 30, 10, 10);
+          base_h.setClass($scope.cv.value);
+          base_h.setAxisLabelY($scope.cv.metric);
+          var line = new Line(base_h);
+          line.render();
+          h_month_start += 1;
+          // Add summary to the content tab
+          /*var summary_data = HistoricalClimateFactory.summary(historical, climatology[j].value);
+          var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
+                        'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
+                        '<ul>' +
+                            '<li>Se han presentado <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
+                            '<li>Se han presentado <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
+                        '</ul>';
+          $('#' + cv.container + '_' + cvm + '_summary').html(summary);*/
       }
 
       /*
