@@ -24,7 +24,7 @@ angular.module('ForecastApp')
                   $scope.states = s.data;
 
                   if ($scope.municipality_name == null || $scope.municipality_name === '')
-                      $window.location.href = "/Clima/Index?municipio=" + $scope.states[0].municipalities[0].name;
+                      $window.location.href = "/Clima?municipio=" + $scope.states[0].municipalities[0].name;
 
                   var founded = false;
                   for (var i = 0; i < $scope.states.length; i++) {
@@ -37,7 +37,7 @@ angular.module('ForecastApp')
                   }
 
                   if (!founded)
-                      $window.location.href = "/Clima/Index?municipio=" + $scope.states[0].municipalities[0].name;
+                      $window.location.href = "/Clima?municipio=" + $scope.states[0].municipalities[0].name;
 
               },
               function (err) {
@@ -45,7 +45,7 @@ angular.module('ForecastApp')
       }
       else if ($scope.type === 'crop') {
           $scope.gv_municipalities = $("#gv_municipalities").val().split(',');
-          $('#menu_main_' + (tools.search('cultivo') === 'arroz' ? 'rice' : 'maize')).addClass('active');
+          $('#menu_main_' + ($scope.crop_name === 'arroz' ? 'rice' : 'maize')).addClass('active');
       }
       else {
           $('#menu_main_expert').addClass('active');

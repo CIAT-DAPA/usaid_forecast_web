@@ -20,7 +20,8 @@ angular.module('ForecastApp')
             ClimateHistoryFactory.cache = dataFactory.cache;
 
             ClimateHistoryFactory.get(ws).then(
-                function (raw) {
+                function (result) {
+                    var raw = result.data;
                     var data = raw.climatology.filter(function (item) { return item.weather_station === ws; });
                     defer.resolve(data[0]);
                 },

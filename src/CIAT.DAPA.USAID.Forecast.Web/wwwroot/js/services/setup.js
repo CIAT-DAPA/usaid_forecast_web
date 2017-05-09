@@ -64,9 +64,25 @@ angular.module('ForecastApp')
             return config.sub_menu[section];
         }
 
+        /*
+         * Method that return all climate vars avaliable
+        */
         dataFactory.getClimateVars = function () {
             return config.climate_vars;
         }
 
+        /*
+         * Method that return the climate vars for the forecast
+        */
+        dataFactory.getClimatologyVarsForecast = function () {
+            return config.climatology_forecast;
+        }
+
+        /*
+         * Method that return the float fixed
+        */
+        dataFactory.getFloat = function () {
+            return config.float;
+        }
         return dataFactory;
     }]);

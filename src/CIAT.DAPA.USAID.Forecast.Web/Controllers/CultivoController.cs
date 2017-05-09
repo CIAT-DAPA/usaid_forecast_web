@@ -26,7 +26,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         // GET: /Cultivo/Index/?municipio=&cultivo=
         public async Task<IActionResult> Index(string municipio, string cultivo)
         {
-            try
+            // Load the urls of the web api's
+            loadAPIs();
+            // Load the dates of the forecast
+            loadMonthsCrop();
+            return View();
+            /*try
             {
                 bool redir = false;
 
@@ -65,16 +70,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 foreach (var mu in m_tmp)
                     municipalities += mu.id + ",";
                 ViewBag.gv_municipalities = municipalities.Substring(0, municipalities.Length - 1);
-                // Load the urls of the web api's
-                loadAPIs();
-                // Load the dates of the forecast
-                loadMonthsCrop();
-                return View();
+                
             }
             catch(Exception ex)
             {
                 return View("Error");
-            }
+            }*/
         }
     }
 }

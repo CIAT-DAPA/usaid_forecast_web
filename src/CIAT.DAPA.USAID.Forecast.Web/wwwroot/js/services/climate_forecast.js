@@ -8,8 +8,24 @@
  * Climate Forecast in the ForecastApp.
  */
 angular.module('ForecastApp')
-    .factory('ClimateForecastFactory', function ($q, config, ForecastFactory) {
-        var dataFactory = { cache: true };
+    .factory('ClimateForecastFactory', function ($q, $http, config) {
+        var dataFactory = { raw: null, cache: true };
+
+        /*
+         * Method that return the url to get data forecast
+        */
+        dataFactory.getUrl = function () {
+            return config.api_fs + config.api_fs_forecast_climate;
+        }
+
+        /*
+        * Method that request the last forecast to the web api
+        */
+        dataFactory.get = function () {
+            if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw == null))
+                dataFactory.raw = $http.get(dataFactory.getUrl());
+            return dataFactory.raw;
+        }
 
         /*
         * Method that filter all climate data from forecast of the weather station
@@ -17,12 +33,13 @@ angular.module('ForecastApp')
         */
         dataFactory.getByWeatherStation = function (ws) {
             var defer = $q.defer();
-            ForecastFactory.cache = dataFactory.cache;
 
-            ForecastFactory.get().then(
+            dataFactory.get().then(
                  function (result) {                     
                      var raw = result.data;
-                     var data = raw.climate.filter(function (item) { return item.weather_station === ws; });                     
+                     var data = raw.climate.filter(function (item) {                         
+                         return item.weather_station === ws;
+                     });
                      defer.resolve(data[0]);
                  },
                 function (err) {
@@ -41,22 +58,22 @@ angular.module('ForecastApp')
             var defer = $q.defer();
 
             dataFactory.getByWeatherStation(ws).then(
-                 function (result) {                     
+                 function (result) {
                      var filtered = result.data;
                      var data = filtered.map(function (item) {
                          var probabilities = item.probabilities.filter(function (item) { return item.measure === measure })[0];
                          var p = new Array({ label: 'Arriba de lo normal', type: 'upper', value: probabilities.upper },
                              { label: 'Normal', type: 'normal', value: probabilities.normal },
                              { label: 'Debajo de lo normal', type: 'lower', value: probabilities.lower });
-                         var obj = {
+                         return {
                              year: item.year,
                              month: item.month,
                              month_name: config.month_names[item.month - 1],
                              probabilities: p,
                              raw: probabilities
                          };
-                         defer.resolve(obj);
                      });
+                     defer.resolve(data);
                  },
                 function (err) {
                     console.log(err);

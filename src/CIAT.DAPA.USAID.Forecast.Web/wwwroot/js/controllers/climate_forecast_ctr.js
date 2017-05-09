@@ -8,7 +8,6 @@
       $scope.period_start = null;
       $scope.period_end = null;
       $scope.gv_months = $("#gv_months").val().split(',');
-
       // Vars of the data
       // Weather Station
       $scope.ws = null;
@@ -17,6 +16,8 @@
       $scope.climatology_upper = null;
       // Forecast data
       $scope.forecast = null;
+      // Months
+      $scope.months = null;
 
       // Load data from web web api
       WeatherStationFactory.getByMunicipality($scope.municipality_name)
@@ -25,8 +26,24 @@
             ClimateForecastFactory.getProbabilities($scope.ws.id, 'prec').
                 then(function (data_fs) {
                     $scope.forecast = data_fs;
-                    console.log($scope.forecast);
-                    //ClimateClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws.id, [m.month.toString()], config.climatology_forecast.lower)
+                    $scope.months = $scope.forecast.map(function (item) { return item.month.toString(); });
+                    ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
+                        function (data_l) {
+                            $scope.climatology_lower = data_l;
+                            ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
+                            function (data_u) {
+                                $scope.climatology_upper = data_u;
+
+                                // Draw graphic
+                                draw_forecast();
+                            },
+                            function (err) {
+                                console.log(err);
+                            });
+                        },
+                        function (err) {
+                            console.log(err);
+                        });
                 },
                 function (err) {
                     console.log(err);
@@ -71,8 +88,7 @@
        * Method that draw in screen the information getted from the web api about forecast
       */
       function draw_forecast() {
-          // Forecast
-          var months = ClimateFactory.getProbabilities($scope.data_f, $scope.ws_entity.id, 'prec');
+          // Forecast          
           var ctrs = '<div id="climate_carousel" class="carousel slide" data-ride="carousel">' +
                         '<ol class="carousel-indicators">' +
                             '<li data-target="#climate_carousel" data-slide-to="0" class="active"></li>' +
@@ -82,11 +98,11 @@
                         '<div class="carousel-inner" role="listbox">';
           var period = '';
           // This cicle add the html code for the graphic pie.
-          for (var i = 0; i < months.length; i++) {
-              var m = months[i];
+          for (var i = 0; i < $scope.forecast.length; i++) {
+              var m = $scope.forecast[i];
               if (i == 0)
                   period = m.month_name + ', ' + m.year + ' a ';
-              else if (i == (months.length - 1))
+              else if (i == ($scope.forecast.length - 1))
                   period = period + m.month_name + ', ' + m.year;
               if (i == 0 || i == 2 || i == 4)
                   ctrs = ctrs + '<section class="item active">';
@@ -114,26 +130,26 @@
           $('#climate-period').html(period);
           $("#probabilities_pies").html(ctrs);
           // This cicle add the graphic pie and render the information of the forecast
-          for (var i = 0; i < months.length; i++) {
-              var m = months[i];
+          for (var i = 0; i < $scope.forecast.length; i++) {
+              var m = $scope.forecast[i];
+              var cl_lower = $scope.climatology_lower[i].value.toFixed(setup.getFloat());
+              var cl_upper = $scope.climatology_upper[i].value.toFixed(setup.getFloat());
               if (i == 0)
                   $scope.period_start = m.month_name + ', ' + m.year;
-              if (i == (months.length - 1))
+              if (i == ($scope.months.length - 1))
                   $scope.period_end = m.month_name + ', ' + m.year;
               var id = '#pie' + m.year + '-' + m.month;
-              var climatology_lower = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.lower);
-              var climatology_upper = ClimatologyFactory.getMonthlyData($scope.data_h, $scope.ws_entity.id, [m.month.toString()], config.climatology_forecast.upper);
-              var data = { percentages: m.probabilities, center: '[' + climatology_lower[0].value.toFixed(config.float) + ' - ' + climatology_upper[0].value.toFixed(config.float) + ']' };
+              var data = { percentages: m.probabilities, center: '[' + cl_lower + ' - ' + cl_upper + ']' };
               var base = new Base(id, data);
               var pie = new Pie(base);
               pie.render();
 
               // Add summary
-              var summary = ClimateFactory.summary(m.raw);
+              var summary = ClimateForecastFactory.summary(m);
               var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
                                  'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
-                                 'lo normal es que haya una precipitación entre <span class="text-bold">' + climatology_lower[0].value.toFixed(config.float) +
-                                 ' mm y ' + climatology_upper[0].value.toFixed(config.float) + ' mm</span>, la predicción climática sugiere que ' +
+                                 'lo normal es que haya una precipitación entre <span class="text-bold">' + cl_lower +
+                                 ' mm y ' + cl_upper + ' mm</span>, la predicción climática sugiere que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
           }
