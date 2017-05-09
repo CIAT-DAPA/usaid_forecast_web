@@ -20,66 +20,39 @@
       $scope.months = null;
 
       // Load data from web web api
+      // Get data of the weather station
       WeatherStationFactory.getByMunicipality($scope.municipality_name)
         .then(function (data_ws) {
             $scope.ws = data_ws;
+            // Get climate forecast data of the precipitation
             ClimateForecastFactory.getProbabilities($scope.ws.id, 'prec').
                 then(function (data_fs) {
                     $scope.forecast = data_fs;
+                    // Get the months of the forecast
                     $scope.months = $scope.forecast.map(function (item) { return item.month.toString(); });
+                    // Get limit lower of the climatology for the months of the forecast 
                     ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
                         function (data_l) {
                             $scope.climatology_lower = data_l;
+                            // Get limit upper of the climatology for the months of the forecast
                             ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
                             function (data_u) {
                                 $scope.climatology_upper = data_u;
-
                                 // Draw graphic
                                 draw_forecast();
                             },
-                            function (err) {
-                                console.log(err);
-                            });
+                            function (err) { console.log(err); });
                         },
-                        function (err) {
-                            console.log(err);
-                        });
+                        function (err) { console.log(err); });
                 },
-                function (err) {
-                    console.log(err);
-                });
+                function (err) { console.log(err);});
         },
-        function (err) {
-            console.log(err);
-        });
+        function (err) { console.log(err); });
+
       /*
-      // Get all geographic data able with information
-      GeographicFactory.get().success(function (data_m) {
-          $scope.data_m = data_m;
-          // List all municipalities
-          //$scope.municipalities = MunicipalityFactory.listAll(data_m);
-          // Search the weather station
-          $scope.ws_entity = WeatherStationFactory.getByMunicipality(data_m, );
-          // Load the historical information
-          HistoricalFactory.get($scope.ws_entity.id).success(function (data_h) {
-              $scope.data_h = data_h;
-              // Load the Forecast information
-              ForecastFactory.get().success(function (data_f) {
-                  $scope.data_f = data_f;
-
-                  // By default its draw the forecast climate
-                  draw_forecast();
-              }).error(function (error) {
-                  console.log(error);
-              });
-          }).error(function (error) {
-              console.log(error);
-          });
-      }).error(function (error) {
-          console.log(error);
-      });
+       * Method that render the data in the screen
+       * (string) section: Section name to draw
       */
-
       $rootScope.drawFunction = function (section) {
           draw_forecast();
       }
