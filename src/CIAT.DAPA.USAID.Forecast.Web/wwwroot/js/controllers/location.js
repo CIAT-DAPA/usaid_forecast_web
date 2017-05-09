@@ -8,9 +8,9 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('LocationCtrl', function ($scope, tools, GeographicFactory, MunicipalityFactory) {
+  .controller('LocationCtrl', function ($scope, $window, tools, GeographicFactory) {
       $scope.type = tools.source();
-      $scope.gv_municipalities = [];
+      $scope.states = null;
 
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
@@ -19,6 +19,29 @@ angular.module('ForecastApp')
       $(".navbar-default li").removeClass("active");
       if ($scope.type === 'climate') {
           $('#menu_main_climate').addClass('active');
+          GeographicFactory.get().then(
+              function (s) {
+                  $scope.states = s.data;
+
+                  if ($scope.municipality_name == null || $scope.municipality_name === '')
+                      $window.location.href = "/Clima/Index?municipio=" + $scope.states[0].municipalities[0].name;
+
+                  var founded = false;
+                  for (var i = 0; i < $scope.states.length; i++) {
+                      for (var j = 0; j < $scope.states[i].municipalities.length; j++) {
+                          if ($scope.states[i].municipalities[j].name.toLowerCase() === $scope.municipality_name.toLowerCase()) {
+                              founded = true;
+                              break;
+                          }
+                      }
+                  }
+
+                  if (!founded)
+                      $window.location.href = "/Clima/Index?municipio=" + $scope.states[0].municipalities[0].name;
+
+              },
+              function (err) {
+              });
       }
       else if ($scope.type === 'crop') {
           $scope.gv_municipalities = $("#gv_municipalities").val().split(',');
@@ -27,25 +50,5 @@ angular.module('ForecastApp')
       else {
           $('#menu_main_expert').addClass('active');
           $('#mn_municipalities').hide();
-      }     
-      
-      // Vars of the data
-      // Data municipalities
-      $scope.data_m = null;
-      
-      // Load data from web web api
-      // Get all geographic data able with information
-      GeographicFactory.get().success(function (data_m) {
-          $scope.data_m = data_m;
-          // List all municipalities
-          if ($scope.type === 'climate')
-              $scope.municipalities = MunicipalityFactory.listAll(data_m);
-              
-          else if ($scope.type === 'crop')
-              $scope.municipalities = MunicipalityFactory.listByIds(data_m, $scope.gv_municipalities);
-              
-      }).error(function (error) {
-          console.log(error);
-      });
-
+      }
   });

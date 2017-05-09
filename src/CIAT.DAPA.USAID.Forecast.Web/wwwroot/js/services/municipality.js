@@ -51,8 +51,33 @@ angular.module('ForecastApp')
                     });
                     var m = [];
                     for (var i = 0; i < data.length; i++)
-                        for (var j = 0; j < data[i].length; j++) 
+                        for (var j = 0; j < data[i].length; j++)
                             if (ids.includes(data[i][j].id))
+                                m.push(data[i][j]);
+                    defer.resolve(m);
+                },
+                function (err) {
+                    console.log(err);
+                });
+        }
+
+        /*
+        * Method that filter the municipalities by their name
+        * (string) name: Municipality name
+        */
+        dataFactory.listByName = function (name) {
+            var defer = $q.defer();
+
+            dataFactory.listAll().then(
+                function (result) {
+                    var raw = result.data;
+                    var data = raw.map(function (item) {
+                        return item.municipalities;
+                    });
+                    var m = [];
+                    for (var i = 0; i < data.length; i++)
+                        for (var j = 0; j < data[i].length; j++)
+                            if (name === data[i][j].name)
                                 m.push(data[i][j]);
                     defer.resolve(m);
                 },

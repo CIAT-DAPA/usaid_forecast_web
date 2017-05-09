@@ -35,7 +35,7 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
             </div>
-            <div class="navbar-collapse collapse" id="navbar_main" ng-controller="LocationCtrl">
+            <div class="navbar-collapse collapse" id="navbar_main">
                 <ul class="nav navbar-nav">
                     <li id="menu_main_climate"><a href="/Clima"><span class="glyphicon glyphicon-asterisk"></span> Clima</a></li>
                     <li id="menu_main_rice"><a href="/Cultivo?cultivo=arroz"><span class="glyphicon glyphicon-grain"></span> Arroz</a></li>
@@ -43,16 +43,15 @@
                     <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Datos</a></li>
                 </ul>
                 <!-- Start weather station -->
-                <ul class="nav navbar-nav navbar-right" id="mn_municipalities">
+                <ul class="nav navbar-nav navbar-right" id="mn_municipalities" ng-controller="LocationCtrl">
                     <li class="dropdown text-bold" >
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ><span class="glyphicon glyphicon-globe"></span> {{municipality_name}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" ng-switch="type">
-                            <li ng-switch-when="climate" ng-repeat="d in data_m" style="padding:5px 15px;">
-                                <b>{{d.name}}</b>                                
-                                <a ng-repeat="m in d.municipalities" href="/Clima?municipio={{m.name}}">{{m.name}}</a>
-                                
+                            <li ng-repeat="s in states" style="padding:5px 15px;">
+                                <b>{{s.name}}</b>                                
+                                <a ng-switch-when="climate" ng-repeat="m in s.municipalities" href="/Clima?municipio={{m.name}}">{{m.name}}</a>
+                                <a ng-switch-when="crop" ng-repeat="m in s.municipalities" href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a>
                             </li>
-                            <li ng-switch-when="crop" ng-repeat="m in data_m"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>
                         </ul>
                     </li>
                 </ul>
