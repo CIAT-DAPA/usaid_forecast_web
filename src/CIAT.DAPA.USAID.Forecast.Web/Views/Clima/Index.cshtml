@@ -77,7 +77,7 @@
                     </p>
                     <div id="climatic_historical_content" class="article_content historical_content">
                         <select class="form-control" ng-model="cv_month_selected" ng-change="drawHistorical()">
-                            <option ng-repeat="cv_month in historical_months track by $index" value="{{$index}}" id="climate_historical_month">{{cv_month}}</option>
+                            <option ng-repeat="hm in historical_months" value="{{hm.id}}" id="climate_historical_month">{{hm.name}}</option>
                         </select>
                         <div class="tab-content" id="climate_historical_content">
                             <p class="text-justify" id="historical_content_summary">

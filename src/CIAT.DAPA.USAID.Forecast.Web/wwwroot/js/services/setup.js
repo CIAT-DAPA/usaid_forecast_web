@@ -92,5 +92,12 @@ angular.module('ForecastApp')
             return config.month_names;
         }
 
+        /*
+         * Method that return all months in spanish with index
+        */
+        dataFactory.getMonthsFull = function () {
+            return config.month_names.map(function (item, i) { return { id: i+1, name: item }; });
+        }
+
         return dataFactory;
     }]);

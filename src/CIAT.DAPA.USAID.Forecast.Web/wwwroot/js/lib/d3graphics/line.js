@@ -44,17 +44,26 @@ Line.prototype.render = function () {
             .x(function (d) { return x(d.date); })
             .y(function (d) { return y(d.value); });
 
+    // Interpolation for classes
+    var classes = d3.scale.ordinal().range(that.base.classes)
+                    .domain(that.base.data.raw.map(function (d) { return d.measure; }));
+
     var startData = this.base.data.raw.map(function (datum) {
+
         return {
             date: datum.date,
-            value: 0
+            value: 0,
+            measure: datum.measure
         };
     });
 
     // Compute the minimum and maximum date, and the maximum value.
-    x.domain([this.base.data.raw[0].date, this.base.data.raw[this.base.data.raw.length - 1].date]);
+    x.domain(d3.extent(this.base.data.raw, function (d) { return d.date; }));
     // Compute the maximun value more 10%
-    y.domain([0, d3.max(this.base.data.raw, function (d) { return d.value; }) * 1.1]);
+    y.domain([
+        d3.min(that.base.data.raw, function (d) { return d.value; }) * 0.95,
+        d3.max(that.base.data.raw, function (d) { return d.value; }) * 1.05
+    ]);
 
     // Add the axis
     this.base.addAxis(x, y, 10);
@@ -64,9 +73,10 @@ Line.prototype.render = function () {
 
     // Add the line path.
     this.base.svg.append('g')
-            .attr('class', 'line_area_line_'  + that.base.class)
+            .attr('class', 'line_area_line')
             .append('path')
             .datum(startData)
+            .attr('class', function (d) { return 'line_area_line_' + classes(d.measure); })
             .attr('d', line)
             .transition()
             .duration(that.base.animation.duration)
@@ -86,32 +96,38 @@ Line.prototype.render = function () {
                 // Add circles to show more details
                 var circles = that.base.svg.append('g')
                                 .attr("class", "line_area_point");
+
                 circles.selectAll('.line_area_point')
                     .data(that.base.data.raw)
                     .enter()
                     .append('circle')
-                    .attr('class', 'line_area_circle_' + that.base.class)
+                    .attr('class', function (d) { return 'line_area_circle_' + classes(d.measure); })
                     .attr('r', 5)
                     .attr('cx', function (d) { return x(d.date); })
                     .attr('cy', function (d) { return y(d.value); })
                     .on("mouseover", function (d, i) {
-                        d3.select(this).attr('class', 'line_area_circle_highlighted_' + that.base.class);
-                        var content = 'Año: ' + d.year + '<br / >Valor: ' + that.base.formats.round(d.value);
-                        that.base.tooltip_show(d3.event.pageX, d3.event.pageY-50, content);
+                        d3.select(this)
+                            .attr('class', function (d) { return 'line_area_circle_highlighted_' + classes(d.measure); })
+                            //.attr('class', 'line_area_circle_highlighted_' + that.base.class);
+                        var content = 'Año: ' + d.year + '<br / >Valor: ' + that.base.formats.round(d.value) + ' ' + that.base.axis_labels.y;
+                        that.base.tooltip_show(d3.event.pageX, d3.event.pageY - 50, content);
                     })
                     .on("mouseout", function (d, i) {
-                        d3.select(this).attr('class', 'line_area_circle_' + that.base.class);
+                        d3.select(this)
+                            .attr('class', function (d) { return 'line_area_circle_' + classes(d.measure); })
+                            //.attr('class', 'line_area_circle_' + that.base.class);
                         that.base.tooltip_hide();
                     });
             });
 
     // Add the area path.
-    this.base.svg.append('g')
-        .attr('class', 'line_area_area_' + that.base.class)
+    /*this.base.svg.append('g')
+        .attr('class', 'line_area_area')
         .append('path')
         .datum(startData)
+        .attr('class', function (d) { return 'line_area_area_' + classes(d.measure); })
         .attr('d', area)
         .transition()
         .duration(that.base.animation.duration)
-        .attrTween('d', that.tween(this.base.data.raw, area));
+        .attrTween('d', that.tween(this.base.data.raw, area));*/
 }
