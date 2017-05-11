@@ -4,7 +4,6 @@
     ViewData["Meta_Keywords"] = "pronóstico,clima,predicción,cultivos,agroclima,agroclimatico,precipitación,rendimiento,días a cosecha,temperatura,temperatura máxima,temperatura mínima,historial rendimiento,histórico rendimiento,producción";
 }
 
-
 <!-- Start global variables -->
 <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
 <input type="hidden" id="api_fs_geographic" name="api_fs_geographic" value="@ViewBag.api_fs_geographic" />
@@ -15,12 +14,11 @@
 <input type="hidden" id="api_fs_historical_yield" name="api_fs_historical_yield" value="@ViewBag.api_fs_historical_yield" />
 <input type="hidden" id="api_fs_historical_yield_years" name="api_fs_historical_yield_years" value="@ViewBag.api_fs_historical_yield_years" />
 <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-<input type="hidden" id="gv_municipalities" name="gv_municipalities" value="@ViewBag.gv_municipalities" />
 <!-- End global variables -->
 <!-- Start Description -->
 
-@Html.Partial("_Menu")
-<div ng-controller="CropCtrl">
+@Html.Partial("_SubMenu")
+<div >
     <h2 class="text-center" id="sectionTitle" style="color: white;">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
     <div id="containerBlock">
         <div class="sections" id="pronA">
