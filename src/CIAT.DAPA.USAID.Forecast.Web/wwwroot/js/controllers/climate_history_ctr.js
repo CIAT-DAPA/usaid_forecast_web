@@ -104,8 +104,7 @@
 
 
       function draw_historical() {
-          // Set the months for historical data  
-          var j = $scope.cv_month_selected.id;
+          // Set the months for historical data                      
           var h_month_start = parseInt($scope.gv_months[0]);
           var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
 
@@ -138,8 +137,13 @@
                   }
               }
           }
+          // Get the climatology for the month selected
+          var climatology_line = $scope.climatology_filtered.filter(function (item) {
+              return item.month == $scope.cv_month_selected.id;
+          });
 
-          var data_h = { raw: historical_filtered, splitted: $scope.climatology[j].value };
+          
+          var data_h = { raw: historical_filtered, splitted: climatology_line };
           //var cvm = $scope.historical_months[j];
           var base_h = new Base('#historical_content_line', data_h);
           // Build the graphic for every month
