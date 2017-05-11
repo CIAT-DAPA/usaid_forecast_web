@@ -11,8 +11,6 @@
 <input type="hidden" id="api_fs_forecast_yield" name="api_fs_forecast_yield" value="@ViewBag.api_fs_forecast_yield" />
 <input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
 <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-<input type="hidden" id="mn_select" name="mn_select" value="prob" />
-<input type="hidden" id="climate_section" name="climate_section" value="0" />
 <!-- End global variables -->
 
 @Html.Partial("_SubMenu")
@@ -32,6 +30,9 @@
                     La estación meteorológica de referencia para hacer estas predicciones
                     <span class="text-bold">{{ws.name}}</span>,
                     provista por <span class="text-bold">{{ws.origin}}</span>.
+                    Tener en cuenta que el mes que se muestra es el central del trimestre a pronosticar.
+                    Por ejemplo: si el mes es Marzo, el trimestre que se usó para la predicción fue
+                    Febrero-Marzo-Abril
                 </p>
             </div>
         </div>
@@ -40,7 +41,6 @@
         </div>
     </section>
     <!-- End Probabilities -->
-   
     <!-- Start Historical -->
     <section class="col-md-12 sections" id="content_historical" style="display:none;" ng-controller="ClimateHistoryCtrl">
         <div class="row">
@@ -76,13 +76,16 @@
                         {{cv.description_historical}}.
                     </p>
                     <div id="climatic_historical_content" class="article_content historical_content">
-                        <select class="form-control" ng-model="cv_month_selected" ng-change="drawHistorical()" ng-options="hm.name for hm in historical_months">
-                        </select>
-                        <div class="tab-content" id="climate_historical_content">
-                            <p class="text-justify" id="historical_content_summary">
-                            </p>
-                            <div id="historical_content_line">
-                            </div>
+                        <select class="form-control" ng-model="cv_month_selected" ng-change="drawHistorical()" ng-options="hm.name for hm in historical_months"></select>
+                        <p class="text-justify" id="historical_content_summary">
+                            Históricamente en el mes <span class="text-bold">{{cv_month_selected.name}}</span> en el
+                            municipio <span class="text-bold">{{municipality_name}}</span> presenta el siguiente comportamiento:
+                            <ul>
+                                <li>Se han presentado <span class="text-bold">{{historical_upper}}</span> años por encima de lo normal</li>
+                                <li>Se han presentado <span class="text-bold">{{historical_lower}}</span> años por debajo de lo normal</li>
+                            </ul>
+                        </p>
+                        <div id="historical_content_line">
                         </div>
                     </div>
                 </div>
@@ -100,7 +103,7 @@
     <script src="~/js/lib/d3graphics/base.js"></script>
     <script src="~/js/lib/d3graphics/pie.js"></script>
     <script src="~/js/lib/d3graphics/bars.js"></script>
-    <script src="~/js/lib/d3graphics/line.js"></script>    
+    <script src="~/js/lib/d3graphics/line.js"></script>
     <script src="~/js/controllers/climate_forecast_ctr.js"></script>
     <script src="~/js/controllers/climate_history_ctr.js"></script>
 }

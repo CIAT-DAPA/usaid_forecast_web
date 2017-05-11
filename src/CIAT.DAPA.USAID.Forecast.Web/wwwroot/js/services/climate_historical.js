@@ -81,13 +81,18 @@ angular.module('ForecastApp')
         /*
         * Method that created a summary based in the historical climate data
         * (object) data: Historical climate object
-        * (float) cl: Climatology value
+        * (object) climatology: Climatology object
         */
-        dataFactory.summary = function (data, cl) {
-            var count_upper = data.filter(function (item) { return item.value > cl }).length;
-            var count_lower = data.filter(function (item) { return item.value < cl }).length;
-            var count_cl = data.filter(function (item) { return item.value == cl }).length;
-            return { upper: count_upper, lower: count_lower, equals: count_cl };
+        dataFactory.summary = function (data, climatology) {
+            var count_upper = data.filter(function (item) {
+                var cl = climatology.filter(function (item2) { return item.measure === item2.measure; });
+                return item.value > cl[0].value
+            }).length;
+            var count_lower = data.filter(function (item) {
+                var cl = climatology.filter(function (item2) { return item.measure === item2.measure; });
+                return item.value < cl[0].value
+            }).length;
+            return { upper: count_upper, lower: count_lower };
         }
         return dataFactory;
     });

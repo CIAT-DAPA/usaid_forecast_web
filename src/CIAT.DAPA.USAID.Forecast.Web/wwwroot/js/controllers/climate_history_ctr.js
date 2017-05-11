@@ -14,6 +14,9 @@
       $scope.climatology = null;
       $scope.climatology_filtered = null;
       $scope.cv_month_selected = null;
+      //
+      $scope.historical_upper = null;
+      $scope.historical_lower = null;
       // Vars of the data
       // Historical data
       $scope.historical = null;
@@ -104,10 +107,6 @@
 
 
       function draw_historical() {
-          // Set the months for historical data                      
-          var h_month_start = parseInt($scope.gv_months[0]);
-          var h_month_end = parseInt($scope.gv_months[$scope.gv_months.length - 1]);
-
           // Get data only for the climatology vars selected
           var historical_temp = $scope.historical.map(function (item) {
               return item.monthly_data.map(function (item2) {
@@ -152,15 +151,10 @@
           base_h.setAxisLabelY($scope.cv.metric);
           var line = new Line(base_h);
           line.render();
-          h_month_start += 1;
-          // Add summary to the content tab
-          /*var summary_data = HistoricalClimateFactory.summary(historical, climatology[j].value);
-          var summary = 'Históricamente en el mes <span class="text-bold">' + cvm + '</span> en el ' +
-                        'municipio <span class="text-bold">' + $scope.municipality_name + '</span> presenta el siguiente comportamiento:' +
-                        '<ul>' +
-                            '<li>Se han presentado <span class="text-bold">' + summary_data.upper + '</span> años por encima de lo normal</li>' +
-                            '<li>Se han presentado <span class="text-bold">' + summary_data.lower + '</span> años por debajo de lo normal</li>' +
-                        '</ul>';
-          $('#' + cv.container + '_' + cvm + '_summary').html(summary);*/
+
+          // Add summary to the content tab          
+          var summary = ClimateHistoricalFactory.summary(historical_filtered, climatology_line);
+          $scope.historical_upper = summary.upper;
+          $scope.historical_lower = summary.lower;
       }
   });

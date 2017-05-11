@@ -1,6 +1,5 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="js/app.js" />
-/// <reference path="js/controllers/climate.js" />
 /// <reference path="js/controllers/climate_forecast.js" />
 /// <reference path="js/controllers/climate_history.js" />
 /// <reference path="js/controllers/crop.js" />
