@@ -32,7 +32,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Get or set the path to get forecast information
         /// </summary>
-        public string forecast { get; set; }
+        public string forecast_climate { get; set; }
+        /// <summary>
+        /// Get or set the path to get forecast information
+        /// </summary>
+        public string forecast_yield { get; set; }
         /// <summary>
         /// Get or set the path to get historical information
         /// </summary>
@@ -52,6 +56,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         public WebAPIForecast()
         {
         }
+
+        /*
 
         /// <summary>
         /// Method that makes a request to web page to get information from its
@@ -107,6 +113,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
             string json = await requestDataAsync(root + forecast);
             var json_forecast = JsonConvert.DeserializeObject<Forecast>(json);
             return json_forecast;
-        }
+        }*/
     }
 }

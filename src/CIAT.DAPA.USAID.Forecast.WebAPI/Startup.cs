@@ -46,7 +46,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
                 options.Database = Configuration.GetSection("ForecastConnection:Database").Value;
                 options.LogPath = Configuration.GetSection("Log:Path").Value;
             });
-
+            
             services.AddMvc();
 
             // ********************
@@ -74,7 +74,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
             app.UseApplicationInsightsRequestTelemetry();
 
             app.UseApplicationInsightsExceptionTelemetry();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

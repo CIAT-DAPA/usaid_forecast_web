@@ -99,33 +99,6 @@ Trend.prototype.render = function () {
         .attr('clip-path', 'url(#trend_clip)');
 
     /*
-    // Axis
-    var xAxis = d3.svg.axis().scale(x).orient('bottom')
-        .innerTickSize(-chartHeight).outerTickSize(0).tickPadding(10),
-        yAxis = d3.svg.axis().scale(y).orient('left')
-            .innerTickSize(-chartWidth).outerTickSize(0).tickPadding(10);
-
-    var axes = svg.append('g')
-        .attr('clip-path', 'url(#axes-clip)');
-
-    axes.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0,' + chartHeight + ')')
-        .call(xAxis);
-
-    axes.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis)
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .text('Rendimiento');
-
-    rectClip.transition()
-        .duration(1000)
-        .attr('width', chartWidth);
     
     // legend
     var legendWidth  = 200,

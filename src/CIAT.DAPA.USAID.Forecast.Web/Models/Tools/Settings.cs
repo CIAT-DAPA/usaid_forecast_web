@@ -23,9 +23,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         /// </summary>
         public string api_fs_agronomic { get; set; }
         /// <summary>
-        /// Forecast path of the Web Api forecast
+        /// Forecast path of the Web Api forecast climate
         /// </summary>
-        public string api_fs_forecast { get; set; }
+        public string api_fs_forecast_climate{ get; set; }
+        /// <summary>
+        /// Forecast path of the Web Api forecast yield
+        /// </summary>
+        public string api_fs_forecast_yield { get; set; }
         /// <summary>
         /// Historical path of the Web Api climate historical
         /// </summary>
