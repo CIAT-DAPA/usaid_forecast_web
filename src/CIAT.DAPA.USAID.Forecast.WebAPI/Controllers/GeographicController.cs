@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities;
 using Microsoft.AspNetCore.Cors;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
     [EnableCors("SiteCorsPolicy")]
-    [Route("api/[controller]")]
     public class GeographicController : WebAPIBaseController
     {
         /// <summary>
@@ -27,7 +27,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        public async Task<IActionResult> Get()
+        [Route("api/[controller]/{format?}")]
+        public async Task<IActionResult> Get(string format)
         {
             try
             {
@@ -64,7 +65,22 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     json.Add(geo_s);
                 }
                 writeEvent(json.Count().ToString(), LogEvent.lis);
-                return Json(json);
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append("country_name,state_id,state_name,municipality_id,municipality_name,ws_id,ws_name,ws_origin\n");
+                    foreach (var s in json)
+                        foreach (var m in s.municipalities)
+                            foreach (var w in m.weather_stations)
+                                builder.Append(string.Join<string>(delimiter, new string[]{ s.country, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, "\n" }));
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "geographic.csv");
+                }
+                else
+                    return Content("Format not supported");
             }
             catch (Exception ex)
             {

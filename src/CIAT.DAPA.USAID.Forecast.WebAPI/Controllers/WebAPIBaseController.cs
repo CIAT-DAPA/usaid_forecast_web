@@ -32,6 +32,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         /// Current user
         /// </summary>
         protected string user { get; set; }
+        /// <summary>
+        /// String to delimiter the file csv
+        /// </summary>
+        protected string delimiter { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -39,10 +43,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         /// <param name="settings">Settings options</param>
         public WebAPIBaseController(IOptions<Settings> settings, LogEntity entity) : base()
         {
-            db = new ForecastDB(settings.Value.ConnectionString, settings.Value.Database);
-            log = new Log(settings, db.logService);
-            entities = new List<LogEntity>() { entity };
-            user = "test";
+            init(settings, new List<LogEntity>() { entity });
         }
 
         /// <summary>
@@ -51,10 +52,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         /// <param name="settings">Settings options</param>
         public WebAPIBaseController(IOptions<Settings> settings, List<LogEntity> list_entities) : base()
         {
+            init(settings, list_entities);
+        }
+
+        /// <summary>
+        /// Method to init the web api controller
+        /// </summary>
+        /// <param name="settings">Settings options</param>
+        /// <param name="list_entities">List of entities affected</param>
+        private void init(IOptions<Settings> settings, List<LogEntity> list_entities)
+        {
             db = new ForecastDB(settings.Value.ConnectionString, settings.Value.Database);
             log = new Log(settings, db.logService);
-            entities = list_entities;
-            user = "test";
+            entities = list_entities;            
+            delimiter = settings.Value.Delimiter;
         }
 
         /// <summary>
@@ -65,6 +76,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         /// <param name="entities_affected">List of the entities affected</param>
         public void writeEvent(string content, LogEvent e, List<LogEntity> entities_affected)
         {
+            user = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             log.writeAsync(content, entities_affected, e, user);
         }
 
