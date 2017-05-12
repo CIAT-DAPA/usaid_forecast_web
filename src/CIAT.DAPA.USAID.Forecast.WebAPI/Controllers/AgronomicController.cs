@@ -6,12 +6,12 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
     [EnableCors("SiteCorsPolicy")]
-    [Route("api/[controller]")]
     public class AgronomicController : WebAPIBaseController
     {
         /// <summary>
@@ -24,13 +24,37 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        public async Task<IActionResult> Get()
+        [Route("api/[controller]/{cultivar?}/{format?}/")]
+        public async Task<IActionResult> Get(bool cultivar, string format)
         {
             try
             {
                 var json = await db.views.listAgronomicDataAsync();
                 writeEvent(json.Count().ToString(), LogEvent.lis);
-                return Json(json);
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    if (cultivar)
+                        builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "cultivar_id", "cultivar_name", "cultivar_rainfed", "cultivar_national", "\n" }));
+                    else
+                        builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "soil_id", "soil_name", "\n" }));
+                    foreach (var i in json)
+                    {
+                        if (cultivar)
+                            foreach (var j in i.cultivars)
+                                builder.Append(string.Join<string>(delimiter, new string[] { i.cp_id, i.cp_name, j.id, j.name, j.rainfed.ToString(), j.national.ToString(), "\n" }));
+                        else
+                            foreach (var j in i.soils)
+                                builder.Append(string.Join<string>(delimiter, new string[] { i.cp_id, i.cp_name, j.id, j.name, "\n" }));
+                    }
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "agronomic.csv");
+                }
+                else
+                    return Content("Format not supported");
             }
             catch (Exception ex)
             {

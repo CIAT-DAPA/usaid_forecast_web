@@ -71,7 +71,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 {
                     StringBuilder builder = new StringBuilder();
                     // add header
-                    builder.Append("country_name,state_id,state_name,municipality_id,municipality_name,ws_id,ws_name,ws_origin\n");
+                    builder.Append(string.Join<string>(delimiter, new string[] { "country_name", "state_id", "state_name", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "\n" }));
                     foreach (var s in json)
                         foreach (var m in s.municipalities)
                             foreach (var w in m.weather_stations)
