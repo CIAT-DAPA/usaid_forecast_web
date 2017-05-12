@@ -4,6 +4,7 @@
 /// <reference path="js/controllers/climate_history_ctr.js" />
 /// <reference path="js/controllers/crop.js" />
 /// <reference path="js/controllers/crop_forecast.js" />
+/// <reference path="js/controllers/crop_history_ctr.js" />
 /// <reference path="js/controllers/expert.js" />
 /// <reference path="js/controllers/location_ctr.js" />
 /// <reference path="js/controllers/sub_menu_ctr.js" />

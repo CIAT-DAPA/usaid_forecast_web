@@ -31,7 +31,7 @@ angular
               { name: 'Radiación solar', section: 'historical', value: 'solar_radiation' }
           ],
           crop: [
-              { name: 'Prnóstico agroclimático', section: 'forecast', value: 'forecast' },
+              { name: 'Pronóstico agroclimático', section: 'forecast', value: 'forecast' },
               { name: 'Histórico agroclimático', section: 'historical', value: 'historical' },
           ],
           expert: [

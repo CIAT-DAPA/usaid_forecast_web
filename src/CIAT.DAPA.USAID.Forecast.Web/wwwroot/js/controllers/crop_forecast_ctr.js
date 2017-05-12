@@ -115,41 +115,38 @@ angular.module('ForecastApp')
 
       }
 
+      $scope.drawForecast = draw_forecast;
+
       /*
        * Method that filter the data to show the information in the screen getted from the web api
       */
       function fixed_data_forecast(i) {
-
+          
           var cu = $scope.cultivars[i];
+
+          $scope.cultivars[i].soil_selected = $scope.cultivars[i].soils[0];
+          draw_forecast(cu);
+      }
+
+      /*
+       * Method that draw the graphics by a cultivar and soil of the forecast
+       * (object) cu: Cultivar entity
+      */
+      function draw_forecast(cu) {
+          var so = cu.soil_selected;
+          $('#content_' + cu.id + ' div').addClass('active');
+          $('#content_' + cu.id + ' div').addClass('in');
 
           // Enable tabs for the variation graphic
           // Add the event to show the tabs on click
           $('#tabs_' + cu.id + ' a').click(function (e) {
               e.preventDefault();
               $(this).tab('show');
-          });
-
-          draw_forecast(cu, $scope.cultivars[i].soils[0]);
-
-          // Hide the content of the tabs variation
-          $('.disable_tab').removeClass('active');
-          $('.disable_tab').removeClass('in');
-
-      }
-
-      /*
-       * Method that draw the graphics by a cultivar and soil of the forecast
-       * (object) cu: Cultivar entity
-       * (object) so: Soil entity
-      */
-      function draw_forecast(cu, so) {
-          // Set default color for all buttons of the soil by the cultivar
-          $('#navbar_cultivar_' + cu.id + ' button').removeClass('btn-primary');
-          $('#soil_' + cu.id + '_' + so.id).addClass('btn-primary');
+          });          
 
           // Get data
           var yield_cu = CropYieldForecastFactory.getByCultivarSoil($scope.yield_ws.yield, cu.id, so.id);
-
+          
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
           base_c.setMargin(10, 30, 10, 10);
@@ -169,7 +166,7 @@ angular.module('ForecastApp')
           for (var j = 0; j < $scope.crop_vars.length; j++) {
               var vr = $scope.crop_vars[j];
               var vr_data = CropYieldForecastFactory.getByCultivarSoilMeasure(yield_cu, vr.name);
-
+              
               // Draw the graphic
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
               base_t.setMargin(10, 50, 10, 20);
@@ -185,6 +182,12 @@ angular.module('ForecastApp')
               $("#yield_" + vr.name + "_" + cu.id + "_min_date").html(summary_vr.min.date.substring(0, 10));
               $("#yield_" + vr.name + "_" + cu.id + "_min_yield").html(summary_vr.min.value.toFixed(float) + ' ' + vr.metric);
           }
+
+          // Hide the content of the tabs variation
+          $('#content_' + cu.id + ' div').removeClass('active');
+          $('#content_' + cu.id + ' div').removeClass('in');
+          $('#content_' + cu.id + ' div:first').addClass('active');
+          $('#content_' + cu.id + ' div:first').addClass('in');
       }
                   
       $rootScope.drawFunction = function () {
