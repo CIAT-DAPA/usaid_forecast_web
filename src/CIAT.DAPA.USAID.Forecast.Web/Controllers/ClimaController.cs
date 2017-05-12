@@ -26,11 +26,18 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         // GET: /Clima/Index/?municipio=
         public async Task<IActionResult> Index(string municipio)
         {
-            // Load the urls of the web api's
-            loadAPIs();
-            // Load the dates of the forecast
-            loadMonthsClimate();
-            return View();            
+            try
+            {
+                // Load the urls of the web api's
+                loadAPIs();
+                // Load the dates of the forecast
+                loadMonthsClimate();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }            
         }        
     }
 }

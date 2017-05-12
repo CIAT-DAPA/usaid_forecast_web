@@ -41,6 +41,15 @@ angular
               { name: 'Hitórico climático', value: 'content_historical_climate' },
               { name: 'Predicción climática', value: 'content_forecast_climate' },
               { name: 'Pronóstico de producción', value: 'content_forecast_yield' }
+          ],
+          about: [
+              { name: 'Predicción climatica', section: 'climate', value: 'climate' },
+              { name: 'Generación de escenarios', section: 'scenarios', value: 'scenarios' },
+              { name: 'Pronóstico agroclimático', section: 'forecast', value: 'forecast' },
+              { name: 'Pronóstico agroclimático (arroz)', section: 'yield_rice', value: 'yield_rice' },
+              { name: 'Pronóstico agroclimático (maíz)', section: 'yield_maize', value: 'yield_maize' },
+              { name: 'Calibración y validación de modelos de cultivos (arroz)', section: 'validation_rice', value: 'validation_rice' },
+              { name: 'Calibración y validación de modelos de cultivos (maíz)', section: 'validation_maize', value: 'validation_maize' }
           ]
       },
       /* Names in spanish about dates */

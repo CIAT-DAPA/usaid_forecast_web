@@ -45,9 +45,9 @@ angular.module('ForecastApp')
           function (err) { console.log(err); });
       }
       else if ($scope.type === 'crop') {
-          $('#menu_main_' + ($scope.crop_name === 'arroz' ? 'rice' : 'maize')).addClass('active');
-
           $scope.crop_name = tools.search('cultivo').toLowerCase();
+
+          $('#menu_main_' + ($scope.crop_name === 'arroz' ? 'rice' : 'maize')).addClass('active');
 
           if ($scope.crop_name !== 'arroz' && $scope.crop_name !== 'maíz')
               $window.location.href = "/Cultivo?cultivo=arroz";
@@ -98,7 +98,7 @@ angular.module('ForecastApp')
 
       }
       else {
-          $('#menu_main_expert').addClass('active');
+          $('#menu_main_' + $scope.type).addClass('active');
           $('#mn_municipalities').hide();
       }
   });

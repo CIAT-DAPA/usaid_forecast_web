@@ -190,8 +190,8 @@ angular.module('ForecastApp')
           $('#content_' + cu.id + ' div:first').addClass('in');
       }
                   
-      $rootScope.drawFunction = function () {
-          console.log("test");
+      $rootScope.drawFunction = function (section) {
+          
       }
 
   });

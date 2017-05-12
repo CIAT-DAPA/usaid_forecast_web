@@ -32,8 +32,10 @@ angular.module('ForecastApp')
                 return 'climate';
             else if (window.location.href.includes('Cultivo') || window.location.href.includes('cultivo'))
                 return 'crop';
-            else
+            else if (window.location.href.includes('Experto') || window.location.href.includes('experto'))
                 return 'expert';
+            else
+                return 'about';
         }
 
         /*

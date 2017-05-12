@@ -8,16 +8,11 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('SubMenuCtrl', function ($scope, $compile, config, tools, $rootScope, setup) {
+  .controller('SubMenuCtrl', function ($scope, $rootScope, tools, setup) {
       
       $scope.type = tools.source();
 
-      if ($scope.type === 'climate') 
-          $scope.subSections = setup.listSubMenuOption('climate');
-      else if ($scope.type === 'crop') 
-          $scope.subSections = setup.listSubMenuOption('crop');
-      else
-          $scope.subSections = setup.listSubMenuOption('expert');
+      $scope.subSections = setup.listSubMenuOption($scope.type);
 
       $scope.renderView = function ($value, $name, $section) {
           

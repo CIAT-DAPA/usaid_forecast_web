@@ -5,19 +5,19 @@
 }
 
 
-    <!-- Start global variables -->
-    <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-    <input type="hidden" id="api_fs_geographic" name="api_fs_geographic" value="@ViewBag.api_fs_geographic" />
-    <input type="hidden" id="api_fs_agronomic" name="api_fs_agronomic" value="@ViewBag.api_fs_agronomic" />
-    <input type="hidden" id="api_fs_forecast_climate" name="api_fs_forecast_climate" value="@ViewBag.api_fs_forecast_climate" />
-    <input type="hidden" id="api_fs_forecast_yield" name="api_fs_forecast_yield" value="@ViewBag.api_fs_forecast_yield" />
-    <input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
-    <input type="hidden" id="api_fs_historical_yield" name="api_fs_historical_yield" value="@ViewBag.api_fs_historical_yield" />
-    <input type="hidden" id="api_fs_historical_yield_years" name="api_fs_historical_yield_years" value="@ViewBag.api_fs_historical_yield_years" />
-    <input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-    <!-- End global variables -->
-    <!-- Start Description -->
-@Html.Partial("_Menu")
+<!-- Start global variables -->
+<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
+<input type="hidden" id="api_fs_geographic" name="api_fs_geographic" value="@ViewBag.api_fs_geographic" />
+<input type="hidden" id="api_fs_agronomic" name="api_fs_agronomic" value="@ViewBag.api_fs_agronomic" />
+<input type="hidden" id="api_fs_forecast_climate" name="api_fs_forecast_climate" value="@ViewBag.api_fs_forecast_climate" />
+<input type="hidden" id="api_fs_forecast_yield" name="api_fs_forecast_yield" value="@ViewBag.api_fs_forecast_yield" />
+<input type="hidden" id="api_fs_historical" name="api_fs_historical" value="@ViewBag.api_fs_historical" />
+<input type="hidden" id="api_fs_historical_yield" name="api_fs_historical_yield" value="@ViewBag.api_fs_historical_yield" />
+<input type="hidden" id="api_fs_historical_yield_years" name="api_fs_historical_yield_years" value="@ViewBag.api_fs_historical_yield_years" />
+<input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
+<!-- End global variables -->
+<!-- Start Description -->
+@Html.Partial("_SubMenu")
 <div ng-controller="ExpertCtrl" style="margin:15px">
     <h2 class="text-center" id="sectionTitle" style="color: white;">Datos geográficos</h2>
     <div id="containerBlock">
@@ -33,7 +33,7 @@
             <article class="row section-content">
                 <div class="col-lg-12">
                     <div class="tab-content" id="content_filters">
-                        <div  id="content_geographic" class="sections">
+                        <div id="content_geographic" class="sections">
                             <h3>
                                 Descripción
                             </h3>
@@ -48,17 +48,17 @@
                                         <a href="{{url.geographic}}" target="_blank">{{url.geographic}}</a>
                                     </label>
                                 </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                    </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('geographic')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                    </div>
-                                
+                                <div class="col-lg-2 pull-right">
+                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
+                                </div>
+                                <div class="col-lg-2 pull-right">
+                                    <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('geographic')">Buscar</button>
+                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                </div>
+
                             </form>
                         </div>
-                        <div style="display:none;"  id="content_agronomic" class="sections">
+                        <div style="display:none;" id="content_agronomic" class="sections">
                             <h3>
                                 Descripción
                             </h3>
@@ -86,14 +86,14 @@
                                         <a href="{{url.agronomic}}" target="_blank">{{url.agronomic}}</a>
                                     </label>
                                 </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                    </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                    </div>
-                                
+                                <div class="col-lg-2 pull-right">
+                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
+                                </div>
+                                <div class="col-lg-2 pull-right">
+                                    <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
+                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                </div>
+
                             </form>
                         </div>
                         <div id="content_climatology" style="display:none;" class="sections">
@@ -125,14 +125,14 @@
                                         <a href="{{url.climatology}}" target="_blank">{{url.climatology}}</a>
                                     </label>
                                 </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                    </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('climatology')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                    </div>
-                                
+                                <div class="col-lg-2 pull-right">
+                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
+                                </div>
+                                <div class="col-lg-2 pull-right">
+                                    <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('climatology')">Buscar</button>
+                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                </div>
+
                             </form>
                         </div>
                         <div id="content_historical_climate" style="display:none;" class="sections">
@@ -164,14 +164,14 @@
                                         <a href="{{url.historical_climate}}" target="_blank">{{url.historical_climate}}</a>
                                     </label>
                                 </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                    </div>
-                                    <div class="col-lg-2 pull-right">
-                                        <button id="cmd_historical_climate" type="button" class="btn btn-primary" ng-click="getData('historical_climate')">Buscar</button>
-                                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                    </div>
-                                
+                                <div class="col-lg-2 pull-right">
+                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
+                                </div>
+                                <div class="col-lg-2 pull-right">
+                                    <button id="cmd_historical_climate" type="button" class="btn btn-primary" ng-click="getData('historical_climate')">Buscar</button>
+                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                                </div>
+
                             </form>
                         </div>
                         <div id="content_forecast_climate" style="display:none;" class="sections">
@@ -221,7 +221,7 @@
                                     <button id="cmd_forecast_yield" type="button" class="btn btn-primary" ng-click="getData('forecast_yield')">Buscar</button>
                                     <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
                                 </div>
-                                
+
 
                             </form>
                         </div>
@@ -233,7 +233,7 @@
         <!-- End Data -->
         <section id="expert_data" class="section-content col-md-12">
             <article class="col-lg-12 article_content">
-               
+
                 <h2 class="text-center">{{data_title}}</h2>
                 <table class="table table-responsive" id="data_raw">
                     <tr>
