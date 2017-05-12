@@ -26,6 +26,7 @@
 /// <reference path="js/services/climate_history.js" />
 /// <reference path="js/services/crop_vars.js" />
 /// <reference path="js/services/crop_yield_forecast.js" />
+/// <reference path="js/services/crop_yield_historical.js" />
 /// <reference path="js/services/cultivar.js" />
 /// <reference path="js/services/forecast.js" />
 /// <reference path="js/services/geographic.js" />

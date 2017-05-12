@@ -44,7 +44,7 @@
                 <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id,$index)">
                     <label style="font-size:1.2em;">{{cu.name}}</label>
                     <p class="text-justify">
-                        El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span> 
+                        El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span>
                         <span ng-show="cu.rainfed" class="text-bold">(secano)</span>,
                         presenta los <span class="text-bold">los rendimientos potenciales esperados</span>
                         para el final del ciclo del cultivo del
@@ -54,7 +54,7 @@
                 </div>
                 <section class="graphs" style="display:none;">
                     <div class="col-md-12">
-                        <select class="form-control" ng-model="cu.soil_selected" ng-change="drawForecast(cu)" ng-options="so.name for so in cu.soils"></select>                        
+                        <select class="form-control" ng-model="cu.soil_selected" ng-change="drawForecast(cu)" ng-options="so.name for so in cu.soils"></select>
                     </div>
                     <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
                         <div class="section-content">
@@ -127,53 +127,41 @@
     <!-- Start Historical -->
     <section class="col-md-12 sections" ng-controller="CropHistoryCtrl" id="content_historical" style="display:none;">
         <article class="row section-content">
-            <div class="col-lg-12">                
+            <div class="col-lg-12">
                 <h2 class="text-center">Histórico de rendimiento</h2>
-                <div class="fade tab-pane active in" role="tabpanel" id="content_model" aria-labelledby="tab_model">
-                    <h3>
-                        Descripción
-                    </h3>
-                    <p class="text-justify">
-                        Los datos históricos presentados a continuación son el resultado de los datos generados
-                        por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
-                        son promediados de acuerdo a su clasificación (nacional o importada).
-                    </p>
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-lg-1 control-label" for="sel_model_years">Ano:</label>
-                            <div class="col-lg-2">
-                                <select class="form-control" id="sel_model_years" ng-model="historical_yield.model">
-                                    <option ng-repeat="y in data_h_years" value="{{y}}">{{y}}</option>
-                                </select>
-                            </div>
-                            <label class="col-lg-2 control-label">
-                                Tipo de cultivar:
-                            </label>
-                            <div class="col-lg-2">
-                                <label class="radio-inline">
-                                    <input type="radio" ng-model="historical_yield.model_type" value="national" checked="checked">Nacional
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" ng-model="historical_yield.model_type" value="imported">Importada
-                                </label>
-                            </div>
-                            <div class="col-lg-1">
-                                <div class="row">
-                                    <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical('model')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <div id="cultivar_heatmap_model"></div>
-                </div>
+                <h3>
+                    Descripción
+                </h3>
+                <p class="text-justify">
+                    Los datos históricos presentados a continuación son el resultado de los datos generados
+                    por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
+                    son promediados de acuerdo a su clasificación (nacional o importada).
+                </p>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="control-label" for="sel_model_years">Año:</label>
+                        <select class="form-control" id="sel_model_years" ng-model="year_selected" ng-options="y for y in data_h_years"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tipo de cultivar:</label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="cultivar_type" value="national" checked="checked">Nacional
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="cultivar_type" value="imported">Importada
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical()">Buscar</button>
+                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                    </div>
+                </form>
+                <div id="cultivar_heatmap_model"></div>
             </div>
         </article>
     </section>
     <!-- End Historical -->
 </div>
-
-
 
 @section Scripts {
     <script src="~/lib/d3/d3.min.js"></script>
