@@ -11,6 +11,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public IActionResult Index()
         {   
             return RedirectToAction("Index", "Clima");
-        }        
+        }
+
+        public IActionResult AcercaDe()
+        {
+            return View();
+        }
     }
 }

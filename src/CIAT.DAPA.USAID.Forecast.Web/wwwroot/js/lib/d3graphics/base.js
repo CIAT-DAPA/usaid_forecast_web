@@ -60,6 +60,7 @@ function Base(container, data) {
 
     // Class CSS
     this.class = '';
+    this.classes = [];
 
     // labels axis
     this.axis_labels = {
@@ -82,6 +83,14 @@ Base.prototype.setAxisLabelY = function (y) {
 */
 Base.prototype.setClass = function (class_name) {
     this.class = class_name;
+}
+
+/*
+ * Method that set the classes for the graphic
+ * (string[]) list: Array of String with the names of the classes
+*/
+Base.prototype.setClasses = function (list) {
+    this.classes = list;
 }
 
 /*
@@ -149,7 +158,7 @@ Base.prototype.init = function (relative, height) {
 Base.prototype.update = function (relative, height) {
     var element = document.getElementById(this.container.replace('#', ''));
     this.width_full = element.clientWidth;
-    this.height_full = relative == true ? this.width_full * height : height;
+    this.height_full = relative == true ? this.width_full * height : height;    
     this.width = this.width_full - (this.margin.left + this.margin.right);
     this.height = this.height_full - (this.margin.top + this.margin.bottom);
     this.svg.attr('width', this.width_full)
@@ -225,12 +234,7 @@ Base.prototype.addAxisDate = function (x, y, ticks, grade) {
     // Add x-axis to the histogram svg.
     this.svg.append("g").attr("class", "x_axis")
         .attr("transform", 'translate(0,' + this.height + ')')
-        .call(d3.svg.axis().scale(x).tickFormat(d3.time.format('%b %d')))
-        .selectAll("text")
-        .attr("y", 0)
-        .attr("x", 9)
-        .attr("dy", ".35em")
-        .attr("transform", "rotate(" + grade + ")");
+        .call(d3.svg.axis().scale(x).tickFormat(d3.time.format('%b %d')));
 
     // Add y-axis to the histogram svg.
     this.svg.append("g")

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="shortcut icon" href="http://www.aclimatecolombia.org/wp-content/uploads/2013/06/CONVENIO3.png">
-        
+
 </head>
 <body ng-app="ForecastApp">
     <header class="header-logo">
@@ -35,36 +35,43 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
             </div>
-            <div class="navbar-collapse collapse" id="navbar_main" ng-controller="LocationCtrl">
+            <div class="navbar-collapse collapse" id="navbar_main">
                 <ul class="nav navbar-nav">
                     <li id="menu_main_climate"><a href="/Clima"><span class="glyphicon glyphicon-asterisk"></span> Clima</a></li>
                     <li id="menu_main_rice"><a href="/Cultivo?cultivo=arroz"><span class="glyphicon glyphicon-grain"></span> Arroz</a></li>
                     <li id="menu_main_maize"><a href="/Cultivo?cultivo=maíz"><span class="glyphicon glyphicon-grain"></span> Maíz</a></li>
                     <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Datos</a></li>
+                    <li id="menu_main_about"><a href="/Home/AcercaDe"><span class="glyphicon glyphicon-info-sign"></span> Acerca de</a></li>
                 </ul>
-                <!-- Start weather station -->
-                <ul class="nav navbar-nav navbar-right" id="mn_municipalities">
-                    <li class="dropdown text-bold" >
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ><span class="glyphicon glyphicon-globe"></span> {{municipality_name}} <span class="caret"></span></a>
+                <!-- Start Municipality -->
+                <ul class="nav navbar-nav navbar-right" id="mn_municipalities" ng-controller="LocationCtrl">
+                    <li class="dropdown text-bold">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> {{municipality_name}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" ng-switch="type">
-                            <li ng-switch-when="climate" ng-repeat="m in municipalities"><a href="/Clima?municipio={{m.name}}">{{m.name}}</a></li>
-                            <li ng-switch-when="crop" ng-repeat="m in municipalities"><a href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a></li>
+                            <li ng-switch-when="climate" ng-repeat="s in states" style="padding:5px 15px;">
+                                <b>{{s.name}}</b>
+                                <a ng-repeat="m in s.municipalities" href="/Clima?municipio={{m.name}}">{{m.name}}</a>
+                            </li>
+                            <li ng-switch-when="crop" ng-repeat="s in states" style="padding:5px 15px;">
+                                <b>{{s.name}}</b>
+                                <a ng-repeat="m in s.municipalities" href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
-                <!-- End weather station -->
+                <!-- End Municipality -->
             </div>
         </div>
     </nav>
 
-    <div class="body-content" >
+    <div class="body-content">
         <div class="container-fluid">
-                @RenderBody()
+            @RenderBody()
         </div>
     </div>
     <footer class="footer clearfix">
-                    
-            <div class="form-group">
+
+        <div class="form-group">
             <div class="col-lg-6 form-group">
                 <div class="col-lg-12" style="color:white;">
                     <h4>Nuestros socios</h4>
@@ -105,26 +112,26 @@
             <div class="clearfix"></div>
         </div>
         <div class="col-lg-12">
-                <div class="col-lg-12">
-                    <div class="col-md-4">
-                        <p class="text-justify">
-                            CIAT All Rights reserved <br />
-                            Teléfonos de contacto: (2) 4450000 Ext. 3367, 3579 <br />
-                            Email: aclimatecolombia@gmail.com <br />
-                            Colombia
-                        </p>
-                    </div>
-                    <div class="col-md-offset-4 col-md-4">
-                        <p class="text-justify">
-                            <a href="http://aclimatecolomb.wpengine.com/contactenos/">Contáctenos</a> /
-                            <a href="http://aclimatecolomb.wpengine.com/html-site-map">Mapa del Sitio</a> /
-                            <a href="">Políticas de Privacidad</a>
-                        </p>
-                    </div>
+            <div class="col-lg-12">
+                <div class="col-md-4">
+                    <p class="text-justify">
+                        CIAT All Rights reserved <br />
+                        Teléfonos de contacto: (2) 4450000 Ext. 3367, 3579 <br />
+                        Email: aclimatecolombia@gmail.com <br />
+                        Colombia
+                    </p>
                 </div>
+                <div class="col-md-offset-4 col-md-4">
+                    <p class="text-justify">
+                        <a href="http://aclimatecolomb.wpengine.com/contactenos/">Contáctenos</a> /
+                        <a href="http://aclimatecolomb.wpengine.com/html-site-map">Mapa del Sitio</a> /
+                        <a href="">Políticas de Privacidad</a>
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
-    
+
     <!-- Start Modal Assist -->
     <div id="assit_modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -143,16 +150,28 @@
         </div>
     </div>
     <!-- End Modal Assist -->
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/angular/angular.min.js"></script>
     <script src="~/js/menu.js"></script>
     <script src="~/js/app.js"></script>
+    <script src="~/js/services/setup.js"></script>
+    <script src="~/js/services/agronomy.js"></script>
+    <script src="~/js/services/cultivar.js"></script>
+    <script src="~/js/services/soil.js"></script>
+    <script src="~/js/services/crop_vars.js"></script>
+    <script src="~/js/services/geographic.js"></script>
+    <script src="~/js/services/municipality.js"></script>
+    <script src="~/js/services/weather_station.js"></script>
     <script src="~/js/services/forecast.js"></script>
-    <script src="~/js/services/historical.js"></script>
-    <script src="~/js/services/base.js"></script>
-    <script src="~/js/services/helpers.js"></script>
-    <script src="~/js/controllers/location.js"></script>
+    <script src="~/js/services/climate_history.js"></script>
+    <script src="~/js/services/climate_climatology.js"></script>
+    <script src="~/js/services/climate_historical.js"></script>
+    <script src="~/js/services/climate_forecast.js"></script>
+    <script src="~/js/services/crop_yield_forecast.js"></script>
+    <script src="~/js/services/crop_yield_historical.js"></script>
+    <script src="~/js/controllers/sub_menu_ctr.js"></script>
+    <script src="~/js/controllers/location_ctr.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -8,26 +8,11 @@
  * Controller of the ForecastApp
  */
 angular.module('ForecastApp')
-  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory, 
-                                    MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory, 
+  .controller('CropCtrl', function ($scope, config, tools, HistoricalFactory, ForecastFactory, GeographicFactory,
+                                    MunicipalityFactory, WeatherStationFactory, AgronomicFactory, CultivarsFactory,
                                     SoilFactory, YieldForecastFactory, CropVarsFactory, GuildFactory, HistoricalYieldFactory,
                                     AssistFactory, $rootScope) {
-
-      $scope.collapsable = function (item,index) {
-          var $this=$("#"+item).find(".blockTitle");
-          if ($($this).hasClass('closed')) {
-              $($this).parent().find('.blockTitle').removeClass('opened').addClass('closed');
-              $($this).removeClass('closed').addClass('opened');
-          } else {
-              $($this).removeClass('opened').addClass('closed');
-          }
-          $($this).next().slideToggle('slow', function () {
-              console.log(index);
-              fixed_data_forecast(index);
-          });
-          
-      }
-      $scope.crop_name = tools.search('cultivo');      
+      $scope.crop_name = tools.search('cultivo');
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
       $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
@@ -60,6 +45,23 @@ angular.module('ForecastApp')
       // Yiel ranges for the weather station
       $scope.yield_ranges = null;
 
+      $scope.collapsable = function (item, index) {
+          var $this = $("#" + item).find(".blockTitle");
+          if ($($this).hasClass('closed')) {
+              $($this).parent().find('.blockTitle').removeClass('opened').addClass('closed');
+              $($this).removeClass('closed').addClass('opened');
+          } else {
+              $($this).removeClass('opened').addClass('closed');
+          }
+          $($this).next().slideToggle('slow', function () {
+              if ($($this).hasClass('opened')) {
+                  $(".tab-content").find("div.tab-pane").addClass("active");
+                  fixed_data_forecast(index);
+              }
+          });
+
+      }
+
       // Load data from web web api
       // Get all geographic data able with information
       GeographicFactory.get().success(function (data_m) {
@@ -77,13 +79,13 @@ angular.module('ForecastApp')
               // Load the list of the cultivars and soils from the agronomic configuration
               $scope.cultivars = CultivarsFactory.getByCrop($scope.data_a, $scope.crop_name);
               $scope.soils = SoilFactory.getByCrop($scope.data_a, $scope.crop_name);
-              
+
               // Load the Forecast information
               ForecastFactory.get().success(function (data_f) {
                   $scope.data_f = data_f;
                   // Filter data for weather station
                   $scope.yield_ws = YieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws_entity.id);
-                  
+
                   $scope.cultivars = CultivarsFactory.getCultivarsAvailableForecast($scope.cultivars, $scope.yield_ws);
                   // Set the period of the forecast
                   var temp_date = $scope.gv_months[0].split('-');
@@ -91,17 +93,25 @@ angular.module('ForecastApp')
                   temp_date = $scope.gv_months[1].split('-');
                   $scope.period_end = config.month_names[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
                   // Draw the graphics
+
+                  for (var i = 0; i < $scope.cultivars.length; i++) {
+                      var cu = $scope.cultivars[i];
+                      // Filter the soils available for the cultivar
+                      if ($scope.cultivars[i].soils == undefined || $scope.cultivars[i].soils == null)
+                          $scope.cultivars[i].soils = SoilFactory.getSoilsAvailableForecast($scope.soils, cu.id, $scope.yield_ws);
+                  }
+                  
                   //fixed_data_forecast(0);
               }).error(function (error) {
                   console.log(error);
               });
 
-              
+
               // Load the historical information
-              HistoricalYieldFactory.getYears($scope.ws_entity.id).success(function (data_h_years) {                  
-                  $scope.data_h_years = data_h_years;                  
+              HistoricalYieldFactory.getYears($scope.ws_entity.id).success(function (data_h_years) {
+                  $scope.data_h_years = data_h_years;
                   $scope.historical_yield.model = $scope.data_h_years[0];
-                  fixed_data_historical('model');
+                  //fixed_data_historical('model');
               }).error(function (error) {
                   console.log(error);
               });
@@ -115,34 +125,23 @@ angular.module('ForecastApp')
       /*
        * Method that filter the data to show the information in the screen getted from the web api
       */
-      function fixed_data_forecast(i) {          
-          console.log(i);
-          // Forecast for every cultivar
-          //for (var i = 0; i < $scope.cultivars.length; i++) {
-              try {
-                  var cu = $scope.cultivars[i];
+      function fixed_data_forecast(i) {
 
-                  // Filter the soils available for the cultivar
-                  $scope.cultivars[i].soils = SoilFactory.getSoilsAvailableForecast($scope.soils, cu.id, $scope.yield_ws);
-                                    
-                  // Enable tabs for the variation graphic
-                  // Add the event to show the tabs on click
-                  $('#tabs_' + cu.id + ' a').click(function (e) {
-                      e.preventDefault();
-                      $(this).tab('show');
-                  });
+          var cu = $scope.cultivars[i];
 
-                  // Draw the graphic in the screen
-                  console.log($scope.cultivars[i].soils[0]);
-                  draw_forecast(cu, $scope.cultivars[i].soils[0]);
-              }
-              catch (err) {
-                  console.log(err);
-              }
-          //}
+          // Enable tabs for the variation graphic
+          // Add the event to show the tabs on click
+          $('#tabs_' + cu.id + ' a').click(function (e) {
+              e.preventDefault();
+              $(this).tab('show');
+          });
+
+          draw_forecast(cu, $scope.cultivars[i].soils[0]);
+
           // Hide the content of the tabs variation
           $('.disable_tab').removeClass('active');
           $('.disable_tab').removeClass('in');
+
       }
 
       /*
@@ -153,20 +152,20 @@ angular.module('ForecastApp')
       function draw_forecast(cu, so) {
           // Set default color for all buttons of the soil by the cultivar
           $('#navbar_cultivar_' + cu.id + ' button').removeClass('btn-primary');
-          $('#soil_'+ cu.id + '_' + so.id).addClass('btn-primary');
+          $('#soil_' + cu.id + '_' + so.id).addClass('btn-primary');
 
           // Get data
           var yield_cu = YieldForecastFactory.getByCultivarSoil($scope.yield_ws.yield, cu.id, so.id);
-          
+
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
-          base_c.setMargin(10, 30, 10, 10);          
+          base_c.setMargin(10, 30, 10, 10);
           var calendar = new Calendar(base_c, config.month_names, config.days_names, $scope.crop_yield_var.name, '#back_' + cu.id, '#forward_' + cu.id, '#current_month_' + cu.id, $scope.yield_ranges, 'c_alias_' + cu.id);
           calendar.render();
 
           // Get the summary 
           var summary_cu_so = YieldForecastFactory.summaryCultivarSoil(yield_cu, $scope.crop_yield_var.name);
-          $("#yield_" + cu.id + "_max_date").html(summary_cu_so.max.date.substring(0,10));
+          $("#yield_" + cu.id + "_max_date").html(summary_cu_so.max.date.substring(0, 10));
           $("#yield_" + cu.id + "_max_yield").html(summary_cu_so.max.value.toFixed(config.float) + ' ' + $scope.crop_yield_var.metric);
           $("#yield_" + cu.id + "_min_date").html(summary_cu_so.min.date.substring(0, 10));
           $("#yield_" + cu.id + "_min_yield").html(summary_cu_so.min.value.toFixed(config.float) + ' ' + $scope.crop_yield_var.metric);
@@ -176,7 +175,7 @@ angular.module('ForecastApp')
           for (var j = 0; j < $scope.crop_vars.length; j++) {
               var vr = $scope.crop_vars[j];
               var vr_data = YieldForecastFactory.getByCultivarSoilMeasure(yield_cu, vr.name);
-              
+
               // Draw the graphic
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
               base_t.setMargin(10, 50, 10, 20);
@@ -198,12 +197,12 @@ angular.module('ForecastApp')
        * Method that draw the yield historical data by source
        * (string) source: Indicates the source of the data
       */
-      function fixed_data_historical(source) {          
+      function fixed_data_historical(source) {
           if (source === 'model') {
               // Load the historical information
               HistoricalYieldFactory.getByWeatherStationYear($scope.ws_entity.id, $scope.historical_yield.model).success(function (data_h) {
                   // Join all yield data in a single object                  
-                  $scope.data_h = HistoricalYieldFactory.consolidateHistoricalData(data_h);                  
+                  $scope.data_h = HistoricalYieldFactory.consolidateHistoricalData(data_h);
                   // Get cultivars (national or imported)
                   var cultivars = CultivarsFactory.getByCropNational($scope.data_a, $scope.crop_name, $scope.historical_yield.model_type === 'national');
                   // Get the yield historical by 
@@ -235,5 +234,5 @@ angular.module('ForecastApp')
       $rootScope.drawFunction = function () {
           console.log("test");
       }
-      
+
   });

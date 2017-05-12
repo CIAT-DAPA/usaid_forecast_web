@@ -19,7 +19,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public ClimaController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment): base(settings, hostingEnvironment)
+        public ClimaController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, hostingEnvironment)
         {
         }
 
@@ -28,35 +28,16 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             try
             {
-                // Section to get a default municipality if it doesn't exist
-                var m = await apiForecast.getMunicipalitiesAsync();
-                if (string.IsNullOrEmpty(municipio) || m.Where(p => p.name.Equals(municipio)).Count() < 1)
-                {
-                    municipio = m.FirstOrDefault().name;
-                    return RedirectToAction("Index", new { municipio = municipio });
-                }
                 // Load the urls of the web api's
                 loadAPIs();
                 // Load the dates of the forecast
                 loadMonthsClimate();
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error");
-            }
-        }
-
-        // GET: /Clima/Forecast
-        public async Task<IActionResult> Forecast()
-        {
-            return PartialView("_Forecast");
-        }
-
-        // GET: /Clima/ClimateVars
-        public async Task<IActionResult> ClimateVars()
-        {
-            return PartialView("_ClimateVars");
-        }
+            }            
+        }        
     }
 }

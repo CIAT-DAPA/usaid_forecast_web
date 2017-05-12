@@ -1,0 +1,152 @@
+﻿@{
+    ViewData["Title"] = "Acerca De";
+    ViewData["Meta_Description"] = "Visualización de pronóstico (predicción) y datos históricos del comportamiento de los cultivos en Colombia.";
+    ViewData["Meta_Keywords"] = "acerca,clima,predicción,cultivos,agroclima,agroclimatico,precipitación,rendimiento,días a cosecha,temperatura,historial rendimiento,histórico rendimiento,producción";
+}
+
+
+@Html.Partial("_SubMenu")
+
+<h2 class="text-center" id="sectionTitle" style="color: white;">Acerca De</h2>
+<div id="containerBlock">
+    <!-- Start Climate -->
+    <section class="col-md-12 sections" id="content_climate">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Predicción Climática</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Los modelos de predicción  climática son herramientas esenciales para el estudio y
+                avance en la  predicción de la variabilidad climática. Las predicciones climáticas
+                estacionales a 6 meses sobre la precipitación son realizadas con un modelo estadístico,
+                el cual tiene como fundamento identificar los modos de variabilidad del sistema
+                climático y la asociación de estos con variables océano-atmosféricas.
+                Este producto es útil para tener una referencia del comportamiento más probable a ocurrir,
+                pero es necesario aclarar que no considera eventos extremos puntuales y de corta duración
+                que puedan tener lugar en algunas zonas puntuales del país.
+            </p>
+            <p class="text-justify" style="font-size:1.1em;">
+                El pronóstico probabilístico está expresado en porcentaje y representa la probabilidad
+                de que ocurra la condición de precipitación en tres categorías:
+            </p>
+            <ul>
+                <li>
+                    Precipitaciones por debajo de lo normal: esto indica que se van a presentar valores
+                    de precipitación inferiores a los registrados históricamente para el período de interés.
+                </li>
+                <li>
+                    Precipitaciones normales: esto indica que se van a presentar valores de precipitación
+                    muy similares a lo  registrado históricamente para el período de interés.
+                </li>
+                <li>
+                    Precipitaciones por encima de lo normal: esto indica que se van a presentar valores de
+                    precipitación superiores a los registrados históricamente para el período de interés.
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- End Climate -->
+    <!-- Start Scenarios -->
+    <section class="col-md-12 sections" id="content_scenarios" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Generación de escenarios</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Las predicciones estacionales de clima nos dan información probabilística de las categorías -
+                por debajo lo normal, normal y por encima de lo normal- sobre los próximos 6 meses,
+                basados en esta información se pueden obtener obtener diferentes escenarios a nivel diario,
+                los cuales sirven de insumo para ingresar a los modelos de cultivo.
+            </p>
+            <p class="text-justify" style="font-size:1.1em;">
+                El proceso de transición de probabilidades a datos diarios de clima puede ser realizado
+                mediante un método de remuestreo, el cual consiste en obtener los terciles de los datos
+                históricos y realizar un remuestreo a cada tercil basado en las probabilidades de las predicciones.
+                Por ejemplo: para una predicción dada de precipitación de 70% por debajo lo normal,
+                20% normal y 10% por encima lo normal, para un mes de interés, entonces el remuestreo
+                escogerá 70 escenarios de datos diarios para el tercil bajo lo normal, 20 escenarios de datos
+                diarios del tercil normal y 10 escenarios de datos diarios del tercil encima lo normal,
+                asumiendo que el total de escenarios a generar serán 100.
+            </p>
+        </div>
+    </section>
+    <!-- End Scenarios -->
+    <!-- Start Forecast -->
+    <section class="col-md-12 sections" id="content_forecast" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Pronóstico agroclimático</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Un pronóstico agroclimático es producto de la integración de un pronóstico
+                climático con un modelo de cultivo previamente calibrado y validado.
+                El resultado permite evaluar/simular el rendimiento de un cultivo ante las condiciones
+                climáticas  pronosticadas. De esta manera, se obtiene  información valiosa para apoyar
+                la toma de decisiones agronómicas como son la fecha óptima de siembra y variedad de mejor
+                rendimiento.
+            </p>
+        </div>
+    </section>
+    <!-- End Forecast -->
+    <!-- Start Yield Rice -->
+    <section class="col-md-12 sections" id="content_yield_rice" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Pronóstico agroclimático (arroz)</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                El módulo de arroz simula el rendimiento del cultivo de arroz frente a las
+                condiciones climáticas pronosticadas.
+            </p>
+        </div>
+    </section>
+    <!-- End Yield Rice -->
+    <!-- Start Yield Maize -->
+    <section class="col-md-12 sections" id="content_yield_maize" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Pronóstico agroclimático (maíz)</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Se desarrolló una plataforma para apoyar la toma de decisiones de pequeños,
+                medianos y grandes productores de maíz, la cual con el uso del modelo
+                DSSAT-CERES-Maize permite estimar por medio de análisis estadísticos y
+                pronósticos semestrales, cuales son las fechas de siembra y las variedades
+                que implican una menor variación con producciones convenientes y favorables
+                para los agricultores, disminuyendo sus probabilidades de pérdida.
+            </p>
+            <p class="text-justify" style="font-size:1.1em;">
+                Para el desarrollo de la plataforma se contó con el acompañamiento y la 
+                asesoría de FENALCE, en temas de manejo agronómico y fertilización del 
+                cultivo en los municipios de “La Unión (Valle del Cauca)”, “El Espinal (Tolima)” 
+                y “Cereté (Córdoba)”; además de la participación de personal de CIAT y CIMMYT.
+            </p>
+        </div>
+    </section>
+    <!-- End Yield Maize -->
+    <!-- Start Validation Rice -->
+    <section class="col-md-12 sections" id="content_validation_rice" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Calibración y validación de modelos de cultivos (arroz)</h3>
+            <p class="text-justify" style="font-size:1.1em;">                
+            </p>
+        </div>
+    </section>
+    <!-- End Validation Rice -->
+    <!-- Start Validation Maize -->
+    <section class="col-md-12 sections" id="content_validation_maize" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3>Calibración y validación de modelos de cultivos (maíz)</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                La calibración de las variedades que se entregan para el uso de los 
+                productores del renglón económico de maíz, son el resultado de un proceso 
+                de investigación en campo que inicio del convenio CIAT-MADR en el año 2013 y 
+                se prolongó hasta finales de 2015 donde se estudió el comportamiento de 6 
+                variedades en 3 localidades y se documentó sus resultados.  
+                Luego los datos de estos experimentos fueron organizados, evaluados, calibrados y 
+                validados dentro del proyecto CSRD, patrocinado por USAID y desarrollado por 
+                CIAT durante los años 2016 y comienzos de 2017.
+            </p>
+            <p class="text-justify" style="font-size:1.1em;">
+                La entrega final es resultado del trabajo conjunto del área de DAPA y contó 
+                con colaboración de FENALCE (Colombia) y del instituto de investigación IRI 
+                (Estados Unidos).
+            </p>
+        </div>
+    </section>
+    <!-- End Validation Maize -->
+</div>
+
+@section Scripts {
+
+}
