@@ -26,7 +26,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         // GET: api/Historical/Climatology
         [HttpGet]
         [Route("api/[controller]/Climatology/{weatherstations}/{format?}")]
-        public async Task<IActionResult> Climatology(string weatherstations,string format)
+        public async Task<IActionResult> Climatology(string weatherstations, string format)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalClimatic
         [HttpGet]
-        [Route("api/Historical/HistoricalClimatic/{weatherstations}/{format?}")]
+        [Route("api/[controller]/HistoricalClimatic/{weatherstations}/{format?}")]
         public async Task<IActionResult> HistoricalClimatic(string weatherstations, string format)
         {
             try
@@ -139,8 +139,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalYield
         [HttpGet]
-        [Route("api/Historical/HistoricalYieldYears")]
-        public async Task<IActionResult> HistoricalYieldYears(string weatherstations)
+        [Route("api/[controller]/HistoricalYieldYears/{weatherstations}/{format?}")]
+        public async Task<IActionResult> HistoricalYieldYears(string weatherstations, string format)
         {
             try
             {
@@ -154,8 +154,25 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     ids += weatherstations[i] + ",";
                 }
                 var json = (await db.historicalYield.getYearsAvailableAsync(ws));
-                writeEvent("Historical yield years ids: [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
-                return Json(json);
+                // Write event log
+                writeEvent("Historical yield years ids [" + ids + "] count [" + json.Count().ToString() + "]", LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    //builder.Append(string.Join<string>(delimiter, new string[] { "source", "ws_id", "cultivar_id", "soil_id", "start", "end", "measure", "median", "avg", "min", "max", "quar_1", "quar_2", "quar_3", "conf_lower", "conf_upper", "sd", "perc_5", "perc_95", "coef_var", "\n" }));
+                    builder.Append(string.Join<string>(delimiter, new string[] { "year", "\n" }));
+                    foreach (var y in json)
+                        builder.Append(string.Join<string>(delimiter, new string[] { y.ToString(), "\n" }));
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "historical_yield_years.csv");
+                }
+                else
+                    return Content("Format not supported");
             }
             catch (Exception ex)
             {
@@ -166,13 +183,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalYield
         [HttpGet]
-        [Route("api/Historical/HistoricalYield")]
-        public async Task<IActionResult> HistoricalYield(string weatherstations, string years)
+        [Route("api/[controller]/HistoricalYield/{weatherstations}/{years}/{format?}")]
+        public async Task<IActionResult> HistoricalYield(string weatherstations, string years, string format)
         {
             try
             {
                 // Transform the string id to object id
-                string[] ws_parameter = weatherstations.Split(',');                
+                string[] ws_parameter = weatherstations.Split(',');
                 ObjectId[] ws = new ObjectId[ws_parameter.Length];
                 for (int i = 0; i < ws_parameter.Length; i++)
                     ws[i] = getId(ws_parameter[i]);
@@ -184,7 +201,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     y.Add(int.Parse(year_parameter[i]));
 
                 // Search data
-                var json = (await db.historicalYield.byWeatherStationsYearsAsync(ws,y)).Select(p => new
+                var json = (await db.historicalYield.byWeatherStationsYearsAsync(ws, y)).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
                     source = p.source,
@@ -213,8 +230,26 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         })
                     })
                 });
-                writeEvent("Historical yield ids: [" + weatherstations + "] count: " + json.Count().ToString(), LogEvent.lis);
-                return Json(json);
+                // Write event log
+                writeEvent("Historical yield ids [" + weatherstations + "] count [" + json.Count().ToString() + "]", LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append(string.Join<string>(delimiter, new string[] { "source", "ws_id", "cultivar_id", "soil_id", "start", "end", "measure", "median", "avg", "min", "max", "quar_1", "quar_2", "quar_3", "conf_lower", "conf_upper", "sd", "perc_5", "perc_95", "coef_var", "\n" }));
+                    foreach (var w in json)
+                        foreach(var yi in w.yield)
+                            foreach(var d in yi.data)
+                                builder.Append(string.Join<string>(delimiter, new string[] { w.source, w.weather_station, yi.cultivar, yi.soil, yi.start.ToString("yyyy-MM-dd"), yi.end.ToString("yyyy-MM-dd"), d.measure, d.median.ToString(), d.avg.ToString(), d.min.ToString(), d.max.ToString(), d.quar_1.ToString(), d.quar_2.ToString(), d.quar_3.ToString(), d.conf_lower.ToString(), d.conf_upper.ToString(), d.sd.ToString(), d.perc_5.ToString(), d.perc_95.ToString(), d.coef_var.ToString(), "\n" }));
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "historical_yield.csv");
+                }
+                else
+                    return Content("Format not supported");
             }
             catch (Exception ex)
             {
@@ -225,7 +260,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/Get
         [HttpGet]
-        [Route("api/Historical/Get")]
+        [Route("api/[controller]/Get")]
         public async Task<IActionResult> Get(string weatherstations)
         {
             try

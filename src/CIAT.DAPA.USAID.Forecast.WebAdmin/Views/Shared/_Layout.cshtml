@@ -30,12 +30,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="State" asp-action="Index">State</a></li>
-                    <li><a asp-area="" asp-controller="Municipality" asp-action="Index">Municipality</a></li>
-                    <li><a asp-area="" asp-controller="WeatherStation" asp-action="Index">Weather Station</a></li>
-                    <li><a asp-area="" asp-controller="Crop" asp-action="Index">Crop</a></li>
-                    <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">Cultivar</a></li>
-                    <li><a asp-area="" asp-controller="Soil" asp-action="Index">Soil</a></li>
+                    <li><a asp-area="" asp-controller="State" asp-action="Index">Departamentos</a></li>
+                    <li><a asp-area="" asp-controller="Municipality" asp-action="Index">Municipios</a></li>
+                    <li><a asp-area="" asp-controller="WeatherStation" asp-action="Index">Estaciones climátologicas</a></li>
+                    <li><a asp-area="" asp-controller="Crop" asp-action="Index">Cultivos</a></li>
+                    <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">Cultivares</a></li>
+                    <li><a asp-area="" asp-controller="Soil" asp-action="Index">Suelos</a></li>
+                    <li><a asp-area="" asp-controller="Source" asp-action="Index">Fuentes</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Index">Usuarios</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

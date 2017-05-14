@@ -74,6 +74,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Roles table
         /// </summary>
-        roles
+        roles,
+        /// <summary>
+        /// Source table
+        /// </summary>
+        ad_source
     }
 }
