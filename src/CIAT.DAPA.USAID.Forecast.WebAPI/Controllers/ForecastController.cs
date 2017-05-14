@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,141 +26,185 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         }
 
-        // GET: api/[controller]
+        // GET: api/Forecast/Climate/{weather_stations}/{format?}
         [HttpGet]
-        [Route("api/Forecast/Full")]
-        public async Task<IActionResult> Get()
+        [Route("api/[controller]/Climate/{weather_stations}/{probabilities?}/{format?}")]
+        public async Task<IActionResult> GetClimate(string weather_stations, bool probabilities, string format)
         {
             try
             {
+                // Transform the string id to object id
+                string[] ws_parameter = weather_stations.Split(',');
+                ObjectId[] ws = new ObjectId[ws_parameter.Length];
+                for (int i = 0; i < ws_parameter.Length; i++)
+                    ws[i] = getId(ws_parameter[i]);
+
                 var f = await db.forecast.getLatestAsync();
+                var fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+                var fs = await db.forecastScenario.byForecastAndWeatherStationAsync(f.id, ws);
                 var json = new
                 {
                     forecast = f.id.ToString(),
                     confidence = f.confidence,
-                    climate = await getForecastClimate(f.id),
-                    yield = await getForecastYield(f.id)
-                };
-                writeEvent("Forecast lastes", LogEvent.lis);
-                return Json(json);
-            }
-            catch (Exception ex)
-            {
-                writeException(ex);
-                return new StatusCodeResult(500);
-            }
-        }
-
-        // GET: api/[controller]
-        [HttpGet]
-        [Route("api/Forecast/Climate")]
-        public async Task<IActionResult> GetClimate()
-        {
-            try
-            {
-                var f = await db.forecast.getLatestAsync();
-                var fc = await db.forecastClimate.byForecastAsync(f.id);
-                var json = new
-                {
-                    forecast = f.id.ToString(),
-                    confidence = f.confidence,
-                    climate = await getForecastClimate(f.id)
-                };
-                writeEvent("Forecast lastes climate", LogEvent.lis);
-                return Json(json);
-            }
-            catch (Exception ex)
-            {
-                writeException(ex);
-                return new StatusCodeResult(500);
-            }
-        }
-
-        // GET: api/[controller]
-        [HttpGet]
-        [Route("api/Forecast/Yield")]
-        public async Task<IActionResult> GetYield()
-        {
-            try
-            {
-                var f = await db.forecast.getLatestAsync();
-
-                var json = new
-                {
-                    forecast = f.id.ToString(),
-                    confidence = f.confidence,
-                    yield = await getForecastYield(f.id)
-                };
-                writeEvent("Forecast lastes", LogEvent.lis);
-                return Json(json);
-            }
-            catch (Exception ex)
-            {
-                writeException(ex);
-                return new StatusCodeResult(500);
-            }
-        }
-
-        private async Task<object> getForecastClimate(ObjectId forecast)
-        {
-            var fc = await db.forecastClimate.byForecastAsync(forecast);
-            return fc.Select(p => new
-            {
-                weather_station = p.weather_station.ToString(),
-                performance = p.performance.Select(p2 => new
-                {
-                    measure = Enum.GetName(typeof(MeasurePerformance), p2.name),
-                    value = p2.value,
-                    year = p2.year,
-                    month = p2.month
-                }),
-                data = p.data.Select(p2 => new
-                {
-                    year = p2.year,
-                    month = p2.month,
-                    probabilities = p2.probabilities.Select(p3 => new
+                    climate = fc.Select(p => new
                     {
-                        measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
-                        lower = p3.lower,
-                        normal = p3.normal,
-                        upper = p3.upper
-                    })
-                })
-            });
-        }
-
-        private async Task<object> getForecastYield(ObjectId forecast)
-        {
-            var fy = await db.forecastYield.byForecastAsync(forecast);
-            return fy.Select(p => new
-            {
-                weather_station = p.weather_station.ToString(),
-                yield = p.yield.Select(p2 => new
-                {
-                    cultivar = p2.cultivar.ToString(),
-                    soil = p2.soil.ToString(),
-                    start = p2.start,
-                    end = p2.end,
-                    data = p2.data.Select(p3 => new
+                        weather_station = p.weather_station.ToString(),
+                        performance = p.performance.Select(p2 => new
+                        {
+                            measure = Enum.GetName(typeof(MeasurePerformance), p2.name),
+                            value = p2.value,
+                            year = p2.year,
+                            month = p2.month
+                        }),
+                        data = p.data.Select(p2 => new
+                        {
+                            year = p2.year,
+                            month = p2.month,
+                            probabilities = p2.probabilities.Select(p3 => new
+                            {
+                                measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
+                                lower = p3.lower,
+                                normal = p3.normal,
+                                upper = p3.upper
+                            })
+                        })
+                    }),
+                    scenario = fs.Select(p => new
                     {
-                        measure = Enum.GetName(typeof(MeasureYield), p3.measure),
-                        median = p3.median,
-                        avg = p3.avg,
-                        min = p3.min,
-                        max = p3.max,
-                        quar_1 = p3.quar_1,
-                        quar_2 = p3.quar_2,
-                        quar_3 = p3.quar_3,
-                        conf_lower = p3.conf_lower,
-                        conf_upper = p3.conf_upper,
-                        sd = p3.sd,
-                        perc_5 = p3.perc_5,
-                        perc_95 = p3.perc_95,
-                        coef_var = p3.coef_var
+                        weather_station = p.weather_station.ToString(),
+                        name = Enum.GetName(typeof(ScenarioName), p.name),
+                        year = p.year,
+                        monthly_data = p.monthly_data.Select(p2 => new
+                        {
+                            month = p2.month,
+                            data = p2.data.Select(p3 => new
+                            {
+                                measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
+                                value = p3.value
+                            })
+                        })
                     })
-                })
-            });
+                };
+                // Write event log
+                writeEvent("Forecast lastes climate and scenarios id " + f.id.ToString(), LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // Validate the type date to export
+                    if (probabilities)
+                    {
+                        // add header
+                        builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "year", "month", "measure", "lower", "normal", "upper", "\n" }));
+
+                        foreach (var w in json.climate)
+                            foreach (var m in w.data)
+                                foreach (var d in m.probabilities)
+                                    builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, m.year.ToString(), m.month.ToString(), d.measure, d.lower.ToString(), d.normal.ToString(), d.upper.ToString(), "\n" }));
+                    }
+                    else
+                    {
+                        // add header
+                        builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "scenario", "year", "month", "measure", "value", "\n" }));
+
+                        foreach (var w in json.scenario)
+                            foreach (var m in w.monthly_data)
+                                foreach (var d in m.data)
+                                    builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, w.name, w.year.ToString(), m.month.ToString(), d.measure, d.value.ToString(), "\n" }));
+                    }
+
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "forecast_climate_" + (probabilities ? "probabilities" : "scenarios") + ".csv");
+                }
+                else
+                    return Content("Format not supported");
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
         }
 
+        // GET: api/Forecast/Yield
+        [HttpGet]
+        [Route("api/[controller]/Yield/{weather_stations}/{format?}")]
+        public async Task<IActionResult> GetYield(string weather_stations, string format)
+        {
+            try
+            {
+                // Transform the string id to object id
+                string[] ws_parameter = weather_stations.Split(',');
+                ObjectId[] ws = new ObjectId[ws_parameter.Length];
+                for (int i = 0; i < ws_parameter.Length; i++)
+                    ws[i] = getId(ws_parameter[i]);
+
+                var f = await db.forecast.getLatestAsync();
+                var fy = await db.forecastYield.byForecastAndWeatherStationAsync(f.id, ws);
+                var json = new
+                {
+                    forecast = f.id.ToString(),
+                    confidence = f.confidence,
+                    yield = fy.Select(p => new
+                    {
+                        weather_station = p.weather_station.ToString(),
+                        yield = p.yield.Select(p2 => new
+                        {
+                            cultivar = p2.cultivar.ToString(),
+                            soil = p2.soil.ToString(),
+                            start = p2.start,
+                            end = p2.end,
+                            data = p2.data.Select(p3 => new
+                            {
+                                measure = Enum.GetName(typeof(MeasureYield), p3.measure),
+                                median = p3.median,
+                                avg = p3.avg,
+                                min = p3.min,
+                                max = p3.max,
+                                quar_1 = p3.quar_1,
+                                quar_2 = p3.quar_2,
+                                quar_3 = p3.quar_3,
+                                conf_lower = p3.conf_lower,
+                                conf_upper = p3.conf_upper,
+                                sd = p3.sd,
+                                perc_5 = p3.perc_5,
+                                perc_95 = p3.perc_95,
+                                coef_var = p3.coef_var
+                            })
+                        })
+                    })
+                };
+                // Write a log
+                writeEvent("Forecast lastes yield id " + f.id.ToString(), LogEvent.lis);
+
+                // Validate the answer
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "cultivar_id", "soil_id", "start", "end", "measure", "median", "avg", "min", "max", "quar_1", "quar_2", "quar_3", "conf_lower", "conf_upper", "sd", "perc_5", "perc_95", "coef_var", "\n" }));
+
+                    foreach (var w in json.yield)
+                        foreach (var y in w.yield)
+                            foreach (var d in y.data)
+                                builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, y.cultivar, y.soil, y.start.ToString("yyyy-MM-dd"), y.end.ToString("yyyy-MM-dd"), d.measure, d.median.ToString(), d.avg.ToString(), d.min.ToString(), d.max.ToString(), d.quar_1.ToString(), d.quar_2.ToString(), d.quar_3.ToString(), d.conf_lower.ToString(), d.conf_upper.ToString(), d.sd.ToString(), d.perc_5.ToString(), d.perc_95.ToString(), d.coef_var.ToString(), "\n" }));
+
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "forecast_yield.csv");
+                }
+                else
+                    return Content("Format not supported");
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
+        }
     }
 }

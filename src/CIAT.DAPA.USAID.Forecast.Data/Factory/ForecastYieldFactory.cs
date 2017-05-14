@@ -52,5 +52,20 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var filter = builder.Eq("forecast", forecast);
             return await collection.Find(filter).ToListAsync<ForecastYield>();
         }
+
+        /// <summary>
+        /// Method that return all records about climate of the forecast
+        /// by forecast
+        /// </summary>
+        /// <param name="forecast">Id Forecast</param>
+        /// <param name="ws">ID weather station array</param>
+        /// <returns>List of the Forecast Climate</returns>
+        public async Task<IEnumerable<ForecastYield>> byForecastAndWeatherStationAsync(ObjectId forecast, ObjectId[] ws)
+        {
+            var query = from fy in collection.AsQueryable()
+                        where ws.Contains(fy.weather_station) && fy.id == forecast
+                        select fy;
+            return query;
+        }
     }
 }
