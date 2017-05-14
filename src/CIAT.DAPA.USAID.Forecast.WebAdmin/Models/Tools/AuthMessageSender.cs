@@ -34,24 +34,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// <returns></returns>
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            /*MailMessage mail = new MailMessage()
-            {
-                From = new MailAddress(_emailSettings.UsernameEmail, "Muhammad Hassan Tariq")
-            };*/
             var content = new MimeMessage();
             content.From.Add(new MailboxAddress(options.NotifyAccount));
             content.To.Add(new MailboxAddress(email));
             content.Subject = subject;
-            content.Body = new TextPart() { Text = message };            
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = message;
+            content.Body = bodyBuilder.ToMessageBody();           
             using (var client = new SmtpClient())
             {
-                //client.ServerCertificateValidationCallback = (s, c, h, e) => options.NotifySsl;
-                //await client.ConnectAsync(options.NotifyServer, options.NotifyPort, SecureSocketOptions.StartTlsWhenAvailable).ConfigureAwait(false);
                 client.Connect(options.NotifyServer, options.NotifyPort, options.NotifySsl);
-                // Note: since we don't have an OAuth2 token, disable
-                // the XOAUTH2 authentication mechanism.
-                //client.AuthenticationMechanisms.Remove("XOAUTH2");
-                // Note: only needed if the SMTP server requires authentication
                 client.Authenticate(options.NotifyAccount, options.NotifyPassword);
                 client.Send(content);
                 client.Disconnect(true);

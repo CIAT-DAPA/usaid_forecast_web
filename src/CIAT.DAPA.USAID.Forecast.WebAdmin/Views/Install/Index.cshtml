@@ -1,11 +1,10 @@
 ﻿@model CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Install.InstallViewModel
 
 @{
-    ViewBag.Title = "Instalación";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Instalación";
 }
 
-<h2>Instalación</h2>
+<h2>@ViewData["Title"]</h2>
 
 @using (Html.BeginForm())
 {

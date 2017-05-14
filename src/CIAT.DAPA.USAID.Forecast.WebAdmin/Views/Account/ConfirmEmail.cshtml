@@ -1,10 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Confirm Email";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Cuenta confirmada";
 }
-<h2>ViewBag.Title</h2>
+<h2>@ViewData["Title"]</h2>
 <div>
     <p>
-        Thank you for confirming your email. Please <a asp-controller="Account" asp-action="Login">Click here to Log in</a>.
+        Gracias por confirmar su email. Por favor <a asp-controller="Account" asp-action="Login">de click aquí</a> para iniciar sesión.
     </p>
 </div>
