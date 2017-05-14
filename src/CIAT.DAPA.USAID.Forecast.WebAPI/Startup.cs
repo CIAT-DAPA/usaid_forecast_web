@@ -45,9 +45,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
                 options.ConnectionString = Configuration.GetSection("ForecastConnection:ConnectionString").Value;
                 options.Database = Configuration.GetSection("ForecastConnection:Database").Value;
                 options.LogPath = Configuration.GetSection("Log:Path").Value;
+                options.Delimiter = Configuration.GetSection("Delimiter").Value;
             });
             
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true; 
+            });
 
             // ********************
             // Setup CORS

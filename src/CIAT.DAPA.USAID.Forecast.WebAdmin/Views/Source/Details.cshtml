@@ -1,0 +1,43 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Source
+
+@{
+    ViewBag.Title = "Detalles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Fuente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.track.register)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.track.register)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.track.updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.track.updated)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Volver a la lista", "Index")
+</p>
