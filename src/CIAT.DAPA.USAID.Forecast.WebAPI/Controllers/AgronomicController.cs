@@ -24,19 +24,22 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        [Route("api/[controller]/{cultivar?}/{format?}/")]
+        [Route("api/[controller]/{cultivar?}/{format?}")]
         public async Task<IActionResult> Get(bool cultivar, string format)
         {
             try
             {
                 var json = await db.views.listAgronomicDataAsync();
-                writeEvent(json.Count().ToString(), LogEvent.lis);
+                // Write event log
+                writeEvent("Agronomic count [" + json.Count().ToString() + "]", LogEvent.lis);
+
+                //Evaluate the format to export
                 if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
                     return Json(json);
                 else if (format.ToLower().Trim().Equals("csv"))
                 {
                     StringBuilder builder = new StringBuilder();
-                    // add header
+                    // add header depends if the requested a cultivars information or soils
                     if (cultivar)
                         builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "cultivar_id", "cultivar_name", "cultivar_rainfed", "cultivar_national", "\n" }));
                     else

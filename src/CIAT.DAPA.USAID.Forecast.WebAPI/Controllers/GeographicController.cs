@@ -64,7 +64,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     }
                     json.Add(geo_s);
                 }
-                writeEvent(json.Count().ToString(), LogEvent.lis);
+                // Write event log
+                writeEvent("Geographic count [" + json.Count().ToString() + "]", LogEvent.lis);
+                
+                //Evaluate the format to export
                 if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
                     return Json(json);
                 else if (format.ToLower().Trim().Equals("csv"))

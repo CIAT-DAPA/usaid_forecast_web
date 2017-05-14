@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
@@ -24,8 +25,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/Climatology
         [HttpGet]
-        [Route("api/Historical/Climatology")]
-        public async Task<IActionResult> Climatology(string weatherstations)
+        [Route("api/[controller]/Climatology/{weatherstations}/{format?}")]
+        public async Task<IActionResult> Climatology(string weatherstations,string format)
         {
             try
             {
@@ -51,8 +52,25 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         })
                     })
                 });
-                writeEvent("Climatology ids: [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
-                return Json(json);
+                // Write event log
+                writeEvent("Climatology ids [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "month", "measure", "value", "\n" }));
+                    foreach (var w in json)
+                        foreach (var m in w.monthly_data)
+                            foreach (var d in m.data)
+                                builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, m.month.ToString(), d.measure, d.value.ToString(), "\n" }));
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "climatology.csv");
+                }
+                else
+                    return Content("Format not supported");
             }
             catch (Exception ex)
             {
@@ -63,8 +81,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalClimatic
         [HttpGet]
-        [Route("api/Historical/HistoricalClimatic")]
-        public async Task<IActionResult> HistoricalClimatic(string weatherstations)
+        [Route("api/Historical/HistoricalClimatic/{weatherstations}/{format?}")]
+        public async Task<IActionResult> HistoricalClimatic(string weatherstations, string format)
         {
             try
             {
@@ -91,8 +109,26 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         })
                     })
                 });
-                writeEvent("Historical climatic ids: [" + ids + "] count: " + json.Count().ToString(), LogEvent.lis);
-                return Json(json);
+                // Write event log
+                writeEvent("Historical climatic ids [" + ids + "] count [" + json.Count().ToString() + "]", LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "year", "month", "measure", "value", "\n" }));
+                    foreach (var w in json)
+                        foreach (var m in w.monthly_data)
+                            foreach (var d in m.data)
+                                builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, w.year.ToString(), m.month.ToString(), d.measure, d.value.ToString(), "\n" }));
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "historical_climatic.csv");
+                }
+                else
+                    return Content("Format not supported");
             }
             catch (Exception ex)
             {
