@@ -222,7 +222,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 // List climate variables
-                generateListMeasures();
+                await generateListMeasuresAndSourceAsync();
+                
                 return View();
             }
             catch (Exception ex)
@@ -349,7 +350,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 msg = new Message() { content = "Historical Climate WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
-            generateListMeasures();
+            await generateListMeasuresAndSourceAsync();
             ViewBag.message = msg;
             return View("Import");
         }
@@ -466,7 +467,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 msg = new Message() { content = "Climatology WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
-            generateListMeasures();
+            await generateListMeasuresAndSourceAsync();
             ViewBag.message = msg;
             return View("Import");
         }
@@ -544,7 +545,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
                         else
                             hy_new = new HistoricalYield() { id = hy_entity.id, source = hy_entity.source, weather_station = hy_entity.weather_station, yield = hy_entity.yield };*/
-                        hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
+                        hy_new = new HistoricalYield() { source = getId(source), weather_station = getId(ws) };
                         var yield_crop = raw.Where(p => p.weather_station == ws);
                         yc_entities = new List<YieldCrop>();
                         //int count_yc = yield_crop.Count();
@@ -603,7 +604,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 msg = new Message() { content = "Historical Yield WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
-            generateListMeasures();
+            await generateListMeasuresAndSourceAsync();
             ViewBag.message = msg;
             return View("Import");
         }
@@ -768,12 +769,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <summary>
         /// Method to create a select list with the measure available to import
         /// </summary>
-        private void generateListMeasures()
+        private async Task generateListMeasuresAndSourceAsync()
         {
             // List climate variables
             var measures = from MeasureClimatic mc in Enum.GetValues(typeof(MeasureClimatic))
                            select new { id = (int)mc, name = mc.ToString() };
             ViewBag.measures = new SelectList(measures, "id", "name");
+            // List sources
+            var sources = await db.source.listEnableAsync();
+            ViewBag.source = new SelectList(sources, "id", "name");
         }
 
         /// <summary>

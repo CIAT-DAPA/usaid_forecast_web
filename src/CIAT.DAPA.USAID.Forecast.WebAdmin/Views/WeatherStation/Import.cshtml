@@ -123,11 +123,11 @@
         @Html.HiddenFor(model => model.id)
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-md-2" for="source">
-                    Source
-                </label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" name="source" id="source" placeholder="Modelado" />
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="source">Fuente</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("source", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
                 </div>
             </div>
             <div class="form-group">

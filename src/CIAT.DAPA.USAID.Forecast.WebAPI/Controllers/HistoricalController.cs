@@ -204,7 +204,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 var json = (await db.historicalYield.byWeatherStationsYearsAsync(ws, y)).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
-                    source = p.source,
+                    source = p.source.ToString(),
                     yield = p.yield.Select(p2 => new
                     {
                         soil = p2.soil.ToString(),
