@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,18 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var builder = Builders<Cultivar>.Filter;
             var filter = builder.Eq("track.enable", true);
             return await collection.Find(filter).SortByDescending(p=> p.order).ToListAsync<Cultivar>();
+        }
+
+        /// <summary>
+        /// Method that return all records of cultivars available and ordered by crop
+        /// </summary>
+        /// <param name="crop">ID crop</param>
+        /// <returns>List of Cultivars</returns>        
+        public async Task<List<Cultivar>> listByCropEnableAsync(ObjectId crop)
+        {
+            var builder = Builders<Cultivar>.Filter;
+            var filter = builder.Eq("track.enable", true) & builder.Eq("crop", crop); ;
+            return await collection.Find(filter).SortByDescending(p => p.order).ToListAsync<Cultivar>();
         }
     }
 }
