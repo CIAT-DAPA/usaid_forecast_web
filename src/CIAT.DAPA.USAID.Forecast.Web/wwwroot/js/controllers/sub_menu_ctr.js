@@ -15,13 +15,27 @@ angular.module('ForecastApp')
       $scope.subSections = setup.listSubMenuOption($scope.type);
 
       $scope.renderView = function ($value, $name, $section) {
-          
-          $(".subMenuItem").removeClass("active");
-          $("#subMenu-" + $value).addClass("active");
-          $(".sections").hide();
-          $("#content_" + $section).show();
-          $("#sectionTitle").text($name);
-          $rootScope.drawFunction($value);
-          //$("#expert_data article").hide();
+          if ($scope.type === 'climate' || $scope.type === 'crop') {
+              $(".subMenuItem").removeClass("active");
+              $("#subMenu-" + $value).addClass("active");
+              $(".sections").hide();
+              $("#content_" + $section).show();
+              $("#sectionTitle").text($name);
+              $rootScope.drawFunction($value);
+          }
+          else if ($scope.type === 'expert') {
+              $(".subMenuItem").removeClass("active");
+              $("#subMenu-" + $value).addClass("active");
+              $("#content_" + $section).show();
+              $("#sectionTitle").text($name);
+              $rootScope.drawFunction($value);
+          }
+          else {
+              $(".subMenuItem").removeClass("active");
+              $("#subMenu-" + $value).addClass("active");
+              $(".sections").hide();
+              $("#content_" + $section).show();
+              $("#sectionTitle").text($name);
+          }
       }
   });

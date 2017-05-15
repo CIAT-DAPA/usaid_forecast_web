@@ -14,13 +14,13 @@ angular.module('ForecastApp')
             format: "json",
             raw_geographic: null,
             raw_geographic_crop: null,
+            raw_agronomic:null,
             raw_forecast_climate: null,
             raw_forecast_yield: null,
             raw_history_climate: null,
             raw_history_climatology: null,
             raw_history_yield_year: null,
-            raw_history_yield: null,
-            
+            raw_history_yield: null
         };
 
         /*
@@ -48,6 +48,25 @@ angular.module('ForecastApp')
                 dataFactory.raw_geographic = $http.get(dataFactory.getUrlGeographic());
             }
             return dataFactory.raw_geographic;
+        }
+
+        /*
+         * Method that return the url to get data agronomic
+         * (bool) cultivar: True if request cultivar data, false if request soils data. It is only for the export data
+        */
+        dataFactory.getUrlAgronomic = function (cultivar) {
+            return config.api_fs + "Agronomic/" + cultivar + "/" + dataFactory.format;
+        }
+
+        /*
+        * Method that request all agronomic information available from the forecast service
+        * (bool) cultivar: True if request cultivar data, false if request soils data. It is only for the export data
+        */
+        dataFactory.getAgronomic = function (cultivar) {
+            if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw_agronomic == null)) {
+                dataFactory.raw_agronomic = $http.get(dataFactory.getUrlAgronomic(cultivar));
+            }
+            return dataFactory.raw_agronomic;
         }
 
         /*

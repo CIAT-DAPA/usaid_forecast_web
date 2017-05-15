@@ -36,7 +36,7 @@ angular.module('ForecastApp')
 
       function load_data() {
           // Load data from web web api
-          AgronomyFactory.get().then(
+          AgronomyFactory.get(true).then(
           function (data_a) {
               $scope.data_a = data_a.data;
               // Get all geographic data able with information

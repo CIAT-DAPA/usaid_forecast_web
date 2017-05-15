@@ -53,7 +53,7 @@ angular.module('ForecastApp')
       function load_data() {
           // Load data from web web api
           // Load the agronomic information
-          AgronomyFactory.get().then(
+          AgronomyFactory.get(true).then(
           function (data_a) {
               $scope.data_a = data_a.data;
               // Load the list of the cultivars and soils from the agronomic configuration
