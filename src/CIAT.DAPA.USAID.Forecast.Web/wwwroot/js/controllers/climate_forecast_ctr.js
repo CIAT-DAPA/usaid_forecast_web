@@ -5,9 +5,9 @@
                                     ClimateForecastFactory) {
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
+      // Vars view
       $scope.period_start = null;
       $scope.period_end = null;
-      // Vars of the data
       // Weather Station
       $scope.ws = null;
       // Climatology data
@@ -17,7 +17,6 @@
       $scope.forecast = null;
       // Months
       $scope.months = null;
-
       $scope.loaded = false;
 
       load_data();
@@ -39,7 +38,7 @@
           function (data_ws) {
               $scope.ws = data_ws;
               // Get climate forecast data of the precipitation
-              ClimateForecastFactory.getProbabilities($scope.ws.id, 'prec').then(
+              ClimateForecastFactory.getProbabilities($scope.ws.id, 'prec', true).then(
               function (data_fs) {
                   $scope.forecast = data_fs;
                   // Get the months of the forecast

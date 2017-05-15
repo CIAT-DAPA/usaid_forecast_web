@@ -8,24 +8,29 @@
  * Geographic in the ForecastApp.
  */
 angular.module('ForecastApp')
-    .factory('GeographicFactory', function ($http, config) {
-        var dataFactory = { raw: null, cache: true };
+    .factory('GeographicFactory', function (ForecastApiFactory) {
+        var dataFactory = {
+            cache: true,
+            db: ForecastApiFactory,
+            format: "json"
+        };
 
-        /*
-         * Method that return the url to get data geographic
-        */
-        dataFactory.getUrl = function () {
-            return config.api_fs + config.api_fs_geographic;
-        }
         /*
         * Method that request all geographic information available from the forecast service
         */
         dataFactory.get = function () {
-            if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw == null)) {
-                dataFactory.raw = $http.get(dataFactory.getUrl());
-            }
-                
-            return dataFactory.raw;
+            dataFactory.db.init(dataFactory.cache, dataFactory.format);
+            return dataFactory.db.getGeographic();
         }
+
+        /*
+        * Method that request all geographic information available from the forecast service
+        * (string) crop: Name of crop
+        */
+        dataFactory.getByCrop = function (crop) {
+            dataFactory.db.init(dataFactory.cache, dataFactory.format);
+            return dataFactory.db.getGeographicCrop(crop);
+        }
+
         return dataFactory;
     });

@@ -31,42 +31,42 @@
     </p>
     @using (Html.BeginForm("ImportHistoricalClimate", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.id)
-    <div class="form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-md-2" for="search">Type of search</label>
-            <div class="col-md-10">
-                <label class="radio-inline">
-                    <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id)
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-2" for="search">Type of search</label>
+                <div class="col-md-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="search" id="search" value="2">Name
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="measures">Measure</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("measures", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2" for="file">
+                    File to import (splitted by comma ",").
+                    <a href="~/Data/Examples/Import-Historical-Climate.csv">Example by Extern ID</a>
                 </label>
-                <label class="radio-inline">
-                    <input type="radio" name="search" id="search" value="2">Name
-                </label>
+                <div class="col-md-10">
+                    <input type="file" class="form-control" name="file" id="file" />
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2" for="measures">Measure</label>
-            <div class="col-md-10">
-                @Html.DropDownList("measures", null, htmlAttributes: new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2" for="file">
-                File to import (splitted by comma ",").
-                <a href="~/Data/Examples/Import-Historical-Climate.csv">Example by Extern ID</a>
-            </label>
-            <div class="col-md-10">
-                <input type="file" class="form-control" name="file" id="file" />
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Import" class="btn btn-default" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Import" class="btn btn-default" />
+                </div>
             </div>
         </div>
-    </div>
     }
 </fieldset>
 
@@ -78,36 +78,36 @@
     </p>
     @using (Html.BeginForm("ImportClimatology", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.id)
-    <div class="form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-md-2" for="search">Type of search</label>
-            <div class="col-md-10">
-                <label class="radio-inline">
-                    <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="search" id="search" value="2">Name
-                </label>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id)
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-2" for="search">Type of search</label>
+                <div class="col-md-10">
+                    <label class="radio-inline">
+                        <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="search" id="search" value="2">Name
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2" for="file">
-                File to import (splitted by comma ",").
-                <a href="~/Data/Examples/Import-Climatology.csv">Example by Extern ID</a>
-            </label>
-            <div class="col-md-10">
-                <input type="file" class="form-control" name="file" id="file" />
+            <div class="form-group">
+                <label class="control-label col-md-2" for="file">
+                    File to import (splitted by comma ",").
+                    <a href="~/Data/Examples/Import-Climatology.csv">Example by Extern ID</a>
+                </label>
+                <div class="col-md-10">
+                    <input type="file" class="form-control" name="file" id="file" />
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Import" class="btn btn-default" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Import" class="btn btn-default" />
+                </div>
             </div>
         </div>
-    </div>
     }
 </fieldset>
 
@@ -123,11 +123,11 @@
         @Html.HiddenFor(model => model.id)
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-md-2" for="source">
-                    Source
-                </label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" name="source" id="source" placeholder="Modelado" />
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="source">Fuente</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("source", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
                 </div>
             </div>
             <div class="form-group">

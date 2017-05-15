@@ -204,7 +204,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 var json = (await db.historicalYield.byWeatherStationsYearsAsync(ws, y)).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
-                    source = p.source,
+                    source = p.source.ToString(),
                     yield = p.yield.Select(p2 => new
                     {
                         soil = p2.soil.ToString(),
@@ -257,65 +257,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 return new StatusCodeResult(500);
             }
         }
-
-        // GET: api/Historical/Get
-        [HttpGet]
-        [Route("api/[controller]/Get")]
-        public async Task<IActionResult> Get(string weatherstations)
-        {
-            try
-            {
-                // Transform the string id to object id
-                string[] parameters = weatherstations.Split(',');
-                ObjectId[] ws = new ObjectId[parameters.Length];
-                string ids = string.Empty;
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    ws[i] = getId(parameters[i]);
-                    ids += weatherstations[i] + ",";
-                }
-                var jsonClimatology = (await db.climatology.byWeatherStationsAsync(ws)).Select(p => new
-                {
-                    weather_station = p.weather_station.ToString(),
-                    monthly_data = p.monthly_data.Select(p2 => new
-                    {
-                        month = p2.month,
-                        data = p2.data.Select(p3 => new
-                        {
-                            measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
-                            value = p3.value
-                        })
-                    })
-                });
-
-                var jsonClimate = (await db.historicalClimatic.byWeatherStationsAsync(ws)).OrderBy(p => p.year).Select(p => new
-                {
-                    weather_station = p.weather_station.ToString(),
-                    year = p.year,
-                    monthly_data = p.monthly_data.Select(p2 => new
-                    {
-                        month = p2.month,
-                        data = p2.data.Select(p3 => new
-                        {
-                            measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
-                            value = p3.value
-                        })
-                    })
-                });
-
-                var json = new
-                {
-                    climatology = jsonClimatology,
-                    climate = jsonClimate
-                };
-                writeEvent("Historical Get ids: [" + ids + "]", LogEvent.lis);
-                return Json(json);
-            }
-            catch (Exception ex)
-            {
-                writeException(ex);
-                return new StatusCodeResult(500);
-            }
-        }
+        
     }
 }

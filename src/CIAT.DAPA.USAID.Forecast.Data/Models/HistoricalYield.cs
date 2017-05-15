@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
@@ -19,7 +20,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Name where the historical data is obtained
         /// </summary>
         [BsonRequired]
-        public string source { get; set; }
+        [Display(Name = "Id Source"), Required(ErrorMessage = "The source is required")]
+        public ObjectId source { get; set; }
         /// <summary>
         /// ID's weather station
         /// </summary>
