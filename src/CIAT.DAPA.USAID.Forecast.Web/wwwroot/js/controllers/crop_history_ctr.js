@@ -65,7 +65,7 @@ angular.module('ForecastApp')
        * (string) source: Indicates the source of the data
       */
       function fixed_data_historical() {
-          console.log($scope.year_selected);
+          CropYieldHistoricalFactory.cache = false;
           // Load the historical information
           CropYieldHistoricalFactory.getByWeatherStationYear($scope.ws.id, $scope.year_selected).then(
           function (result) {
