@@ -63,7 +63,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async Task<IEnumerable<ForecastClimate>> byForecastAndWeatherStationAsync(ObjectId forecast, ObjectId[] ws)
         {
             var query = from fc in collection.AsQueryable()
-                        where ws.Contains(fc.weather_station) && fc.id == forecast
+                        where ws.Contains(fc.weather_station) && fc.forecast == forecast
                         select fc;
             return query;
         }

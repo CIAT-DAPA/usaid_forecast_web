@@ -8,8 +8,12 @@
  * Climate Climatology in the ForecastApp.
  */
 angular.module('ForecastApp')
-    .factory('ClimateClimatologyFactory', function ($q, config, ClimateHistoryFactory) {
-        var dataFactory = { cache: true };
+    .factory('ClimateClimatologyFactory', function ($q, config, ForecastApiFactory) {
+        var dataFactory = {
+            cache: true,
+            db: ForecastApiFactory,
+            format: "json"
+        };
 
         /*
         * Method that filter all climate data from forecast of the weather station
@@ -17,17 +21,15 @@ angular.module('ForecastApp')
         */
         dataFactory.getByWeatherStation = function (ws) {
             var defer = $q.defer();
-            ClimateHistoryFactory.cache = dataFactory.cache;
 
-            ClimateHistoryFactory.get(ws).then(
-                function (result) {
-                    var raw = result.data;
-                    var data = raw.climatology.filter(function (item) { return item.weather_station === ws; });
-                    defer.resolve(data[0]);
-                },
-                function (err) {
-                    console.log(err);
-                });
+            dataFactory.db.init(dataFactory.cache, dataFactory.format);
+            dataFactory.db.getHistoricalClimatology(ws).then(
+            function (result) {
+                var raw = result.data;
+                var data = raw.filter(function (item) { return item.weather_station === ws; });
+                defer.resolve(data[0]);
+            },
+            function (err) { console.log(err); });
 
             return defer.promise;
         }
@@ -42,25 +44,23 @@ angular.module('ForecastApp')
             var defer = $q.defer();
 
             dataFactory.getByWeatherStation(ws).then(
-                function (filtered_ws) {
-                    var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
-                        var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
-                        return months.includes(tm);
-                    });
-                    var data = filtered_monthly.map(function (item) {
-                        var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
-                        var obj = {
-                            month: item.month,
-                            month_name: config.month_names[item.month - 1],
-                            value: monthly.value
-                        };
-                        return obj;
-                    });
-                    defer.resolve(data);
-                },
-                function (err) {
-                    console.log(err);
+            function (filtered_ws) {
+                var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
+                    var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
+                    return months.includes(tm);
                 });
+                var data = filtered_monthly.map(function (item) {
+                    var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
+                    var obj = {
+                        month: item.month,
+                        month_name: config.month_names[item.month - 1],
+                        value: monthly.value
+                    };
+                    return obj;
+                });
+                defer.resolve(data);
+            },
+            function (err) { console.log(err); });
 
             return defer.promise;
         }
@@ -74,27 +74,25 @@ angular.module('ForecastApp')
             var defer = $q.defer();
 
             dataFactory.getByWeatherStation(ws).then(
-                function (filtered_ws) {
+            function (filtered_ws) {
 
-                    var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
-                        var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();                        
-                        return months.includes(tm);
-                    });
-                    var data = filtered_monthly.map(function (item) {
-                        return item.data.map(function (item2) {
-                            return {
-                                month: item.month,
-                                month_name: config.month_names[item.month - 1],
-                                value: item2.value,
-                                measure: item2.measure
-                            }
-                        });
-                    });
-                    defer.resolve(data);
-                },
-                function (err) {
-                    console.log(err);
+                var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
+                    var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
+                    return months.includes(tm);
                 });
+                var data = filtered_monthly.map(function (item) {
+                    return item.data.map(function (item2) {
+                        return {
+                            month: item.month,
+                            month_name: config.month_names[item.month - 1],
+                            value: item2.value,
+                            measure: item2.measure
+                        }
+                    });
+                });
+                defer.resolve(data);
+            },
+            function (err) { console.log(err); });
 
             return defer.promise;
         }
@@ -114,6 +112,6 @@ angular.module('ForecastApp')
             }
             return { max: max, min: min };
         }
-                
+
         return dataFactory;
     });

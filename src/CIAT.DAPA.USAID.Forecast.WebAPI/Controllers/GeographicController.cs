@@ -93,10 +93,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             }
         }
 
-        // GET: api/Geographic/ForecastYield/
+        // GET: api/Geographic/Crop/
         [HttpGet]
-        [Route("api/[controller]/ForecastYield/{crop}/{format?}")]
-        public async Task<IActionResult> GetYield(string crop,string format)
+        [Route("api/[controller]/Crop/{crop}/{format?}")]
+        public async Task<IActionResult> GetCrop(string crop,string format)
         {
             try
             {

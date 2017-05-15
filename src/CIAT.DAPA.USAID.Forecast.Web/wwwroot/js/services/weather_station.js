@@ -9,36 +9,35 @@
  */
 angular.module('ForecastApp')
     .factory('WeatherStationFactory', function ($q, config, GeographicFactory) {
-        var dataFactory = { cache: true };
+        var dataFactory = { cache: true, format: "json" };
 
         /*
-       * Method that filter all weather stations by their municipality
-       * (string) municipality: Name of the municipality
-       */
+        * Method that filter all weather stations by their municipality
+        * (string) municipality: Name of the municipality
+        */
         dataFactory.getByMunicipality = function (municipality) {
             var defer = $q.defer();
-            GeographicFactory.cache = dataFactory.cache;
+            GeographicFactory.db.init(dataFactory.cache, dataFactory.format);
 
             GeographicFactory.get().then(
-                 function (result) {
-                     var raw = result.data;
+            function (result) {
+                var raw = result.data;
 
-                     var data = raw.filter(function (item) {
-                         var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
-                         return municipalities.length > 0;
-                     });
-                     if (data == null)
-                         defer.resolve(null);
-                     // Map to get only weather station
-                     var ws = data.map(function (item) {
-                         var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
-                         return municipalities[0].weather_stations[0];
-                     });
-                     defer.resolve(ws[0]);
+                var data = raw.filter(function (item) {
+                    var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
+                    return municipalities.length > 0;
+                });
+                if (data == null)
+                    defer.resolve(null);
+                // Map to get only weather station
+                var ws = data.map(function (item) {
+                    var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
+                    return municipalities[0].weather_stations[0];
+                });
+                defer.resolve(ws[0]);
 
-                 }, function (err) {
-                     console.log(err);
-                 });
+            },
+            function (err) { console.log(err); });
 
             return defer.promise;
         }
@@ -59,11 +58,8 @@ angular.module('ForecastApp')
             }
             return answer;
         }
+
         return dataFactory;
-
-
-
-
 
         /*
         * Method that filter all municipalities available

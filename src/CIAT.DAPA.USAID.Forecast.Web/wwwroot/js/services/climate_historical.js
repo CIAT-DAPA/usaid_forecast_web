@@ -8,8 +8,12 @@
  * Climate Historical in the ForecastApp.
  */
 angular.module('ForecastApp')
-    .factory('ClimateHistoricalFactory', function ($q, config, ClimateHistoryFactory) {
-        var dataFactory = { cache: true };
+    .factory('ClimateHistoricalFactory', function ($q, config, ForecastApiFactory) {
+        var dataFactory = {
+            cache: true,
+            db: ForecastApiFactory,
+            format: "json"
+        };
 
         /*
         * Method that filter all climate data from forecast of the weather station
@@ -17,12 +21,12 @@ angular.module('ForecastApp')
         */
         dataFactory.getByWeatherStation = function (ws) {
             var defer = $q.defer();
-            ClimateHistoryFactory.cache = dataFactory.cache;
+            dataFactory.db.init(dataFactory.cache, dataFactory.format);
 
-            ClimateHistoryFactory.get(ws).then(
+            dataFactory.db.getHistoricalClimate(ws).then(
                 function (result) {
                     var raw = result.data;
-                    var data = raw.climate.filter(function (item) { return item.weather_station === ws; });
+                    var data = raw.filter(function (item) { return item.weather_station === ws; });
                     defer.resolve(data);
                 },
                 function (err) {
