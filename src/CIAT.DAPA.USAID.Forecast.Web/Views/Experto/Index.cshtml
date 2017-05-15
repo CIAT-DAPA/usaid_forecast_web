@@ -73,6 +73,16 @@
                 </div>
             </div>
             <!-- End Probabilities -->
+            <!-- Start Filter year -->
+            <div class="form-horizontal" ng-show="show_years">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" for="states">Año:</label>
+                    <div class="col-lg-2">
+                        <select class="form-control" id="states" ng-model="year_selected" ng-options="y for y in data_h_years" ng-change="update_yield_year()" required></select>
+                    </div>
+                </div>
+            </div>
+            <!-- End Filter year -->
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-lg-10 text-left">

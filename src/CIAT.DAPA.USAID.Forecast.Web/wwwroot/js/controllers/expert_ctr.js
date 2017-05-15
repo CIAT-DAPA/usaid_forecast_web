@@ -9,12 +9,13 @@
  */
 angular.module('ForecastApp')
   .controller('ExpertCtrl', function ($rootScope, $scope, $window, setup, tools,
-                                    GeographicFactory, ForecastApiFactory) {
+                                    GeographicFactory, ForecastApiFactory, CropYieldHistoricalFactory) {
       //Url
       $scope.url_json = null;
       $scope.url_csv = null;
       // Var data
       $scope.data_m = null;
+      $scope.data_h_years = null;
       // Databases
       $scope.db = setup.getExpertDatabases();
       $scope.db_selected = $scope.db[0];
@@ -22,12 +23,15 @@ angular.module('ForecastApp')
       $scope.show_agronomic = false;
       $scope.show_geographic = false;
       $scope.show_probabilities = false;
+      $scope.show_years = false;
       // Controls
       $scope.agronomic_source = 'true'
       $scope.probabilities = 'true'
       $scope.state = null;
       $scope.municipality = null;
       $scope.ws = null;
+      $scope.year_selected = null;
+
 
 
       load_data();
@@ -53,7 +57,7 @@ angular.module('ForecastApp')
           $scope.show_agronomic = false;
           $scope.show_geographic = false;
           $scope.show_probabilities = false;
-
+          $scope.show_years = false;
           if (section === 'geographic') {
               $scope.load_geographic();
           }
@@ -69,16 +73,22 @@ angular.module('ForecastApp')
           else if (section === 'climate_forecast') {
               $scope.load_climate_forecast();
           }
+          else if (section === 'yield_historical') {
+              $scope.update_yield_year();
+          }
+          else if (section === 'yield_forecast') {
+              $scope.load_yield_forecast();
+          }
       }
 
-      $scope.load_geographic = function() {
+      $scope.load_geographic = function () {
           ForecastApiFactory.init(true, "json");
           $scope.url_json = ForecastApiFactory.getUrlGeographic();
           ForecastApiFactory.init(true, "csv");
           $scope.url_csv = ForecastApiFactory.getUrlGeographic();
       }
 
-      $scope.load_agronomic = function() {
+      $scope.load_agronomic = function () {
           $scope.show_agronomic = true;
           ForecastApiFactory.init(true, "json");
           $scope.url_json = ForecastApiFactory.getUrlAgronomic($scope.agronomic_source);
@@ -111,9 +121,30 @@ angular.module('ForecastApp')
           $scope.show_geographic = true;
           if ($scope.ws != undefined) {
               ForecastApiFactory.init(true, "json");
-              $scope.url_json = ForecastApiFactory.getUrlClimate($scope.ws.id,$scope.probabilities);
+              $scope.url_json = ForecastApiFactory.getUrlClimate($scope.ws.id, $scope.probabilities);
               ForecastApiFactory.init(true, "csv");
               $scope.url_csv = ForecastApiFactory.getUrlClimate($scope.ws.id, $scope.probabilities);
+          }
+      }
+
+      $scope.load_yield_historical = function () {
+          $scope.show_geographic = true;
+          $scope.show_years = true;
+          if ($scope.ws != undefined) {
+              ForecastApiFactory.init(true, "json");
+              $scope.url_json = ForecastApiFactory.getUrlHistoricalYield($scope.ws.id, $scope.year_selected);
+              ForecastApiFactory.init(true, "csv");
+              $scope.url_csv = ForecastApiFactory.getUrlHistoricalYield($scope.ws.id, $scope.year_selected);
+          }
+      }
+
+      $scope.load_yield_forecast = function () {
+          $scope.show_geographic = true;
+          if ($scope.ws != undefined) {
+              ForecastApiFactory.init(true, "json");
+              $scope.url_json = ForecastApiFactory.getUrlForecastYield($scope.ws.id);
+              ForecastApiFactory.init(true, "csv");
+              $scope.url_csv = ForecastApiFactory.getUrlForecastYield($scope.ws.id);
           }
       }
 
@@ -123,6 +154,27 @@ angular.module('ForecastApp')
           }
           else if (section === 'climate_historical') {
               $scope.load_climate_historical();
+          }
+          else if (section === 'climate_forecast') {
+              $scope.load_climate_forecast();
+          }
+          else if (section === 'yield_historical') {
+              $scope.update_yield_year();
+          }
+          else if (section === 'yield_forecast') {
+              $scope.load_yield_forecast();
+          }
+      }
+
+      $scope.update_yield_year = function () {
+          if ($scope.ws != undefined) {
+              CropYieldHistoricalFactory.getYears($scope.ws.id).then(
+              function (result) {
+                  $scope.data_h_years = result.data;
+                  $scope.year_selected = $scope.data_h_years[0];
+                  $scope.load_yield_historical();
+              },
+              function (error) { console.log(error); });
           }
       }
 
