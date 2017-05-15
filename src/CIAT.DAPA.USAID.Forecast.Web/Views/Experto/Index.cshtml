@@ -7,239 +7,84 @@
 
 <!-- Start global variables -->
 <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-<input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
 <!-- End global variables -->
-<!-- Start Description -->
+
 @Html.Partial("_SubMenu")
-<div ng-controller="ExpertCtrl" style="margin:15px">
-    <h2 class="text-center" id="sectionTitle" style="color: white;">Descargar datos</h2>
-    <div id="containerBlock">
-        <section id="description" class="col-md-12">
-            <article class="row section-content">
-                <div class="col-lg-12">
-                    <p class="text-justify">
-                        Usted puede obtener los datos del resultado de los pronósticos e históricos climáticos y agroclimáticos mediante esta
-                        aplicación.
-                    </p>
+
+<h2 class="text-center" id="sectionTitle" style="color: white;">Descargar datos</h2>
+<div id="containerBlock">
+    <section id="description" class="col-md-12" ng-controller="ExpertCtrl">
+        <article class="row section-content">
+            <h3>
+                Descripción {{db_selected.title}}
+            </h3>
+            <p class="text-justify">
+                Usted puede obtener los datos del resultado de los pronósticos e históricos climáticos y agroclimáticos mediante esta
+                aplicación.
+            </p>
+            <p class="text-justify">
+                {{db_selected.description}}
+            </p>
+            <!-- Start Filter agronomic cultivar and soils -->
+            <div class="form-group" ng-show="show_agronomic">
+                <label class="col-lg-3 control-label" for="cmd_agronomic_source">
+                    Tipo de busqueda:
+                </label>
+                <div class="col-lg-9">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="agronomic_source" value="true" ng-click="load_agronomic()" checked>Cultivares
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="agronomic_source" value="false" ng-click="load_agronomic()">Suelos
+                    </label>
                 </div>
-            </article>
-            <article class="row section-content">
-                <div class="col-lg-12">
-                    <div class="tab-content" id="content_filters">
-                        <div id="content_geographic" class="sections">
-                            <h3>
-                                Descripción
-                            </h3>
-                            <p class="text-justify">
-                                Esta base de datos contiene información sobre la configuración geográfica de los pronósticos y datos históricos
-                                que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos
-                                que están disponibles en esta aplicación.
-                            </p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="cmd_geographic" class="col-lg-11 text-left">
-                                        <a href="{{url.geographic}}" target="_blank">{{url.geographic}}</a>
-                                    </label>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('geographic')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-
-                            </form>
-                        </div>
-                        <div style="display:none;" id="content_agronomic" class="sections">
-                            <h3>
-                                Descripción
-                            </h3>
-                            <p class="text-justify">
-                                Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos
-                                que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los
-                                cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.
-                            </p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label" for="cmd_agronomic_source">
-                                        Tipo de busqueda:
-                                    </label>
-                                    <div class="col-lg-10">
-                                        <label class="radio-inline">
-                                            <input type="radio" ng-model="agronomic_source" value="cultivar" checked>Cultivares
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" ng-model="agronomic_source" value="soil">Suelos
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="cmd_agronomic" class="col-lg-12 text-left">
-                                        <a href="{{url.agronomic}}" target="_blank">{{url.agronomic}}</a>
-                                    </label>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('agronomic')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-
-                            </form>
-                        </div>
-                        <div id="content_climatology" style="display:none;" class="sections">
-                            <h3>
-                                Descripción
-                            </h3>
-                            <p class="text-justify">
-                                En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología.
-                                Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras.
-                                Puede establecer una relación con los datos obtenidos en la sección de datos geográficos.
-                            </p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label" for="climatology_states">Departamentos:</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control" id="climatology_states" ng-model="climatology.state" ng-options="s.name for s in data_m" ng-change="updateClimatology()" required></select>
-                                    </div>
-                                    <label class="col-lg-2 control-label" for="climatology_municipalities">Municipios:</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control col-lg-2" id="climatology_municipalities" ng-model="climatology.municipality" ng-options="m.name for m in climatology.state.municipalities" ng-change="updateClimatology()" required></select>
-                                    </div>
-                                    <label class="col-lg-2 control-label" for="climatology_ws">Estaciones climáticas:</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control col-lg-2" id="climatology_ws" ng-model="climatology.ws" ng-options="ws.name for ws in climatology.municipality.weather_stations" ng-change="updateClimatology()" required></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="cmd_climatology" class="col-lg-12 text-left">
-                                        <a href="{{url.climatology}}" target="_blank">{{url.climatology}}</a>
-                                    </label>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <button id="cmd_climatology" type="button" class="btn btn-primary" ng-click="getData('climatology')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-
-                            </form>
-                        </div>
-                        <div id="content_historical_climate" style="display:none;" class="sections">
-                            <h3>
-                                Descripción
-                            </h3>
-                            <p class="text-justify">
-                                Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar
-                                la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación
-                                y radiación solar de cada mes durante un intervalo de tiempo.
-                            </p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-lg-2 control-label" for="historical_climate_states">Departamentos:</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control" id="historical_climate_states" ng-model="historical_climate.state" ng-options="s.name for s in data_m" ng-change="updateClimatology()" required></select>
-                                    </div>
-                                    <label class="col-lg-2 control-label" for="historical_climate_municipalities">Municipios:</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control col-lg-2" id="historical_climate_municipalities" ng-model="historical_climate.municipality" ng-options="m.name for m in historical_climate.state.municipalities" ng-change="updateHistoricalClimate()" required></select>
-                                    </div>
-                                    <label class="col-lg-2 control-label" for="historical_climate_ws">Estaciones climáticas:</label>
-                                    <div class="col-lg-2">
-                                        <select class="form-control col-lg-2" id="historical_climate_ws" ng-model="historical_climate.ws" ng-options="ws.name for ws in historical_climate.municipality.weather_stations" ng-change="updateHistoricalClimate()" required></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="cmd_historical_climate" class="col-lg-11 text-left">
-                                        <a href="{{url.historical_climate}}" target="_blank">{{url.historical_climate}}</a>
-                                    </label>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <button id="cmd_historical_climate" type="button" class="btn btn-primary" ng-click="getData('historical_climate')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-
-                            </form>
-                        </div>
-                        <div id="content_forecast_climate" style="display:none;" class="sections">
-                            <h3>
-                                Descripción
-                            </h3>
-                            <p class="text-justify">
-                                Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas.
-                                Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo,
-                                dentro o por encima del intervalo normal.
-                            </p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="cmd_forecast_climate" class="col-lg-12 text-left">
-                                        <a href="{{url.forecast_climate}}" target="_blank">{{url.forecast_climate}}</a>
-                                    </label>
-                                </div>
-
-                                <div class="col-lg-2 pull-right">
-                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <button id="cmd_forecast_climate" type="button" class="btn btn-primary" ng-click="getData('forecast_climate')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-                            </form>
-                        </div>
-                        <div id="content_forecast_yield" style="display:none;" class="sections">
-                            <h3>
-                                Descripción
-                            </h3>
-                            <p class="text-justify">
-                                Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción
-                                organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado
-                                bajo varios escenarios climáticos.
-                            </p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="cmd_forecast_yield" class="col-lg-12 text-left">
-                                        <a href="{{url.forecast_climate}}" target="_blank">{{url.forecast_climate}}</a>
-                                    </label>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <a role="button" class="btn btn-success" id="exportCsv">Descargar CSV</a>
-                                </div>
-                                <div class="col-lg-2 pull-right">
-                                    <button id="cmd_forecast_yield" type="button" class="btn btn-primary" ng-click="getData('forecast_yield')">Buscar</button>
-                                    <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                                </div>
-
-
-                            </form>
-                        </div>
+            </div>
+            <!-- End Filter agronomic cultivar and soils -->
+            <!-- Start Filter geographic -->
+            <div class="form-horizontal" ng-show="show_geographic">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" for="states">Departamentos:</label>
+                    <div class="col-lg-2">
+                        <select class="form-control" id="states" ng-model="state" ng-options="s.name for s in data_m" ng-click="update_geographic(db_selected.section)" required></select>
+                    </div>
+                    <label class="col-lg-2 control-label" for="municipalities">Municipios:</label>
+                    <div class="col-lg-2">
+                        <select class="form-control col-lg-2" id="municipalities" ng-model="municipality" ng-options="m.name for m in state.municipalities" ng-click="update_geographic(db_selected.section)" required></select>
+                    </div>
+                    <label class="col-lg-2 control-label" for="ws">Estaciones climáticas:</label>
+                    <div class="col-lg-2">
+                        <select class="form-control col-lg-2" id="ws" ng-model="ws" ng-options="ws.name for ws in municipality.weather_stations" ng-click="update_geographic(db_selected.section)" required></select>
                     </div>
                 </div>
-            </article>
-        </section>
-        <!-- End Description -->
-        <!-- End Data -->
-        <section id="expert_data" class="section-content col-md-12">
-            <article class="col-lg-12 article_content">
-
-                <h2 class="text-center">{{data_title}}</h2>
-                <table class="table table-responsive" id="data_raw">
-                    <tr>
-                        <th ng-repeat="th in headers">{{th}}</th>
-                    </tr>
-                    <tr ng-repeat="row in content">
-                        <td ng-repeat="cell in row track by $index">{{cell}}</td>
-                    </tr>
-                </table>
-            </article>
-        </section>
-        <!-- End Data -->
-    </div>
+            </div>
+            <!-- End Filter geographic -->
+            <!-- Start Probabilities -->
+            <div class="form-group" ng-show="show_probabilities">
+                <label class="col-lg-3 control-label" for="cmd_agronomic_source">
+                    Tipo de busqueda:
+                </label>
+                <div class="col-lg-9">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="probabilities" value="true" ng-click="load_climate_forecast()" checked>Probabilidades
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="probabilities" value="false" ng-click="load_climate_forecast()">Escenarios climáticos
+                    </label>
+                </div>
+            </div>
+            <!-- End Probabilities -->
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-lg-10 text-left">
+                        <a href="{{url_json}}" target="_blank">{{url_json}}</a>
+                    </label>
+                    <div class="col-lg-2 pull-right">
+                        <a role="button" class="btn btn-success" ng-click="getData(url_csv)">Descargar CSV</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
 </div>
 
 

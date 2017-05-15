@@ -29,13 +29,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             apiForecast = new WebAPIForecast()
             {
                 root = settings.Value.api_fs,
-                geographic = settings.Value.api_fs_geographic,
-                agronomic = settings.Value.api_fs_agronomic,
-                forecast_climate = settings.Value.api_fs_forecast_climate,
-                forecast_yield = settings.Value.api_fs_forecast_yield,
-                historical = settings.Value.api_fs_historical,
-                historical_yield = settings.Value.api_fs_historical_yield,
-                historical_yield_years = settings.Value.api_fs_historical_yield_years
             };
         }
 
@@ -45,13 +38,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         protected void loadAPIs()
         {
             ViewBag.api_fs = apiForecast.root;
-            ViewBag.api_fs_geographic = apiForecast.geographic;
-            ViewBag.api_fs_agronomic = apiForecast.agronomic;
-            ViewBag.api_fs_forecast_climate = apiForecast.forecast_climate;
-            ViewBag.api_fs_forecast_yield = apiForecast.forecast_yield;
-            ViewBag.api_fs_historical = apiForecast.historical;
-            ViewBag.api_fs_historical_yield = apiForecast.historical_yield;
-            ViewBag.api_fs_historical_yield_years = apiForecast.historical_yield_years;
         }
 
         /// <summary>

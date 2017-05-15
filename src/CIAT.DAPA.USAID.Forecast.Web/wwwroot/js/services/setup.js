@@ -108,5 +108,12 @@ angular.module('ForecastApp')
             return config.month_names.map(function (item, i) { return { id: i+1, name: item }; });
         }
 
+        /*
+         * Method that return all database to download data
+        */
+        dataFactory.getExpertDatabases = function () {
+            return config.expert_db;
+        }
+
         return dataFactory;
     }]);

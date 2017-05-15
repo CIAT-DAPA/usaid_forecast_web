@@ -13,13 +13,6 @@ angular
   .value('config', {
       /* Web API Url */
       api_fs: $('#api_fs').val(),
-      api_fs_geographic: $('#api_fs_geographic').val(),
-      api_fs_agronomic: $('#api_fs_agronomic').val(),
-      api_fs_forecast_climate: $('#api_fs_forecast_climate').val(),
-      api_fs_forecast_yield: $('#api_fs_forecast_yield').val(),
-      api_fs_historical: $('#api_fs_historical').val(),
-      api_fs_historical_yield: $('#api_fs_historical_yield').val(),
-      api_fs_historical_yield_years: $('#api_fs_historical_yield_years').val(),
       /* Data format */
       float: 0,
       /* Lateral menu */
@@ -35,12 +28,13 @@ angular
               { name: 'Histórico agroclimático', section: 'historical', value: 'historical' },
           ],
           expert: [
-              { name: 'Datos geográficos', value: 'content_geographic' },
-              { name: 'Datos agronómicos', value: 'content_agronomic' },
-              { name: 'Climatología', value: 'content_climatology' },
-              { name: 'Hitórico climático', value: 'content_historical_climate' },
-              { name: 'Predicción climática', value: 'content_forecast_climate' },
-              { name: 'Pronóstico de producción', value: 'content_forecast_yield' }
+              { name: 'Datos geográficos', section: 'geographic', value: 'geographic' },
+              { name: 'Datos agronómicos', section: 'agronomic', value: 'agronomic' },
+              { name: 'Climatología', section: 'climatology', value: 'climatology' },
+              { name: 'Histórico climático', section: 'climate_historical', value: 'climate_historical' },
+              { name: 'Predicción climática', section: 'climate_forecast', value: 'climate_forecast' },
+              { name: 'Histórico de producción', section: 'yield_historical', value: 'yield_historical' },              
+              { name: 'Pronóstico de producción', section: 'yield_forecast', value: 'yield_forecast' }
           ],
           about: [
               { name: 'Predicción climatica', section: 'climate', value: 'climate' },
@@ -83,9 +77,7 @@ angular
                    { name: "d_har", label: "Cosecha", metric: 'día', default: false },
                   { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }],
-              guild: { name: "FEDEARROZ" },
-              model: { name: "Oryza 2000" }
+                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }]
           },
           {
               crop: "maíz",
@@ -94,10 +86,18 @@ angular
                   { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },
                   { name: "d_dry", label: "Secado", metric: 'día', default: false },
-                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }],
-              guild: { name: "FENALCE" },
-              model: { name: "DSSAT" }
+                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }]
           }],
+      /* Expert mode*/
+      expert_db: [
+          { section: 'geographic', title:'Geografía', description: 'Esta base de datos contiene información sobre la configuración geográfica de los pronósticos y datos históricos que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos que están disponibles en esta aplicación.' },
+          { section: 'agronomic', title: 'Agronomía', description: 'Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.' },
+          { section: 'climatology', title: 'Climatología', description: 'En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología. Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras. Puede establecer una relación con los datos obtenidos en la sección de datos geográficos.' },
+          { section: 'climate_historical', title: 'Histórico Climático', description: 'Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación y radiación solar de cada mes durante un intervalo de tiempo.' },
+          { section: 'climate_forecast', title: 'Predicción climática', description: 'Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas. Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo, dentro o por encima del intervalo normal. Tambien puede descargar los escenarios climáticos según su selección.' },
+          { section: '', title: 'Agronomía', description: '' },
+          { section: '', title: 'Agronomía', description: '' }
+      ],
       /* Assist data */
       assist: [
           { id: 'climate_forecast', alt: '', title: 'Predicción climática', text: 'Predicción climatica', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
