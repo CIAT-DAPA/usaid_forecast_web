@@ -31,8 +31,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
-        //
+        
         // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
@@ -42,7 +41,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -74,21 +72,35 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return View(model);
         }
 
-        //
+        // GET: /Account/Login
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var users = await db.user.listEnableAsync();
+                return View(users);
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
+
         // GET: /Account/Register
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "ADMIN,TECH")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
+        
         //
         // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;

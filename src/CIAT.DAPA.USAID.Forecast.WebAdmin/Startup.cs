@@ -68,9 +68,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 // Cookie settings
-                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(5);
-                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+                //options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(5);
+                //options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
+                //options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
                 // User settings
                 options.User.RequireUniqueEmail = true;
                 // Signin settings
@@ -103,6 +103,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             app.UseStaticFiles();
 
             app.UseIdentity();
+
 
             app.UseMvc(routes =>
             {
