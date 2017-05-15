@@ -25,7 +25,7 @@ angular.module('ForecastApp')
       $scope.ws = null;
       $scope.gv_months = $("#gv_months").val().split(',');
       $scope.period_start = null;
-      $scope.period_end = null;      
+      $scope.period_end = null;
       $scope.cultivars = null;
       $scope.soils = null;
       // Vars of the data
@@ -47,7 +47,8 @@ angular.module('ForecastApp')
 
       $scope.loaded = false;
 
-      load_data();
+      if ($scope.municipality_name != null && $scope.municipality_name !== '')
+          load_data();
 
       function load_data() {
           // Load data from web web api
@@ -65,9 +66,9 @@ angular.module('ForecastApp')
                   $scope.ws = data_ws;
                   // Get yield ranges
                   $scope.yield_ranges = WeatherStationFactory.getRanges($scope.ws, $scope.crop_name);
-                  
+
                   // Load the Forecast information
-                  CropYieldForecastFactory.get().then(
+                  CropYieldForecastFactory.get($scope.ws.id).then(
                   function (data_f) {
                       $scope.data_f = data_f.data;
 
@@ -75,7 +76,7 @@ angular.module('ForecastApp')
                       $scope.yield_ws = CropYieldForecastFactory.getByWeatherStation($scope.data_f, $scope.ws.id);
                       $scope.cultivars = CultivarFactory.getCultivarsAvailableForecast(cultivars_temp, $scope.yield_ws);
 
-                      
+
                       // Set the period of the forecast
                       var temp_date = $scope.gv_months[0].split('-');
                       $scope.period_start = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
@@ -121,7 +122,7 @@ angular.module('ForecastApp')
        * Method that filter the data to show the information in the screen getted from the web api
       */
       function fixed_data_forecast(i) {
-          
+
           var cu = $scope.cultivars[i];
 
           $scope.cultivars[i].soil_selected = $scope.cultivars[i].soils[0];
@@ -142,11 +143,11 @@ angular.module('ForecastApp')
           $('#tabs_' + cu.id + ' a').click(function (e) {
               e.preventDefault();
               $(this).tab('show');
-          });          
+          });
 
           // Get data
           var yield_cu = CropYieldForecastFactory.getByCultivarSoil($scope.yield_ws.yield, cu.id, so.id);
-          
+
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
           base_c.setMargin(10, 30, 10, 10);
@@ -166,7 +167,7 @@ angular.module('ForecastApp')
           for (var j = 0; j < $scope.crop_vars.length; j++) {
               var vr = $scope.crop_vars[j];
               var vr_data = CropYieldForecastFactory.getByCultivarSoilMeasure(yield_cu, vr.name);
-              
+
               // Draw the graphic
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
               base_t.setMargin(10, 50, 10, 20);
@@ -189,9 +190,9 @@ angular.module('ForecastApp')
           $('#content_' + cu.id + ' div:first').addClass('active');
           $('#content_' + cu.id + ' div:first').addClass('in');
       }
-                  
+
       $rootScope.drawFunction = function (section) {
-          
+
       }
 
   });

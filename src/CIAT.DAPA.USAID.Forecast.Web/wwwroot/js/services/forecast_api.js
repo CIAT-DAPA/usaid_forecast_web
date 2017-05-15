@@ -18,6 +18,9 @@ angular.module('ForecastApp')
             raw_forecast_yield: null,
             raw_history_climate: null,
             raw_history_climatology: null,
+            raw_history_yield_year: null,
+            raw_history_yield: null,
+            
         };
 
         /*
@@ -121,6 +124,62 @@ angular.module('ForecastApp')
             if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw_history_climatology == null))
                 dataFactory.raw_history_climatology = $http.get(dataFactory.getUrlHistoricalClimatology(ws));
             return dataFactory.raw_history_climatology;
+        }
+
+        /*
+         * Method that return the url to get data forecast
+         * (string) ws: Id weather station
+        */
+        dataFactory.getUrlForecastYield = function (ws) {
+            return config.api_fs + "Forecast/Yield/" + ws + "/" + dataFactory.format;
+        }
+
+        /*
+        * Method that request the last forecast to the web api
+        * (string) ws: Id weather station
+        */
+        dataFactory.getForecastYield = function (ws) {
+            if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw_forecast_yield == null))
+                dataFactory.raw_forecast_yield = $http.get(dataFactory.getUrlForecastYield(ws));
+            return dataFactory.raw_forecast_yield;
+        }
+
+        /*
+         * Method that return the url to get yield historical years
+         * (string) ws: Concatenate string with ids of the weather stations         
+        */
+        dataFactory.getUrlHistoricalYieldYears = function (ws) {
+            return config.api_fs + "Historical/HistoricalYieldYears/" + ws + "/" + dataFactory.format;
+        }
+
+        /*
+        * Method that request the years available with information for a weather station
+        * (string) ws: String with the id of the weather stations splited by comma
+        */
+        dataFactory.getHistoricalYieldYears = function (ws) {
+            if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw_history_yield_year == null))
+                dataFactory.raw_history_yield_year = $http.get(dataFactory.getUrlHistoricalYieldYears(ws));
+            return dataFactory.raw_history_yield_year;
+        }
+
+        /*
+         * Method that return the url to get yield historical
+         * (string) ws: Concatenate string with ids of the weather stations
+         * (string) years: Concatenate string with years to search data
+        */
+        dataFactory.getUrlHistoricalYield = function (ws, years) {
+            return config.api_fs + "Historical/HistoricalYield/" + ws + "/" + years + "/" + dataFactory.format;
+        }
+
+        /*
+        * Method that request the years available with information for a weather station
+        * (string) ws: String with the id of the weather stations splited by comma
+        * (string) years: Concatenate string with years to search data
+        */
+        dataFactory.getHistoricalYield = function (ws, years) {
+            if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw_history_yield == null))
+                dataFactory.raw_history_yield = $http.get(dataFactory.getUrlHistoricalYield(ws, years));
+            return dataFactory.raw_history_yield;
         }
 
         return dataFactory;

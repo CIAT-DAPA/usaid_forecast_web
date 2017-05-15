@@ -8,35 +8,20 @@
  * Crop Historical Yield in the ForecastApp.
  */
 angular.module('ForecastApp')
-    .factory('CropYieldHistoricalFactory', function ($http, config) {
-        var dataFactory = { raw: null, cache: true };
-
-        /*
-         * Method that return the url to get yield historical years
-         * (string) ws: Concatenate string with ids of the weather stations
-        */
-        dataFactory.getUrlYears = function (ws) {
-            return config.api_fs + config.api_fs_historical_yield_years + ws;
-        }
+    .factory('CropYieldHistoricalFactory', function ($q, config, ForecastApiFactory) {
+        var dataFactory = {
+            cache: true,
+            db: ForecastApiFactory,
+            format: "json"
+        };
 
         /*
         * Method that request the years available with information for a weather station
         * (string) ws: String with the id of the weather stations splited by comma
         */
         dataFactory.getYears = function (ws) {
-            if (dataFactory.raw_y == null) {
-                dataFactory.raw_y = $http.get(dataFactory.getUrlYears(ws));
-            }
-            return dataFactory.raw_y;
-        }
-
-        /*
-         * Method that return the url to get yield historical
-         * (string) ws: Concatenate string with ids of the weather stations
-         * (string) years: Concatenate string with years to search data
-        */
-        dataFactory.getUrl = function (ws, years) {
-            return config.api_fs + config.api_fs_historical_yield + ws + "&years=" + years;
+            dataFactory.db.init(dataFactory.cache, dataFactory.format);
+            return dataFactory.db.getHistoricalYieldYears(ws);
         }
 
         /*
@@ -45,8 +30,8 @@ angular.module('ForecastApp')
         * (string) years: Concatenate string with years to search data
         */
         dataFactory.getByWeatherStationYear = function (ws, years) {
-            dataFactory.raw = $http.get(dataFactory.getUrl(ws, years));
-            return dataFactory.raw;
+            dataFactory.db.init(dataFactory.cache, dataFactory.format);
+            return dataFactory.db.getHistoricalYield(ws, years);
         }
 
         /*

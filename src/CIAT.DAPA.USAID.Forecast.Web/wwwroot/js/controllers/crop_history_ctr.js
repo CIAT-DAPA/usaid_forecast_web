@@ -16,10 +16,12 @@ angular.module('ForecastApp')
       // Get vars to show by crop
       $scope.municipality_name = tools.search('municipio');
       $scope.ws = null;
+      // Get vars to show by crop
+      $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
+      $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
       // Historical data
       $scope.data_h_years = null;
       $scope.data_h = null;
-      //$scope.historical_yield = {};
       $scope.cultivar_type = 'national';
       $scope.year_selected = null;
       // Agronomy data
@@ -28,7 +30,7 @@ angular.module('ForecastApp')
       $scope.yield_ws = null;
       // Yiel ranges for the weather station
       $scope.yield_ranges = null;
-
+      
       $scope.loaded = false;
       $scope.search_historical = fixed_data_historical;
 
@@ -63,6 +65,7 @@ angular.module('ForecastApp')
        * (string) source: Indicates the source of the data
       */
       function fixed_data_historical() {
+          console.log($scope.year_selected);
           // Load the historical information
           CropYieldHistoricalFactory.getByWeatherStationYear($scope.ws.id, $scope.year_selected).then(
           function (result) {
@@ -70,7 +73,7 @@ angular.module('ForecastApp')
               // Join all yield data in a single object                  
               $scope.data_h = CropYieldHistoricalFactory.consolidateHistoricalData(data_h);
               // Get cultivars (national or imported)
-              var cultivars = CultivarsFactory.getByCropNational($scope.data_a, $scope.crop_name, $scope.cultivar_type === 'national');
+              var cultivars = CultivarFactory.getByCropNational($scope.data_a, $scope.crop_name, $scope.cultivar_type === 'national');
               // Get the yield historical by 
               var data_cultivar = CropYieldHistoricalFactory.getByCultivars($scope.data_h, cultivars, $scope.crop_yield_var.name);
               // Draw calendar heatmap

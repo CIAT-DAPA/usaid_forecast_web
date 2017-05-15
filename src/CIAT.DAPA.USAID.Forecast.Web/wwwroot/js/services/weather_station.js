@@ -21,8 +21,7 @@ angular.module('ForecastApp')
 
             GeographicFactory.get().then(
             function (result) {
-                var raw = result.data;
-
+                var raw = result.data;                
                 var data = raw.filter(function (item) {
                     var municipalities = item.municipalities.filter(function (item2) { return item2.name === municipality; });
                     return municipalities.length > 0;
@@ -47,7 +46,7 @@ angular.module('ForecastApp')
         * (object) ws: Json with data from weather station
         * (string) crop: Id crop
         */
-        dataFactory.getRanges = function (ws, crop) {
+        dataFactory.getRanges = function (ws, crop) {            
             var answer = { labels: [], treashold: [] };
             var data = ws.ranges.filter(function (item) {
                 return item.crop_name.toLowerCase() === crop.toLowerCase();

@@ -8,22 +8,20 @@
  * Factory in the ForecastApp.
  */
 angular.module('ForecastApp')
-.factory('CropYieldForecastFactory', function ($q, config, ForecastFactory) {
-    var dataFactory = { raw: null, cache: true };
-
-    /*
-         * Method that return the url to get data forecast
-        */
-    dataFactory.getUrl = function () {
-        return ForecastFactory.getUrlYield();
-    }
+.factory('CropYieldForecastFactory', function ($q, config, ForecastApiFactory) {
+    var dataFactory = {
+        cache: true,
+        db: ForecastApiFactory,
+        format: "json"
+    };
 
     /*
     * Method that request the last forecast to the web api
+    * (string) ws: Id weater station
     */
-    dataFactory.get = function () {
-        ForecastFactory.cache = dataFactory.cache;
-        return ForecastFactory.getYield();
+    dataFactory.get = function (ws) {
+        dataFactory.db.init(dataFactory.cache, dataFactory.format);
+        return dataFactory.db.getForecastYield(ws);
     }
 
     /*

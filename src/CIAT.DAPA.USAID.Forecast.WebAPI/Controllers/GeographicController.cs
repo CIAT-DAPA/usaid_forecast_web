@@ -105,18 +105,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 var municipalities = await db.municipality.listEnableVisibleAsync();
                 var weatherstations = await db.weatherStation.listEnableVisibleAsync();
                 var crops = (await db.crop.listEnableAsync()).FirstOrDefault(p=>p.name.ToLower().Equals(crop.Trim().ToLower()));
-                var cultivars = (await db.cultivar.listByCropEnableAsync(crops.id)).Select(p=>p.id);
+                var crops_cultivar = await db.cultivar.listByCropEnableAsync(crops.id);
+                var cultivars = crops_cultivar.Select(p=>p.id);
                 var forecast = await db.forecast.getLatestAsync();
-                var yield = await db.forecastYield.byForecastAsync(forecast.id);
+                var yield_forecast = await db.forecastYield.byForecastAsync(forecast.id);
 
                 // filter
                 List<ObjectId> ws_forecast = new List<ObjectId>();
                 // Get the weather station with data in the forecast for the crop
-                foreach(var y in yield)
+                foreach(var y in yield_forecast)
                 {
                     foreach (var c in y.yield)
                     {
-                        if (cultivars.Contains(c.cultivar) && ws_forecast.Contains(y.weather_station))
+                        if (cultivars.Contains(c.cultivar) && !ws_forecast.Contains(y.weather_station))
                             ws_forecast.Add(y.weather_station);
                     }
                 }
