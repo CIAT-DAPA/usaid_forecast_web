@@ -2,7 +2,7 @@
   .controller('ClimateForecastCtrl', function ($rootScope, $scope, setup, tools,
                                     WeatherStationFactory,
                                     ClimateClimatologyFactory,
-                                    ClimateForecastFactory) {
+                                    ClimateForecastFactory, ClimateScenarioFactory) {
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       // Vars view
@@ -15,6 +15,8 @@
       $scope.climatology_upper = null;
       // Forecast data
       $scope.forecast = null;
+      // Forecast scenario
+      $scope.scenario = null;
       // Months
       $scope.months = null;
       $scope.loaded = false;
@@ -45,17 +47,24 @@
                   $scope.months = $scope.forecast.map(function (item) {
                       return item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
                   });
-                  // Get limit lower of the climatology for the months of the forecast 
-                  ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
-                  function (data_l) {
-                      $scope.climatology_lower = data_l;
-                      // Get limit upper of the climatology for the months of the forecast
-                      ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
-                      function (data_u) {
-                          $scope.climatology_upper = data_u;
 
-                          // Draw graphic
-                          draw_forecast();
+                  // Get scenarios
+                  ClimateScenarioFactory.getScenarios($scope.ws.id).then(
+                  function (data_fs) {
+                      $scope.scenario = data_fs;
+                      // Get limit lower of the climatology for the months of the forecast 
+                      ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
+                      function (data_l) {
+                          $scope.climatology_lower = data_l;
+                          // Get limit upper of the climatology for the months of the forecast
+                          ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
+                          function (data_u) {
+                              $scope.climatology_upper = data_u;
+
+                              // Draw graphic
+                              draw_forecast();
+                          },
+                          function (err) { console.log(err); });
                       },
                       function (err) { console.log(err); });
                   },
@@ -76,6 +85,9 @@
                             '<li data-target="#climate_carousel" data-slide-to="0" class="active"></li>' +
                             '<li data-target="#climate_carousel" data-slide-to="1"></li>' +
                             '<li data-target="#climate_carousel" data-slide-to="2"></li>' +
+                            '<li data-target="#climate_carousel" data-slide-to="3"></li>' +
+                            '<li data-target="#climate_carousel" data-slide-to="4"></li>' +
+                            '<li data-target="#climate_carousel" data-slide-to="5"></li>' +
                         '</ol>' +
                         '<div class="carousel-inner" role="listbox">';
           var period = '';
@@ -86,9 +98,9 @@
                   period = m.month_name + ', ' + m.year + ' a ';
               else if (i == ($scope.forecast.length - 1))
                   period = period + m.month_name + ', ' + m.year;
-              if (i == 0 || i == 2 || i == 4)
-                  ctrs = ctrs + '<section class="item active">';
-              ctrs = ctrs + '<article class="col-lg-4 article_content ' + ((i == 0 || i == 2 || i == 4) ? 'col-lg-offset-2' : '') + '">' +
+              //if (i == 0 || i == 2 || i == 4)
+              ctrs = ctrs + '<section class="item active">';
+              ctrs = ctrs + '<article class="col-lg-4 article_content col-lg-offset-2">' +
                                 '<div class="section-content">' +
                                     '<h3 class="text-center">' + m.month_name + '-' + m.year + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
@@ -97,8 +109,14 @@
                                     '</p>' +
                                 '</div>' +
                             '</article>';
-              if (i == 1 || i == 3 || i == 5)
-                  ctrs = ctrs + '</section>';
+              ctrs = ctrs + '<article class="col-lg-4 article_content">' +
+                                '<div class="section-content">' +
+                                    '<h3 class="text-center">Escenarios climáticos</h3>' +
+                                    '<div id="table' + m.year + '-' + m.month + '"></div>' +
+                                '</div>' +
+                            '</article>';
+              //if (i == 1 || i == 3 || i == 5)
+              ctrs = ctrs + '</section>';
           }
           ctrs = ctrs + '<a class="left carousel-control" href="#climate_carousel" role="button" data-slide="prev"> ' +
                             '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>' +
@@ -134,6 +152,39 @@
                                  ' mm y ' + cl_upper + ' mm</span>, la predicción climática sugiere que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
+
+              // Scenarios
+              var id_scenario = '#table' + m.year + '-' + m.month;
+              var content_scenario = '<table class="table">' +
+                                        '<tr><th>Variable</th><th>Minímo</th><th>Promedio</th><th>Máximo</th></tr>';
+              var cl_vars = setup.getClimateVarsScenario();
+              var scenarios_vars = ['min', 'avg', 'max'];
+              for (var k = 0; k < cl_vars.length; k++) {
+                  content_scenario = content_scenario + '<tr><td>' + cl_vars[k].name + '</td>';
+                  for (var l = 0; l < scenarios_vars.length; l++) {
+                      var s = $scope.scenario.filter(function (item) { return item.scenario === scenarios_vars[l]; })[0];
+                      var s_var = s.content.filter(function (item) { return item.measure === cl_vars[k].value && item.year == m.year; });
+                      var sum = 0;
+                      var count = 0;
+                      for (var n = 0; n < s_var.length; n++) {
+                          var s_monthly = s_var[n].data.filter(function (item) { return item.month == m.month;});
+                          var s_data = s_monthly.map(function (item) {
+                              return {
+                                  sum: item.values.reduce((a, b) =>a + b, 0),
+                                  count: item.values.length
+                              };
+                          });
+                          for (var o = 0; o < s_data.length; o++) {
+                              sum += s_data[o].sum;
+                              count += s_data[o].count;
+                          }                          
+                      }
+                      content_scenario = content_scenario + '<td>' + (sum / count).toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                  }
+                  content_scenario = content_scenario + '</tr>';
+              }
+              content_scenario = content_scenario + '</table>';
+              $(id_scenario).html(content_scenario);
           }
 
           $('#probabilities_pies section').removeClass('active');

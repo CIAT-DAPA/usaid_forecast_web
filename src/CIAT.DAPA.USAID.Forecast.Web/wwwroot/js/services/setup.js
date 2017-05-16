@@ -28,11 +28,11 @@ angular.module('ForecastApp')
          * Method to determinate which is the current webpage
         */
         dataFactory.source = function () {
-            if (window.location.href.includes('Clima') || window.location.href.includes('clima'))
+            if (window.location.href.includes('/Clima') || window.location.href.includes('/clima'))
                 return 'climate';
-            else if (window.location.href.includes('Cultivo') || window.location.href.includes('cultivo'))
+            else if (window.location.href.includes('/Cultivo') || window.location.href.includes('/cultivo'))
                 return 'crop';
-            else if (window.location.href.includes('Experto') || window.location.href.includes('experto'))
+            else if (window.location.href.includes('/Experto') || window.location.href.includes('/experto'))
                 return 'expert';
             else
                 return 'about';
@@ -71,6 +71,13 @@ angular.module('ForecastApp')
         */
         dataFactory.getClimateVars = function () {
             return config.climate_vars;
+        }
+
+        /*
+         * Method that return all climate vars avaliable
+        */
+        dataFactory.getClimateVarsScenario = function () {
+            return config.climate_vars_scenario;
         }
 
         /*
