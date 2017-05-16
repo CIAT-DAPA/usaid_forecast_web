@@ -68,6 +68,12 @@ angular
               description_historical: ' Esta grafica muestra la radiación solar ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
           }
       ],
+      climate_vars_scenario: [
+          { name: 'Precipitación', value: 'prec', metric: 'mm'},
+          { name: 'T. Máxima', value: 't_max',  metric: '°C'},
+          { name: 'T. Mínima', value: 't_min', metric: '°C'},
+          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d'}
+      ],
       climatology_forecast: { lower: 'prec_ter_1', upper: 'prec_ter_2' },
       /* Yield vars */
       yield_default_var: [

@@ -74,6 +74,13 @@ angular.module('ForecastApp')
         }
 
         /*
+         * Method that return all climate vars avaliable
+        */
+        dataFactory.getClimateVarsScenario = function () {
+            return config.climate_vars_scenario;
+        }
+
+        /*
          * Method that return the climate vars for the forecast
         */
         dataFactory.getClimatologyVarsForecast = function () {
