@@ -55,26 +55,26 @@ angular.module('ForecastApp')
             function (result) {
                 var filtered = result;
                 var data = filtered.map(function (item) {
-                    var scenarios = item.monthly_data.map(function (item2) {
-                        var climate_vars = [...new Set(item2.data.map(item3 => item3.measure))];
-                        var content = [];
-                        for (var i = 0; i < climate_vars.length; i++) {
-                            var list_values = item2.data.filter(function (item3) { return item3.measure === climate_vars[i]; });
+                    var obj = [];
+                    for (var i = 0; i < config.climate_vars_scenario.length; i++) {
+                        var temp_m = config.climate_vars_scenario[i];
+                        var scenarios = item.monthly_data.map(function (item2) {
+                            var list_values = item2.data.filter(function (item3) { return item3.measure === temp_m.value; });
                             var values = list_values.map(function (item3) { return item3.value; });
-                            content.push({
-                                climate_var: climate_vars[i],
-                                values : values
-                            });
-                        }
-                        return {
-                            month: item2.month,
-                            data: content
-                        };
-                    });
-                    return {
-                        year: item.year,
+                            return {
+                                month: item2.month,
+                                values: values
+                            };
+                        });
+                        obj.push({
+                            data: scenarios,
+                            year: item.year,
+                            measure: temp_m.value
+                        });
+                    }
+                    return {                        
                         scenario: item.name,
-                        raw: scenarios
+                        content: obj
                     };
                 });
                 defer.resolve(data);
