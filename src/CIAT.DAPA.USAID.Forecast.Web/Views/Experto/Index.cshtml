@@ -11,11 +11,14 @@
 <!-- End global variables -->
 <!-- Start Description -->
 @Html.Partial("_SubMenu")
-<div ng-controller="ExpertCtrl" style="margin:15px">
-    <h2 class="text-center" id="sectionTitle" style="color: white;">Descargar datos</h2>
+<div ng-controller="ExpertCtrl" style="">
     <div id="containerBlock">
+        <span class="facebook sharedLink" title="Compartir con Facebook"><img src="~/images/facebook.png" height="30" width="30"></span>
+        <span class="twitter sharedLink" title="Compartir con Twitter"><img src="~/images/twitter.png" height="30" width="30"></span>
+        <span class="help sharedLink" title="Ver ayuda"><span class="glyphicon glyphicon-play"></span></span>
         <section id="description" class="col-md-12">
             <article class="row section-content">
+                <h2 class="text-center" id="sectionTitle" style="">Descargar datos</h2>
                 <div class="col-lg-12">
                     <p class="text-justify">
                         Usted puede obtener los datos del resultado de los pronósticos e históricos climáticos y agroclimáticos mediante esta

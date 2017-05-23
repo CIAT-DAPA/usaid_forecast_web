@@ -18,15 +18,16 @@
     #containerBlock{
         float:left; 
         background-color: #eee; 
-        padding: 15px 30px; 
+        padding: 6px 6px; 
         width:100%;
-        margin:10px 0 50px 0;
+        margin:60px 0 50px 0;
+        position:relative;
     }
     .body-content{
         background-image:url(/images/imageTest.jpg); 
         background-size:100% 100%; 
         background-color:white; 
-        padding:0 25px;
+        padding:0 2px;
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
@@ -35,15 +36,16 @@
 @media (min-width: 1100px) {
     #secundaryMenu {
         float:left;
-        width:23%;
+        width:20%;
         margin-right:2%; 
     }
     #containerBlock{
         float:left; 
         background-color: #eee; 
-        padding: 15px 15px; 
-        width:75%;
+        padding: 6px 6px; 
+        width:78%;
         margin:10px 0 50px 0;
+        position:relative;
     }
     .body-content{
         background-image:url(/images/imageTest.jpg); 
@@ -66,6 +68,7 @@
         padding: 15px 30px; 
         width:82%;
         margin:10px 0 50px 0;
+        position:relative;
     }
     .body-content{
         background-image:url(/images/imageTest.jpg); 
@@ -76,7 +79,42 @@
     }
 }
 
+.body-content .container-fluid{
+    padding-top:35px;
+}
 
+/*Test share*/
+.sharedLink{
+    position: absolute;
+    z-index: 99;
+    cursor: pointer;
+    
+}
+
+.facebook{
+    background-color:white;
+    border-radius:4px;
+    right: 0px;
+    top: -30px;
+}
+
+.twitter{
+    background-color:#1da1f2;
+    border-radius:4px;
+    right: 40px;
+    top: -30px;
+}
+
+.help{
+    background-color: white;
+    border-radius: 4px;
+    right: 80px;
+    top: -30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+}
 
 .leftMenu-wrapper{
     border: 1px solid #D1D1D1;
@@ -189,7 +227,7 @@ footer a{
 /* Helpers */
 
 .section-content {
-    padding: 5px;
+    padding: 15px;
     background-color: #fff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }

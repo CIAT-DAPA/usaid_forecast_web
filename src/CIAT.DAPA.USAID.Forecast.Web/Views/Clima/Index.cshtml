@@ -10,12 +10,16 @@
 
 @Html.Partial("_SubMenu")
 
-<h2 class="text-center" id="sectionTitle" style="color: white;">Predicción Climática</h2>
+
 <div id="containerBlock">
     <!-- Start Probabilities -->
+    <span class="facebook sharedLink" title="Compartir con Facebook"><img src="~/images/facebook.png"  height="30" width="30"></span>
+    <span class="twitter sharedLink" title="Compartir con Twitter"><img src="~/images/twitter.png" height="30" width="30"></span>
+    <span class="help sharedLink" title="Ver ayuda"><span class="glyphicon glyphicon-play"></span></span>
     <section class="col-md-12 sections" id="content_forecast" ng-controller="ClimateForecastCtrl">
-        <div class="row section-content" style="padding-top:25px;">
-            <div class="col-lg-12">
+        <div class="row section-content">
+            <h2 class="text-center" id="sectionTitle" style="">Predicción Climática</h2>
+            <div>
                 <!--a href="#" class="icon_help" ng-click="assist('climate_forecast')" data-toggle="modal" data-target="#assit_modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></!--a -->
                 <p class="text-justify col-lg-12" style="font-size:1.1em;">
                     Se presenta la predicción del clima,
