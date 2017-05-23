@@ -1,7 +1,8 @@
 ﻿<div id="secundaryMenu" ng-controller="SubMenuCtrl">
     <div id="leftMenu">
-        <h3 class="text-center" style="color: white;">Información</h3>
+        
         <div class="leftMenu-wrapper col-md-12">
+            <label class="text-center col-md-12" style="text-align:center; font-size:1.2em;">Información</label>
             <ul class="row">
                 <li ng-repeat="sb in subSections" id="subMenu-{{sb.value}}" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView(sb.value,sb.name,sb.section)">{{sb.name}}</li>
             </ul>
