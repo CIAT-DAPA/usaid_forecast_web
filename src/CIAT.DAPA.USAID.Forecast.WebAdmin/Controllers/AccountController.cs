@@ -25,7 +25,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public AccountController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager,
+        public AccountController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, 
+            UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager) : base(settings, LogEntity.users, hostingEnvironment)
         {
             _userManager = userManager;
@@ -47,29 +48,36 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            try
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                ViewData["ReturnUrl"] = returnUrl;
+                if (ModelState.IsValid)
                 {
-                    return RedirectToLocal(returnUrl);
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        return View("Lockout");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
                 }
-                if (result.IsLockedOut)
-                {
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
+            catch(Exception ex)
+            {
+                return View(model);
+            }            
         }
 
         // GET: /Account/Login
@@ -78,7 +86,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                var users = await db.user.listEnableAsync();
+                var users = await db.user.listAllAsync();
                 return View(users);
             }
             catch (Exception ex)
@@ -183,11 +191,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                await notifyEmail.SendEmailAsync(model.Email, "Cambiar password",
+                   $"<p style=\"text-align:justify;\">Estimado usuario<br/><br/>Por favor cambía tu password haciendo click en el siguiente <a href=\"{callbackUrl}\">link</a></p>");
+                return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form

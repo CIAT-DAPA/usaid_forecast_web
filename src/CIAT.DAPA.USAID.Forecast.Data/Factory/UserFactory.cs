@@ -47,5 +47,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var results = await collection.Find(filter).ToListAsync<User>();
             return results.FirstOrDefault();
         }
+
+        /// <summary>
+        /// Method that return all registers enable in the database
+        /// </summary>
+        /// <returns>List of entity</returns>
+        public async Task<List<User>> listAllAsync()
+        {
+            return await collection.Find(_=>true).ToListAsync<User>();
+        }
     }
 }
