@@ -13,9 +13,7 @@
 
 <div id="containerBlock">
     <!-- Start Probabilities -->
-    <span class="facebook sharedLink" title="Compartir con Facebook"><img src="~/images/facebook.png"  height="30" width="30"></span>
-    <span class="twitter sharedLink" title="Compartir con Twitter"><img src="~/images/twitter.png" height="30" width="30"></span>
-    <span class="help sharedLink" title="Ver ayuda"><span class="glyphicon glyphicon-play"></span></span>
+    @Html.Partial("_SocialMedia")
     <section class="col-md-12 sections" id="content_forecast" ng-controller="ClimateForecastCtrl">
         <div class="row section-content">
             <h2 class="text-center" id="sectionTitle" style="">Predicción Climática</h2>
