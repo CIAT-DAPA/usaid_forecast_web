@@ -11,14 +11,16 @@
 
 @Html.Partial("_SubMenu")
 
-<h2 class="text-center" id="sectionTitle" style="color: white;">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
+
 <div id="containerBlock">
+    @Html.Partial("_SocialMedia")
     <!-- Start Forecast -->
     <div class="sections" ng-controller="CropForecastCtrl" id="content_forecast">
         <!-- Start Description -->
         <section class="col-md-12" id="description">
             <div class="row section-content">
-                <div class="col-lg-12">
+                <h2 class="text-center" id="sectionTitle" style="">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
+                <div >
                     <p class="text-justify">
                         Para el municipio de <span class="text-bold">{{municipality_name}}</span>
                         se presenta el pronóstico agroclimático para el período comprendido de
