@@ -1,6 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -82,6 +84,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Login
         [HttpGet]
+        [Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Index()
         {
             try
@@ -101,6 +104,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.roles = new SelectList(Role.ROLES_PLATFORM);
             return View();
         }
         
