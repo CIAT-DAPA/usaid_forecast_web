@@ -9,10 +9,10 @@
 <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
 <!-- End global variables -->
 
+<!-- Start Description -->
 @Html.Partial("_SubMenu")
-
-<h2 class="text-center" id="sectionTitle" style="color: white;">Descargar datos</h2>
 <div id="containerBlock">
+    @Html.Partial("_SocialMedia")
     <section id="description" class="col-md-12" ng-controller="ExpertCtrl">
         <article class="row section-content">
             <h3>
