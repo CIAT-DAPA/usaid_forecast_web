@@ -34,7 +34,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <summary>
         /// List of the entities affected
         /// </summary>
-        protected List<LogEntity> entities { get; set; }        
+        protected List<LogEntity> entities { get; set; }
         /// <summary>
         /// Path where the imports files are located
         /// </summary>
@@ -64,6 +64,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         protected IEmailSender notifyEmail;
 
+        /*
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -73,7 +74,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         public WebAdminBaseController(IOptions<Settings> settings, LogEntity entity, IHostingEnvironment environment) : base()
         {
             init(settings, entity, environment);
-        }
+        }*/
 
         /// <summary>
         /// Method Construct
@@ -114,9 +115,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="content">Description event</param>
         /// <param name="e">Type event</param>
         /// <param name="entities_affected">List of the entities affected</param>
-        public void writeEvent(string content, LogEvent e, List<LogEntity> entities_affected)
+        public async Task writeEventAsync(string content, LogEvent e, List<LogEntity> entities_affected)
         {
-            //log.writeAsync(content, entities_affected, e, user);
+            var user = await GetCurrentUserAsync();
+            log.writeAsync(content, entities_affected, e, user == null ? "anonymous" : user.Id.ToString());
         }
 
         /// <summary>
@@ -124,18 +126,18 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="content">Description event</param>
         /// <param name="e">Type event</param>
-        public void writeEvent(string content, LogEvent e)
+        public async Task writeEventAsync(string content, LogEvent e)
         {
-            writeEvent(content, e, entities);
+            await writeEventAsync(content, e, entities);
         }
 
         /// <summary>
         /// Method that write an error event in the website
         /// </summary>
         /// <param name="ex">Exception</param>
-        public void writeException(Exception ex)
+        public async Task writeExceptionAsync(Exception ex)
         {
-            writeEvent(ex.Message + " - " + ex.StackTrace.ToString(), LogEvent.exc, entities);
+            await writeEventAsync(ex.Message + " - " + ex.StackTrace.ToString(), LogEvent.exc, entities);
         }
 
         /// <summary>
@@ -146,6 +148,22 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         protected ObjectId getId(string id)
         {
             return ForecastDB.parseId(id);
+        }
+
+        /// <summary>
+        /// Method that return the current user
+        /// </summary>
+        /// <returns></returns>
+        protected Task<IdentityUser> GetCurrentUserAsync()
+        {
+            try
+            {
+                return managerUser.GetUserAsync(HttpContext.User);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -160,23 +178,25 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var user = new IdentityUser { UserName = email, Email = email };
+                await writeEventAsync("Register user email: " + email + " role: " + role, LogEvent.rea);
                 var result = await managerUser.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
+                    await writeEventAsync("Register user email: " + email + " - Created ", LogEvent.rea);
                     await managerUser.AddToRoleAsync(user, role);
                     // Send an email with this link
                     var code = await managerUser.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await notifyEmail.SendEmailAsync(email, "Confirmar cuenta",
-                        $"<p style=\"text-align:justify;\">Estimado usuario<br/><br/>Para confirmar su cuenta por favor presione click en el siguiente <a href=\"{callbackUrl}\">link</a></p>");                    
+                        $"<p style=\"text-align:justify;\">Estimado usuario<br/><br/>Para confirmar su cuenta por favor presione click en el siguiente <a href=\"{callbackUrl}\">link</a></p>");
                     return true;
                 }
                 return false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
-            }            
+            }
         }
 
         /// <summary>
@@ -187,7 +207,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                foreach(var role in Role.ROLES_PLATFORM)
+                foreach (var role in Role.ROLES_PLATFORM)
                 {
                     var r = await db.role.byNameAsync(role);
                     if (r == null)

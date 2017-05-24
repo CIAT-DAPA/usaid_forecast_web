@@ -4,6 +4,8 @@ using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
@@ -23,7 +25,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public CropController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, LogEntity.cp_crop, hostingEnvironment)
+        public CropController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+            base(settings, LogEntity.cp_crop, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
 
@@ -34,12 +37,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.crop.listEnableAsync();
-                writeEvent(list.Count().ToString(), LogEvent.lis);
+                await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
 
@@ -53,21 +56,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -90,15 +93,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 if (ModelState.IsValid)
                 {
                     await db.crop.insertAsync(entity);
-                    writeEvent(entity.ToString(), LogEvent.cre);
+                    await writeEventAsync(entity.ToString(), LogEvent.cre);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View(entity);
             }
         }
@@ -111,21 +114,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -143,15 +146,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
                     entity.id = getId(id);
                     await db.crop.updateAsync(current_entity, entity);
-                    writeEvent(entity.ToString(), LogEvent.upd);
+                    await writeEventAsync(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View(entity);
             }
         }
@@ -164,21 +167,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -192,12 +195,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 Crop entity = await db.crop.byIdAsync(id);
                 await db.crop.deleteAsync(entity);
-                writeEvent(entity.ToString(), LogEvent.del);
+                await writeEventAsync(entity.ToString(), LogEvent.del);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Delete", new { id = id });
             }
         }
@@ -210,13 +213,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Crop entity = await db.crop.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
                 // Set data for the view
@@ -233,12 +236,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewBag.weather_station = new SelectList(ws, "id", "name");
                 ViewBag.cultivar = new SelectList(cu.Where(p => p.crop == entity.id), "id", "name");
                 ViewBag.soil = new SelectList(so.Where(p => p.crop == entity.id), "id", "name");
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entities);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -286,12 +289,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Set the files to the setup entity
                 setup.conf_files = files;
                 await db.crop.addSetupAsync(entity_new, setup);
-                writeEvent(id + "setup add: " + setup.weather_station.ToString() + "-" + setup.cultivar.ToString() + "-" + setup.soil.ToString() + "-" + setup.days.ToString(), LogEvent.upd);
+                await writeEventAsync(id + "setup add: " + setup.weather_station.ToString() + "-" + setup.cultivar.ToString() + "-" + setup.soil.ToString() + "-" + setup.days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = id });
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Setup");
             }
         }
@@ -307,12 +310,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 Crop entity_new = await db.crop.byIdAsync(crop);
                 // Delete the setup
                 await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
-                writeEvent(crop + "setup del: " + ws + "-" + cu + "-" + so + "-" + days.ToString(), LogEvent.upd);
+                await writeEventAsync(crop + "setup del: " + ws + "-" + cu + "-" + so + "-" + days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = crop });
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Setup", new { id = crop });
             }
         }

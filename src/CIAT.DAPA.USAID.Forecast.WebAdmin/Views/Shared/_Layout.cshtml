@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CIAT.DAPA.USAID.Forecast.WebAdmin</title>
+    <title>@ViewBag.Title</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -30,14 +30,35 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="State" asp-action="Index">Departamentos</a></li>
-                    <li><a asp-area="" asp-controller="Municipality" asp-action="Index">Municipios</a></li>
-                    <li><a asp-area="" asp-controller="WeatherStation" asp-action="Index">Estaciones</a></li>
-                    <li><a asp-area="" asp-controller="Crop" asp-action="Index">Cultivos</a></li>
-                    <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">Cultivares</a></li>
-                    <li><a asp-area="" asp-controller="Soil" asp-action="Index">Suelos</a></li>
-                    <li><a asp-area="" asp-controller="Source" asp-action="Index">Fuentes</a></li>
-                    <li><a asp-area="" asp-controller="Account" asp-action="Index">Usuarios</a></li>
+                    <li class="dropdown text-bold">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> Administración<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="Source" asp-action="Index">Fuentes</a></li>
+                            <li><a asp-area="" asp-controller="Account" asp-action="Index">Usuarios</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown text-bold">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> Geografía<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="State" asp-action="Index">Estados</a></li>
+                            <li><a asp-area="" asp-controller="Municipality" asp-action="Index">Municipios</a></li>
+                            <li><a asp-area="" asp-controller="WeatherStation" asp-action="Index">Estaciones</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown text-bold">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> Producción<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="Crop" asp-action="Index">Cultivos</a></li>
+                            <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">Cultivares</a></li>
+                            <li><a asp-area="" asp-controller="Soil" asp-action="Index">Suelos</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown text-bold">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cloud-upload"></span> Importación<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            
+                        </ul>
+                    </li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

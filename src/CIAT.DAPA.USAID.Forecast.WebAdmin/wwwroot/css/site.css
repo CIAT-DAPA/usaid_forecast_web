@@ -1,4 +1,5 @@
 ﻿body {
+    
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -6,8 +7,7 @@
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+        
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
@@ -24,21 +24,30 @@ textarea {
 }
 
 /* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"]
-{
+.carousel-inner .item img[src$=".svg"] {
     width: 100%;
 }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none
-  }
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
 }
 
-.img-carousel{
-    max-height:341px;
-    min-height:341px;
+.img-carousel {
+    max-height: 341px;
+    min-height: 341px;
     width: 100%;
+}
+
+.background_home{
+    width:100%;
+    height:100%;
+    background-image: url("../images/background.jpg");
+    background-size: 100% 100%;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }

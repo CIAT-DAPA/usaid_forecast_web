@@ -14,6 +14,8 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.MongoDB;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +29,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public StateController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, LogEntity.lc_state, hostingEnvironment)
+        public StateController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+            base(settings, LogEntity.lc_state, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
 
@@ -38,12 +41,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.state.listEnableAsync();
-                writeEvent(list.Count().ToString(), LogEvent.lis);
+                await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
 
@@ -57,21 +60,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 State entity = await db.state.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -93,15 +96,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 if (ModelState.IsValid)
                 {
                     await db.state.insertAsync(entity);
-                    writeEvent(entity.ToString(), LogEvent.cre);
+                    await writeEventAsync(entity.ToString(), LogEvent.cre);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View(entity);
             }
         }
@@ -114,21 +117,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 State entity = await db.state.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -146,15 +149,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
                     entity.id = getId(id);
                     await db.state.updateAsync(current_entity, entity);
-                    writeEvent(entity.ToString(), LogEvent.upd);
+                    await writeEventAsync(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View(entity);
             }
         }
@@ -167,21 +170,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 State entity = await db.state.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -195,12 +198,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 State entity = await db.state.byIdAsync(id);
                 await db.state.deleteAsync(entity);
-                writeEvent(entity.ToString(), LogEvent.del);
+                await writeEventAsync(entity.ToString(), LogEvent.del);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Delete", new { id = id });
             }
         }
@@ -213,21 +216,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 State entity = await db.state.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -307,17 +310,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             count_municipalities.ToString() + ") municipalities (" + count_weather_stations.ToString() + ") weather stations",
                         type = MessageType.successful
                     };
-                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
+                    await writeEventAsync(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
                 }
                 else
                 {
                     msg = new Message() { content = "Import MWS. An error occurred with the file imported", type = MessageType.error };
-                    writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
+                    await writeEventAsync(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_state, LogEntity.lc_municipality, LogEntity.lc_weather_station });
                 }
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             ViewBag.message = msg;

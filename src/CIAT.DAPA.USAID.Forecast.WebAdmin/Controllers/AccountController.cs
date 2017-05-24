@@ -1,6 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,28 +12,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
     [Authorize]
     public class AccountController : WebAdminBaseController
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public AccountController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager) : base(settings, LogEntity.users, hostingEnvironment)
+        public AccountController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
+            base(settings, LogEntity.users, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
 
-        //
         // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
@@ -42,88 +38,46 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            try
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                ViewData["ReturnUrl"] = returnUrl;
+                if (ModelState.IsValid)
                 {
-                    return RedirectToLocal(returnUrl);
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                    var result = await managerSignIn.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        await writeEventAsync("User trying login: " + model.Email + " - Succeeded", LogEvent.rea);
+                        return RedirectToLocal(returnUrl);
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        await writeEventAsync("User trying login: " + model.Email + " - Locked", LogEvent.rea);
+                        ModelState.AddModelError(string.Empty, "Usuario bloqueado");
+                        return View(model);
+                    }
+                    else
+                    {
+                        await writeEventAsync("User trying login: " + model.Email + " - Error", LogEvent.rea);
+                        ModelState.AddModelError(string.Empty, "Usuario o password inválidos");
+                        return View(model);
+                    }
                 }
-                if (result.IsLockedOut)
-                {
-                    return View("Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
+                // If we got this far, something failed, redisplay form
+                return View(model);
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    //_logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                //AddErrors(result);
+                await writeExceptionAsync(ex);
+                return View(model);
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
-        {
-            await _signInManager.SignOutAsync();
-            //_logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         // GET: /Account/ConfirmEmail
@@ -131,17 +85,29 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
+            try
             {
+                await writeEventAsync("Trying confirm email: " + userId ?? string.Empty + " code: " + code ?? string.Empty, LogEvent.rea);
+                if (userId == null || code == null)
+                {
+                    return View("Error");
+                }
+                var user = await managerUser.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    await writeEventAsync("Trying confirm email: " + userId + " - user not found ", LogEvent.rea);
+                    return View("Error");
+                }
+                var result = await managerUser.ConfirmEmailAsync(user, code);
+                await writeEventAsync("Trying confirm email: " + userId ?? string.Empty + " - " + (result.Succeeded ? "Confirmed" : "Not confirmed"), LogEvent.rea);
+                return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
                 return View("Error");
             }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+
         }
 
         //
@@ -160,26 +126,36 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (ModelState.IsValid)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+                    await writeEventAsync("Forgot Password email: " + model.Email, LogEvent.rea);
+                    var user = await managerUser.FindByNameAsync(model.Email);
+                    if (user == null || !(await managerUser.IsEmailConfirmedAsync(user)))
+                    {
+                        await writeEventAsync("Forgot Password email: " + model.Email + " - user not found", LogEvent.rea);
+                        // Don't reveal that the user does not exist or is not confirmed
+                        return View("ForgotPasswordConfirmation");
+                    }
+
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                    // Send an email with this link
+                    var code = await managerUser.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    await notifyEmail.SendEmailAsync(model.Email, "Se te olvidó tu password",
+                       $"<p style=\"text-align:justify;\">Estimado usuario<br/><br/>Por favor cambía tu password haciendo click en el siguiente <a href=\"{callbackUrl}\">link</a></p>");
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                // If we got this far, something failed, redisplay form
+                return View(model);
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }
         }
 
         //
@@ -191,7 +167,71 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return View();
         }
 
+        // GET: /Account/Login
+        [HttpGet]
+        [Authorize(Roles = "ADMIN,TECH")]
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var users = await db.user.listAllAsync();
+                await writeEventAsync("List all users " + users.Count.ToString(), LogEvent.lis);
+                return View(users);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }
+        }
+
+        // GET: /Account/Register
+        [HttpGet]
+        [Authorize(Roles = "ADMIN,TECH")]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
+            return View();
+        }
+
         //
+        // POST: /Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN,TECH")]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            try
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+                if (ModelState.IsValid)
+                {
+                    await registerUserAsync(model.Email, model.Password, model.Role);
+                    return RedirectToAction("Index");
+                }
+                // If we got this far, something failed, redisplay form
+                ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }
+        }
+
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await managerSignIn.SignOutAsync();
+            //_logger.LogInformation(4, "User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        
         // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
@@ -211,13 +251,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 return View(model);
             }
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await managerUser.FindByNameAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            var result = await managerUser.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
@@ -233,11 +273,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
-        }
-
-        private Task<IdentityUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
         }
 
         private IActionResult RedirectToLocal(string returnUrl)

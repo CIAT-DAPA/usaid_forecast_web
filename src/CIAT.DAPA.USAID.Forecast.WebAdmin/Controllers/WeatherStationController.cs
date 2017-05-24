@@ -16,6 +16,8 @@ using MongoDB.Bson;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 using CIAT.DAPA.USAID.Forecast.Data.Database;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.MongoDB;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -27,7 +29,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public WeatherStationController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, LogEntity.lc_weather_station, hostingEnvironment)
+        public WeatherStationController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+            base(settings, LogEntity.lc_weather_station, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
 
@@ -38,12 +41,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.weatherStation.listEnableAsync();
-                writeEvent(list.Count().ToString(), LogEvent.lis);
+                await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
 
@@ -57,21 +60,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 WeatherStation entity = await db.weatherStation.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -95,16 +98,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 if (ModelState.IsValid)
                 {
                     await db.weatherStation.insertAsync(entity);
-                    writeEvent(entity.ToString(), LogEvent.cre);
+                    await writeEventAsync(entity.ToString(), LogEvent.cre);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 await generateListMunicipalitiesAsync(string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 await generateListMunicipalitiesAsync(string.Empty);
                 return View(entity);
             }
@@ -119,22 +122,22 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 entity = await db.weatherStation.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
@@ -154,16 +157,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     entity.id = getId(id);
                     entity.municipality = getId(HttpContext.Request.Form["municipality"].ToString());
                     await db.weatherStation.updateAsync(current_entity, entity);
-                    writeEvent(entity.ToString(), LogEvent.upd);
+                    await writeEventAsync(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 await generateListMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
@@ -177,21 +180,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 WeatherStation entity = await db.weatherStation.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -205,12 +208,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 WeatherStation entity = await db.weatherStation.byIdAsync(id);
                 await db.weatherStation.deleteAsync(entity);
-                writeEvent(entity.ToString(), LogEvent.del);
+                await writeEventAsync(entity.ToString(), LogEvent.del);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Delete", new { id = id });
             }
         }
@@ -228,7 +231,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Index");
             }
 
@@ -336,17 +339,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         content = "Historical Climate WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
                         type = MessageType.successful
                     };
-                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_climatic });
+                    await writeEventAsync(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_climatic });
                 }
                 else
                 {
                     msg = new Message() { content = "Historical Climate WS. An error occurred with the file imported", type = MessageType.error };
-                    writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
+                    await writeEventAsync(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
                 }
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 msg = new Message() { content = "Historical Climate WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
@@ -453,17 +456,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         content = "Climatology WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
                         type = MessageType.successful
                     };
-                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_climatology });
+                    await writeEventAsync(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_climatology });
                 }
                 else
                 {
                     msg = new Message() { content = "Climatology WS. An error occurred with the file imported", type = MessageType.error };
-                    writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
+                    await writeEventAsync(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
                 }
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 msg = new Message() { content = "Climatology WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
@@ -590,17 +593,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         content = "Historical Yield WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
                         type = MessageType.successful
                     };
-                    writeEvent(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_yield });
+                    await writeEventAsync(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_yield });
                 }
                 else
                 {
                     msg = new Message() { content = "Historical Yield WS. An error occurred with the file imported", type = MessageType.error };
-                    writeEvent(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
+                    await writeEventAsync(msg.content, LogEvent.err, new List<LogEntity>() { LogEntity.lc_weather_station });
                 }
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 msg = new Message() { content = "Historical Yield WS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             // List climate variables
@@ -618,13 +621,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 entity = await db.weatherStation.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
                 // Set data for the view
@@ -638,12 +641,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     entities.Add(new CropYieldRange(r, cp));
                 // Fill the select list
                 ViewBag.crop = new SelectList(cp, "id", "name");
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entities);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -667,12 +670,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     upper = int.Parse(form["upper"])
                 };
                 await db.weatherStation.addRangeAsync(entity_new, range);
-                writeEvent(id + "range add: " + range.crop.ToString() + "-" + range.label + "-" + range.lower.ToString() + "-" + range.upper.ToString(), LogEvent.upd);
+                await writeEventAsync(id + "range add: " + range.crop.ToString() + "-" + range.label + "-" + range.lower.ToString() + "-" + range.upper.ToString(), LogEvent.upd);
                 return RedirectToAction("Range", new { id = id });
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Range", new { id = id });
             }
         }
@@ -688,12 +691,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 WeatherStation entity_new = await db.weatherStation.byIdAsync(ws);
                 // Delete the setup
                 await db.weatherStation.deleteRangeAsync(entity_new, crop, label, lower, upper);
-                writeEvent(ws + "range del: " + crop + "-" + label + "-" + lower.ToString() + "-" + upper.ToString(), LogEvent.upd);
+                await writeEventAsync(ws + "range del: " + crop + "-" + label + "-" + lower.ToString() + "-" + upper.ToString(), LogEvent.upd);
                 return RedirectToAction("Range", new { id = ws });
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Range", new { id = ws });
             }
         }
@@ -707,13 +710,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 entity = await db.weatherStation.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
                 // Set data for the view
@@ -721,12 +724,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewBag.ws_id = entity.id;
                 // 
                 var entities = entity.conf_files;
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entities);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -756,12 +759,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }               
 
                 await db.weatherStation.addConfigurationFileAsync(entity_new, file_temp);
-                writeEvent(id + "file add: " + entity_new.id.ToString() + "-" + form.Files[0].FileName, LogEvent.upd);
+                await writeEventAsync(id + "file add: " + entity_new.id.ToString() + "-" + form.Files[0].FileName, LogEvent.upd);
                 return RedirectToAction("Configuration", new { id = id });
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Configuration", new { id = id });
             }
         }

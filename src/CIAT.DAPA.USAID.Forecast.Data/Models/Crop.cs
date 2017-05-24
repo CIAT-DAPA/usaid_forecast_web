@@ -19,7 +19,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Crops' name
         /// </summary>
-        [Display(Name = "Crop name"), Required(ErrorMessage = "The crop's name is required")]
+        //[Display(Name = "Crop name"), Required(ErrorMessage = "The crop's name is required")]
+        [Display(Name = "Nombre del cultivo"), Required(ErrorMessage = "Nombre del cultivo es obligatorio")]
         [BsonRequired]
         public string name { get; set; }
         /// <summary>

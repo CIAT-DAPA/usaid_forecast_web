@@ -3,24 +3,24 @@
     ViewBag.Title = "Cultivar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Cultivar</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create new", "Create")
+    @Html.ActionLink("Registrar nuevo", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            Name
+            Cultivo
         </th>
         <th>
-            Crop
+            Nombre
+        </th>        
+        <th>
+            Es secano?
         </th>
         <th>
-            Rainfed
-        </th>
-        <th>
-            National
+            Es nacional?
         </th>
         <th></th>
     </tr>
@@ -28,11 +28,11 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
                 @item.crop.ToString()
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>            
             <td>
                 @Html.DisplayFor(modelItem => item.rainfed)
             </td>
@@ -40,9 +40,9 @@
                 @Html.DisplayFor(modelItem => item.national)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
             </td>
         </tr>
     }

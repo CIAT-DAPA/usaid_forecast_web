@@ -18,13 +18,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Name of the department or state in which is located the locality
         /// </summary>
-        [Display(Name = "State name"), Required(ErrorMessage = "The state name is required")]
+        //[Display(Name = "State name"), Required(ErrorMessage = "The state name is required")]
+        [Display(Name = "Nombre del estado"), Required(ErrorMessage = "Nombre del estado es obligatorio")]
         [BsonRequired]
         public string name { get; set; }
         /// <summary>
         /// Country in which is located the state
         /// </summary>
-        [Display(Name = "Country"), Required(ErrorMessage = "The country is required")]
+        //[Display(Name = "Country"), Required(ErrorMessage = "The country is required")]
+        [Display(Name = "País"), Required(ErrorMessage = "País es obligatorio")]
         [BsonRequired]
         public Country country { get; set; }
         /// <summary>

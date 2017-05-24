@@ -21,7 +21,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Name of the source
         /// </summary>
-        [Display(Name = "Source name"), Required(ErrorMessage = "The name source is required")]
+        //[Display(Name = "Source name"), Required(ErrorMessage = "The name source is required")]
+        [Display(Name = "Nombre de la fuente"), Required(ErrorMessage = "Nombre de la fuente es obligatorio")]
         [BsonRequired]
         public string name { get; set; }
         /// <summary>

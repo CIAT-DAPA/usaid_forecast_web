@@ -2,11 +2,11 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Ranges";
+    ViewBag.Title = "Rangos de producción";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Ranges</h2>
+<h2>@ViewBag.Title</h2>
 
 <h4>@ViewBag.ws_name</h4>
 
@@ -29,27 +29,27 @@
     <input type="hidden" id="id" name="id" value="@ViewBag.ws_id" />
     <div class="form-horizontal">
         <fieldset>
-            <legend>Yield Range</legend>
+            <legend>Rango de producción</legend>
             <div class="form-group">
-                <label for="weather_station" class="control-label col-md-2">Crop:</label>
+                <label for="weather_station" class="control-label col-md-2">Cultivo:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("crop", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="label" class="control-label col-md-2">Label:</label>
+                <label for="label" class="control-label col-md-2">Descripción:</label>
                 <div class="col-md-10">
                     @Html.Editor("label", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="lower" class="control-label col-md-2">Lower limit:</label>
+                <label for="lower" class="control-label col-md-2">Límite inferior:</label>
                 <div class="col-md-10">
                     @Html.Editor("lower", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="upper" class="control-label col-md-2">Upper limit:</label>
+                <label for="upper" class="control-label col-md-2">Límite superior:</label>
                 <div class="col-md-10">
                     @Html.Editor("upper", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
@@ -57,21 +57,21 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 <div>
-    @Html.ActionLink("Back to weather station", "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink("Volver a la estación climática", "Details", new { id = ViewBag.ws_id })
 </div>
-<h3>Ranges by crop available</h3>
+<h3>Rangos por cultivo</h3>
 <table class="table">
     <tr>
-        <th>Crop</th>
-        <th>Label</th>
-        <th>Lower limit</th>
-        <th>Upper limit</th>
+        <th>Cultivo</th>
+        <th>Descripción</th>
+        <th>Límite inferior</th>
+        <th>Límite superior</th>
         <th></th>
     </tr>
 
@@ -99,14 +99,14 @@
                     <input type="hidden" id="label" name="label" value="@item.label" />
                     <input type="hidden" id="lower" name="lower" value="@item.lower.ToString()" />
                     <input type="hidden" id="upper" name="upper" value="@item.upper.ToString()" />
-                    <input class="btn btn-danger" type="submit" value="Delete" />
+                    <input class="btn btn-danger" type="submit" value="Eliminar" />
                 }
             </td>
         </tr>
     }
 </table>
 <div>
-    @Html.ActionLink("Back to weather station", "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink("Volver a la estación climática", "Details", new { id = ViewBag.ws_id })
 </div>
 
 @section Scripts {
