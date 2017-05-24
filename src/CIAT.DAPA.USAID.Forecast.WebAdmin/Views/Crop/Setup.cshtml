@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Setup</h2>
+<h2>@ViewBag.Title</h2>
 
 <h4>@ViewBag.crop_name</h4>
 
@@ -29,9 +29,9 @@
     <input type="hidden" id="id" name="id" value="@ViewBag.crop_id" />
     <div class="form-horizontal">
         <fieldset>
-            <legend>Global configuration</legend>
+            <legend>Configuración global</legend>
             <div class="form-group">
-                <label for="weather_station" class="control-label col-md-2">Weather station:</label>
+                <label for="weather_station" class="control-label col-md-2">Estación climática:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("weather_station", null, htmlAttributes: new { @class = "form-control" })
                 </div>
@@ -43,30 +43,30 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="soil" class="control-label col-md-2">Soil:</label>
+                <label for="soil" class="control-label col-md-2">Suelo:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("soil", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="days" class="control-label col-md-2">Days:</label>
+                <label for="days" class="control-label col-md-2">Días:</label>
                 <div class="col-md-10">
                     @Html.Editor("days", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
         </fieldset>
         <fieldset>
-            <legend>Files configuration</legend>
+            <legend>Archivos de configuración</legend>
             <div class="form-group">
                 <div class="col-md-">
-                    <input type="button" id="add_file" value="Add file" class="btn btn-default" />
+                    <input type="button" id="add_file" value="Agregar archivo" class="btn btn-default" />
                 </div>
             </div>
             <table class="table" id="conf_files">
                 <thead>
                     <tr>
-                        <th>Name parameter</th>
-                        <th>File</th>
+                        <th>Nombre de parámetro</th>
+                        <th>Archivo</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -74,21 +74,21 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 <div>
-    @Html.ActionLink("Back to crop", "Details", new { id = ViewBag.crop_id })
+    @Html.ActionLink("Volver a cultivo", "Details", new { id = ViewBag.crop_id })
 </div>
-<h3>Setups' crop available</h3>
+<h3>Configuraciones disponibles</h3>
 <table class="table">
     <tr>
-        <th>Weather Station</th>
+        <th>Estación climática</th>
         <th>Cultivar</th>
-        <th>Soil</th>
-        <th>Days</th>
+        <th>Suelos</th>
+        <th>Días</th>
         <th></th>
     </tr>
 
@@ -123,7 +123,7 @@
     }
 </table>
 <div>
-    @Html.ActionLink("Back to crop", "Details", new { id = ViewBag.crop_id })
+    @Html.ActionLink("Volver a cultivo", "Details", new { id = ViewBag.crop_id })
 </div>
 @section Scripts {
     <script src="~/js/setup.js"></script>
