@@ -32,12 +32,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.soil.listEnableAsync();
-                writeEvent(list.Count().ToString(), LogEvent.lis);
+                await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
 
@@ -51,21 +51,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Soil entity = await db.soil.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -90,15 +90,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 if (ModelState.IsValid)
                 {
                     await db.soil.insertAsync(entity);
-                    writeEvent(entity.ToString(), LogEvent.cre);
+                    await writeEventAsync(entity.ToString(), LogEvent.cre);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View(entity);
             }
         }
@@ -111,23 +111,23 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Soil entity = await db.soil.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
                 var crops = await db.crop.listEnableAsync();
                 ViewBag.crop = new SelectList(crops, "id", "name");
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -146,15 +146,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     entity.id = getId(id);
                     entity.crop = getId(HttpContext.Request.Form["crop"].ToString());
                     await db.soil.updateAsync(current_entity, entity);
-                    writeEvent(entity.ToString(), LogEvent.upd);
+                    await writeEventAsync(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");
                 }
-                writeEvent(ModelState.ToString(), LogEvent.err);
+                await writeEventAsync(ModelState.ToString(), LogEvent.err);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View(entity);
             }
         }
@@ -167,21 +167,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    writeEvent("Search without id", LogEvent.err);
+                    await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
                 Soil entity = await db.soil.byIdAsync(id);
                 if (entity == null)
                 {
-                    writeEvent("Not found id: " + id, LogEvent.err);
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                writeEvent("Search id: " + id, LogEvent.rea);
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return View();
             }
         }
@@ -195,12 +195,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 Soil entity = await db.soil.byIdAsync(id);
                 await db.soil.deleteAsync(entity);
-                writeEvent(entity.ToString(), LogEvent.del);
+                await writeEventAsync(entity.ToString(), LogEvent.del);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                writeException(ex);
+                await writeExceptionAsync(ex);
                 return RedirectToAction("Delete", new { id = id });
             }
         }
