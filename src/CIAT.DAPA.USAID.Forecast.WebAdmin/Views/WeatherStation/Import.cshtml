@@ -2,14 +2,14 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Import";
+    ViewBag.Title = "Importar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Import</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Weather Station</h4>
+    <h4>Estación climática</h4>
     <hr />
     @if (ViewBag.message != null)
     {
@@ -24,10 +24,11 @@
     }
 </div>
 <fieldset>
-    <legend>Historical climate data</legend>
+    <legend>Históricos climáticos</legend>
     <p class="text-justify">
-        This option allow upload a file to create new records in the historical climate collection. The file should has
-        specify structure. You can see the example.
+        Esta opción permite cargar un archivo para crear nuevos registros en la colección 
+        de clima histórico. El archivo debe tener una estructura específica. 
+        Usted puede ver el ejemplo.
     </p>
     @using (Html.BeginForm("ImportHistoricalClimate", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
@@ -35,26 +36,26 @@
         @Html.HiddenFor(model => model.id)
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-md-2" for="search">Type of search</label>
+                <label class="control-label col-md-2" for="search">Tipo de búsqueda</label>
                 <div class="col-md-10">
                     <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
+                        <input type="radio" name="search" id="search" value="1" checked="checked">Código externo
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="2">Name
+                        <input type="radio" name="search" id="search" value="2">Nombre
                     </label>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-md-2" for="measures">Measure</label>
+                <label class="control-label col-md-2" for="measures">Medida</label>
                 <div class="col-md-10">
                     @Html.DropDownList("measures", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2" for="file">
-                    File to import (splitted by comma ",").
-                    <a href="~/Data/Examples/Import-Historical-Climate.csv">Example by Extern ID</a>
+                    Archivo para importar (separado por coma ",").
+                    <a href="~/Data/Examples/Import-Historical-Climate.csv">Ejemplo por código externo</a>
                 </label>
                 <div class="col-md-10">
                     <input type="file" class="form-control" name="file" id="file" />
@@ -63,7 +64,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Import" class="btn btn-default" />
+                    <input type="submit" value="Importar" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -71,10 +72,11 @@
 </fieldset>
 
 <fieldset>
-    <legend>Climatology data</legend>
+    <legend>Climatología</legend>
     <p class="text-justify">
-        This option allow upload a file to create new records in the climatology collection. The file should has
-        specify structure. You can see the example.
+        Esta opción permite cargar un archivo para crear nuevos registros en la colección 
+        de climatología. El archivo debe tener una estructura específica. 
+        Usted puede ver el ejemplo.
     </p>
     @using (Html.BeginForm("ImportClimatology", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
@@ -82,20 +84,20 @@
         @Html.HiddenFor(model => model.id)
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-md-2" for="search">Type of search</label>
+                <label class="control-label col-md-2" for="search">Tipo de búsqueda</label>
                 <div class="col-md-10">
                     <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="1" checked="checked">Extern ID
+                        <input type="radio" name="search" id="search" value="1" checked="checked">Código externo
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="2">Name
+                        <input type="radio" name="search" id="search" value="2">Nombre
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2" for="file">
-                    File to import (splitted by comma ",").
-                    <a href="~/Data/Examples/Import-Climatology.csv">Example by Extern ID</a>
+                    Archivo para importar (separado por coma ",").
+                    <a href="~/Data/Examples/Import-Climatology.csv">Ejemplo por código externo</a>
                 </label>
                 <div class="col-md-10">
                     <input type="file" class="form-control" name="file" id="file" />
@@ -104,7 +106,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Import" class="btn btn-default" />
+                    <input type="submit" value="Importar" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -112,10 +114,10 @@
 </fieldset>
 
 <fieldset>
-    <legend>Historical yield data</legend>
+    <legend>Históricos de producción</legend>
     <p class="text-justify">
-        This option allow upload a file to create new records in the historical yield collection. The file should has
-        specify structure. You can see the example.
+        Esta opción permite cargar un archivo para crear nuevos registros en la colección histórica 
+        de rendimiento. El archivo debe tener una estructura específica. Usted puede ver el ejemplo.
     </p>
     @using (Html.BeginForm("ImportHistoricalYield", "WeatherStation", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
@@ -132,8 +134,8 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2" for="file">
-                    File to import (splitted by comma ",").
-                    <a href="~/Data/Examples/Import-Climatology.csv">Example by Extern ID</a>
+                    Archivo para importar (separado por coma ",").
+                    <a href="~/Data/Examples/Import-Climatology.csv">Ejemplo por código externo</a>
                 </label>
                 <div class="col-md-10">
                     <input type="file" class="form-control" name="file" id="file" />
@@ -142,7 +144,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Import" class="btn btn-default" />
+                    <input type="submit" value="Importar" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -150,5 +152,5 @@
 </fieldset>
 
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Vovler a la lista", "Index")
 </p>

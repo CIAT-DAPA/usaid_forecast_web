@@ -1,24 +1,24 @@
 ﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.WeatherStation>
 @{
-    ViewBag.Title = "Weather Station";
+    ViewBag.Title = "Estaciones climáticas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Weather Station</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create new", "Create")
+    @Html.ActionLink("Registrar nuevo", "Create")
 </p>
 
 <p>
-    @Html.ActionLink("Import data", "Import")
+    @Html.ActionLink("Importar datos históricos", "Import")
 </p>
 <table class="table">
     <tr>
         <th>
-            Municipality
+            Municipio
         </th>
         <th>
-            Weather Station
+            Nombre
         </th>
         <th>
             Origin
@@ -44,11 +44,11 @@
                 @Html.DisplayFor(modelItem => item.visible)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                @Html.ActionLink("Range", "Range", new { id = item.id }) |
-                @Html.ActionLink("Configuration", "Configuration", new { id = item.id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+                @Html.ActionLink("Rangos de producción", "Range", new { id = item.id }) |
+                @Html.ActionLink("Configuración", "Configuration", new { id = item.id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
             </td>
         </tr>
     }
