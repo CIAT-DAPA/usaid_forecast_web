@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.State>
 @{
-    ViewBag.Title = "State";
+    ViewBag.Title = "Estados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>States</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create new", "Create")
+    @Html.ActionLink("Registrar nuevo", "Create")
 </p>
 
 <table class="table">
     <tr>
         <th>
-            Country
+            País
         </th>
         <th>
-            State
+            Nombre
         </th>
         <th></th>
     </tr>
@@ -29,9 +29,9 @@
                 @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
             </td>
         </tr>
     }

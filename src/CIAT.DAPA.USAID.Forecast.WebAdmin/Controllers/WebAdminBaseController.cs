@@ -64,7 +64,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         protected IEmailSender notifyEmail;
 
-
+        /*
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -74,7 +74,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         public WebAdminBaseController(IOptions<Settings> settings, LogEntity entity, IHostingEnvironment environment) : base()
         {
             init(settings, entity, environment);
-        }
+        }*/
 
         /// <summary>
         /// Method Construct

@@ -19,19 +19,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Soil's name
         /// </summary>
-        [Display(Name = "Soil name"), Required(ErrorMessage = "The soil's name is required")]
+        //[Display(Name = "Soil name"), Required(ErrorMessage = "The soil's name is required")]
+        [Display(Name = "Nombre de suelo"), Required(ErrorMessage = "Nombre de suelo es obligatorio")]
         [BsonRequired]
         public string name { get; set; }
         /// <summary>
         /// ID's owner crop
         /// </summary>
-        [Display(Name = "Crop"), Required(ErrorMessage = "The crop is required")]
+        //[Display(Name = "Crop"), Required(ErrorMessage = "The crop is required")]
+        [Display(Name = "Cultivo"), Required(ErrorMessage = "Cultivo es obligatorio")]
         [BsonRequired]
         public ObjectId crop { get; set; }
         /// <summary>
         /// Indicates the order they should be listed
         /// </summary>
-        [Display(Name = "Order to list"), Required(ErrorMessage = "The order is required")]
+        //[Display(Name = "Order to list"), Required(ErrorMessage = "The order is required")]
+        [Display(Name = "Orden"), Required(ErrorMessage = "El orden es obligatorio")]
         [BsonRequired]
         public int order { get; set; }
         /// <summary>

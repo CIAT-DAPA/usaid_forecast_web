@@ -2,14 +2,14 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Import";
+    ViewBag.Title = "Importar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Import</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>State</h4>
+    <h4>Estado</h4>
     <hr />
     @if (ViewBag.message != null)
     {
@@ -51,10 +51,11 @@
     </dl>
 </div>
 <fieldset>
-    <legend>Municipalities and weather stations</legend>
+    <legend>Municipios y estaciones climáticas</legend>
     <p class="text-justify">
-        This option allow upload a file to create new records in the municipalities and weather station collections. The file should has
-        specify structure. You can see the example.
+        Esta opción permite cargar un archivo para crear nuevos registros en las colecciones de 
+        los municipios y estaciones climáticas. El archivo debe tener una estructura específica. 
+        Usted puede ver el ejemplo.
     </p>
     @using (Html.BeginForm("ImportMunicipalitiesWeatherStations", "State", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -63,7 +64,7 @@
         <div class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-md-2" for="file">
-                    File to import (splitted by comma ",").
+                    Archivo a importar (Separado por coma ",").
                     <a href="~/Data/Examples/Import-Municipalities-WeatherStation.csv">Example</a>
                 </label>
                 <div class="col-md-10">
@@ -73,7 +74,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Import" class="btn btn-default" />
+                    <input type="submit" value="Importar" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -81,6 +82,6 @@
 </fieldset>
 
 <p>
-    @Html.ActionLink("Details", "Details", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Detalle", "Details", new { id = Model.id }) |
+    @Html.ActionLink("Volver a la lista", "Index")
 </p>

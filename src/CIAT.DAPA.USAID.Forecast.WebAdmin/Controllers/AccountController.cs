@@ -191,8 +191,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            ViewBag.roles = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
-
+            ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
             return View();
         }
 
@@ -212,7 +211,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 // If we got this far, something failed, redisplay form
-                ViewBag.roles = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
+                ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
                 return View(model);
             }
             catch (Exception ex)

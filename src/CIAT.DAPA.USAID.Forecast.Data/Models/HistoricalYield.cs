@@ -20,7 +20,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Name where the historical data is obtained
         /// </summary>
         [BsonRequired]
-        [Display(Name = "Id Source"), Required(ErrorMessage = "The source is required")]
+        //[Display(Name = "Id Source"), Required(ErrorMessage = "The source is required")]
+        [Display(Name = "Fuente"), Required(ErrorMessage = "La fuente es obligatoria")]
         public ObjectId source { get; set; }
         /// <summary>
         /// ID's weather station
