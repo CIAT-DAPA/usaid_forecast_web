@@ -24,7 +24,7 @@ angular
               { name: 'Radiación solar', section: 'historical', value: 'solar_radiation' }
           ],
           crop: [
-              { name: 'Pronóstico agroclimático', section: 'forecast', value: 'forecast' },
+              { name: 'Pronóstico agroclimático', section: 'forecast', value: 'yield' },
               { name: 'Histórico agroclimático', section: 'historical', value: 'historical' },
           ],
           expert: [
@@ -106,20 +106,10 @@ angular
       ],
       /* Assist data */
       assist: [
-          { id: 'climate_forecast', alt: '', title: 'Predicción climática', text: 'Predicción climatica', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 'prec', title: 'Precipitación', text: 'Precipitación', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 't_max', title: 'Temperatura máxima', text: 'Temperatura máxima', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 't_min', title: 'Temperatura mínima', text: 'Temperatura mínima', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 'sol_rad', title: 'Radiación solar', text: 'Radiación solar', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_climatology', alt: '', title: 'Climatología', text: 'Climatología', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_historical', alt: '', title: 'Histórico climático', text: 'Histórico climático', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_forecast', alt: '', title: 'Pronóstico agroclimatico', text: 'Pronóstico agroclimatico', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_cultivar', alt: '', title: 'Cultivar', text: 'Cultivar', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_potential', alt: '', title: 'Rendimiento potencial', text: 'Rendimiento potencial', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_variation', alt: '', title: 'Análisis de cultivar', text: 'Análisis de cultivar', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_historical', alt: '', title: 'Histórico de rendimientos', text: 'Histórico de rendimientos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'expert_global', alt: '', title: 'Datos históricos y climáticos', text: 'Datos históricos y climáticos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'expert_download', alt: '', title: 'Descarga de datos', text: 'Descarga de datos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
+          { id: 'forecast', alt: 'forecast', title: 'Predicción climática', text: 'Predicción climatica', url: 'https://www.youtube.com/embed/8ncXEbYGHrU' },
+          { id: 'forecast', alt: 'yield', title: 'Pronóstico agroclimatico', text: 'Pronóstico agroclimatico', url: 'https://www.youtube.com/embed/okIT7QZLHss' },
+          { id: 'historical', alt: 'precipitation', title: 'Precipitación Histórica', text: 'Precipitación Histórica', url: 'https://www.youtube.com/embed/Ag3fv67zr88' },
+          { id: 'climate', alt: 'climate', title: 'Acerca de', text: 'Acerca de', url: 'https://www.youtube.com/embed/c03280UMJoU' },
       ]
   })
 ;

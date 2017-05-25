@@ -6,6 +6,7 @@
 /// <reference path="js/controllers/crop_history_ctr.js" />
 /// <reference path="js/controllers/expert_ctr.js" />
 /// <reference path="js/controllers/location_ctr.js" />
+/// <reference path="js/controllers/social_media_ctr.js" />
 /// <reference path="js/controllers/sub_menu_ctr.js" />
 /// <reference path="js/lib/d3graphics/bars.js" />
 /// <reference path="js/lib/d3graphics/base.js" />

@@ -13,15 +13,16 @@ angular.module('ForecastApp')
       $scope.type = tools.source();
 
       $scope.subSections = setup.listSubMenuOption($scope.type);
-
+      
       $scope.renderView = function ($value, $name, $section) {
+          $rootScope.setAssistParameters($value, $section);
           if ($scope.type === 'climate' || $scope.type === 'crop') {
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");
               $(".sections").hide();
               $("#content_" + $section).show();
               $("#sectionTitle").text($name);
-              $rootScope.drawFunction($value);
+              $rootScope.drawFunction($value);              
           }
           else if ($scope.type === 'expert') {
               $(".subMenuItem").removeClass("active");
