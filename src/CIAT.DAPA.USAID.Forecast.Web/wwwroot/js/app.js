@@ -24,7 +24,7 @@ angular
               { name: 'Radiación solar', section: 'historical', value: 'solar_radiation' }
           ],
           crop: [
-              { name: 'Pronóstico agroclimático', section: 'forecast', value: 'forecast' },
+              { name: 'Pronóstico agroclimático', section: 'forecast', value: 'yield' },
               { name: 'Histórico agroclimático', section: 'historical', value: 'historical' },
           ],
           expert: [
@@ -79,47 +79,37 @@ angular
       yield_default_var: [
           {
               crop: "arroz",
-              vars: [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/ha', default: true },
-                   { name: "d_har", label: "Cosecha", metric: 'día', default: false },
-                  { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
-                  { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }]
+              vars: [{ name: "yield_14", label: "Rendimiento", description:'Rendimiento al 14% de húmedad', metric: 'Kg/ha', default: true },
+                   { name: "d_har", label: "D. Cosecha", description: 'Días a cosecha', metric: 'día', default: false },
+                  { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
+                  { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
+                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false }]
           },
           {
               crop: "maíz",
-              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },
-                  { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
-                  { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },
-                  { name: "d_dry", label: "Secado", metric: 'día', default: false },
-                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }]
+              vars: [{ name: "yield_0", label: "Rendimiento", description: 'Rendimiento al 0% de húmedad', metric: 'Kg/ha', default: true },
+                  { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
+                  { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
+                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
+                  { name: "d_dry", label: "D. Secado", description: 'Días a secado', metric: 'día', default: false },
+                  { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false }]
           }],
       /* Expert mode*/
       expert_db: [
-          { section: 'geographic', title:'Geografía', description: 'Esta base de datos contiene información sobre la configuración geográfica de los pronósticos y datos históricos que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos que están disponibles en esta aplicación.' },
-          { section: 'agronomic', title: 'Agronomía', description: 'Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.' },
+          { section: 'geographic', title: 'Datos geográficos', description: 'Esta base de datos contiene información sobre los estados, municipios y estaciones climáticas que se encuentran disponibles para los pronósticos y datos históricos que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos de esta aplicación.' },
+          { section: 'agronomic', title: 'Datos agronómicos', description: 'Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.' },
           { section: 'climatology', title: 'Climatología', description: 'En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología. Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras. Puede establecer una relación con los datos obtenidos en la sección de datos geográficos.' },
           { section: 'climate_historical', title: 'Histórico Climático', description: 'Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación y radiación solar de cada mes durante un intervalo de tiempo.' },
-          { section: 'climate_forecast', title: 'Predicción climática', description: 'Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas. Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo, dentro o por encima del intervalo normal. Tambien puede descargar los escenarios climáticos según su selección.' },
+          { section: 'climate_forecast', title: 'Histórico climático', description: 'Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas. Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo, dentro o por encima del intervalo normal. Tambien puede descargar los escenarios climáticos según su selección.' },
           { section: 'yield_historical', title: 'Histórico de producción', description: 'Esta base de datos contiene el resultado de los datos de rendimiento de los diferentes cultivos en distintos municipios del país.' },
-          { section: 'yield_forecast', title: 'Pronóstico agroclimático', description: 'Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado bajo varios escenarios climáticos.' }
+          { section: 'yield_forecast', title: 'Pronóstico de producción', description: 'Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado bajo varios escenarios climáticos.' }
       ],
       /* Assist data */
       assist: [
-          { id: 'climate_forecast', alt: '', title: 'Predicción climática', text: 'Predicción climatica', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 'prec', title: 'Precipitación', text: 'Precipitación', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 't_max', title: 'Temperatura máxima', text: 'Temperatura máxima', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 't_min', title: 'Temperatura mínima', text: 'Temperatura mínima', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_var', alt: 'sol_rad', title: 'Radiación solar', text: 'Radiación solar', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_climatology', alt: '', title: 'Climatología', text: 'Climatología', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'climate_historical', alt: '', title: 'Histórico climático', text: 'Histórico climático', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_forecast', alt: '', title: 'Pronóstico agroclimatico', text: 'Pronóstico agroclimatico', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_cultivar', alt: '', title: 'Cultivar', text: 'Cultivar', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_potential', alt: '', title: 'Rendimiento potencial', text: 'Rendimiento potencial', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_variation', alt: '', title: 'Análisis de cultivar', text: 'Análisis de cultivar', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'crop_historical', alt: '', title: 'Histórico de rendimientos', text: 'Histórico de rendimientos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'expert_global', alt: '', title: 'Datos históricos y climáticos', text: 'Datos históricos y climáticos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
-          { id: 'expert_download', alt: '', title: 'Descarga de datos', text: 'Descarga de datos', url: 'https://www.youtube.com/embed/rej55fpq0b8?ecver=1' },
+          { id: 'forecast', alt: 'forecast', title: 'Predicción climática', text: 'Predicción climatica', url: 'https://www.youtube.com/embed/8ncXEbYGHrU' },
+          { id: 'forecast', alt: 'yield', title: 'Pronóstico agroclimatico', text: 'Pronóstico agroclimatico', url: 'https://www.youtube.com/embed/okIT7QZLHss' },
+          { id: 'historical', alt: 'precipitation', title: 'Precipitación Histórica', text: 'Precipitación Histórica', url: 'https://www.youtube.com/embed/Ag3fv67zr88' },
+          { id: 'climate', alt: 'climate', title: 'Acerca de', text: 'Acerca de', url: 'https://www.youtube.com/embed/c03280UMJoU' },
       ]
   })
 ;

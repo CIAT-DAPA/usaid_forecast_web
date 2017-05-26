@@ -90,18 +90,18 @@
                             <div class="tab-content" id="content_{{cu.id}}">
                                 <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
                                     <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
-                                        Indicadores agroclimáticos para <span class="text-bold">{{vr.label}}</span>
+                                        Indicadores agroclimáticos para <span class="text-bold">{{vr.description}}</span>
                                         <ul>
                                             <li>
                                                 La fecha <span class="text-bold">con mayor variación</span>
-                                                de <span class="text-bold">{{vr.label}}</span>, es
+                                                de <span class="text-bold">{{vr.description}}</span>, es
                                                 <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_date"></span>
                                                 con una desviación standar de
                                                 <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_yield"></span>
                                             </li>
                                             <li>
                                                 La fecha <span class="text-bold">con menor variación</span>
-                                                de <span class="text-bold">{{vr.label}}</span>, es
+                                                de <span class="text-bold">{{vr.description}}</span>, es
                                                 <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_date"></span>
                                                 con una desviación standar de
                                                 <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_yield"></span>

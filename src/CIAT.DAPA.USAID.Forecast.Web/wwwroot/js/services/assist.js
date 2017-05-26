@@ -26,8 +26,8 @@ angular.module('ForecastApp')
         * (string) alt: Text to search in the record
         */
         dataFactory.getByIdAlt = function (id, alt) {
-            var data = config.assist.filter(function (item) { return item.id === id && item.alt === alt; })
-            return data[0];
+            var data = config.assist.filter(function (item) { return item.id === id && item.alt === alt; });            
+            return data.length > 0 ? data[0] : null;
         }
 
         return dataFactory;
