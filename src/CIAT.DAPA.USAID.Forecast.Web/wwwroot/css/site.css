@@ -423,13 +423,13 @@ footer a{
     stroke-width: 1;
 }
 
-.trend_yield_area_outer {
+.trend_yield_area_outer, .trend_yield_legend_outer {
     /*fill: rgba(230, 230, 255, 0.8);*/
     fill: #ad5858;
     stroke: rgba(216, 216, 255, 0.8);
 }
 
-.trend_yield_area_inner {
+.trend_yield_area_inner, .trend_yield_legend_inner {
     /*fill: rgba(230, 230, 255, 0.8);*/
     fill: #69ad58;
     stroke: rgba(216, 216, 255, 0.8);
@@ -439,6 +439,11 @@ footer a{
     fill: none;
     stroke: #000;
     stroke-width: 3;
+}
+
+.trend_legend_bg{
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(0, 0, 0, 0.5);
 }
 
 /* Calendar Heatmap */

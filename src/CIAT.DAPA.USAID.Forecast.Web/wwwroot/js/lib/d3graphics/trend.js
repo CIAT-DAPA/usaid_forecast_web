@@ -98,52 +98,52 @@ Trend.prototype.render = function () {
         .attr('d', medianLine)
         .attr('clip-path', 'url(#trend_clip)');
 
-    /*
+    
     
     // legend
     var legendWidth  = 200,
       legendHeight = 100;
       
-    var legend = svg.append('g')
+    var legend = this.base.svg.append('g')
         .attr('class', 'legend')
-        .attr('transform', 'translate(' + (chartWidth - legendWidth) + ', ' + (chartHeight - legendHeight) + ')');
+        .attr('transform', 'translate(' + (that.base.width_full - legendWidth) + ', ' + ( 0) + ')');
 
     legend.append('rect')
-        .attr('class', 'legend-bg')
+        .attr('class', 'trend_legend_bg')
         .attr('width', legendWidth)
         .attr('height', legendHeight);
 
     legend.append('rect')
-        .attr('class', 'outer')
+        .attr('class', 'trend_yield_legend_outer')
         .attr('width', 75)
         .attr('height', 20)
         .attr('x', 10)
         .attr('y', 10);
 
     legend.append('text')
-        .attr('x', 115)
+        .attr('x', 92)
         .attr('y', 25)
-        .text('5% - 95%');
+        .text('Perc. 5 y 95');
 
     legend.append('rect')
-        .attr('class', 'inner')
+        .attr('class', 'trend_yield_legend_inner')
         .attr('width', 75)
         .attr('height', 20)
         .attr('x', 10)
         .attr('y', 40);
 
     legend.append('text')
-        .attr('x', 115)
+        .attr('x', 92)
         .attr('y', 55)
-        .text('25% - 75%');
+        .text('Int. conf. (95%)');
 
     legend.append('path')
-        .attr('class', 'median-line')
+        .attr('class', 'trend_yield_median_line')
         .attr('d', 'M10,80L85,80');
 
     legend.append('text')
-        .attr('x', 115)
+        .attr('x', 92)
         .attr('y', 85)
-        .text('Media');*/
+        .text('Promedio');
 
 }
