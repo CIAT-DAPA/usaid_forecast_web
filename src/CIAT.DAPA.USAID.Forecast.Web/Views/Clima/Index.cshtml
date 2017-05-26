@@ -43,7 +43,7 @@
             <!-- Start Climatology -->
             <article id="climatology" class="col-lg-6 article_content">
                 <div class="section-content" style="min-height: 525px;">
-                    <h3 class="text-center">Promedio {{cv.name}} mensual histórico</h3>
+                    <h3 class="text-center">Promedio histórico de {{cv.name}} mensual</h3>
                     <p class="text-justify">
                         {{cv.description_climatology}}.
                         La climatología para <span class="text-bold">{{cv.name}}</span>
@@ -51,11 +51,11 @@
                         en el municipio <span class="text-bold">{{municipality_name}}</span> nos indica que:
                         <ul>
                             <li>
-                                El mes <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
+                                El mes de <span class="text-bold">{{cv.max.month_name}}</span> ha tenido mayores valores de
                                 <span class="text-bold">{{cv.name}} ({{cv.max.value | number : 0}} {{cv.metric}})</span>.
                             </li>
                             <li>
-                                El mes <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
+                                El mes de <span class="text-bold">{{cv.min.month_name}}</span> ha tenido menores valores de
                                 <span class="text-bold">{{cv.name}} ({{cv.min.value | number : 0}} {{cv.metric}})</span>.
                             </li>
                         </ul>
@@ -77,8 +77,8 @@
                             Históricamente en el mes <span class="text-bold">{{cv_month_selected.name}}</span> en el
                             municipio <span class="text-bold">{{municipality_name}}</span> presenta el siguiente comportamiento:
                             <ul>
-                                <li>Se han presentado <span class="text-bold">{{historical_upper}}</span> años por encima de lo normal</li>
-                                <li>Se han presentado <span class="text-bold">{{historical_lower}}</span> años por debajo de lo normal</li>
+                                <li>Se han presentado <span class="text-bold">{{historical_upper}}</span> años por encima del promedio</li>
+                                <li>Se han presentado <span class="text-bold">{{historical_lower}}</span> años por debajo del promedio</li>
                             </ul>
                         </p>
                         <div id="historical_content_line">
