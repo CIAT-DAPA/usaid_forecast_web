@@ -80,16 +80,20 @@ angular.module('ForecastApp')
 
         /*
         * Method that created a summary based in the probabilities
-        * (object) p: Object with probabilities
+        * (object) probabilities: Object with probabilities
         */
-        dataFactory.summary = function (p) {
+        dataFactory.summary = function (probabilities) {
+            var p = {};
+            p.lower = probabilities.filter(function (item) { return item.type === 'lower'; })[0].value;
+            p.normal = probabilities.filter(function (item) { return item.type === 'normal'; })[0].value;
+            p.upper = probabilities.filter(function (item) { return item.type === 'upper'; })[0].value;
             var summary = '';
-            if (p.lower > p.normal && p.lower > p.upper)
+            if (p.lower >= p.normal && p.lower >= p.upper)
                 summary = 'la probabilidad de precipitación estará por debajo de lo normal';
-            else if (p.upper > p.normal && p.upper > p.lower)
+            else if (p.upper >= p.normal && p.upper >= p.lower)
                 summary = 'la probabilidad de precipitación estará por encima de lo normal';
             else
-                summary = 'la probabilidad de precipitación estará dentro de lo normal';
+                summary = 'la probabilidad de precipitación estará dentro de lo normal';            
             return summary;
         }
 

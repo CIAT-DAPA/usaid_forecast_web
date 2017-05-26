@@ -94,6 +94,15 @@ Line.prototype.render = function () {
         .attr('x2', that.base.width_full - that.base.margin.left)
         .attr('y2', function (d) { return y(that.base.formats.round(d.value)); });
 
+    // Text Line Normal
+    that.base.svg.append('g')
+        .attr('class', 'line_area_splitted_text')
+        .data(that.base.data.splitted)
+        .append('text')
+        .attr('x', that.base.margin.right)
+        .attr('y', function (d) { return y(that.base.formats.round(d.value)); })
+        .text('Promedio histórico');
+
     // Add circles to show more details
     var circles = that.base.svg.append('g')
                     .attr("class", "line_area_point");

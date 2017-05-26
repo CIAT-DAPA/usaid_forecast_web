@@ -145,7 +145,7 @@
               pie.render();
 
               // Add summary
-              var summary = ClimateForecastFactory.summary(m);
+              var summary = ClimateForecastFactory.summary(m.probabilities);
               var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
                                  'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
                                  'lo normal es que haya una precipitación entre <span class="text-bold">' + cl_lower +
