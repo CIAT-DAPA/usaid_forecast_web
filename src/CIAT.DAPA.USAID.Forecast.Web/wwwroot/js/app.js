@@ -79,20 +79,20 @@ angular
       yield_default_var: [
           {
               crop: "arroz",
-              vars: [{ name: "yield_14", label: "Rendimiento", metric: 'Kg/ha', default: true },
-                   { name: "d_har", label: "Cosecha", metric: 'día', default: false },
-                  { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
-                  { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false }]
+              vars: [{ name: "yield_14", label: "Rendimiento", description:'Rendimiento al 14% de húmedad', metric: 'Kg/ha', default: true },
+                   { name: "d_har", label: "D. Cosecha", description: 'Días a cosecha', metric: 'día', default: false },
+                  { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
+                  { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
+                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false }]
           },
           {
               crop: "maíz",
-              vars: [{ name: "yield_0", label: "Rendimiento", metric: 'Kg/ha', default: true },
-                  { name: "prec_acu", label: "Precipitación", metric: 'mm', default: false },
-                  { name: "t_max_acu", label: "T. máxima", metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", metric: '°C', default: false },
-                  { name: "d_dry", label: "Secado", metric: 'día', default: false },
-                  { name: "bio_acu", label: "Biomasa", metric: 'mm', default: false }]
+              vars: [{ name: "yield_0", label: "Rendimiento", description: 'Rendimiento al 0% de húmedad', metric: 'Kg/ha', default: true },
+                  { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
+                  { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
+                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
+                  { name: "d_dry", label: "D. Secado", description: 'Días a secado', metric: 'día', default: false },
+                  { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false }]
           }],
       /* Expert mode*/
       expert_db: [

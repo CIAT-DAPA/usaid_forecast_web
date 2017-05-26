@@ -236,7 +236,7 @@ Calendar.prototype.render_month = function () {
         .text(function (d) {
             var text = '';
             if (d != null)
-                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].median);
+                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].avg);
             return text;
         }); // Render text for the day of the week
     
@@ -251,7 +251,7 @@ Calendar.prototype.render_month = function () {
                 var bg = '';
                 if (d[1].indexOf('FFFFFF')) {
                     if (data_month[i] != null)
-                        bg = that.color(data_month[i].data.filter(function (item) { return item.measure === that.measure; })[0].median);
+                        bg = that.color(data_month[i].data.filter(function (item) { return item.measure === that.measure; })[0].avg);
                     else
                         bg = d[1];
                 }

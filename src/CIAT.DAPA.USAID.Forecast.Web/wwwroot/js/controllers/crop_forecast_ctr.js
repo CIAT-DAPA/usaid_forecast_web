@@ -157,9 +157,9 @@ angular.module('ForecastApp')
           // Get the summary 
           var float = setup.getFloat();
           var summary_cu_so = CropYieldForecastFactory.summaryCultivarSoil(yield_cu, $scope.crop_yield_var.name);
-          $("#yield_" + cu.id + "_max_date").html(summary_cu_so.max.date.substring(0, 10));
+          $("#yield_" + cu.id + "_max_date").html(summary_cu_so.max.date);
           $("#yield_" + cu.id + "_max_yield").html(summary_cu_so.max.value.toFixed(float) + ' ' + $scope.crop_yield_var.metric);
-          $("#yield_" + cu.id + "_min_date").html(summary_cu_so.min.date.substring(0, 10));
+          $("#yield_" + cu.id + "_min_date").html(summary_cu_so.min.date);
           $("#yield_" + cu.id + "_min_yield").html(summary_cu_so.min.value.toFixed(float) + ' ' + $scope.crop_yield_var.metric);
 
           // The following cicle is used to draw the trend graphic
@@ -178,9 +178,9 @@ angular.module('ForecastApp')
 
               // Get the summary by measure
               var summary_vr = CropYieldForecastFactory.summaryCultivarSoilMeasure(vr_data);
-              $("#yield_" + vr.name + "_" + cu.id + "_max_date").html(summary_vr.max.date.substring(0, 10));
+              $("#yield_" + vr.name + "_" + cu.id + "_max_date").html(summary_vr.max.date);
               $("#yield_" + vr.name + "_" + cu.id + "_max_yield").html(summary_vr.max.value.toFixed(float) + ' ' + vr.metric);
-              $("#yield_" + vr.name + "_" + cu.id + "_min_date").html(summary_vr.min.date.substring(0, 10));
+              $("#yield_" + vr.name + "_" + cu.id + "_min_date").html(summary_vr.min.date);
               $("#yield_" + vr.name + "_" + cu.id + "_min_yield").html(summary_vr.min.value.toFixed(float) + ' ' + vr.metric);
           }
 

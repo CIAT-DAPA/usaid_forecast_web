@@ -8,7 +8,7 @@
  * Factory in the ForecastApp.
  */
 angular.module('ForecastApp')
-.factory('CropYieldForecastFactory', function ($q, config, ForecastApiFactory) {
+.factory('CropYieldForecastFactory', function ($q, config, tools, ForecastApiFactory) {
     var dataFactory = {
         cache: true,
         db: ForecastApiFactory,
@@ -78,9 +78,9 @@ angular.module('ForecastApp')
         for (var i = 0; i < data.length; i++) {
             var m = data[i].data.filter(function (item) { return item.measure === measure; })[0];
             if (max == null || max.value < m.avg)
-                max = { date: data[i].start, value: m.avg };
+                max = { date: tools.dateToText(data[i].start), value: m.avg };
             if (min == null || min.value > m.avg)
-                min = { date: data[i].start, value: m.avg };
+                min = { date: tools.dateToText(data[i].start), value: m.avg };
         }
         return { max: max, min: min };
     }
@@ -94,9 +94,9 @@ angular.module('ForecastApp')
         var min = null;
         for (var i = 0; i < data.length; i++) {
             if (max == null || max.value < data[i].data.sd)
-                max = { date: data[i].date, value: data[i].data.sd };
+                max = { date: tools.dateToText(data[i].date), value: data[i].data.sd };
             if (min == null || min.value > data[i].data.sd)
-                min = { date: data[i].date, value: data[i].data.sd };
+                min = { date: tools.dateToText(data[i].date), value: data[i].data.sd };
         }
         return { max: max, min: min };
     }

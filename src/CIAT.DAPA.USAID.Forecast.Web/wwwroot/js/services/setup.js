@@ -8,7 +8,7 @@
  * Setup in the ForecastApp.
  */
 angular.module('ForecastApp')    
-    .factory('tools', function () {
+    .factory('tools', function (config) {
         var dataFactory = {};
 
         /*
@@ -51,6 +51,15 @@ angular.module('ForecastApp')
                 $("#modal_video").attr("src", url);
             else
                 $("#modal_video").remove();
+        }
+
+        /*
+         * Method that return a date in spanish text
+         * (string) date: Date in format yyyy-MM-nn
+        */
+        dataFactory.dateToText = function (date) {
+            var d = new Date(date);
+            return d.getDate()  + " de " + config.month_names[d.getMonth()] + " de " + d.getFullYear();
         }
 
         return dataFactory;
