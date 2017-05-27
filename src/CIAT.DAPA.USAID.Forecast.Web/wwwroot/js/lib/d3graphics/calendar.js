@@ -3,6 +3,7 @@
  * (Base) base: Configuration to render the graphic
  * (string[]) months_names: Array with name of the months
  * (string[]) days_names: Array with name of the days
+ * (object[]) measures: Array with measures
  * (string) measure: Name of measure to display
  * (string) back: Id button with the back function
  * (string) forward: Id button with the forward function
@@ -10,12 +11,13 @@
  * (object[]) ranges: Array with levels of yield standard
  * (string) alias: Alias to call all items inside of the graphic
  */
-function Calendar(base, months_names, days_names, measure, back, forward, label, ranges, alias) {
+function Calendar(base, months_names, days_names, measures, measure, back, forward, label, ranges, alias) {
     this.base = base;
     this.counter = 0;
     this.current_month = new Date().getMonth();
     this.months_names = months_names;
     this.days_names = days_names;
+    this.measures = measures;
     this.measure = measure;
     this.back = back;
     this.forward = forward;
@@ -259,17 +261,15 @@ Calendar.prototype.render_month = function () {
                 return bg;
             })
             .on("mouseover", function (d, i) {
-                //var value = that.base.formats.round((data[d] !== undefined) ? data[d] : 0) + ' Kg/ha';
-                var content = '';
                 if (data_month[i] != null) {
-                    var measures = data_month[i].data.map(function (item) { return item.measure; });
+                    var measures_names = data_month[i].data.map(function (item) { return item.measure; });
                     var content_rows = '';
-                    for (var j = 0; j < measures.length; j++)
-                        content_rows += '<tr>' + '<td>' + measures[j] + '</td>' + '<td>' + data_month[i].data.filter(function (item) { return item.measure === measures[j]; })[0].avg.toFixed(0) + '</td>' + '</tr>';
-                    content = '<table class="table">' +
-                                content_rows +
-                              '</table>';
-                    that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, content);
+                    for (var j = 0; j < measures_names.length; j++) {
+                        var m = that.measures.filter(function (item) { return item.name === measures_names[j]; })[0];
+                        if(m != undefined)
+                            content_rows += '<tr><td>' + m.label + '</td><td>' + data_month[i].data.filter(function (item) { return item.measure === measures_names[j]; })[0].avg.toFixed(0) + ' ' + m.metric + '</td></tr>';
+                    }
+                    that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, '<table class="table">' + content_rows + '</table>');
                 }
             })
             .on("mouseout", function (d) {
