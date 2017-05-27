@@ -31,8 +31,8 @@ function Calendar(base, months_names, days_names, measure, back, forward, label,
 /*
  * Method that return a function to interpolate the values to color
 */
-Calendar.prototype.color = function (value) {    
-    var domain = this.ranges.treashold.map(function (d) { return d + 1;});
+Calendar.prototype.color = function (value) {
+    var domain = this.ranges.treashold.map(function (d) { return d + 1; });
     var range = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
     var color = d3.scale.threshold().domain(domain).range(range);
     return color(value);
@@ -157,8 +157,8 @@ Calendar.prototype.get_data_month = function () {
         date = new Date(this.year_display(), this.month_display() + 1, i);
         value = this.search(date);
         data.push(value);
-    }    
-    return data.slice(0,35);
+    }
+    return data.slice(0, 35);
 }
 /*
  * Dispatch the event to show next month
@@ -193,7 +193,7 @@ Calendar.prototype.render_month = function () {
     // the forward or backward button.
     var days_to_display = this.days_month();
     var cells = this.generate_grid();
-    
+
     // Clear the calendar data
     this.base.svg
         .selectAll(".days_month")
@@ -220,34 +220,33 @@ Calendar.prototype.render_month = function () {
         .text(function (d) { return d[0]; }); // Render text for the day of the week
 
     var data_month = this.get_data_month();
-    
+
     this.base.svg
-        .append("g")
-        .attr("class", "days_yield")
-        .attr("transform", "translate(0," + that.cell_height() + ")")
-        .selectAll("days_yield")
-        .data(data_month)
-        .enter()
-        .append("text")
-        .attr("x", function (d, i) { return cells[i][0]; })
-        .attr("y", function (d, i) { return cells[i][1]; })
-        .attr("dx", this.cell_width() / 4) // right padding
-        .attr("dy", 2 * (this.cell_height() / 3)) // vertical alignment 
-        .text(function (d) {
-            var text = '';
-            if (d != null)
-                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].avg);
-            return text;
-        }); // Render text for the day of the week
-    
+            .append("g")
+            .attr("class", "days_yield")
+            .attr("transform", "translate(0," + that.cell_height() + ")")
+            .selectAll("days_yield")
+            .data(data_month)
+            .enter()
+            .append("text")
+            .attr("x", function (d, i) { return cells[i][0]; })
+            .attr("y", function (d, i) { return cells[i][1]; })
+            .attr("dx", this.cell_width() / 4) // right padding
+            .attr("dy", 2 * (this.cell_height() / 3)) // vertical alignment 
+            .text(function (d) {
+                var text = '';
+                if (d != null)
+                    text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].avg);
+                return text;
+            }); // Render text for the day of the week
+
     // Paint the cells 
-    this.base.svg
-            .selectAll(".calendar_days rect")
+    this.base.svg.selectAll(".calendar_days rect")
             .data(days_to_display)
             // Here we change the color depending on whether the day is in the current month, the previous month or the next month.
             // The function that generates the dates for any given month will also specify the colors for days that are not part of the
             // current month. We just have to use it to fill the rectangle
-            .style("fill", function (d, i) {                
+            .style("fill", function (d, i) {
                 var bg = '';
                 if (d[1].indexOf('FFFFFF')) {
                     if (data_month[i] != null)
@@ -258,8 +257,25 @@ Calendar.prototype.render_month = function () {
                 else
                     bg += d[1];
                 return bg;
+            })
+            .on("mouseover", function (d, i) {
+                //var value = that.base.formats.round((data[d] !== undefined) ? data[d] : 0) + ' Kg/ha';
+                var content = '';
+                if (data_month[i] != null) {
+                    var measures = data_month[i].data.map(function (item) { return item.measure; });
+                    var content_rows = '';
+                    for (var j = 0; j < measures.length; j++)
+                        content_rows += '<tr>' + '<td>' + measures[j] + '</td>' + '<td>' + data_month[i].data.filter(function (item) { return item.measure === measures[j]; })[0].avg.toFixed(0) + '</td>' + '</tr>';
+                    content = '<table class="table">' +
+                                content_rows +
+                              '</table>';
+                    that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, content);
+                }
+            })
+            .on("mouseout", function (d) {
+                that.base.tooltip_hide();
             });
-            
+
 },
 
 /*
@@ -292,7 +308,7 @@ Calendar.prototype.render = function () {
         .attr("x", function (d) { return cells[d][0]; })
         .attr("y", 0)
         .attr("width", this.cell_width())
-        .attr("height", (that.cell_height() / 2) )
+        .attr("height", (that.cell_height() / 2))
         .style("fill", function (d) {
             return that.color(that.ranges.treashold[d]);
         });

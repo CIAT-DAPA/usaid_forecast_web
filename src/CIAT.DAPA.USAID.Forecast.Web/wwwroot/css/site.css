@@ -407,6 +407,7 @@ footer a{
 .calendar_days rect {
     fill: #ffffff;
     stroke: #555;
+    cursor: pointer;
 }
 
 .days_yield {

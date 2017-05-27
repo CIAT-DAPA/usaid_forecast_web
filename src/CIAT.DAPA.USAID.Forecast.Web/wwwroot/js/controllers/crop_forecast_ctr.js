@@ -19,7 +19,6 @@ angular.module('ForecastApp')
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
       $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
       // Get the guild
-      //$scope.guild = GuildFactory.getByCrop($scope.crop_name);
 
       $scope.municipalities = [];
       $scope.ws = null;
