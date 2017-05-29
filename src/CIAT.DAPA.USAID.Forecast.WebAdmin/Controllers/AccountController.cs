@@ -231,13 +231,23 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             //_logger.LogInformation(4, "User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
-        
+
         // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public async Task<IActionResult> ResetPassword(string code = null)
         {
-            return code == null ? View("Error") : View();
+            try
+            {
+                await writeEventAsync("User trying reset password [" + code ?? string.Empty + "]", LogEvent.upd);
+                return code == null ? View("Error") : View();
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }
+
         }
 
         //
@@ -247,23 +257,34 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(model);
+                await writeEventAsync("User trying to change the password", LogEvent.upd);
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var user = await managerUser.FindByNameAsync(model.Email);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    await writeEventAsync("User trying to change the password. User doesn't exist [" + model.Email + "]", LogEvent.upd);
+                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                }
+                var result = await managerUser.ResetPasswordAsync(user, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    await writeEventAsync("User trying to change the password. Password changed [" + model.Email + "]", LogEvent.upd);
+                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                }
+                //AddErrors(result);
+                return View();
             }
-            var user = await managerUser.FindByNameAsync(model.Email);
-            if (user == null)
+            catch(Exception ex)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            }
-            var result = await managerUser.ResetPasswordAsync(user, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
-            }
-            //AddErrors(result);
-            return View();
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }            
         }
 
         //
