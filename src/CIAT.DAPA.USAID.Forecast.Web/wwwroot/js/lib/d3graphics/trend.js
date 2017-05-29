@@ -24,7 +24,8 @@ Trend.prototype.render = function () {
             .domain([d3.min(that.base.data, function (d) { return d.data.min; }), d3.max(that.base.data, function (d) { return d.data.max; }) * 1.05]);
 
     // Add the axis
-    this.base.addAxisDate(x, y, 10, 45);
+    //this.base.addAxisDate(x, y, 10, 45);
+    this.base.addAxisDateText(x, y, 10, 45, 'Fechas de siembra', 'Valores ' + that.base.axis_labels.y);
 
     // Add the ticks
     //this.base.addAxisTicks(x, y, this.base.data.length, 12);
@@ -70,25 +71,21 @@ Trend.prototype.render = function () {
         .y1(function (d) { return y(d.data.perc_5); });
 
     this.base.svg.append('path')
-        //.attr('class', 'area upper outer')
         .attr('class', 'trend_yield_area_outer')
         .attr('d', upperOuterArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        //.attr('class', 'area lower outer')
         .attr('class', 'trend_yield_area_outer')
         .attr('d', lowerOuterArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        //.attr('class', 'area upper inner')
         .attr('class', 'trend_yield_area_inner')
         .attr('d', upperInnerArea)
         .attr('clip-path', 'url(#trend_clip)');
 
     this.base.svg.append('path')
-        //.attr('class', 'area lower inner')
         .attr('class', 'trend_yield_area_inner')
         .attr('d', lowerInnerArea)
         .attr('clip-path', 'url(#trend_clip)');
@@ -98,8 +95,6 @@ Trend.prototype.render = function () {
         .attr('d', medianLine)
         .attr('clip-path', 'url(#trend_clip)');
 
-    
-    
     // legend
     var legendWidth  = 200,
       legendHeight = 100;

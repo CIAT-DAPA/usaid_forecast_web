@@ -64,7 +64,8 @@ function Base(container, data) {
 
     // labels axis
     this.axis_labels = {
-        y: ''
+        y: '',
+        x: ''
     };
 
 }
@@ -158,7 +159,7 @@ Base.prototype.init = function (relative, height) {
 Base.prototype.update = function (relative, height) {
     var element = document.getElementById(this.container.replace('#', ''));
     this.width_full = element.clientWidth;
-    this.height_full = relative == true ? this.width_full * height : height;    
+    this.height_full = relative == true ? this.width_full * height : height;
     this.width = this.width_full - (this.margin.left + this.margin.right);
     this.height = this.height_full - (this.margin.top + this.margin.bottom);
     this.svg.attr('width', this.width_full)
@@ -187,19 +188,28 @@ Base.prototype.getXAxis = function (x) {
  * (function) x: Function to interpolate the x values
  * (function) y: Function to interpolate the y values
 */
-Base.prototype.addAxisLabels = function (x,y) {
+Base.prototype.addAxisLabels = function (x, y) {
     // Add y label axis
     if (this.axis_labels.y !== '')
         this.svg.append('g')
             .attr('class', 'y_axis_label')
             .call(y)
-            .append('text')
+            .append('text')            
             .attr('transform', 'rotate(-90)')
-            .attr('y', this.margin.right + 15)
-            //.attr('dx', this.margin.right)
-            //.attr('dy', '.71em')
-            .style('text-anchor', 'end')
+            .attr('x', -(this.height / 2))
+            .attr('y', '10')
+            .style('text-anchor', 'middle')
             .text(this.axis_labels.y);
+
+    if (this.axis_labels.x !== '')
+        this.svg.append('g')
+            .attr('class', 'y_axis_label')
+            .call(x)
+            .append('text')
+            .attr("transform", 'translate(0,' + (this.height + this.margin.bottom) + ')')            
+            .attr('x', (this.width/2))
+            .style('text-anchor', 'middle')
+            .text(this.axis_labels.x);
 }
 
 /*
@@ -220,7 +230,7 @@ Base.prototype.addAxis = function (x, y, ticks) {
         .attr("transform", "translate(" + this.margin.right + ",0)")
         .call(this.getYAxis(y, ticks));
 
-    this.addAxisLabels(x,y);
+    this.addAxisLabels(x, y);
 }
 
 /*
@@ -242,6 +252,32 @@ Base.prototype.addAxisDate = function (x, y, ticks, grade) {
         .attr("transform", "translate(" + this.margin.right + ",0)")
         .call(this.getYAxis(y, ticks));
 
+    this.addAxisLabels(x, y);
+}
+
+/*
+ * Method that add the axis x and y in the graphic
+ * (function) x: Function to interpolate the x values
+ * (function) y: Function to interpolate the y values
+ * (int) ticks: Count of ticks
+ * (int) grade: Grades to rotate the x axis
+ * (string) x_text: Text in x axis
+ * (string) y_text: Grades to rotate the x axis
+*/
+Base.prototype.addAxisDateText = function (x, y, ticks, grade, x_text, y_text) {
+    // Add x-axis to the histogram svg.
+    this.svg.append("g").attr("class", "x_axis")
+        .attr("transform", 'translate(0,' + (this.height - 10) + ')')
+        .call(d3.svg.axis().scale(x).tickFormat(d3.time.format('%b %d')));
+
+    // Add y-axis to the histogram svg.
+    this.svg.append("g")
+        .attr("class", "y_axis")
+        .attr("transform", "translate(" + this.margin.right + ",0)")
+        .call(this.getYAxis(y, ticks));
+
+    this.axis_labels.y = y_text;
+    this.axis_labels.x = x_text;
     this.addAxisLabels(x, y);
 }
 

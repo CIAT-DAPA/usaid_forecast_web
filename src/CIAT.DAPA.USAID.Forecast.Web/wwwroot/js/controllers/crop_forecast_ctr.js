@@ -169,7 +169,7 @@ angular.module('ForecastApp')
 
               // Draw the graphic
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
-              base_t.setMargin(10, 50, 10, 20);
+              base_t.setMargin(10, 80, 10, 30);
               base_t.setDateNames(setup.getMonths(), setup.getDays());
               base_t.setAxisLabelY(vr.metric);
               var trend = new Trend(base_t);
