@@ -87,7 +87,7 @@
 
           // Draw the graphic
           var base_c = new Base('#bar_climatology', $scope.climatology_filtered);
-          base_c.setMargin(10, 30, 10, 10);
+          base_c.setMargin(10, 50, 10, 10);
           base_c.setClasses($scope.cv.value.map(function (item) { return 'bar_' + item; }));
           base_c.setAxisLabelY($scope.cv.metric);
           var bar = new Bars(base_c);
@@ -146,7 +146,7 @@
           //var cvm = $scope.historical_months[j];
           var base_h = new Base('#historical_content_line', data_h);
           // Build the graphic for every month
-          base_h.setMargin(10, 30, 10, 10);
+          base_h.setMargin(10, 50, 10, 10);
           base_h.setClasses($scope.cv.value);
           base_h.setAxisLabelY($scope.cv.metric);
           var line = new Line(base_h);

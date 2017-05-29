@@ -19,7 +19,6 @@ angular.module('ForecastApp')
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
       $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
       // Get the guild
-      //$scope.guild = GuildFactory.getByCrop($scope.crop_name);
 
       $scope.municipalities = [];
       $scope.ws = null;
@@ -150,8 +149,8 @@ angular.module('ForecastApp')
 
           // Draw the graphic
           var base_c = new Base('#calendar_' + cu.id, yield_cu);
-          base_c.setMargin(10, 30, 10, 10);
-          var calendar = new Calendar(base_c, setup.getMonths(), setup.getDays(), $scope.crop_yield_var.name, '#back_' + cu.id, '#forward_' + cu.id, '#current_month_' + cu.id, $scope.yield_ranges, 'c_alias_' + cu.id);
+          base_c.setMargin(10, 30, 10, 10);          
+          var calendar = new Calendar(base_c, setup.getMonths(), setup.getDays(), $scope.crop_vars, $scope.crop_yield_var.name, '#back_' + cu.id, '#forward_' + cu.id, '#current_month_' + cu.id, $scope.yield_ranges, 'c_alias_' + cu.id);
           calendar.render();
 
           // Get the summary 
@@ -170,7 +169,7 @@ angular.module('ForecastApp')
 
               // Draw the graphic
               var base_t = new Base('#trend_' + cu.id + '_' + vr.name, vr_data);
-              base_t.setMargin(10, 50, 10, 20);
+              base_t.setMargin(10, 80, 10, 30);
               base_t.setDateNames(setup.getMonths(), setup.getDays());
               base_t.setAxisLabelY(vr.metric);
               var trend = new Trend(base_t);

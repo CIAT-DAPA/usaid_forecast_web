@@ -3,6 +3,7 @@
  * (Base) base: Configuration to render the graphic
  * (string[]) months_names: Array with name of the months
  * (string[]) days_names: Array with name of the days
+ * (object[]) measures: Array with measures
  * (string) measure: Name of measure to display
  * (string) back: Id button with the back function
  * (string) forward: Id button with the forward function
@@ -10,12 +11,13 @@
  * (object[]) ranges: Array with levels of yield standard
  * (string) alias: Alias to call all items inside of the graphic
  */
-function Calendar(base, months_names, days_names, measure, back, forward, label, ranges, alias) {
+function Calendar(base, months_names, days_names, measures, measure, back, forward, label, ranges, alias) {
     this.base = base;
     this.counter = 0;
     this.current_month = new Date().getMonth();
     this.months_names = months_names;
     this.days_names = days_names;
+    this.measures = measures;
     this.measure = measure;
     this.back = back;
     this.forward = forward;
@@ -31,8 +33,8 @@ function Calendar(base, months_names, days_names, measure, back, forward, label,
 /*
  * Method that return a function to interpolate the values to color
 */
-Calendar.prototype.color = function (value) {    
-    var domain = this.ranges.treashold.map(function (d) { return d + 1;});
+Calendar.prototype.color = function (value) {
+    var domain = this.ranges.treashold.map(function (d) { return d + 1; });
     var range = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
     var color = d3.scale.threshold().domain(domain).range(range);
     return color(value);
@@ -157,8 +159,8 @@ Calendar.prototype.get_data_month = function () {
         date = new Date(this.year_display(), this.month_display() + 1, i);
         value = this.search(date);
         data.push(value);
-    }    
-    return data.slice(0,35);
+    }
+    return data.slice(0, 35);
 }
 /*
  * Dispatch the event to show next month
@@ -193,7 +195,7 @@ Calendar.prototype.render_month = function () {
     // the forward or backward button.
     var days_to_display = this.days_month();
     var cells = this.generate_grid();
-    
+
     // Clear the calendar data
     this.base.svg
         .selectAll(".days_month")
@@ -220,34 +222,33 @@ Calendar.prototype.render_month = function () {
         .text(function (d) { return d[0]; }); // Render text for the day of the week
 
     var data_month = this.get_data_month();
-    
+
     this.base.svg
-        .append("g")
-        .attr("class", "days_yield")
-        .attr("transform", "translate(0," + that.cell_height() + ")")
-        .selectAll("days_yield")
-        .data(data_month)
-        .enter()
-        .append("text")
-        .attr("x", function (d, i) { return cells[i][0]; })
-        .attr("y", function (d, i) { return cells[i][1]; })
-        .attr("dx", this.cell_width() / 4) // right padding
-        .attr("dy", 2 * (this.cell_height() / 3)) // vertical alignment 
-        .text(function (d) {
-            var text = '';
-            if (d != null)
-                text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].avg);
-            return text;
-        }); // Render text for the day of the week
-    
+            .append("g")
+            .attr("class", "days_yield")
+            .attr("transform", "translate(0," + that.cell_height() + ")")
+            .selectAll("days_yield")
+            .data(data_month)
+            .enter()
+            .append("text")
+            .attr("x", function (d, i) { return cells[i][0]; })
+            .attr("y", function (d, i) { return cells[i][1]; })
+            .attr("dx", this.cell_width() / 4) // right padding
+            .attr("dy", 2 * (this.cell_height() / 3)) // vertical alignment 
+            .text(function (d) {
+                var text = '';
+                if (d != null)
+                    text = that.base.formats.round(d.data.filter(function (item) { return item.measure === that.measure; })[0].avg);
+                return text;
+            }); // Render text for the day of the week
+
     // Paint the cells 
-    this.base.svg
-            .selectAll(".calendar_days rect")
+    this.base.svg.selectAll(".calendar_days rect")
             .data(days_to_display)
             // Here we change the color depending on whether the day is in the current month, the previous month or the next month.
             // The function that generates the dates for any given month will also specify the colors for days that are not part of the
             // current month. We just have to use it to fill the rectangle
-            .style("fill", function (d, i) {                
+            .style("fill", function (d, i) {
                 var bg = '';
                 if (d[1].indexOf('FFFFFF')) {
                     if (data_month[i] != null)
@@ -258,8 +259,23 @@ Calendar.prototype.render_month = function () {
                 else
                     bg += d[1];
                 return bg;
+            })
+            .on("mouseover", function (d, i) {
+                if (data_month[i] != null) {
+                    var measures_names = data_month[i].data.map(function (item) { return item.measure; });
+                    var content_rows = '';
+                    for (var j = 0; j < measures_names.length; j++) {
+                        var m = that.measures.filter(function (item) { return item.name === measures_names[j]; })[0];
+                        if(m != undefined)
+                            content_rows += '<tr><td>' + m.label + '</td><td>' + data_month[i].data.filter(function (item) { return item.measure === measures_names[j]; })[0].avg.toFixed(0) + ' ' + m.metric + '</td></tr>';
+                    }
+                    that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, '<table class="table"><tr><th colspan="2">Valores promedios<th><tr>' + content_rows + '</table>');
+                }
+            })
+            .on("mouseout", function (d) {
+                that.base.tooltip_hide();
             });
-            
+
 },
 
 /*
@@ -292,7 +308,7 @@ Calendar.prototype.render = function () {
         .attr("x", function (d) { return cells[d][0]; })
         .attr("y", 0)
         .attr("width", this.cell_width())
-        .attr("height", (that.cell_height() / 2) )
+        .attr("height", (that.cell_height() / 2))
         .style("fill", function (d) {
             return that.color(that.ranges.treashold[d]);
         });
