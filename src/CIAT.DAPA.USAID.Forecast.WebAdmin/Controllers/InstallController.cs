@@ -49,8 +49,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             if (ModelState.IsValid)
             {
                 await registerRoles();
-                await registerUserAsync(model.Email, model.Password, Role.ROLE_ADMIN);
-                return RedirectToAction("Installed");
+                if(await registerUserAsync(model.Email, model.Password, Role.ROLE_ADMIN))
+                    return RedirectToAction("Installed");
+                else
+                    return View(model);
             }
                 
             return View(model);
