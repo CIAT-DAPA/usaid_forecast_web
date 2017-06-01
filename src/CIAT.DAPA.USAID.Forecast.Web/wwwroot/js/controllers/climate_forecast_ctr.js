@@ -111,7 +111,7 @@
                             '</article>';
               ctrs = ctrs + '<article class="col-lg-4 article_content">' +
                                 '<div class="section-content">' +
-                                    '<h3 class="text-center">Escenarios climáticos</h3>' +
+                                    '<h3 class="text-center">Escenarios de la predicción</h3>' +
                                     '<div id="table' + m.year + '-' + m.month + '"></div>' +
                                 '</div>' +
                             '</article>';
@@ -146,10 +146,10 @@
 
               // Add summary
               var summary = ClimateForecastFactory.summary(m.probabilities);
-              var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
+              var summary_text = 'Para el mes de <span class="text-bold">' + m.month_name + '</span> ' +
                                  'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
                                  'lo normal es que haya una precipitación entre <span class="text-bold">' + cl_lower +
-                                 ' mm y ' + cl_upper + ' mm</span>, la predicción climática sugiere que ' +
+                                 ' mm y ' + cl_upper + ' mm</span>, la predicción climática sugiere que lo más probable es que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
 

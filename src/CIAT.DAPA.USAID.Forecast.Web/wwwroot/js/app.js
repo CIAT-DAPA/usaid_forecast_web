@@ -53,19 +53,19 @@ angular
       climate_vars: [
           {
               name: 'Precipitación', container: 'precipitation', value: ['prec'], metric: 'mm', historical_months: [],
-              description_climatology: 'Esta gráfica muestra la precipitación promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra la precipitación ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
+              description_climatology: 'Esta gráfica muestra la precipitación promedio de los últimos 30 años para cada mes',
+              description_historical: ' Esta gráfica muestra los valores históricos de la precipitación para un solo mes. Seleccione el mes de interés'
           },
           {
               name: 'Temperatura', container: 'temperature', value: ['t_max', 't_min'], metric: '°C', historical_months: [],
-              description_climatology: 'Esta gráfica muestra las temperaturas máximas y mínimas promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra las temperaturas máximas y mínimas ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
+              description_climatology: 'Esta gráfica muestra las temperaturas máximas y mínimas promedio de los últimos 30 años para cada mes',
+              description_historical: ' Esta gráfica muestra los valores históricos de las temperaturas máximas y mínimas para un solo mes. Seleccione el mes de interés'
 
           },
           {
               name: 'Radiación solar', container: 'solar_radiation', value: ['sol_rad'], metric: 'MJ/m²d', historical_months: [],
-              description_climatology: 'Esta gráfica muestra la radiación solar promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra la radiación solar ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
+              description_climatology: 'Esta gráfica muestra la radiación solar promedio de los últimos 30 años para cada mes',
+              description_historical: ' Esta gráfica muestra los valores históricos de la radiación solar para un solo mes. Seleccione el mes de interés'
           }
       ],
       climate_vars_scenario: [
