@@ -101,7 +101,8 @@ angular.module('ForecastApp')
       $scope.collapsable = function (item, index) {
           var $this = $("#" + item).find(".blockTitle");
           if ($($this).hasClass('closed')) {
-              $($this).parent().find('.blockTitle').removeClass('opened').addClass('closed');
+              $('.graphs').slideUp();
+              $('.blockTitle').removeClass('opened').addClass('closed');
               $($this).removeClass('closed').addClass('opened');
           } else {
               $($this).removeClass('opened').addClass('closed');
