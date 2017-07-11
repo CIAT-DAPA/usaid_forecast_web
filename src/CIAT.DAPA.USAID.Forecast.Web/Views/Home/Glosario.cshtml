@@ -4,9 +4,11 @@
     ViewData["Meta_Keywords"] = "acerca,clima,predicción,cultivos,agroclima,agroclimatico,precipitación,rendimiento,días a cosecha,temperatura,historial rendimiento,histórico rendimiento,producción";
 }
 
+<!-- Start global variables -->
+<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
+<!-- End global variables -->
 
 @Html.Partial("_SubMenu")
-
 
 <div id="containerBlock">
     @Html.Partial("_SocialMedia")

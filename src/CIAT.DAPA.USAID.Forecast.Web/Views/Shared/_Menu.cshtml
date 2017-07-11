@@ -1,0 +1,33 @@
+﻿<nav class="navbar-collapse collapse" id="navbar_main" ng-controller="LocationCtrl">
+    <ul class="nav navbar-nav">
+        <li id="menu_main_climate" class="dropdown">            
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-asterisk"></span> Clima<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="s in states_climate" style="padding:5px 15px;">
+                    <b>{{s.name}}</b>
+                    <a ng-repeat="m in s.municipalities" href="/Clima?municipio={{m.name}}">{{m.name}}</a>
+                </li>
+            </ul>
+        </li>
+        <li id="menu_main_rice" class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> Arroz<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="s in states_rice" style="padding:5px 15px;">
+                    <b>{{s.name}}</b>
+                    <a ng-repeat="m in s.municipalities" href="/Cultivo?cultivo=arroz&municipio={{m.name}}">{{m.name}}</a>
+                </li>
+            </ul>
+        </li>
+        <li id="menu_main_maize" class="dropdown">            
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> Maíz<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li ng-repeat="s in states_maize" style="padding:5px 15px;">
+                    <b>{{s.name}}</b>
+                    <a ng-repeat="m in s.municipalities" href="/Cultivo?cultivo=maíz&municipio={{m.name}}">{{m.name}}</a>
+                </li>
+            </ul>
+        </li>
+        <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Bases de datos</a></li>
+        <li id="menu_main_about"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> Glosario</a></li>
+    </ul>
+</nav>
