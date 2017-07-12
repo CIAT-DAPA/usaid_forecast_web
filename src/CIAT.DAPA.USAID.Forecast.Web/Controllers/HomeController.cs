@@ -32,5 +32,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             loadAPIs();
             return View();
         }
+
+        public IActionResult AcercaDe()
+        {
+            // Load the urls of the web api's
+            loadAPIs();
+            return View();
+        }
     }
 }

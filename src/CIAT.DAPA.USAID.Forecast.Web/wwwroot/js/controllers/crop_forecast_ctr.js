@@ -192,7 +192,6 @@ angular.module('ForecastApp')
       }
 
       $rootScope.drawFunction = function (section) {
-
       }
 
   });
