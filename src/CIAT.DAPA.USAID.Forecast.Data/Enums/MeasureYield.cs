@@ -38,6 +38,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Total aboveground biomass accumulated
         /// </summary>
-        bio_acu
+        bio_acu,
+        /// <summary>
+        /// Cumulative Evapotranspiration
+        /// </summary>
+        et_acu
     }
 }
