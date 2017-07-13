@@ -33,7 +33,7 @@ angular
               { name: 'Climatología', section: 'climatology', value: 'climatology' },
               { name: 'Histórico climático', section: 'climate_historical', value: 'climate_historical' },
               { name: 'Predicción climática', section: 'climate_forecast', value: 'climate_forecast' },
-              { name: 'Histórico de producción', section: 'yield_historical', value: 'yield_historical' },              
+              { name: 'Histórico de producción', section: 'yield_historical', value: 'yield_historical' },
               { name: 'Pronóstico de producción', section: 'yield_forecast', value: 'yield_forecast' }
           ],
           glossary: [
@@ -86,21 +86,23 @@ angular
           }
       ],
       climate_vars_scenario: [
-          { name: 'Precipitación', value: 'prec', metric: 'mm'},
-          { name: 'T. Máxima', value: 't_max',  metric: '°C'},
-          { name: 'T. Mínima', value: 't_min', metric: '°C'},
-          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d'}
+          { name: 'Precipitación', value: 'prec', metric: 'mm' },
+          { name: 'T. Máxima', value: 't_max', metric: '°C' },
+          { name: 'T. Mínima', value: 't_min', metric: '°C' },
+          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d' }
       ],
       climatology_forecast: { lower: 'prec_ter_1', upper: 'prec_ter_2' },
       /* Yield vars */
       yield_default_var: [
           {
               crop: "arroz",
-              vars: [{ name: "yield_14", label: "Rendimiento", description:'Rendimiento al 14% de húmedad', metric: 'Kg/ha', default: true },
+              vars: [{ name: "yield_14", label: "Rendimiento", description: 'Rendimiento al 14% de húmedad', metric: 'Kg/ha', default: true },
                    { name: "d_har", label: "D. Cosecha", description: 'Días a cosecha', metric: 'día(s)', default: false },
                   { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false }]
+                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
+                  { name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
+              ]
           },
           {
               crop: "maíz",
@@ -109,7 +111,9 @@ angular
                   { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
                   { name: "d_dry", label: "D. Secado", description: 'Días a secado', metric: 'día(s)', default: false },
-                  { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false }]
+                  { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false },
+                  { name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
+              ]
           }],
       /* Expert mode*/
       expert_db: [
