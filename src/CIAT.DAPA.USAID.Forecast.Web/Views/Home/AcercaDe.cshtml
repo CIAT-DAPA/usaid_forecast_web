@@ -11,44 +11,9 @@
 @Html.Partial("_SubMenu")
 
 <div id="containerBlock">
-    @Html.Partial("_SocialMedia")
-    <!-- Start Climate -->
-    <section class="col-md-12 sections" id="content_climate">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Predicción Climática</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Los modelos de predicción  climática son herramientas esenciales para el estudio y
-                avance en la  predicción de la variabilidad climática. Las predicciones climáticas
-                estacionales a 6 meses sobre la precipitación son realizadas con un modelo estadístico,
-                el cual tiene como fundamento identificar los modos de variabilidad del sistema
-                climático y la asociación de estos con variables océano-atmosféricas.
-                Este producto es útil para tener una referencia del comportamiento más probable a ocurrir,
-                pero es necesario aclarar que no considera eventos extremos puntuales y de corta duración
-                que puedan tener lugar en algunas zonas puntuales del país.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                El pronóstico probabilístico está expresado en porcentaje y representa la probabilidad
-                de que ocurra la condición de precipitación en tres categorías:
-            </p>
-            <ul>
-                <li>
-                    Precipitaciones por debajo de lo normal: esto indica que se van a presentar valores
-                    de precipitación inferiores a los registrados históricamente para el período de interés.
-                </li>
-                <li>
-                    Precipitaciones normales: esto indica que se van a presentar valores de precipitación
-                    muy similares a lo  registrado históricamente para el período de interés.
-                </li>
-                <li>
-                    Precipitaciones por encima de lo normal: esto indica que se van a presentar valores de
-                    precipitación superiores a los registrados históricamente para el período de interés.
-                </li>
-            </ul>
-        </div>
-    </section>
-    <!-- End Climate -->
+    @Html.Partial("_SocialMedia")    
     <!-- Start Scenarios -->
-    <section class="col-md-12 sections" id="content_scenarios" style="display:none;">
+    <section class="col-md-12 sections" id="content_scenarios">
         <div class="row section-content" style="padding-top:25px;">
             <h3 class="text-center">Generación de escenarios</h3>
             <p class="text-justify" style="font-size:1.1em;">
@@ -69,22 +34,7 @@
             </p>
         </div>
     </section>
-    <!-- End Scenarios -->
-    <!-- Start Forecast -->
-    <section class="col-md-12 sections" id="content_forecast" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Pronóstico agroclimático</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Un pronóstico agroclimático es producto de la integración de un pronóstico
-                climático con un modelo de cultivo previamente calibrado y validado.
-                El resultado permite evaluar/simular el rendimiento de un cultivo ante las
-                condiciones climáticas  pronosticadas. De esta manera, se obtiene  información
-                valiosa para apoyar la toma de decisiones agronómicas como son la fecha óptima
-                de siembra y variedad de mejor desempeño o adaptación.
-            </p>
-        </div>
-    </section>
-    <!-- End Forecast -->
+    <!-- End Scenarios -->    
     <!-- Start Yield Rice -->
     <section class="col-md-12 sections" id="content_yield_rice" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">

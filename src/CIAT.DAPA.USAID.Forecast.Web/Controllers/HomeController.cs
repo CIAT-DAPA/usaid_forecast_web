@@ -22,7 +22,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         public IActionResult Index()
         {
-            // Load the urls of the web api's
             return RedirectToAction("Index", "Clima");
         }
 
