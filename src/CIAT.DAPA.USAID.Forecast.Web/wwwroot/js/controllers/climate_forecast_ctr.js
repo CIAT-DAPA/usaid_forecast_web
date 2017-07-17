@@ -30,7 +30,8 @@
       $rootScope.drawFunction = function (section) {
           if (!$scope.loaded)
               load_data();
-          draw_forecast();
+          else
+            draw_forecast();
       }
 
       function load_data() {
@@ -63,6 +64,8 @@
 
                               // Draw graphic
                               draw_forecast();
+                              // Close loading 
+                              window.loading_screen.finish();
                           },
                           function (err) { console.log(err); });
                       },

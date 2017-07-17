@@ -49,6 +49,13 @@ angular.module('ForecastApp')
       if ($scope.municipality_name != null && $scope.municipality_name !== '')
           load_data();
 
+      /*
+      * Method that render the data in the screen
+      * (string) section: Section name to draw
+      */
+      $rootScope.drawFunction = function (section) {
+      }
+
       function load_data() {
           // Load data from web web api
           // Load the agronomic information
@@ -80,8 +87,7 @@ angular.module('ForecastApp')
                       var temp_date = $scope.gv_months[0].split('-');
                       $scope.period_start = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
                       temp_date = $scope.gv_months[1].split('-');
-                      $scope.period_end = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
-                      // Draw the graphics
+                      $scope.period_end = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];                      
 
                       for (var i = 0; i < $scope.cultivars.length; i++) {
                           var cu = $scope.cultivars[i];
@@ -89,6 +95,8 @@ angular.module('ForecastApp')
                           if ($scope.cultivars[i].soils == undefined || $scope.cultivars[i].soils == null)
                               $scope.cultivars[i].soils = SoilFactory.getSoilsAvailableForecast($scope.soils, cu.id, $scope.yield_ws);
                       }
+                      // Close loading 
+                      window.loading_screen.finish();
                   },
                   function (error) { console.log(error); });
 
@@ -189,9 +197,6 @@ angular.module('ForecastApp')
           $('#content_' + cu.id + ' div').removeClass('in');
           $('#content_' + cu.id + ' div:first').addClass('active');
           $('#content_' + cu.id + ' div:first').addClass('in');
-      }
-
-      $rootScope.drawFunction = function (section) {
       }
 
   });
