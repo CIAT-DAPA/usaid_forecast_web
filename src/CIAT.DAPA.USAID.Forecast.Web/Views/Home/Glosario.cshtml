@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Acerca De";
+    ViewData["Title"] = "Glosario";
     ViewData["Meta_Description"] = "Visualización de pronóstico (predicción) y datos históricos del comportamiento de los cultivos en Colombia.";
     ViewData["Meta_Keywords"] = "glosario,clima,predicción,cultivos,agroclima,producción,biomasa,intervalo de confianza,";
 }
@@ -10,7 +10,7 @@
 
 @Html.Partial("_SubMenu")
 
-<div id="containerBlock">
+<div id="containerBlock" ng-controller="GlossaryCtrl">
     @Html.Partial("_SocialMedia")
     <!-- Start bio_acu -->
     <section class="col-md-12 sections" id="content_bio_acu">
@@ -209,5 +209,5 @@
 </div>
 
 @section Scripts {
-
+    <script src="~/js/controllers/glossary_ctr.js"></script>
 }

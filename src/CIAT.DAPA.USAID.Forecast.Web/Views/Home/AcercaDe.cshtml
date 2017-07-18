@@ -10,7 +10,7 @@
 
 @Html.Partial("_SubMenu")
 
-<div id="containerBlock">
+<div id="containerBlock" ng-controller="AboutCtrl">
     @Html.Partial("_SocialMedia")    
     <!-- Start Scenarios -->
     <section class="col-md-12 sections" id="content_scenarios">
@@ -129,5 +129,5 @@
 </div>
 
 @section Scripts {
-
+    <script src="~/js/controllers/about_ctr.js"></script>
 }
