@@ -4,6 +4,14 @@
     font-family: 'Segoe UI', 'Arial', 'Helvetica';
 }
 
+body > .inner {
+  display: none;
+}
+
+body.pg-loaded > .inner {
+  display: block;
+}
+
 /* Body content */
 
 .body-content {

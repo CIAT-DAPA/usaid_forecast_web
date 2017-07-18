@@ -4,8 +4,8 @@
       window.loading_screen.finish();
 
       /*
-      * Method that render the data in the screen
-      * (string) section: Section name to draw
+       * Method that render the data in the screen
+       * (string) section: Section name to draw
       */
       $rootScope.drawFunction = function (section) {
 

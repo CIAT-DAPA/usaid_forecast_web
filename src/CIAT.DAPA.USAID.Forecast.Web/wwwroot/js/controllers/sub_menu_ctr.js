@@ -24,13 +24,13 @@ angular.module('ForecastApp')
               $("#sectionTitle").text($name);
               $rootScope.drawFunction($value);              
           }
-          /*else if ($scope.type === 'expert') {
+          else if ($scope.type === 'expert') {
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");
               $("#content_" + $section).show();
               $("#sectionTitle").text($name);
               $rootScope.drawFunction($value);
-          }*/
+          }
           else {
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");
