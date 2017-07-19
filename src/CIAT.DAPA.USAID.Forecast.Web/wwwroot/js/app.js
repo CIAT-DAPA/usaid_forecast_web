@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('ForecastApp', [])
+  .module('ForecastApp', ['ngCookies'])
   .value('config', {
       /* Web API Url */
       api_fs: $('#api_fs').val(),
@@ -101,7 +101,7 @@ angular
                   { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
-                  { name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
+                  //{ name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
               ]
           },
           {
@@ -112,7 +112,7 @@ angular
                   { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
                   { name: "d_dry", label: "D. Secado", description: 'Días a secado', metric: 'día(s)', default: false },
                   { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false },
-                  { name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
+                  //{ name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
               ]
           }],
       /* Expert mode*/

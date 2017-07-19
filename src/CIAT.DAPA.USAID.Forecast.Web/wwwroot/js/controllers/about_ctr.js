@@ -2,6 +2,8 @@
   .controller('AboutCtrl', function ($rootScope) {
       // Close loading 
       window.loading_screen.finish();
+      // Show tutorial
+      $rootScope.showTutorial();
 
       /*
        * Method that render the data in the screen

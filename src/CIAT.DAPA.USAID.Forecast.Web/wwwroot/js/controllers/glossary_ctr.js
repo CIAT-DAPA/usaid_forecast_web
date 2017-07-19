@@ -2,7 +2,8 @@
   .controller('GlossaryCtrl', function ($rootScope) {      
       // Close loading 
       window.loading_screen.finish();
-
+      // Show tutorial
+      $rootScope.showTutorial();
       /*
       * Method that render the data in the screen
       * (string) section: Section name to draw

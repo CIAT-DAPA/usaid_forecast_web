@@ -111,24 +111,8 @@
         </div>
     </footer>
 
-    <!-- Start Modal Assist -->
-    <div id="assit_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="modal_title"></h4>
-                </div>
-                <div class="modal-body">
-                    <p id="modal_text">
-
-                    </p>
-                    <iframe id="modal_video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Assist -->
+    @Html.Partial("_Modal")
+    
     <!-- Start Loader -->
     <script src="~/lib/please-wait/build/please-wait.js"></script>
     <script type="text/javascript">
@@ -146,10 +130,12 @@
     <!--<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/lib/angular-cookies/angular-cookies.min.js"></script>
     <script src="~/js/menu.js"></script>
     <script src="~/js/app.js"></script>
     <script src="~/js/services/setup.js"></script>
     <script src="~/js/services/assist.js"></script>
+    <script src="~/js/services/tutorial.js"></script>
     <script src="~/js/services/forecast_api.js"></script>
     <script src="~/js/services/agronomy.js"></script>
     <script src="~/js/services/cultivar.js"></script>

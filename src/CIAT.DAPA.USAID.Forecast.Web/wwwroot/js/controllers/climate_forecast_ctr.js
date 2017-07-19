@@ -61,11 +61,12 @@
                           ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
                           function (data_u) {
                               $scope.climatology_upper = data_u;
-
                               // Draw graphic
                               draw_forecast();
                               // Close loading 
                               window.loading_screen.finish();
+                              // Show tutorial
+                              $rootScope.showTutorial();
                           },
                           function (err) { console.log(err); });
                       },

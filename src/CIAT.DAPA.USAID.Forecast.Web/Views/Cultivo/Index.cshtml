@@ -36,7 +36,11 @@
         <section class="col-md-12">
             <article class="row section-content borderBox" ng-repeat="cu in cultivars" id="{{cu.id}}">
                 <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id,$index)">
-                    <label style="font-size:1.2em;">{{cu.name}}</label>
+                    <label class="cultivar_name" ng-switch="crop">
+                        <img ng-switch-when="maíz" style="margin-top: -7px;" src="../images/corn_black.png" height="19" width="19" /> 
+                        <span ng-switch-when="arroz" class="glyphicon glyphicon-grain"></span> 
+                        {{cu.name}}
+                    </label>
                     <p class="text-justify">
                         El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span>
                         <span ng-show="cu.rainfed" class="text-bold">(secano)</span>,
@@ -46,7 +50,7 @@
                         en el suelo que seleccione a continuación:
                     </p>
                 </div>
-                <section class="graphs" style="display:none;">
+                <div class="graphs" style="display:none;">
                     <div class="col-md-12">
                         <select class="form-control" ng-model="cu.soil_selected" ng-change="drawForecast(cu)" ng-options="so.name for so in cu.soils"></select>
                     </div>
@@ -120,7 +124,7 @@
                             </div>
                         </div>
                     </article>
-                </section>
+                </div>
 
             </article>
         </section>

@@ -49,6 +49,8 @@ angular.module('ForecastApp')
               $rootScope.drawFunction($scope.db_selected.section);
               // Close loading 
               window.loading_screen.finish();
+              // Show tutorial
+              $rootScope.showTutorial();
           },
           function (error) { console.log(error); });
       }

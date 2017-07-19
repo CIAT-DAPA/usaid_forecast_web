@@ -95,3 +95,12 @@
         background-color: #27ae60;
     }
 }
+
+/* Maize */
+#menu_main_maize img{
+    opacity:0.9;
+}
+
+#menu_main_maize:hover img{
+    opacity:1;
+}
