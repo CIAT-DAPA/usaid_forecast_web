@@ -54,17 +54,18 @@ angular.module('ForecastApp')
                             var monthly = item2.data.filter(function (item3) { return item3.measure === measure })[0];
                             if (monthly == null)
                                 return null;
-                            else
+                            else 
                                 return {
                                     month: item2.month,
-                                    month_name: config.month_names[item2.month - 1],
+                                    month_name: config.month_names[item2.month - 1],                                    
                                     value: monthly.value
                                 };
 
                         });
                         if (data2[0] == null)
                             return null;
-                        else
+                        else {
+                            console.log(measure + ' ' + measure === 'sol_rad');
                             return {
                                 year: item.year,
                                 month: data2[0].month,
@@ -72,6 +73,8 @@ angular.module('ForecastApp')
                                 value: data2[0].value,
                                 date: new Date(item.year, 1, 1)
                             };
+                        }
+                            
                     });
                     defer.resolve(data.filter(function (item) { return item != null; }));
                 },

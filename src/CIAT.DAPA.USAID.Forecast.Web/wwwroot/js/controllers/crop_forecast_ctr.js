@@ -15,6 +15,7 @@ angular.module('ForecastApp')
       // Get the municipality from the url
       $scope.municipality_name = tools.search('municipio');
       $scope.crop_name = tools.search('cultivo');
+      $scope.crop = tools.search('cultivo').toLowerCase().trim();
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
       $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
@@ -49,6 +50,13 @@ angular.module('ForecastApp')
       if ($scope.municipality_name != null && $scope.municipality_name !== '')
           load_data();
 
+      /*
+      * Method that render the data in the screen
+      * (string) section: Section name to draw
+      */
+      $rootScope.drawFunction = function (section) {
+      }
+
       function load_data() {
           // Load data from web web api
           // Load the agronomic information
@@ -80,15 +88,18 @@ angular.module('ForecastApp')
                       var temp_date = $scope.gv_months[0].split('-');
                       $scope.period_start = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
                       temp_date = $scope.gv_months[1].split('-');
-                      $scope.period_end = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];
-                      // Draw the graphics
+                      $scope.period_end = setup.getMonths()[parseInt(temp_date[1]) - 1] + ", " + temp_date[0];                      
 
                       for (var i = 0; i < $scope.cultivars.length; i++) {
                           var cu = $scope.cultivars[i];
                           // Filter the soils available for the cultivar
                           if ($scope.cultivars[i].soils == undefined || $scope.cultivars[i].soils == null)
                               $scope.cultivars[i].soils = SoilFactory.getSoilsAvailableForecast($scope.soils, cu.id, $scope.yield_ws);
-                      }
+                      }                      
+                      // Close loading 
+                      window.loading_screen.finish();
+                      // Show tutorial
+                      $rootScope.showTutorial();
                   },
                   function (error) { console.log(error); });
 
@@ -100,19 +111,25 @@ angular.module('ForecastApp')
 
       $scope.collapsable = function (item, index) {
           var $this = $("#" + item).find(".blockTitle");
-          if ($($this).hasClass('closed')) {
+          var is_open = $($this).hasClass('opened');
+
+          // Close all tabs
+          $(".blockTitle").removeClass('opened').addClass('closed');
+          if ($($this).hasClass('closed') && !is_open) {
               $('.graphs').slideUp();
               $('.blockTitle').removeClass('opened').addClass('closed');
               $($this).removeClass('closed').addClass('opened');
-          } else {
-              $($this).removeClass('opened').addClass('closed');
           }
+          else
+              $($this).removeClass('opened').addClass('closed');
+
           $($this).next().slideToggle('slow', function () {
               if ($($this).hasClass('opened')) {
                   $(".tab-content").find("div.tab-pane").addClass("active");
                   fixed_data_forecast(index);
               }
           });
+          
 
       }
 
@@ -189,10 +206,6 @@ angular.module('ForecastApp')
           $('#content_' + cu.id + ' div').removeClass('in');
           $('#content_' + cu.id + ' div:first').addClass('active');
           $('#content_' + cu.id + ' div:first').addClass('in');
-      }
-
-      $rootScope.drawFunction = function (section) {
-
       }
 
   });

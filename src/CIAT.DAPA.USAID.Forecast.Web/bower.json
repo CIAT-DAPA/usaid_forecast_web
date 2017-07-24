@@ -7,7 +7,9 @@
     "jquery-validation": "1.15.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "angular": "1.4.0",
-    "d3": "3.5.17"
+    "angular-cookies": "1.4.0",
+    "d3": "3.5.17",
+    "please-wait": "^0.0.5"
   },
   "resolutions": {
     "angular": "1.5.5"

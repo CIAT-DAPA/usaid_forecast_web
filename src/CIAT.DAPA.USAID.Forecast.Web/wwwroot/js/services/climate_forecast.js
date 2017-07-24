@@ -89,11 +89,11 @@ angular.module('ForecastApp')
             p.upper = probabilities.filter(function (item) { return item.type === 'upper'; })[0].value;
             var summary = '';
             if (p.lower >= p.normal && p.lower >= p.upper)
-                summary = 'la probabilidad de precipitación estará por debajo de lo normal';
+                summary = 'la precipitación esté por debajo de lo normal';
             else if (p.upper >= p.normal && p.upper >= p.lower)
-                summary = 'la probabilidad de precipitación estará por encima de lo normal';
+                summary = 'la precipitación esté por encima de lo normal';
             else
-                summary = 'la probabilidad de precipitación estará dentro de lo normal';            
+                summary = 'la precipitación esté dentro de lo normal';
             return summary;
         }
 

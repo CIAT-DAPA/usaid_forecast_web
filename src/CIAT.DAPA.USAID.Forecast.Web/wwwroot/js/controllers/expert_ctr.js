@@ -47,6 +47,10 @@ angular.module('ForecastApp')
               $scope.municipality = $scope.data_m[0].municipalities[0];
               $scope.ws = $scope.data_m[0].municipalities[0].weather_stations[0];
               $rootScope.drawFunction($scope.db_selected.section);
+              // Close loading 
+              window.loading_screen.finish();
+              // Show tutorial
+              $rootScope.showTutorial();
           },
           function (error) { console.log(error); });
       }

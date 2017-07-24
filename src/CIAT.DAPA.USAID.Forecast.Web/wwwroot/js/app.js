@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('ForecastApp', [])
+  .module('ForecastApp', ['ngCookies'])
   .value('config', {
       /* Web API Url */
       api_fs: $('#api_fs').val(),
@@ -33,13 +33,30 @@ angular
               { name: 'Climatología', section: 'climatology', value: 'climatology' },
               { name: 'Histórico climático', section: 'climate_historical', value: 'climate_historical' },
               { name: 'Predicción climática', section: 'climate_forecast', value: 'climate_forecast' },
-              { name: 'Histórico de producción', section: 'yield_historical', value: 'yield_historical' },              
+              { name: 'Histórico de producción', section: 'yield_historical', value: 'yield_historical' },
               { name: 'Pronóstico de producción', section: 'yield_forecast', value: 'yield_forecast' }
           ],
-          about: [
-              { name: 'Predicción climatica', section: 'climate', value: 'climate' },
-              { name: 'Generación de escenarios', section: 'scenarios', value: 'scenarios' },
+          glossary: [
+              { name: 'Biomasa acumulada', section: 'bio_acu', value: 'bio_acu' },
+              { name: 'Días a secado', section: 'd_dry', value: 'd_dry' },
+              { name: 'Días a cosecha', section: 'd_har', value: 'd_har' },
+              { name: 'Evapotranspiración', section: 'eva', value: 'eva' },
+              { name: 'Intervalo de confianza', section: 'conf_int', value: 'conf_int' },
+              { name: 'Precipitación', section: 'prec', value: 'prec' },
+              { name: 'Precipitación acumulada', section: 'prec_acu', value: 'prec_acu' },
+              { name: 'Predicción climática', section: 'climate', value: 'climate' },
+              { name: 'Promedio histórico', section: 'pro_his', value: 'pro_his' },
               { name: 'Pronóstico agroclimático', section: 'forecast', value: 'forecast' },
+              { name: 'Radiación solar', section: 'sol_rad', value: 'sol_rad' },
+              { name: 'Rendimiento', section: 'yield', value: 'yield' },
+              { name: 'Rendimiento potencial', section: 'yield_pot', value: 'yield_pot' },
+              { name: 'Temperatura máxima', section: 't_max', value: 't_max' },
+              { name: 'Temperatura máxima acumulada', section: 't_max_acu', value: 't_max_acu' },
+              { name: 'Temperatura mínima', section: 't_min', value: 't_min' },
+              { name: 'Temperatura mínima acumulada', section: 't_min_acu', value: 't_min_acu' },
+          ],
+          about: [
+              { name: 'Generación de escenarios', section: 'scenarios', value: 'scenarios' },
               { name: 'Pronóstico agroclimático (arroz)', section: 'yield_rice', value: 'yield_rice' },
               { name: 'Pronóstico agroclimático (maíz)', section: 'yield_maize', value: 'yield_maize' },
               { name: 'Calibración y validación de modelos de cultivos (arroz)', section: 'validation_rice', value: 'validation_rice' },
@@ -53,37 +70,39 @@ angular
       climate_vars: [
           {
               name: 'Precipitación', container: 'precipitation', value: ['prec'], metric: 'mm', historical_months: [],
-              description_climatology: 'Esta gráfica muestra la precipitación promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra la precipitación ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
+              description_climatology: 'Esta gráfica muestra la precipitación promedio de los últimos 30 años para cada mes',
+              description_historical: ' Esta gráfica muestra los valores históricos de la precipitación para un solo mes. Seleccione el mes de interés'
           },
           {
               name: 'Temperatura', container: 'temperature', value: ['t_max', 't_min'], metric: '°C', historical_months: [],
-              description_climatology: 'Esta gráfica muestra las temperaturas máximas y mínimas promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra las temperaturas máximas y mínimas ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
+              description_climatology: 'Esta gráfica muestra las temperaturas máximas y mínimas promedio de los últimos 30 años para cada mes',
+              description_historical: ' Esta gráfica muestra los valores históricos de las temperaturas máximas y mínimas para un solo mes. Seleccione el mes de interés'
 
           },
           {
-              name: 'Radiación solar', container: 'solar_radiation', value: ['sol_rad'], metric: 'MJ/m²d', historical_months: [],
-              description_climatology: 'Esta gráfica muestra la radiación solar promedio ocurrida en los últimos 30 años para cada mes',
-              description_historical: ' Esta grafica muestra la radiación solar ocurrida para el mismo mes a través de varios años. Para ver el comportamiento histórico mensual seleccione el mes de interés'
+              name: 'Radiación solar', container: 'solar_radiation', value: ['sol_rad'], metric: 'cal/cm²d', historical_months: [],
+              description_climatology: 'Esta gráfica muestra la radiación solar promedio de los últimos 30 años para cada mes',
+              description_historical: ' Esta gráfica muestra los valores históricos de la radiación solar para un solo mes. Seleccione el mes de interés'
           }
       ],
       climate_vars_scenario: [
-          { name: 'Precipitación', value: 'prec', metric: 'mm'},
-          { name: 'T. Máxima', value: 't_max',  metric: '°C'},
-          { name: 'T. Mínima', value: 't_min', metric: '°C'},
-          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d'}
+          { name: 'Precipitación', value: 'prec', metric: 'mm' },
+          { name: 'T. Máxima', value: 't_max', metric: '°C' },
+          { name: 'T. Mínima', value: 't_min', metric: '°C' },
+          { name: 'Radiación solar', value: 'sol_rad', metric: 'cal/cm²d' }
       ],
       climatology_forecast: { lower: 'prec_ter_1', upper: 'prec_ter_2' },
       /* Yield vars */
       yield_default_var: [
           {
               crop: "arroz",
-              vars: [{ name: "yield_14", label: "Rendimiento", description:'Rendimiento al 14% de húmedad', metric: 'Kg/ha', default: true },
+              vars: [{ name: "yield_14", label: "Rendimiento", description: 'Rendimiento al 14% de húmedad', metric: 'Kg/ha', default: true },
                    { name: "d_har", label: "D. Cosecha", description: 'Días a cosecha', metric: 'día(s)', default: false },
                   { name: "prec_acu", label: "Precipitación", description: 'Precipitación acumulada', metric: 'mm', default: false },
                   { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
-                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false }]
+                  { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
+                  //{ name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
+              ]
           },
           {
               crop: "maíz",
@@ -92,7 +111,9 @@ angular
                   { name: "t_max_acu", label: "T. máxima", description: 'Temperatura máxima acumulada', metric: '°C', default: false },
                   { name: "t_min_acu", label: "T. mínima", description: 'Temperatura mínima acumulada', metric: '°C', default: false },
                   { name: "d_dry", label: "D. Secado", description: 'Días a secado', metric: 'día(s)', default: false },
-                  { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false }]
+                  { name: "bio_acu", label: "Biomasa", description: 'Biomasa acumulada', metric: 'mm', default: false },
+                  //{ name: "et_acu", label: "Evapotranspiración", description: 'Evapotranspiración acumulada', metric: 'mm', default: false }
+              ]
           }],
       /* Expert mode*/
       expert_db: [

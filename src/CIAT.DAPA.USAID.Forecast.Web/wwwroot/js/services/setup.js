@@ -34,6 +34,8 @@ angular.module('ForecastApp')
                 return 'crop';
             else if (window.location.href.includes('/Experto') || window.location.href.includes('/experto'))
                 return 'expert';
+            else if (window.location.href.includes('/Home/Glosario') || window.location.href.includes('/Home/Glosario'))
+                return 'glossary';
             else
                 return 'about';
         }

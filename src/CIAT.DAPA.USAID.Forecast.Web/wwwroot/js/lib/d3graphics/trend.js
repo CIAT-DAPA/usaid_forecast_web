@@ -95,7 +95,7 @@ Trend.prototype.render = function () {
         .attr('d', medianLine)
         .attr('clip-path', 'url(#trend_clip)');
 
-    // legend
+    // legend    
     var legendWidth  = 200,
       legendHeight = 100;
       

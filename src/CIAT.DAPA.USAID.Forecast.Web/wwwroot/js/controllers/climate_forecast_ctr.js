@@ -30,7 +30,8 @@
       $rootScope.drawFunction = function (section) {
           if (!$scope.loaded)
               load_data();
-          draw_forecast();
+          else
+            draw_forecast();
       }
 
       function load_data() {
@@ -60,9 +61,12 @@
                           ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
                           function (data_u) {
                               $scope.climatology_upper = data_u;
-
                               // Draw graphic
                               draw_forecast();
+                              // Close loading 
+                              window.loading_screen.finish();
+                              // Show tutorial
+                              $rootScope.showTutorial();
                           },
                           function (err) { console.log(err); });
                       },
@@ -100,7 +104,7 @@
                   period = period + m.month_name + ', ' + m.year;
               //if (i == 0 || i == 2 || i == 4)
               ctrs = ctrs + '<section class="item active">';
-              ctrs = ctrs + '<article class="col-lg-4 article_content col-lg-offset-2">' +
+              ctrs = ctrs + '<article class="col-lg-5 article_content col-sm-offset-1">' +
                                 '<div class="section-content">' +
                                     '<h3 class="text-center">' + m.month_name + '-' + m.year + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
@@ -109,9 +113,9 @@
                                     '</p>' +
                                 '</div>' +
                             '</article>';
-              ctrs = ctrs + '<article class="col-lg-4 article_content">' +
+              ctrs = ctrs + '<article class="col-lg-5 article_content">' +
                                 '<div class="section-content">' +
-                                    '<h3 class="text-center">Escenarios climáticos</h3>' +
+                                    '<h3 class="text-center">Escenarios de la predicción</h3>' +
                                     '<div id="table' + m.year + '-' + m.month + '"></div>' +
                                 '</div>' +
                             '</article>';
@@ -146,10 +150,10 @@
 
               // Add summary
               var summary = ClimateForecastFactory.summary(m.probabilities);
-              var summary_text = 'Para el mes <span class="text-bold">' + m.month_name + '</span> ' +
+              var summary_text = 'Para el mes de <span class="text-bold">' + m.month_name + '</span> ' +
                                  'en el municipio <span class="text-bold">' + $scope.municipality_name + '</span> ' +
                                  'lo normal es que haya una precipitación entre <span class="text-bold">' + cl_lower +
-                                 ' mm y ' + cl_upper + ' mm</span>, la predicción climática sugiere que ' +
+                                 ' mm y ' + cl_upper + ' mm</span>, la predicción climática sugiere que lo más probable es que ' +
                                  '<span class="text-bold">' + summary + '</span>.';
               $('#summary_' + m.year + '-' + m.month).html(summary_text);
 

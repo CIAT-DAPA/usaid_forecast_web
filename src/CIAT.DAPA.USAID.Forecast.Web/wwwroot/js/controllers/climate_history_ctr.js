@@ -48,7 +48,6 @@
               ClimateHistoricalFactory.getByWeatherStation($scope.ws.id).then(
               function (data_h) {
                   $scope.historical = data_h;
-
                   ClimateClimatologyFactory.getMonthly($scope.ws.id, $scope.gv_months).then(
                   function (data_c) {
                       $scope.climatology = data_c;
@@ -129,7 +128,8 @@
                           historical_filtered.push({
                               year: historical_temp[k][l].year,
                               month: historical_temp[k][l].month,
-                              value: historical_temp[k][l].monthly_data[m].value,
+                              // Transform solar radiation
+                              value: (historical_temp[k][l].monthly_data[m].measure === 'sol_rad' ? historical_temp[k][l].monthly_data[m].value / 0.041868 : historical_temp[k][l].monthly_data[m].value),
                               date: new Date(historical_temp[k][l].year, 1, 1),
                               measure: historical_temp[k][l].monthly_data[m].measure
                           });

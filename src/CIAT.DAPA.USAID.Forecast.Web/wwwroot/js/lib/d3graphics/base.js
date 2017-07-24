@@ -172,7 +172,8 @@ Base.prototype.update = function (relative, height) {
  * (int) ticks: Count of splitters
 */
 Base.prototype.getYAxis = function (y, ticks) {
-    return d3.svg.axis().scale(y).ticks(ticks).orient("left");
+    var t = $(window).width() > 767 ? ticks : ticks / 2;
+    return d3.svg.axis().scale(y).ticks(t).orient("left");
 }
 
 /*

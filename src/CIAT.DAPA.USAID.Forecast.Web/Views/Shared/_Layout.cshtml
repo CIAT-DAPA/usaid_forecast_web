@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="shortcut icon" href="http://www.aclimatecolombia.org/wp-content/uploads/2013/06/CONVENIO3.png">
@@ -36,32 +37,9 @@
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
             </div>
-            <div class="navbar-collapse collapse" id="navbar_main">
-                <ul class="nav navbar-nav">
-                    <li id="menu_main_climate"><a href="/Clima"><span class="glyphicon glyphicon-asterisk"></span> Clima</a></li>
-                    <li id="menu_main_rice"><a href="/Cultivo?cultivo=arroz"><span class="glyphicon glyphicon-grain"></span> Arroz</a></li>
-                    <li id="menu_main_maize"><a href="/Cultivo?cultivo=maíz"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> Maíz</a></li>
-                    <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Bases de datos</a></li>
-                    <li id="menu_main_about"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> Glosario</a></li>
-                </ul>
-                <!-- Start Municipality -->
-                <ul class="nav navbar-nav navbar-right" id="mn_municipalities" ng-controller="LocationCtrl">
-                    <li class="dropdown text-bold">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> {{municipality_name}} <span class="caret"></span></a>
-                        <ul class="dropdown-menu" ng-switch="type">
-                            <li ng-switch-when="climate" ng-repeat="s in states" style="padding:5px 15px;">
-                                <b>{{s.name}}</b>
-                                <a ng-repeat="m in s.municipalities" href="/Clima?municipio={{m.name}}">{{m.name}}</a>
-                            </li>
-                            <li ng-switch-when="crop" ng-repeat="s in states" style="padding:5px 15px;">
-                                <b>{{s.name}}</b>
-                                <a ng-repeat="m in s.municipalities" href="/Cultivo?municipio={{m.name}}&cultivo={{crop_name}}">{{m.name}}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- End Municipality -->
-            </div>
+
+            @Html.Partial("_Menu")
+
         </div>
     </nav>
 
@@ -133,34 +111,31 @@
         </div>
     </footer>
 
-    <!-- Start Modal Assist -->
-    <div id="assit_modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="modal_title"></h4>
-                </div>
-                <div class="modal-body">
-                    <p id="modal_text">
+    @Html.Partial("_Modal")
+    
+    <!-- Start Loader -->
+    <script src="~/lib/please-wait/build/please-wait.js"></script>
+    <script type="text/javascript">
+        window.loading_screen = window.pleaseWait({
+            logo: "../images/logo.png",
+            backgroundColor: '#ffffff',
+            loadingHtml: '<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>'
+        });
+    </script>
+    <!-- Start Loader -->
 
-                    </p>
-                    <iframe id="modal_video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal Assist -->
     <script src="~/js/lib/compatibilty/ie.js"></script>
     <!--<script src="~/lib/jquery/dist/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!--<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="~/lib/angular/angular.min.js"></script>
+    <script src="~/lib/angular-cookies/angular-cookies.min.js"></script>
     <script src="~/js/menu.js"></script>
     <script src="~/js/app.js"></script>
     <script src="~/js/services/setup.js"></script>
     <script src="~/js/services/assist.js"></script>
+    <script src="~/js/services/tutorial.js"></script>
     <script src="~/js/services/forecast_api.js"></script>
     <script src="~/js/services/agronomy.js"></script>
     <script src="~/js/services/cultivar.js"></script>
@@ -177,6 +152,7 @@
     <script src="~/js/services/crop_yield_historical.js"></script>
     <script src="~/js/controllers/sub_menu_ctr.js"></script>
     <script src="~/js/controllers/location_ctr.js"></script>
+    <script src="~/js/controllers/assist_ctr.js"></script>
     <script src="~/js/controllers/social_media_ctr.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
