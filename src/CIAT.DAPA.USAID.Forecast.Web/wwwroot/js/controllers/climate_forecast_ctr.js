@@ -104,7 +104,7 @@
                   period = period + m.month_name + ', ' + m.year;
               //if (i == 0 || i == 2 || i == 4)
               ctrs = ctrs + '<section class="item active">';
-              ctrs = ctrs + '<article class="col-lg-4 article_content col-lg-offset-2">' +
+              ctrs = ctrs + '<article class="col-lg-5 article_content col-sm-offset-1">' +
                                 '<div class="section-content">' +
                                     '<h3 class="text-center">' + m.month_name + '-' + m.year + '</h3>' +
                                     '<h4 class="text-center">Precipitación</h4>' +
@@ -113,7 +113,7 @@
                                     '</p>' +
                                 '</div>' +
                             '</article>';
-              ctrs = ctrs + '<article class="col-lg-4 article_content">' +
+              ctrs = ctrs + '<article class="col-lg-5 article_content">' +
                                 '<div class="section-content">' +
                                     '<h3 class="text-center">Escenarios de la predicción</h3>' +
                                     '<div id="table' + m.year + '-' + m.month + '"></div>' +

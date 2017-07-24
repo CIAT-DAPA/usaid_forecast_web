@@ -80,7 +80,7 @@ angular
 
           },
           {
-              name: 'Radiación solar', container: 'solar_radiation', value: ['sol_rad'], metric: 'MJ/m²d', historical_months: [],
+              name: 'Radiación solar', container: 'solar_radiation', value: ['sol_rad'], metric: 'cal/cm²d', historical_months: [],
               description_climatology: 'Esta gráfica muestra la radiación solar promedio de los últimos 30 años para cada mes',
               description_historical: ' Esta gráfica muestra los valores históricos de la radiación solar para un solo mes. Seleccione el mes de interés'
           }
@@ -89,7 +89,7 @@ angular
           { name: 'Precipitación', value: 'prec', metric: 'mm' },
           { name: 'T. Máxima', value: 't_max', metric: '°C' },
           { name: 'T. Mínima', value: 't_min', metric: '°C' },
-          { name: 'Radiación solar', value: 'sol_rad', metric: 'MJ/m²d' }
+          { name: 'Radiación solar', value: 'sol_rad', metric: 'cal/cm²d' }
       ],
       climatology_forecast: { lower: 'prec_ter_1', upper: 'prec_ter_2' },
       /* Yield vars */

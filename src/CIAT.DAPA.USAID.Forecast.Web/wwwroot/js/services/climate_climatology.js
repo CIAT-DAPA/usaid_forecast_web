@@ -50,10 +50,10 @@ angular.module('ForecastApp')
                     return months.includes(tm);
                 });
                 var data = filtered_monthly.map(function (item) {
-                    var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
+                    var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];                    
                     var obj = {
                         month: item.month,
-                        month_name: config.month_names[item.month - 1],
+                        month_name: config.month_names[item.month - 1],                        
                         value: monthly.value
                     };
                     return obj;
@@ -85,7 +85,8 @@ angular.module('ForecastApp')
                         return {
                             month: item.month,
                             month_name: config.month_names[item.month - 1],
-                            value: item2.value,
+                            // Transform solar radiation
+                            value: (item2.measure === 'sol_rad' ? item2.value / 0.041868 : item2.value),
                             measure: item2.measure
                         }
                     });

@@ -60,10 +60,13 @@ angular.module('ForecastApp')
                         var temp_m = config.climate_vars_scenario[i];
                         var scenarios = item.monthly_data.map(function (item2) {
                             var list_values = item2.data.filter(function (item3) { return item3.measure === temp_m.value; });
-                            var values = list_values.map(function (item3) { return item3.value; });
+                            var values = list_values.map(function (item3) {
+                                // Transform solar radiation
+                                return (temp_m.value === 'sol_rad' ? item3.value / 0.041868 : item3.value);
+                            });
                             return {
                                 month: item2.month,
-                                values: values
+                                values:values 
                             };
                         });
                         obj.push({

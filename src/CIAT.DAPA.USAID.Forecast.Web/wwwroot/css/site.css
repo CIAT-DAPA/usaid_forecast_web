@@ -242,10 +242,6 @@
     font-size: 0.85em;
 }
 
-g.x_axis, g.y_axis {
-    font-size: xx-small;
-}
-
 .cultivar_name {
     cursor: pointer;
     font-size: 1.2em;
@@ -311,6 +307,11 @@ g.x_axis, g.y_axis {
         -webkit-transform: scaleY(1.0);
     }
 }
+/*
+.pg-loading-logo{
+
+}
+*/
 
 /* Footer */
 .footer {
@@ -565,4 +566,15 @@ footer img {
 }
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
+    svg > .legend {
+        display: none;
+    }
+
+    g.x_axis, g.y_axis {
+        font-size: x-small;
+    }
+}
+
+.carousel-control {
+    width: 50px;
 }
