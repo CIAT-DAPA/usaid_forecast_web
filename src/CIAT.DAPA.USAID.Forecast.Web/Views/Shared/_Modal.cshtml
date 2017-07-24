@@ -8,10 +8,13 @@
             </div>
             <div class="modal-body">
                 <p id="modal_text">
-
                 </p>
                 <iframe id="modal_video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
+                <div class="modal_show_tutorial" ng-controller="AssistCtrl">
+                    <label><input type="checkbox" ng-model="tutorial" id="chk_show_tutorial" name="chk_show_tutorial" /> ¿No desea volver a ver este mensaje? </label>
+                    <input type="button" class="btn btn-success" value="Aceptar" ng-click="click_tutorial()" />
+                </div>
+            </div>            
         </div>
     </div>
 </div>

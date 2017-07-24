@@ -10,6 +10,7 @@
 angular.module('ForecastApp')
   .controller('AssistCtrl', function ($scope, $rootScope, tools, AssistFactory, TutorialFactory) {
       $scope.type = tools.source();
+      $scope.tutorial = false;
 
       var parameters = { id: '', alt: '' };
 
@@ -40,17 +41,20 @@ angular.module('ForecastApp')
       }
 
       /*
-       * 
+       * Method to show the introduction video
       */
-      $rootScope.showTutorial = function () {          
-          if (TutorialFactory.show_tutorial()) {              
+      $rootScope.showTutorial = function () {
+          if (TutorialFactory.show_tutorial()) {
+              $(".modal_show_tutorial").css('display', 'block');
               tools.show_assist('Bienvenid@', 'En el siguiente video se mostrará un tutorial sobre como usar el sitio web.', 'https://www.youtube.com/embed/8ncXEbYGHrU');
               $("#assit_modal").modal();
           }
           return false;
       }
 
-
-      
-
+      $scope.click_tutorial = function () {
+          console.log($scope.tutorial);
+          TutorialFactory.setShowTutorial(!$scope.tutorial);
+          $("#assit_modal").modal('hide');
+      }
   });

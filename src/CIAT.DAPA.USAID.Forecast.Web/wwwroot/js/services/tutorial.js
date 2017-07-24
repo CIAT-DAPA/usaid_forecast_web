@@ -14,13 +14,18 @@ angular.module('ForecastApp')
         /*
         * Method to get if the tutorial should be deployed
         */
-        dataFactory.show_tutorial = function () {
+        dataFactory.show_tutorial = function () {            
             var show_tutorial = $cookies.get('show_tutorial');
-            if (show_tutorial === undefined || show_tutorial == null) {
+            if (show_tutorial == undefined || show_tutorial == null) {
                 show_tutorial = true;
                 $cookies.put('show_tutorial', show_tutorial);
             }
+            show_tutorial = show_tutorial === 'true';
             return show_tutorial;
+        }
+
+        dataFactory.setShowTutorial = function (value) {
+            $cookies.put('show_tutorial', value);
         }
 
         return dataFactory;
