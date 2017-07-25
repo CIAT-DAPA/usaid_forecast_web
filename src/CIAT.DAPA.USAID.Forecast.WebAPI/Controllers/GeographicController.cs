@@ -50,6 +50,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                             geo_m.weather_stations.Add(new WeatherStationEntity()
                             {
                                 id = w.id.ToString(),
+                                ext_id = w.ext_id,
                                 name = w.name,
                                 origin = w.origin,
                                 ranges = w.ranges.Select(p => new YieldRangeEntity()
