@@ -24,12 +24,11 @@ angular.module('ForecastApp')
         }
 
         /*
-        * Method that request all geographic information available from the forecast service
-        * (string) crop: Name of crop
+        * Method that request all geographic information available from the forecast service by every crop
         */
-        dataFactory.getByCrop = function (crop) {
+        dataFactory.getByCrop = function () {
             dataFactory.db.init(dataFactory.cache, dataFactory.format);
-            return dataFactory.db.getGeographicCrop(crop);
+            return dataFactory.db.getGeographicCrop();
         }
 
         return dataFactory;

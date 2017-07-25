@@ -73,17 +73,16 @@ angular.module('ForecastApp')
         * Method that request all geographic information available from the forecast service
         * (string) crop: Crop name
         */
-        dataFactory.getUrlGeographicCrop = function (crop) {
-            return config.api_fs + "Geographic/Crop/" + crop + "/" + dataFactory.format;
+        dataFactory.getUrlGeographicCrop = function () {
+            return config.api_fs + "Geographic/Crop/" + dataFactory.format;
         }
 
         /*
-        * Method that request all geographic information available from the forecast service
-        * (string) crop: Name of crop
+        * Method that request all geographic information available from the forecast service.
         */
-        dataFactory.getGeographicCrop = function (crop) {
+        dataFactory.getGeographicCrop = function () {
             if (!dataFactory.cache || (dataFactory.cache && dataFactory.raw_geographic_crop == null)) {
-                dataFactory.raw_geographic_crop = $http.get(dataFactory.getUrlGeographicCrop(crop));
+                dataFactory.raw_geographic_crop = $http.get(dataFactory.getUrlGeographicCrop());
             }
             return dataFactory.raw_geographic_crop;
         }

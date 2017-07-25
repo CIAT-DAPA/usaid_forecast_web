@@ -1,19 +1,98 @@
 ﻿@{
-    ViewData["Title"] = "Acerca De";
+    ViewData["Title"] = "Glosario";
     ViewData["Meta_Description"] = "Visualización de pronóstico (predicción) y datos históricos del comportamiento de los cultivos en Colombia.";
-    ViewData["Meta_Keywords"] = "acerca,clima,predicción,cultivos,agroclima,agroclimatico,precipitación,rendimiento,días a cosecha,temperatura,historial rendimiento,histórico rendimiento,producción";
+    ViewData["Meta_Keywords"] = "glosario,clima,predicción,cultivos,agroclima,producción,biomasa,intervalo de confianza,";
 }
 
+<!-- Start global variables -->
+<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
+<!-- End global variables -->
 
 @Html.Partial("_SubMenu")
 
-
-<div id="containerBlock">
+<div id="containerBlock" ng-controller="GlossaryCtrl">
     @Html.Partial("_SocialMedia")
-    <!-- Start Climate -->
-    <section class="col-md-12 sections" id="content_climate">
+    <!-- Start bio_acu -->
+    <section class="col-md-12 sections" id="content_bio_acu">
         <div class="row section-content" style="padding-top:25px;">
-            <!-- <h2 class="text-center" id="sectionTitle" style="">Acerca De</h2> -->
+            <h3 class="text-center">Bíomasa acumulada</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Cantidad de peso acumulado por todos los organos de la planta
+            </p>
+        </div>
+    </section>
+    <!-- End bio_acu -->
+    <!-- Start d_dry -->
+    <section class="col-md-12 sections" id="content_d_dry" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Días a secado</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Periodo de tiempo medido en días, desde la madurez fisiologica hasta la cosecha
+            </p>
+        </div>
+    </section>
+    <!-- End d_dry -->
+    <!-- Start d_har -->
+    <section class="col-md-12 sections" id="content_d_har" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Días a cosecha</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Periodo de tiempo medido en días, desde la siembra de las semillas hasta la cosecha del cultivo
+            </p>
+        </div>
+    </section>
+    <!-- End d_har -->
+    <!-- Start eva -->
+    <section class="col-md-12 sections" id="content_eva" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Evapotranspiración</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Cantidad de agua del suelo que vuelve a la atmósfera como consecuencia 
+                de la evaporación y de la transpiración de las plantas. 
+                Medida en mm/día, y sirve para calcular la necesidad de 
+                riego en un cultivo
+            </p>
+        </div>
+    </section>
+    <!-- End eva -->
+    <!-- Start conf_int -->
+    <section class="col-md-12 sections" id="content_conf_int" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Intervalo de confianza</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Es un rango de valores en el que posiblemente estos contengan el verdadero 
+                parametro (es decir la verdadera prediccion)
+            </p>
+        </div>
+    </section>
+    <!-- End conf_int -->
+    <!-- Start prec -->
+    <section class="col-md-12 sections" id="content_prec" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Precipitación</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Representa la cantidad de agua que cae en cualquier forma (líquida o sólida) desde la atmósfera a la
+                superficie del suelo. Se mide en milimetros mediante el total de agua recogido en un pluviómetro en 24 horas, 
+                las cantidades diarias se suman por mes y por año, así se determina el régimen pluviométrico del lugar o zona.
+            </p>
+        </div>
+    </section>
+    <!-- End prec -->
+    <!-- Start prec_acu -->
+    <section class="col-md-12 sections" id="content_prec_acu" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Precipitación acumulada</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Cantidad diaria de lluvia sumada a traves del tiempo, 
+                puede ser útil tener este valor por mes, por semestre de 
+                siembra o por año. 
+            </p>
+        </div>
+    </section>
+    <!-- End prec_acu -->    
+    <!-- Start Climate -->
+    <section class="col-md-12 sections" id="content_climate" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
             <h3 class="text-center">Predicción Climática</h3>
             <p class="text-justify" style="font-size:1.1em;">
                 Los modelos de predicción  climática son herramientas esenciales para el estudio y
@@ -46,29 +125,17 @@
         </div>
     </section>
     <!-- End Climate -->
-    <!-- Start Scenarios -->
-    <section class="col-md-12 sections" id="content_scenarios" style="display:none;">
+    <!-- Start pro_his -->
+    <section class="col-md-12 sections" id="content_pro_his" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Generación de escenarios</h3>
+            <h3 class="text-center">Promedio histórico</h3>
             <p class="text-justify" style="font-size:1.1em;">
-                Las predicciones estacionales de clima nos dan información probabilística de las categorías -
-                por debajo lo normal, normal y por encima de lo normal- sobre los próximos 6 meses,
-                basados en esta información se pueden obtener obtener diferentes escenarios a nivel diario,
-                los cuales sirven de insumo para ingresar a los modelos de cultivo.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                El proceso de transición de probabilidades a datos diarios de clima puede ser realizado
-                mediante un método de remuestreo, el cual consiste en obtener los terciles de los datos
-                históricos y realizar un remuestreo a cada tercil basado en las probabilidades de las predicciones.
-                Por ejemplo: para una predicción dada de precipitación de 70% por debajo lo normal,
-                20% normal y 10% por encima lo normal, para un mes de interés, entonces el remuestreo
-                escogerá 70 escenarios de datos diarios para el tercil bajo lo normal, 20 escenarios de datos
-                diarios del tercil normal y 10 escenarios de datos diarios del tercil encima lo normal,
-                asumiendo que el total de escenarios a generar serán 100.
+                Medias de datos climatológicos calculadas para periodos consecutivos de al 
+                menos 30 años
             </p>
         </div>
     </section>
-    <!-- End Scenarios -->
+    <!-- End pro_his -->    
     <!-- Start Forecast -->
     <section class="col-md-12 sections" id="content_forecast" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
@@ -84,99 +151,82 @@
         </div>
     </section>
     <!-- End Forecast -->
-    <!-- Start Yield Rice -->
-    <section class="col-md-12 sections" id="content_yield_rice" style="display:none;">
+    <!-- Start sol_rad -->
+    <section class="col-md-12 sections" id="content_sol_rad" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Pronóstico agroclimático (arroz)</h3>
+            <h3 class="text-center">Radiación solar</h3>
             <p class="text-justify" style="font-size:1.1em;">
-                El módulo de arroz integra un pronóstico climático estacional y el modelo de 
-                cultivo ORYZA (v3) para simular el rendimiento del cultivo de arroz frente a las 
-                condiciones climáticas  de  los próximos 6 meses. Durante dicho periodo es posible 
-                realizar múltiples simulaciones con fechas de siembra, suelos, variedades y el 
-                paquete de manejo agronómico recomendado para cada zona.  Esta informacion se 
-                sintetiza en graficas que relacionan el rendimiento en grano (kg/ha) al 14% de 
-                humedad con la fecha de siembra, para cada variedad y tipo de suelo. 
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                El modelo ORYZA (v3) simula el crecimiento y desarrollo del cultivo de arroz bajo 
-                diferentes condiciones de producción (potenciales, limitaciones hídricas y de 
-                nitrógeno) sin considerar efectos de plagas y enfermedades.
+                Es el flujo de energía que recibimos del sol en forma de ondas electromagnéticas 
+                de diferentes frecuencias
             </p>
         </div>
     </section>
-    <!-- End Yield Rice -->
-    <!-- Start Yield Maize -->
-    <section class="col-md-12 sections" id="content_yield_maize" style="display:none;">
+    <!-- End sol_rad -->
+    <!-- Start yield -->
+    <section class="col-md-12 sections" id="content_yield" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Pronóstico agroclimático (maíz)</h3>
+            <h3 class="text-center">Rendimiento</h3>
             <p class="text-justify" style="font-size:1.1em;">
-                Se desarrolló una plataforma para apoyar la toma de decisiones de pequeños, 
-                medianos y grandes productores de maíz, la cual con el uso del modelo CERES-MAIZE 
-                (DSSAT)   permite estimar por medio de análisis estadísticos y pronósticos 
-                semestrales, cuales son las fechas de siembra y las variedades que implican una 
-                menor variación con producciones convenientes y favorables para los agricultores, 
-                disminuyendo sus probabilidades de pérdida.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                Para el desarrollo de la plataforma se contó con el acompañamiento y la 
-                asesoría de FENALCE, en temas de manejo agronómico y fertilización del 
-                cultivo en los municipios de “La Unión (Valle del Cauca)”, “El Espinal (Tolima)” 
-                y “Cereté (Córdoba)”; además de la participación de personal de CIAT y CIMMYT.
             </p>
         </div>
     </section>
-    <!-- End Yield Maize -->
-    <!-- Start Validation Rice -->
-    <section class="col-md-12 sections" id="content_validation_rice" style="display:none;">
+    <!-- End yield -->
+    <!-- Start yield_pot -->
+    <section class="col-md-12 sections" id="content_yield_pot" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Calibración y validación de modelos de cultivos (arroz)</h3>
-            <p class="text-justify" style="font-size:1.1em;">                
-                Un modelo de cultivo busca simular el desarrollo y crecimiento de una variedad 
-                en un ambiente específico. Para su uso, requiere ser adaptado a las variedades 
-                locales y evaluado en diferentes ambientes (clima y suelo). Estos procesos requieren 
-                de múltiples ensayos experimentales donde se obtienen datos para caracterizar y 
-                entender el crecimiento y desarrollo de una variedad a lo largo de su ciclo de vida, 
-                así como las condiciones climáticas en las que se desarrolla (temperaturas diarias, 
-                precipitación, radiación solar, etc), características del suelo (físicas y químicas) 
-                y prácticas agronómicas óptimas para cada localidad.
-            </p>
+            <h3 class="text-center">Rendimiento potencial</h3>
             <p class="text-justify" style="font-size:1.1em;">
-                En el marco del proyecto CSRD-Colombia se utilizó el  modelo de cultivo ORYZA 
-                (v3.0)  desarrollado por el Instituto Internacional de Investigación en Arroz 
-                (IRRI, por sus siglas en inglés). Tres variedades de sistema de riego (Fedearroz 
-                60, Fedearroz 733, Fedearroz 2000) y dos de secano (Fedearroz 2000 y Fedearroz 174) 
-                han sido calibradas y validadas en diferentes ambientes de producción de Colombia, 
-                utilizando la información generada por el convenio de cooperación entre el Ministerio 
-                de Agricultura y Desarrollo Rural y el CIAT, desarrollado entre los años 2013 y 
-                2015 en 5 localidades ( Saldaña-Tolima, Aipe-Huila, Montería-Córdoba, Yopal-Casanare 
-                y Villavicencio-Meta).
+                Maximo rendimiento que una variedad, hibrido o cultivar puede producir en condiciones ideales
             </p>
         </div>
     </section>
-    <!-- End Validation Rice -->
-    <!-- Start Validation Maize -->
-    <section class="col-md-12 sections" id="content_validation_maize" style="display:none;">
+    <!-- End yield_pot -->
+    <!-- Start t_max -->
+    <section class="col-md-12 sections" id="content_t_max" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Calibración y validación de modelos de cultivos (maíz)</h3>
+            <h3 class="text-center">Temperatura máxima</h3>
             <p class="text-justify" style="font-size:1.1em;">
-                La calibración de las variedades que se entregan para el uso de los productores 
-                del renglón económico de maíz, son el resultado de un proceso de investigación 
-                en campo que inicio del convenio CIAT-MADR en el año 2013 y se prolongó hasta 
-                finales de 2015 donde se estudió el comportamiento de 6 variedades en 3 localidades 
-                y se documentó sus resultados.  Luego los datos de estos experimentos fueron 
-                organizados, evaluados, calibrados y validados dentro del proyecto CSRD, patrocinado 
-                por USAID y desarrollado por CIAT durante los años 2016 y comienzos de 2017.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                La entrega final es resultado del trabajo conjunto del área de DAPA y contó 
-                con colaboración de FENALCE (Colombia) y del instituto de investigación IRI 
-                (Estados Unidos).
+                La temperatura es registrada por los termómetros, y medida en grados centrigrados. 
+                Así, la temperarura máxima es el valor más alto (maximo calor) regristrado en un intervalo 
+                de tiempo dado. En un día, normalmente corresponde al medio día.
             </p>
         </div>
     </section>
-    <!-- End Validation Maize -->
+    <!-- End t_max -->
+    <!-- Start t_max_acu -->
+    <section class="col-md-12 sections" id="content_t_max_acu" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Temperatura máxima acumulada</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Cantidad de calor, medido en grados centígrados de los valores mas altos, a traves de varios días o meses.
+            </p>
+        </div>
+    </section>
+    <!-- End t_max_acu -->
+    <!-- Start t_min -->
+    <section class="col-md-12 sections" id="content_t_min" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Temperatura mínima</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                La temperatura es registrada por los termómetros, y medida en grados centrigrados. 
+                Así, la temperarura mínima corresponde con el valor mas bajo registrado en un intervalo 
+                de tiempo dado. en un día normalmente corresponde a las horas de la madrugada. 
+            </p>
+        </div>
+    </section>
+    <!-- End t_min -->
+    <!-- Start t_min_acu -->
+    <section class="col-md-12 sections" id="content_t_min_acu" style="display:none;">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Temperatura mínima acumulada</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Cantidad de calor, medido en grados centígrados de los valores mas bajos, a traves de varios días o meses.
+            </p>
+        </div>
+    </section>
+    <!-- End t_min_acu -->
 </div>
 
 @section Scripts {
-
+    <script src="~/js/controllers/glossary_ctr.js"></script>
 }

@@ -217,8 +217,8 @@ Calendar.prototype.render_month = function () {
         .append("text")
         .attr("x", function (d, i) { return cells[i][0]; })
         .attr("y", function (d, i) { return cells[i][1]; })
-        .attr("dx", 10) // right padding
-        .attr("dy", 15) // vertical alignment 
+        .attr("dx", 1) // right padding
+        .attr("dy", 10) // vertical alignment 
         .text(function (d) { return d[0]; }); // Render text for the day of the week
 
     var data_month = this.get_data_month();
