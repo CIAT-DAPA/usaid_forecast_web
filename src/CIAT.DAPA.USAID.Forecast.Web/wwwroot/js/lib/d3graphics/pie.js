@@ -96,7 +96,7 @@ Pie.prototype.render = function () {
                           });
 
     // Draw the center and add the text
-    this.drawChartCenter(pie, this.base.data.center);
+    //this.drawChartCenter(pie, this.base.data.center);
     // Draw the legend
     this.base.addLegend('bottom', this.base.data.percentages.map(function (item) {
         return { title: item.label, value: that.base.formats.round((item.value * 100)) + '%', class: 'pie_' + item.type };
