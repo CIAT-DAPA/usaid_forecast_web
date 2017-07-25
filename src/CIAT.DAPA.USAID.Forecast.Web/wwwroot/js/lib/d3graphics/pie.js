@@ -36,7 +36,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .duration(this.base.animation.duration)
       .attr('r', this.radius * 0.5)
       .attr('fill', '#fff');
-
+    /*
     centerContainer.append("text")
       .attr('dy', function (d) { return -10; })
       .attr('class', 'pie_center_text_small')
@@ -54,6 +54,7 @@ Pie.prototype.drawChartCenter = function (pie, content) {
       .attr('class', 'pie_center_text_small')
       .style("text-anchor", "middle")
       .text(function (d) { return 'Mílimetros en lluvía'; });
+    */
 }
 
 /*
@@ -96,7 +97,7 @@ Pie.prototype.render = function () {
                           });
 
     // Draw the center and add the text
-    //this.drawChartCenter(pie, this.base.data.center);
+    this.drawChartCenter(pie, this.base.data.center);
     // Draw the legend
     this.base.addLegend('bottom', this.base.data.percentages.map(function (item) {
         return { title: item.label, value: that.base.formats.round((item.value * 100)) + '%', class: 'pie_' + item.type };

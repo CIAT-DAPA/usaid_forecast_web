@@ -575,14 +575,16 @@ footer img {
         font-size: x-small;
     }
 
-    .days_month{
+    .days_month {
         font-size: xx-small;
-        padding-left: -10px;
-        padding-top:-10px;
     }
 
-    .days_yield{
+    .days_yield {
         font-size: x-small;
+    }
+
+    .legend_colors, .legend_labels {
+        display: none;
     }
 }
 
