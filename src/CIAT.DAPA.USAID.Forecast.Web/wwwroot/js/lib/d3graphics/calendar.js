@@ -269,7 +269,7 @@ Calendar.prototype.render_month = function () {
                         if(m != undefined)
                             content_rows += '<tr><td>' + m.label + '</td><td>' + data_month[i].data.filter(function (item) { return item.measure === measures_names[j]; })[0].avg.toFixed(0) + ' ' + m.metric + '</td></tr>';
                     }
-                    that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, '<table class="table"><tr><th colspan="2">Valores promedios<th><tr>' + content_rows + '</table>');
+                    that.base.tooltip_show(d3.event.pageX + 20, d3.event.pageY, '<table class="table"><tr><th colspan="2">Valor promedio de predicción<th><tr>' + content_rows + '</table>');
                 }
             })
             .on("mouseout", function (d) {
