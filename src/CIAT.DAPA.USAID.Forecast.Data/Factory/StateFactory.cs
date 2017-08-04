@@ -21,7 +21,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
 
         }
-        
+
         public async override Task<bool> updateAsync(State entity, State newEntity)
         {
             newEntity.track = entity.track;
@@ -29,10 +29,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var result = await collection.ReplaceOneAsync(Builders<State>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }
-                
+
         public async override Task<bool> deleteAsync(State entity)
         {
-            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id",entity.id), Builders<State>.Update.Set("track.enable", false)
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id), Builders<State>.Update.Set("track.enable", false)
                                                                                                .Set("track.updated", DateTime.Now));
             return result.ModifiedCount > 0;
         }
@@ -42,6 +42,55 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
             await collection.InsertOneAsync(entity);
             return entity;
+        }
+
+        /// <summary>
+        /// Method that add a new cpt configuration
+        /// </summary>
+        /// <param name="entity">State with the new configuration</param>
+        /// <param name="conf">New configuration to add to the state</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> addConfigurationCPTAsync(State entity, ConfigurationCPT conf)
+        {
+            conf.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            List<ConfigurationCPT> allConf = entity.conf.ToList();
+            allConf.Add(conf);
+            entity.conf = allConf;
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
+                Builders<State>.Update.Set("conf", entity.conf));
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that delete a new cpt configuration
+        /// </summary>
+        /// <param name="entity">State with the new configuration</param>
+        /// <param name="quarter">Year quarter</param>
+        /// <param name="cca">Canonical correlation</param>
+        /// <param name="gamma">Use gamma transformation</param>
+        /// <param name="x"># of x modes</param>
+        /// <param name="y"># of y modes</param>        
+        /// <param name="left_lat">Left latitude</param>
+        /// <param name="left_lon">Left longitude</param>
+        /// <param name="right_lat">Right latitude</param>
+        /// <param name="right_lon">Right longitude</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> deleteConfigurationCPTAsync(State entity, Quarter quarter, int cca, bool gamma, int x, int y)
+        {
+            List<ConfigurationCPT> allConf = new List<ConfigurationCPT>();
+            foreach (var c in entity.conf)
+            {
+                if (c.trimester == quarter && c.cca_mode == cca && c.gamma == gamma && c.x_mode == x && c.y_mode == y)
+                {
+                    c.track.updated = DateTime.Now;
+                    c.track.enable = false;
+                }
+                allConf.Add(c);
+            }
+            entity.conf = allConf;
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
+                Builders<State>.Update.Set("conf", entity.conf));
+            return result.ModifiedCount > 0;
         }
     }
 }

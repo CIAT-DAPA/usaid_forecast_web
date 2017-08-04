@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
@@ -29,6 +30,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [Display(Name = "País"), Required(ErrorMessage = "País es obligatorio")]
         [BsonRequired]
         public Country country { get; set; }
+        /// <summary>
+        /// Contains the configurations of each quarter for the execution of cpt
+        /// </summary>
+        public IEnumerable<ConfigurationCPT> conf { get; set; }
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>

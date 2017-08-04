@@ -29,7 +29,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public StateController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+        public StateController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
             base(settings, LogEntity.lc_state, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
@@ -327,6 +327,113 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return View("Import", entity);
         }
 
-        
+        // GET: /State/Configuration/5
+        [HttpGet]
+        public async Task<IActionResult> Configuration(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                State entity = await db.state.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                ViewBag.state = entity;
+                await generateListQuarterAsync();
+                return View(entity.conf);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+
+        // POST: /State/Configuration/5
+        [HttpPost, ActionName("Configuration")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationAdd(string id)
+        {
+            try
+            {
+                // Get original state data
+                var form = HttpContext.Request.Form;
+                State entity_new = await db.state.byIdAsync(id);
+                // Instance the new configuration entity
+                ConfigurationCPT conf = new ConfigurationCPT()
+                {
+                    cca_mode = int.Parse(form["cca"]),
+                    gamma = !form["gamma"].Equals("false"),
+                    trimester = (Quarter)int.Parse(form["trimester"]),
+                    x_mode = int.Parse(form["x"]),
+                    y_mode = int.Parse(form["y"])
+
+                };
+                int count = form.Keys.Where(p => p.Contains("left_") && p.Contains("_lat")).Count();
+                List<Region> regions = new List<Region>();
+                // This cicle add all regions
+                for (int i = 1; i <= count; i++)
+                {
+                    regions.Add(new Region()
+                    {
+                        left_lower = new Coords()
+                        {
+                            lat = double.Parse(form["left_lower_" + i.ToString() + "_lat"]),
+                            lon = double.Parse(form["left_lower_" + i.ToString() + "_lon"])
+                        },
+                        rigth_upper = new Coords()
+                        {
+                            lat = double.Parse(form["right_upper_" + i.ToString() + "_lat"]),
+                            lon = double.Parse(form["right_upper_" + i.ToString() + "_lon"])
+                        }
+                    });
+                }
+                conf.regions = regions.ToList();
+                await db.state.addConfigurationCPTAsync(entity_new, conf);
+                await writeEventAsync(id + " conf add: " + conf.ToString(), LogEvent.upd);
+                return RedirectToAction("Configuration", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Configuration", new { id = id });
+            }
+        }
+
+        // POST: /State/ConfigurationDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationDelete(string id, int quarter, int cca, bool gamma, int x, int y, double left_lat, double left_lon, double right_lat, double right_lon)
+        {
+            try
+            {
+                // Get original crop data
+                State entity_new = await db.state.byIdAsync(id);
+                // Delete the setup
+                await db.state.deleteConfigurationCPTAsync(entity_new, (Quarter)quarter, cca, gamma, x, y);
+                await writeEventAsync(id + " conf del: " + quarter.ToString() + "|" + cca.ToString() + "|" + gamma.ToString() + "|" + x.ToString() + "|" + y.ToString() + "|" + left_lat.ToString() + "," + left_lon.ToString() + "|" + right_lat.ToString() + "," + right_lon, LogEvent.upd);
+                return RedirectToAction("Configuration", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Configuration", new { id = id });
+            }
+        }
+
+        private async Task generateListQuarterAsync()
+        {
+            // List climate variables
+            var quarters = from Quarter q in Enum.GetValues(typeof(Quarter))
+                           select new { id = (int)q, name = q.ToString() };
+            ViewBag.trimester = new SelectList(quarters, "id", "name");
+        }
     }
 }

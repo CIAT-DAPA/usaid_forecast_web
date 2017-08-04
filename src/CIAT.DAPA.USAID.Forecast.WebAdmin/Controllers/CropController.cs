@@ -289,7 +289,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Set the files to the setup entity
                 setup.conf_files = files;
                 await db.crop.addSetupAsync(entity_new, setup);
-                await writeEventAsync(id + "setup add: " + setup.weather_station.ToString() + "-" + setup.cultivar.ToString() + "-" + setup.soil.ToString() + "-" + setup.days.ToString(), LogEvent.upd);
+                await writeEventAsync(id + " setup add: " + setup.weather_station.ToString() + "|" + setup.cultivar.ToString() + "|" + setup.soil.ToString() + "|" + setup.days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = id });
             }
             catch (Exception ex)
@@ -310,7 +310,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 Crop entity_new = await db.crop.byIdAsync(crop);
                 // Delete the setup
                 await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
-                await writeEventAsync(crop + "setup del: " + ws + "-" + cu + "-" + so + "-" + days.ToString(), LogEvent.upd);
+                await writeEventAsync(crop + " setup del: " + ws + "|" + cu + "|" + so + "|" + days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = crop });
             }
             catch (Exception ex)

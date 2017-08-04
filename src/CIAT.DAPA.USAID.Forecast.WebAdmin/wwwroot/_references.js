@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="js/configuration.js" />
 /// <reference path="js/setup.js" />
 /// <reference path="js/site.min.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
