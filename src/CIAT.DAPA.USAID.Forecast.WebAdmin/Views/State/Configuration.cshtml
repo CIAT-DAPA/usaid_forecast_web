@@ -40,28 +40,6 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-md-2">Esquina izquierda inferior:</label>
-                <label for="lat_left_lower" class="control-label col-md-2">Latitud:</label>
-                <div class="col-md-3">
-                    @Html.Editor("lat_left_lower", null, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <label for="lon_left_lower" class="control-label col-md-2">Longitud:</label>
-                <div class="col-md-3">
-                    @Html.Editor("lon_left_lower", null, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Esquina derecha superior:</label>
-                <label for="lat_left_lower" class="control-label col-md-2">Latitud:</label>
-                <div class="col-md-3">
-                    @Html.Editor("lat_rigth_upper", null, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <label for="lon_left_lower" class="control-label col-md-2">Longitud:</label>
-                <div class="col-md-3">
-                    @Html.Editor("lon_rigth_upper", null, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-            <div class="form-group">
                 <label for="cca" class="control-label col-md-2">Cantidad de modos correlación canónica:</label>
                 <div class="col-md-10">
                     @Html.Editor("cca", null, new { htmlAttributes = new { @class = "form-control" } })
@@ -86,7 +64,25 @@
                 </div>
             </div>
         </fieldset>
-        
+        <fieldset>
+            <legend>Regiones</legend>
+            <div class="form-group">
+                <div class="col-md-">
+                    <input type="button" id="add_region" value="Agregar región" class="btn btn-default" />
+                </div>
+            </div>
+            <table class="table" id="conf_regions">
+                <thead>
+                    <tr>
+                        <th>Esq. izquierda inferior Latitud</th>
+                        <th>Esq. izquierda inferior Longitud</th>
+                        <th>Esq. derecha superior Latitud</th>
+                        <th>Esq. derecha superior Longitud</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </fieldset>
         <div class="form-group">
             <div class="col-md-10">
                 <input type="submit" value="Guardar" class="btn btn-default" />
@@ -97,9 +93,10 @@
 <h3>Configuraciones disponibles</h3>
 <table class="table">
     <tr>
+        <th>Fecha</th>
         <th>Trimestre</th>
         <th>Cant. modos correlación</th>
-        <th>Gamma</th>        
+        <th>Gamma</th>
         <th>Cant. modos x</th>
         <th>Cant. modos y</th>
         <th></th>
@@ -109,6 +106,9 @@
     {
         <tr>
             <td>
+                @item.track.register.ToString("yyyy-MM-dd")
+            </td>
+            <td>
                 @item.trimester
             </td>
             <td>
@@ -116,7 +116,7 @@
             </td>
             <td>
                 @item.gamma
-            </td>            
+            </td>
             <td>
                 @item.x_mode
             </td>
@@ -144,3 +144,7 @@
     @Html.ActionLink("Detalles", "Details", new { id = ViewBag.state.id }) |
     @Html.ActionLink("Volver a la lista", "Index")
 </p>
+
+@section Scripts {
+    <script src="~/js/configuration.js"></script>
+}

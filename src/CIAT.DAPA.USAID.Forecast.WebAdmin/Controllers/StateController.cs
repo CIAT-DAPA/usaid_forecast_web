@@ -370,12 +370,32 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ConfigurationCPT conf = new ConfigurationCPT()
                 {
                     cca_mode = int.Parse(form["cca"]),
-                    gamma = bool.Parse(form["gamma"]),
+                    gamma = !form["gamma"].Equals("false"),
                     trimester = (Quarter)int.Parse(form["trimester"]),
                     x_mode = int.Parse(form["x"]),
                     y_mode = int.Parse(form["y"])
 
                 };
+                int count = form.Keys.Where(p => p.Contains("left_") && p.Contains("_lat")).Count();
+                List<Region> regions = new List<Region>();
+                // This cicle add all regions
+                for (int i = 1; i <= count; i++)
+                {
+                    regions.Add(new Region()
+                    {
+                        left_lower = new Coords()
+                        {
+                            lat = double.Parse(form["left_lower_" + i.ToString() + "_lat"]),
+                            lon = double.Parse(form["left_lower_" + i.ToString() + "_lon"])
+                        },
+                        rigth_upper = new Coords()
+                        {
+                            lat = double.Parse(form["right_upper_" + i.ToString() + "_lat"]),
+                            lon = double.Parse(form["right_upper_" + i.ToString() + "_lon"])
+                        }
+                    });
+                }
+                conf.regions = regions.ToList();
                 await db.state.addConfigurationCPTAsync(entity_new, conf);
                 await writeEventAsync(id + " conf add: " + conf.ToString(), LogEvent.upd);
                 return RedirectToAction("Configuration", new { id = id });
