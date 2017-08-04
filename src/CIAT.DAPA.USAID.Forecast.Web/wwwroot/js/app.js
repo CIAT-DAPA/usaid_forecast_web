@@ -19,9 +19,9 @@ angular
       sub_menu: {
           climate: [
               { name: 'Predicción climática', section: 'forecast', value: 'forecast' },
-              { name: 'Precipitación', section: 'historical', value: 'precipitation' },
-              { name: 'Temperatura', section: 'historical', value: 'temperature' },
-              { name: 'Radiación solar', section: 'historical', value: 'solar_radiation' }
+              { name: 'Histórico de precipitación', section: 'historical', value: 'precipitation' },
+              { name: 'Histórico de temperatura', section: 'historical', value: 'temperature' },
+              { name: 'Histórico de radiación solar', section: 'historical', value: 'solar_radiation' }
           ],
           crop: [
               { name: 'Pronóstico agroclimático', section: 'forecast', value: 'yield' },
