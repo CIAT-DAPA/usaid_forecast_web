@@ -21,12 +21,14 @@
                 <h2 class="text-center" id="sectionTitle" style="">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
                 <div >
                     <p class="text-justify">
-                        Para el municipio de <span class="text-bold">{{municipality_name}}</span>
-                        se presenta el pronóstico agroclimático para el período comprendido de
-                        <span class="text-bold">{{period_start}} a {{period_end}}</span>.
+                        Para el municipio de <span class="text-bold">{{municipality_name}}</span>,
+                        se presenta el pronóstico agroclimático (<span class="text-bold">rendimiento potencial esperado</span>)
+                        según fecha de siembra de
+                        <span class="text-bold">{{period_start}} a {{period_end}}</span> para las variedades calibradas.                        
                         La estación meteorológica que provee los datos para realizar los cálculos es
                         <span class="text-bold">{{ws.name}} - {{ws.ext_id}}</span>,
                         provista por <span class="text-bold">{{ws.origin}}</span>.
+                        Observe el desempeño de todas las variedades antes de seleccionar la variedad a sembrar.
                     </p>
                 </div>
             </div>
@@ -41,13 +43,10 @@
                         <span ng-switch-when="arroz" class="glyphicon glyphicon-grain"></span> 
                         {{cu.name}}
                     </label>
-                    <p class="text-justify">
+                    <p class="text-justify">                        
                         El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span>
                         <span ng-show="cu.rainfed" class="text-bold">(secano)</span>,
-                        presenta los <span class="text-bold">los rendimientos potenciales esperados</span>
-                        para el final del ciclo del cultivo del
-                        período <span class="text-bold">{{period_start}} a {{period_end}}</span>
-                        en el suelo que seleccione a continuación:
+                        Para calcular el rendimiento potencial, por favor seleccione la textura del suelo del lote a sembrar
                     </p>
                 </div>
                 <div class="graphs" style="display:none;">
