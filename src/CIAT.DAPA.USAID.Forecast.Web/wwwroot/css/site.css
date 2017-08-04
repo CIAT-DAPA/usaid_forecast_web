@@ -19,6 +19,18 @@
     background-color: #f8f8f8;
 }
 
+.bg-maize {
+    background-image: url(/images/bg_maize.jpg);
+}
+
+.bg-rice {
+    background-image: url(/images/bg_rice.jpg);
+}
+
+.bg-climate {
+    background-image: url(/images/bg_climate.jpg);
+}
+
 @media (max-width: 1099px) {
     #secundaryMenu {
         float: left;
@@ -35,7 +47,6 @@
     }
 
     .body-content {
-        background-image: url(/images/imageTest.jpg);
         background-size: cover;
         background-color: white;
         padding: 0 2px;
@@ -71,7 +82,6 @@
     }
 
     .body-content {
-        background-image: url(/images/imageTest.jpg);
         background-size: 1600px 860px;
         background-color: white;
         padding: 0 25px;
@@ -83,10 +93,6 @@
         background-color: #fff;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
-
-    /*p a {
-        font-size: 1em;
-    }*/
 }
 
 @media (min-width: 1400px) {
@@ -106,7 +112,6 @@
     }
 
     .body-content {
-        background-image: url(/images/imageTest.jpg);
         background-size: cover;
         background-color: white;
         padding: 0 25px;
@@ -507,7 +512,7 @@ footer img {
     stroke-width: 3;
 }
 
-.line_area_splitted_text text{
+.line_area_splitted_text text {
     font-size: larger;
 }
 

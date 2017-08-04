@@ -64,6 +64,7 @@
                               // Draw graphic
                               draw_forecast();
                               // Close loading 
+                              tools.updateBackground();
                               window.loading_screen.finish();
                               // Show tutorial
                               $rootScope.showTutorial();

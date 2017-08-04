@@ -1,6 +1,7 @@
 ﻿angular.module('ForecastApp')
-  .controller('GlossaryCtrl', function ($rootScope) {      
+  .controller('GlossaryCtrl', function (tools,$rootScope) {      
       // Close loading 
+      tools.updateBackground();
       window.loading_screen.finish();
       // Show tutorial
       $rootScope.showTutorial();
