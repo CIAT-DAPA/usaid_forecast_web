@@ -45,7 +45,8 @@
                     </label>
                     <p class="text-justify">                        
                         El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span>
-                        <span ng-show="cu.rainfed" class="text-bold">(secano)</span>,
+                        <span ng-show="cu.rainfed" class="text-bold">(secano)</span>.
+                        El color de la celda indica el nivel de rendimiento de acuerdo a una escala definida por el gremio.
                         Para calcular el rendimiento potencial, por favor seleccione la textura del suelo del lote a sembrar
                     </p>
                 </div>
@@ -56,22 +57,13 @@
                     <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
                         <div class="section-content">
                             <h3 class="text-center">Rendimiento potencial según calendario de siembra</h3>
-                            <p class="text-justify">
-                                Indicadores de <span class="text-bold">los rendimientos potenciales esperados</span>
+                            <p class="text-justify">                                
                                 <ul>
                                     <li>
-                                        La fecha <span class="text-bold">más favorable</span> para sembrar es:
-                                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
-                                        con un <span class="text-bold">rendimiento potencial promedio</span>
-                                        al final del ciclo del cultivo de
+                                        Para alcanzar el máximo rendimiento potencial
                                         <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
-                                    </li>
-                                    <li>
-                                        La fecha <span class="text-bold">menos favorable</span> para sembrar es:
-                                        <span class="text-bold" id="yield_{{cu.id}}_min_date"></span>
-                                        con un <span class="text-bold">rendimiento potencial promedio</span>
-                                        al final del ciclo del cultivo de
-                                        <span class="text-bold" id="yield_{{cu.id}}_min_yield"></span>
+                                        a la cosecha, la <span class="text-bold">fecha de siembra más favorable</span> es
+                                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>                                        
                                     </li>
                                 </ul>
                             </p>
