@@ -392,7 +392,6 @@ footer img {
     display: none;
 }
 
-/*.x_axis path, .x_axis line, */
 .y_axis path, .y_axis line {
     fill: none;
     stroke: #000;
@@ -407,19 +406,19 @@ footer img {
 }
 
 /* Helper class for the graphics */
-/*.prec,*/ .bar_prec, .line_area_area_prec, .line_area_circle_prec {
+.bar_prec, .line_area_area_prec, .line_area_circle_prec {
     fill: #6bb7c7;
 }
 
-/*.t_max,*/ .bar_t_max, .line_area_area_t_max, .line_area_circle_t_max {
+.bar_t_max, .line_area_area_t_max, .line_area_circle_t_max {
     fill: #c76b6b;
 }
 
-/*.t_min,*/ .bar_t_min, .line_area_area_t_min, .line_area_circle_t_min {
+.bar_t_min, .line_area_area_t_min, .line_area_circle_t_min {
     fill: #c7c76b;
 }
 
-/*.sol_rad,*/ .bar_sol_rad, .line_area_area_sol_rad, .line_area_circle_sol_rad {
+.bar_sol_rad, .line_area_area_sol_rad, .line_area_circle_sol_rad {
     fill: #c7966b;
 }
 
@@ -506,6 +505,10 @@ footer img {
     fill: none;
     stroke: #ad6bc7;
     stroke-width: 3;
+}
+
+.line_area_splitted_text text{
+    font-size: larger;
 }
 
 /* Calendar */
