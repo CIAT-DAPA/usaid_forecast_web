@@ -46,8 +46,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         protected void loadMonthsClimate()
         {
             string dates = string.Empty;
-            //DateTime start = DateTime.Now.AddMonths(-1);
-            DateTime start = DateTime.Now.AddMonths(-2);
+            DateTime start = DateTime.Now.AddMonths(-1);
             for (int i = 1; i <= 6; i++)
             {
                 start = start.AddMonths(1);
@@ -63,8 +62,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             string dates = string.Empty;
             string years = string.Empty;
-            //DateTime start = DateTime.Now.AddMonths(-1);
-            DateTime start = DateTime.Now.AddMonths(-2);
+            DateTime start = DateTime.Now.AddMonths(-1);            
             for (int i = 1; i <= 2; i++)
             {
                 start = start.AddMonths(1);
