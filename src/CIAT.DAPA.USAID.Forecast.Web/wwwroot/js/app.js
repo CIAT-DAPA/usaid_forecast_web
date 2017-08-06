@@ -25,7 +25,7 @@ angular
           ],
           crop: [
               { name: 'Pronóstico agroclimático', section: 'forecast', value: 'yield' },
-              { name: 'Histórico agroclimático', section: 'historical', value: 'historical' },
+              { name: 'Histórico agroclimático (rendimiento)', section: 'historical', value: 'historical' },
           ],
           expert: [
               { name: 'Datos geográficos', section: 'geographic', value: 'geographic' },
