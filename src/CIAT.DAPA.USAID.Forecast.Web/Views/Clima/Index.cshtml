@@ -77,11 +77,7 @@
                         <select class="form-control" ng-model="cv_month_selected" ng-change="drawHistorical()" ng-options="hm.name for hm in historical_months"></select>
                         <p class="text-justify" id="historical_content_summary">
                             Históricamente en el mes <span class="text-bold">{{cv_month_selected.name}}</span> en el
-                            municipio <span class="text-bold">{{municipality_name}}</span> presenta el siguiente comportamiento:
-                            <ul>
-                                <li>Se han presentado <span class="text-bold">{{historical_upper}}</span> años por encima del promedio</li>
-                                <li>Se han presentado <span class="text-bold">{{historical_lower}}</span> años por debajo del promedio</li>
-                            </ul>
+                            municipio <span class="text-bold">{{municipality_name}}</span> presenta el siguiente comportamiento:                            
                         </p>
                         <div id="historical_content_line">
                         </div>
