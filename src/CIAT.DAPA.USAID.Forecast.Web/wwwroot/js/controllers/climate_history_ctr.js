@@ -47,9 +47,9 @@
 
               ClimateHistoricalFactory.getByWeatherStation($scope.ws.id).then(
               function (data_h) {
-                  $scope.historical = data_h;
+                  $scope.historical = data_h;                  
                   ClimateClimatologyFactory.getMonthly($scope.ws.id, $scope.gv_months).then(
-                  function (data_c) {
+                  function (data_c) {                      
                       $scope.climatology = data_c;
                       $scope.loaded = true;
                   },
@@ -65,15 +65,14 @@
        * (int) i: Position of the climate vars array
       */
       function draw_climatology(i) {
-          $scope.cv = $scope.climate_vars[i];
-
+          $scope.cv = $scope.climate_vars[i];          
           // Get data only for the climatology vars selected
           var climatology_temp = $scope.climatology.map(function (item) {
               var data = item.filter(function (item2) { return $scope.cv.value.includes(item2.measure); });
               return data;
           });
           // Transform data for the graphic
-          $scope.climatology_filtered = [];
+          $scope.climatology_filtered = [];          
           for (var j = 0; j < climatology_temp.length; j++) {
               for (var k = 0; k < climatology_temp[j].length; k++)
                   $scope.climatology_filtered.push({
@@ -84,7 +83,7 @@
                   });
           }
 
-          // Draw the graphic
+          // Draw the graphic          
           var base_c = new Base('#bar_climatology', $scope.climatology_filtered);
           base_c.setMargin(10, 50, 10, 10);
           base_c.setClasses($scope.cv.value.map(function (item) { return 'bar_' + item; }));
@@ -99,7 +98,14 @@
           $scope.cv.max = compute_c.max;
           $scope.cv.min = compute_c.min;
 
-          $scope.historical_months = setup.getMonthsFull().slice($scope.climatology_filtered[0].month - 1, $scope.climatology_filtered[$scope.climatology_filtered.length - 1].month);
+          var m = setup.getMonthsFull();
+          var a = [];
+          for (var i = 0; i < $scope.climatology_filtered.length; i++)
+              a.push(m[$scope.climatology_filtered[i].month - 1]);
+          
+          $scope.historical_months = a.filter(function (item, pos) {
+              return a.indexOf(item) == pos;
+          });
           $scope.cv_month_selected = $scope.historical_months[0];
           draw_historical();
       }
