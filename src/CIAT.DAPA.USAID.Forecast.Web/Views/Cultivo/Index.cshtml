@@ -85,14 +85,14 @@
                                 <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
                                     <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
                                         Este gráfico muestra el nivel de confianza del pronóstico de rendimiento potencial 
-                                        según la fecha de siembra, calcula a partir de distintos escenarios climáticos. 
+                                        según la fecha de siembra, calculada a partir de distintos escenarios climáticos. 
                                         La línea negra es el promedio de rendimiento potencial para cada fecha de siembra 
                                         (corresponde al valor presentado en el calendario), la franja verde oscuro corresponde 
                                         a un intervalo de confianza del 95% (alta probabilidad) y la franja verde clara 
                                         corresponde a extremos (baja probabilidad) rendimiento en cada fecha.
+                                        La información está calculada para grano del cultivo en diferentes porcentajes (%) de húmedad.
                                         <br />
                                         <br />
-                                        Indicadores agroclimáticos para <span class="text-bold">{{vr.description}}</span>
                                         <ul>
                                             <li>
                                                 La fecha <span class="text-bold">con mayor variación</span>
