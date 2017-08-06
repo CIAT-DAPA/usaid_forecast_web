@@ -56,6 +56,7 @@ angular
               { name: 'Temperatura mínima acumulada', section: 't_min_acu', value: 't_min_acu' },
           ],
           about: [
+              { name: 'Proyecto', section: 'project', value: 'project' },
               { name: 'Generación de escenarios', section: 'scenarios', value: 'scenarios' },
               { name: 'Pronóstico agroclimático (arroz)', section: 'yield_rice', value: 'yield_rice' },
               { name: 'Pronóstico agroclimático (maíz)', section: 'yield_maize', value: 'yield_maize' },
