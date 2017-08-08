@@ -19,13 +19,13 @@ angular
       sub_menu: {
           climate: [
               { name: 'Predicción climática', section: 'forecast', value: 'forecast' },
-              { name: 'Precipitación', section: 'historical', value: 'precipitation' },
-              { name: 'Temperatura', section: 'historical', value: 'temperature' },
-              { name: 'Radiación solar', section: 'historical', value: 'solar_radiation' }
+              { name: 'Histórico de precipitación', section: 'historical', value: 'precipitation' },
+              { name: 'Histórico de temperatura', section: 'historical', value: 'temperature' },
+              { name: 'Histórico de radiación solar', section: 'historical', value: 'solar_radiation' }
           ],
           crop: [
               { name: 'Pronóstico agroclimático', section: 'forecast', value: 'yield' },
-              { name: 'Histórico agroclimático', section: 'historical', value: 'historical' },
+              { name: 'Histórico agroclimático (rendimiento)', section: 'historical', value: 'historical' },
           ],
           expert: [
               { name: 'Datos geográficos', section: 'geographic', value: 'geographic' },
@@ -56,6 +56,7 @@ angular
               { name: 'Temperatura mínima acumulada', section: 't_min_acu', value: 't_min_acu' },
           ],
           about: [
+              { name: 'Proyecto', section: 'project', value: 'project' },
               { name: 'Generación de escenarios', section: 'scenarios', value: 'scenarios' },
               { name: 'Pronóstico agroclimático (arroz)', section: 'yield_rice', value: 'yield_rice' },
               { name: 'Pronóstico agroclimático (maíz)', section: 'yield_maize', value: 'yield_maize' },
@@ -119,11 +120,11 @@ angular
       expert_db: [
           { section: 'geographic', title: 'Datos geográficos', description: 'Esta base de datos contiene información sobre los estados, municipios y estaciones climáticas que se encuentran disponibles para los pronósticos y datos históricos que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos de esta aplicación.' },
           { section: 'agronomic', title: 'Datos agronómicos', description: 'Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.' },
-          { section: 'climatology', title: 'Climatología', description: 'En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología. Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras. Puede establecer una relación con los datos obtenidos en la sección de datos geográficos.' },
-          { section: 'climate_historical', title: 'Histórico Climático', description: 'Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación y radiación solar de cada mes durante un intervalo de tiempo.' },
-          { section: 'climate_forecast', title: 'Histórico climático', description: 'Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas. Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo, dentro o por encima del intervalo normal. Tambien puede descargar los escenarios climáticos según su selección.' },
+          { section: 'climatology', title: 'Climatología', description: 'En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología. Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras. Puede establecer una relación con los datos obtenidos en la sección de datos geográficos. Usted podrá descargar el promedio mensual histórico de datos climáticos (temperatura máxima, mínima, precipitación, radiación solar) de la estación utilizada para generar la información del municipio seleccionado.' },
+          { section: 'climate_historical', title: 'Histórico climático', description: 'Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación y radiación solar de cada mes durante un intervalo de tiempo. Usted podrá descargar el valor para radiación solar, temperatura máxima y temperatura mínima para todos los meses desde 1980 al 2014 provenientes de la estación utilizada para generar la información del municipio seleccionado.' },
+          { section: 'climate_forecast', title: 'Predicción climática', description: 'Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas. Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo, dentro o por encima del intervalo normal. Tambien puede descargar los escenarios climáticos según su selección. Usted podrá descargar: los valores de probabilidad de precipitación normal, por encima y por debajo con más número de decimales para los 6 meses pronosticados ó los valores de escenarios climáticos para precipitación, temperatura máxima, mínima y radiación solar. Esta información se podrá descargar para cada estación utilizada para generar la información del municipio seleccionado.' },
           { section: 'yield_historical', title: 'Histórico de producción', description: 'Esta base de datos contiene el resultado de los datos de rendimiento de los diferentes cultivos en distintos municipios del país.' },
-          { section: 'yield_forecast', title: 'Pronóstico de producción', description: 'Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado bajo varios escenarios climáticos.' }
+          { section: 'yield_forecast', title: 'Pronóstico de producción', description: 'Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado bajo varios escenarios climáticos. -	Usted podrá descargar los valores pronosticados para: rendimiento, precipitación acumulada, temperatura máxima acumulada, temperatura mínima acumulada, biomasa y días a cosecha de acuerdo con la fecha de siembra. Para cada uno de estos factores climáticos, obtendrá el valor promedio, máximo, mínimo,  desviación estándar, e intervalos de confianza al 95% y 5%. Estos datos se presentan para todos los días pronosticados y para cada estación utilizada para generar la información del municipio seleccionado.' }
       ],
       /* Assist data */
       assist: [

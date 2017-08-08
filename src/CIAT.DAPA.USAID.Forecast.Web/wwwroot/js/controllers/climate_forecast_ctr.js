@@ -64,6 +64,7 @@
                               // Draw graphic
                               draw_forecast();
                               // Close loading 
+                              tools.updateBackground();
                               window.loading_screen.finish();
                               // Show tutorial
                               $rootScope.showTutorial();
@@ -107,7 +108,7 @@
               ctrs = ctrs + '<article class="col-lg-5 article_content col-sm-offset-1">' +
                                 '<div class="section-content">' +
                                     '<h3 class="text-center">' + m.month_name + '-' + m.year + '</h3>' +
-                                    '<h4 class="text-center">Precipitación</h4>' +
+                                    '<h4 class="text-center">Probabilidad de precipitación (%)</h4>' +
                                     '<div id="pie' + m.year + '-' + m.month + '"></div>' +
                                     '<p class="text-justify article_content" id="summary_' + m.year + '-' + m.month + '">' +
                                     '</p>' +

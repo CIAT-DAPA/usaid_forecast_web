@@ -64,6 +64,20 @@ angular.module('ForecastApp')
             return d.getDate()  + " de " + config.month_names[d.getMonth()] + " de " + d.getFullYear();
         }
 
+        /*
+         * Method to change the background image of the website
+        */
+        dataFactory.updateBackground = function () {
+            var bg = '';            
+            if (window.location.href.includes('/Cultivo') || window.location.href.includes('/cultivo')) {
+                var para = dataFactory.search('cultivo').toLowerCase();
+                bg = (para === 'arroz' ? 'bg-rice' : 'bg-maize');
+            }
+            else
+                bg = 'bg-climate';
+            $(".body-content").addClass(bg);
+        }
+
         return dataFactory;
     })
     .factory('setup', ['config', function (config) {

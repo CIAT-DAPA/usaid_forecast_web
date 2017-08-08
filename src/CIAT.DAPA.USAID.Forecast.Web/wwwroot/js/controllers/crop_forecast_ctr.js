@@ -97,6 +97,7 @@ angular.module('ForecastApp')
                               $scope.cultivars[i].soils = SoilFactory.getSoilsAvailableForecast($scope.soils, cu.id, $scope.yield_ws);
                       }                      
                       // Close loading 
+                      tools.updateBackground();
                       window.loading_screen.finish();
                       // Show tutorial
                       $rootScope.showTutorial();

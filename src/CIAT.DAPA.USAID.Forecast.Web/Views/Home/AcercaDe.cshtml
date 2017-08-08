@@ -11,9 +11,28 @@
 @Html.Partial("_SubMenu")
 
 <div id="containerBlock" ng-controller="AboutCtrl">
-    @Html.Partial("_SocialMedia")    
+    @Html.Partial("_SocialMedia")
+    <!-- Start Project -->
+    <section class="col-md-12 sections" id="content_project">
+        <div class="row section-content" style="padding-top:25px;">
+            <h3 class="text-center">Proyecto</h3>
+            <p class="text-justify" style="font-size:1.1em;">
+                Esta aplicación web está siendo desarrollada por el Centro Internacional de Agricultura
+                Tropical CIAT, la federación nacional de arroceros FEDEARROZ, la federación nacional
+                de cafeteros de Colombia, la federación Nacional de cereales y leguminosas FENALCE,
+                y el instituto de  hidrología Meteorologia y estudios ambientales IDEAM. Y, con el
+                apoyo de la agencia de los estados unidos para el desarrollo internacional USAID.
+                Los métodos y modelos utilizados para la generación de los pronósticos aquí presentados
+                se encuentran en desarrollo prueba y validación. Sin embargo, presentan un buen
+                desempeño. Inicialmente, se están ofreciendo pronósticos climáticos y agroclimáticos
+                para maíz y arroz  en 6 municipios de Colombia. Los gremios seguirán desarrollando
+                esta plataforma para ofrecer pronósticos para otros municipios y variedades.
+            </p>
+        </div>
+    </section>
+    <!-- End Project -->    
     <!-- Start Scenarios -->
-    <section class="col-md-12 sections" id="content_scenarios">
+    <section class="col-md-12 sections" id="content_scenarios" style="display:none;">
         <div class="row section-content" style="padding-top:25px;">
             <h3 class="text-center">Generación de escenarios</h3>
             <p class="text-justify" style="font-size:1.1em;">
@@ -125,7 +144,7 @@
             </p>
         </div>
     </section>
-    <!-- End Validation Maize -->
+    <!-- End Validation Maize -->    
 </div>
 
 @section Scripts {

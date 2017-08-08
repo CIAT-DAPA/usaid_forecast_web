@@ -21,12 +21,14 @@
                 <h2 class="text-center" id="sectionTitle" style="">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
                 <div >
                     <p class="text-justify">
-                        Para el municipio de <span class="text-bold">{{municipality_name}}</span>
-                        se presenta el pronóstico agroclimático para el período comprendido de
-                        <span class="text-bold">{{period_start}} a {{period_end}}</span>.
+                        Para el municipio de <span class="text-bold">{{municipality_name}}</span>,
+                        se presenta el pronóstico agroclimático (<span class="text-bold">rendimiento potencial esperado</span>)
+                        según fecha de siembra de
+                        <span class="text-bold">{{period_start}} a {{period_end}}</span> para las variedades calibradas.                        
                         La estación meteorológica que provee los datos para realizar los cálculos es
                         <span class="text-bold">{{ws.name}} - {{ws.ext_id}}</span>,
                         provista por <span class="text-bold">{{ws.origin}}</span>.
+                        Observe el desempeño de todas las variedades antes de seleccionar la variedad a sembrar.
                     </p>
                 </div>
             </div>
@@ -41,13 +43,11 @@
                         <span ng-switch-when="arroz" class="glyphicon glyphicon-grain"></span> 
                         {{cu.name}}
                     </label>
-                    <p class="text-justify">
+                    <p class="text-justify">                        
                         El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span>
-                        <span ng-show="cu.rainfed" class="text-bold">(secano)</span>,
-                        presenta los <span class="text-bold">los rendimientos potenciales esperados</span>
-                        para el final del ciclo del cultivo del
-                        período <span class="text-bold">{{period_start}} a {{period_end}}</span>
-                        en el suelo que seleccione a continuación:
+                        <span ng-show="cu.rainfed" class="text-bold">(secano)</span>.
+                        El color de la celda indica el nivel de rendimiento de acuerdo a una escala definida por el gremio.
+                        Para calcular el rendimiento potencial, por favor seleccione la textura del suelo del lote a sembrar
                     </p>
                 </div>
                 <div class="graphs" style="display:none;">
@@ -56,23 +56,14 @@
                     </div>
                     <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
                         <div class="section-content">
-                            <h3 class="text-center">Rendimiento potencial según calendario de siembra</h3>
-                            <p class="text-justify">
-                                Indicadores de <span class="text-bold">los rendimientos potenciales esperados</span>
+                            <h3 class="text-center">Rendimiento potencial según fecha de siembra</h3>
+                            <p class="text-justify">                                
                                 <ul>
                                     <li>
-                                        La fecha <span class="text-bold">más favorable</span> para sembrar es:
-                                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>
-                                        con un <span class="text-bold">rendimiento potencial promedio</span>
-                                        al final del ciclo del cultivo de
+                                        Para alcanzar el máximo rendimiento potencial
                                         <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
-                                    </li>
-                                    <li>
-                                        La fecha <span class="text-bold">menos favorable</span> para sembrar es:
-                                        <span class="text-bold" id="yield_{{cu.id}}_min_date"></span>
-                                        con un <span class="text-bold">rendimiento potencial promedio</span>
-                                        al final del ciclo del cultivo de
-                                        <span class="text-bold" id="yield_{{cu.id}}_min_yield"></span>
+                                        a la cosecha, la <span class="text-bold">fecha de siembra más favorable</span> es
+                                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>                                        
                                     </li>
                                 </ul>
                             </p>
@@ -94,14 +85,14 @@
                                 <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
                                     <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
                                         Este gráfico muestra el nivel de confianza del pronóstico de rendimiento potencial 
-                                        según la fecha de siembra, calcula a partir de distintos escenarios climáticos. 
+                                        según la fecha de siembra, calculada a partir de distintos escenarios climáticos. 
                                         La línea negra es el promedio de rendimiento potencial para cada fecha de siembra 
                                         (corresponde al valor presentado en el calendario), la franja verde oscuro corresponde 
                                         a un intervalo de confianza del 95% (alta probabilidad) y la franja verde clara 
                                         corresponde a extremos (baja probabilidad) rendimiento en cada fecha.
+                                        La información está calculada para grano del cultivo en diferentes porcentajes (%) de húmedad.
                                         <br />
                                         <br />
-                                        Indicadores agroclimáticos para <span class="text-bold">{{vr.description}}</span>
                                         <ul>
                                             <li>
                                                 La fecha <span class="text-bold">con mayor variación</span>
@@ -134,14 +125,12 @@
     <section class="col-md-12 sections" ng-controller="CropHistoryCtrl" id="content_historical" style="display:none;">
         <article class="row section-content">
             <div class="col-lg-12">
-                <h2 class="text-center">Histórico de rendimiento</h2>
-                <h3>
-                    Descripción
-                </h3>
+                <h2 class="text-center">Histórico de rendimiento</h2>                
                 <p class="text-justify">
-                    Los datos históricos presentados a continuación son el resultado de los datos generados
-                    por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos
-                    son promediados de acuerdo a su clasificación (nacional o importada).
+                    Los datos históricos presentados a continuación son el resultado de los datos generados por el 
+                    modelo del cultivo con los datos históricos presentados en este municipio. 
+                    Los rendimientos son promediados de acuerdo a su clasificación 
+                    (nacional o importada).
                 </p>
                 <form class="form-inline">
                     <div class="form-group">

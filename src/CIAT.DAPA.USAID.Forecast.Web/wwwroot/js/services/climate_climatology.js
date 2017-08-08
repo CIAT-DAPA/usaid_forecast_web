@@ -50,10 +50,10 @@ angular.module('ForecastApp')
                     return months.includes(tm);
                 });
                 var data = filtered_monthly.map(function (item) {
-                    var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];                    
+                    var monthly = item.data.filter(function (item2) { return item2.measure === measure })[0];
                     var obj = {
                         month: item.month,
-                        month_name: config.month_names[item.month - 1],                        
+                        month_name: config.month_names[item.month - 1],
                         value: monthly.value
                     };
                     return obj;
@@ -76,10 +76,16 @@ angular.module('ForecastApp')
             dataFactory.getByWeatherStation(ws).then(
             function (filtered_ws) {
 
-                var filtered_monthly = filtered_ws.monthly_data.filter(function (item) {
-                    var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
-                    return months.includes(tm);
-                });
+                var filtered_monthly = [];
+                for (var i = 0; i < months.length; i++) {
+                    var rows = filtered_ws.monthly_data.filter(function (item) {
+                        var tm = item.month.toString().length == 1 ? '0' + item.month.toString() : item.month.toString();
+                        return months[i] === tm;
+                    });
+                    if (rows != null)
+                        filtered_monthly.push(rows[0]);
+                }
+
                 var data = filtered_monthly.map(function (item) {
                     return item.data.map(function (item2) {
                         return {
