@@ -147,7 +147,6 @@
               return item.month == $scope.cv_month_selected.id;
           });
 
-          
           var data_h = { raw: historical_filtered, splitted: climatology_line };
           //var cvm = $scope.historical_months[j];
           var base_h = new Base('#historical_content_line', data_h);
