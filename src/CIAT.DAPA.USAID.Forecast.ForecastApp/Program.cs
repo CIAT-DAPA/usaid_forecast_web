@@ -104,7 +104,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     if (fs >= 0)
                     {
                         Console.WriteLine("Exporting forecast setup");
-                        await output.exportForecastSetupnAsync(args[path + 1]);
+                        await output.exportForecastSetupAsync(args[path + 1]);
+                    }
+                    // Export cpt setup
+                    // -out -cpt -p "C:\Users\hsotelo\Desktop\test export\\"
+                    int cpt = Program.searchParameter(args, "-cpt");
+                    if (cpt >= 0)
+                    {
+                        Console.WriteLine("Exporting CPT setup");
+                        await output.exportCPTSetupAsync(args[path + 1]);
                     }
                 }
                 else if (Program.searchParameter(args, "-in") == 0)
