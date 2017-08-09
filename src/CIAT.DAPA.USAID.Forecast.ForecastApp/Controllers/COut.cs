@@ -47,6 +47,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var s in states)
             {
                 Console.WriteLine("Creating " + s.name);
+                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString()))
+                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString());
                 csv = new StringBuilder();
                 var weather_stations = await db.weatherStation.listEnableByStateAsync(s.id);
 
@@ -89,8 +91,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         csv.AppendLine(line.Substring(0, line.Length - 1));
                     }
                 }
-                // Create the physical file
-                string file_name = path + Program.settings.Out_PATH_STATES + @"\" + s.name + ".csv";
+                // Create the physical file                
+                string file_name = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\stations" + ".csv";
                 if (File.Exists(file_name))
                     File.Delete(file_name);
                 File.WriteAllText(file_name, header + "\n" + csv.ToString());
