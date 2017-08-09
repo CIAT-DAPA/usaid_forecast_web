@@ -217,7 +217,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     var conf = s.conf.SingleOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q));
                     // the cpt configuration 
                     header_cpt.Append(q + ",");
-                    x_m.Append(conf.x_mode.ToString() + ",");
+                    x_m.Append((conf.x_mode.ToString() ?? string.Empty) + ",");
                     y_m.Append(conf.y_mode.ToString() + ",");
                     cca.Append(conf.cca_mode.ToString() + ",");
                     gamma.Append(conf.gamma.ToString() + ",");

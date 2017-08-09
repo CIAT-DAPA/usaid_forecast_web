@@ -410,14 +410,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /State/ConfigurationDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfigurationDelete(string id, int quarter, int cca, bool gamma, int x, int y, double left_lat, double left_lon, double right_lat, double right_lon)
+        public async Task<IActionResult> ConfigurationDelete(string id, string quarter, int cca, bool gamma, int x, int y, double left_lat, double left_lon, double right_lat, double right_lon)
         {
             try
             {
                 // Get original crop data
                 State entity_new = await db.state.byIdAsync(id);
                 // Delete the setup
-                await db.state.deleteConfigurationCPTAsync(entity_new, (Quarter)quarter, cca, gamma, x, y);
+                await db.state.deleteConfigurationCPTAsync(entity_new, (Quarter)Enum.Parse(typeof(Quarter), quarter), cca, gamma, x, y);
                 await writeEventAsync(id + " conf del: " + quarter.ToString() + "|" + cca.ToString() + "|" + gamma.ToString() + "|" + x.ToString() + "|" + y.ToString() + "|" + left_lat.ToString() + "," + left_lon.ToString() + "|" + right_lat.ToString() + "," + right_lon, LogEvent.upd);
                 return RedirectToAction("Configuration", new { id = id });
             }
