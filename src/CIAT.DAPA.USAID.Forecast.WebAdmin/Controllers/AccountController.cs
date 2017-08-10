@@ -280,11 +280,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 //AddErrors(result);
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
                 return View("Error");
-            }            
+            }
         }
 
         //
@@ -305,6 +305,65 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             else
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        // GET: /Account/Edit
+        [HttpGet]
+        [Authorize(Roles = "ADMIN,TECH")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                User entity = await db.user.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x.ToUpper(), Value = x.ToUpper() }).ToList();
+                return View(new UserEditViewModel() { Email = entity.Email, Role = entity.Roles, LockoutEnabled = entity.LockoutEnabled });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN,TECH")]
+        public async Task<IActionResult> Edit(UserEditViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    User current = await db.user.byIdAsync(model.Email);
+                    User newEntity = await db.user.byIdAsync(model.Email);
+                    newEntity.LockoutEnabled = model.LockoutEnabled;
+                    newEntity.Roles = model.Role;
+                    await db.user.updateAsync(current, newEntity);
+                    await writeEventAsync("Update the user: " + model.Email, LogEvent.upd);
+                    return RedirectToAction("Index");
+                }
+                // If we got this far, something failed, redisplay form
+                ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x.ToUpper(), Value = x.ToUpper() }).ToList();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
             }
         }
     }
