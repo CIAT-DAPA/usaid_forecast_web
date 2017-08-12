@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "ADMIN,IMPROVER,TECH")]
+    [Authorize(Roles = "ADMIN,IMPROVER")]
     public class CropController : WebAdminBaseController
     {
         /// <summary>
