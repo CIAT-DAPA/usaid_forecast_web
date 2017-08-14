@@ -47,6 +47,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var s in states)
             {
                 Console.WriteLine("Creating " + s.name);
+                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString()))
+                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString());
                 csv = new StringBuilder();
                 var weather_stations = await db.weatherStation.listEnableByStateAsync(s.id);
 
@@ -89,8 +91,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         csv.AppendLine(line.Substring(0, line.Length - 1));
                     }
                 }
-                // Create the physical file
-                string file_name = path + Program.settings.Out_PATH_STATES + @"\" + s.name + ".csv";
+                // Create the physical file                
+                string file_name = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\stations" + ".csv";
                 if (File.Exists(file_name))
                     File.Delete(file_name);
                 File.WriteAllText(file_name, header + "\n" + csv.ToString());
@@ -146,7 +148,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that exports the configuration for the forecast 
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportForecastSetupnAsync(string path)
+        public async Task<bool> exportForecastSetupAsync(string path)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_FS_FILES))
@@ -175,6 +177,99 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         File.WriteAllText(dir_setup + @"\" + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
                     }
                 }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Method that export all cpt  configuration needs by the forecast
+        /// </summary>
+        /// <param name="path">Path where the files will be located</param>
+        public async Task<bool> exportCPTSetupAsync(string path)
+        {
+            StringBuilder header_cpt, x_m, y_m, cca, gamma, header_areas;
+            StringBuilder[] x1, x2, y1, y2;
+            // Create directory
+            if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
+            var states = await db.state.listEnableAsync();
+            foreach (var s in states)
+            {
+                Console.WriteLine("Creating " + s.name);
+                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString()))
+                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString());
+
+                // the cpt configuration 
+                header_cpt = new StringBuilder("var,");
+                x_m = new StringBuilder("x_modes,");
+                y_m = new StringBuilder("y_modes,");
+                cca = new StringBuilder("cca_modes,");
+                gamma = new StringBuilder("trasformation,");
+                // the regions configurations
+                header_areas = new StringBuilder("order,var,");
+                x1 = new StringBuilder[] { new StringBuilder("1,x1,"), new StringBuilder("2,x1,") };
+                x2 = new StringBuilder[] { new StringBuilder("1,x2,"), new StringBuilder("2,x2,") };
+                y1 = new StringBuilder[] { new StringBuilder("1,y1,"), new StringBuilder("2,y1,") };
+                y2 = new StringBuilder[] { new StringBuilder("1,y2,"), new StringBuilder("2,y2,") };
+                // This cicle is by every quarter of year
+                foreach (string q in Enum.GetNames(typeof(Quarter)))
+                {
+                    var conf = s.conf.SingleOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q));
+                    // the cpt configuration 
+                    header_cpt.Append(q + ",");
+                    x_m.Append((conf.x_mode.ToString() ?? string.Empty) + ",");
+                    y_m.Append(conf.y_mode.ToString() + ",");
+                    cca.Append(conf.cca_mode.ToString() + ",");
+                    gamma.Append(conf.gamma.ToString() + ",");
+                    // the regions configurations
+                    header_areas.Append(q + ",");
+                    x1[0].Append(conf.regions.ElementAt(0).left_lower.lon.ToString() + ",");
+                    x2[0].Append(conf.regions.ElementAt(0).rigth_upper.lon.ToString() + ",");
+                    y1[0].Append(conf.regions.ElementAt(0).left_lower.lat.ToString() + ",");
+                    y2[0].Append(conf.regions.ElementAt(0).rigth_upper.lat.ToString() + ",");
+                    // Second region
+                    if (conf.regions.Count() > 1)
+                    {
+                        x1[1].Append(conf.regions.ElementAt(1).left_lower.lon.ToString() + ",");
+                        x2[1].Append(conf.regions.ElementAt(1).rigth_upper.lon.ToString() + ",");
+                        y1[1].Append(conf.regions.ElementAt(1).left_lower.lat.ToString() + ",");
+                        y2[1].Append(conf.regions.ElementAt(1).rigth_upper.lat.ToString() + ",");
+                    }
+                    else
+                    {
+                        x1[1].Append("NA,");
+                        x2[1].Append("NA,");
+                        y1[1].Append("NA,");
+                        y2[1].Append("NA,");
+                    }
+                }
+                // Create the physical file cpt
+                string file_name_cpt = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\cpt" + ".csv";
+                if (File.Exists(file_name_cpt))
+                    File.Delete(file_name_cpt);
+                File.WriteAllText(file_name_cpt, header_cpt.ToString().Substring(0, header_cpt.ToString().Length - 1) + "\n" +
+                    x_m.ToString().Substring(0, x_m.ToString().Length - 1) + "\n" +
+                    y_m.ToString().Substring(0, y_m.ToString().Length - 1) + "\n" +
+                    cca.ToString().Substring(0, cca.ToString().Length - 1) + "\n" +
+                    gamma.ToString().Substring(0, gamma.ToString().Length - 1));
+
+                // Create the physical file regions
+                string file_name_regions = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\areas" + ".csv";
+                if (File.Exists(file_name_regions))
+                    File.Delete(file_name_regions);
+                File.WriteAllText(file_name_regions, header_areas.ToString().Substring(0, header_areas.ToString().Length - 1) + "\n" +
+                    x1[0].ToString().Substring(0, x1[0].ToString().Length - 1) + "\n" +
+                    x2[0].ToString().Substring(0, x2[0].ToString().Length - 1) + "\n" +
+                    y1[0].ToString().Substring(0, y1[0].ToString().Length - 1) + "\n" +
+                    y2[0].ToString().Substring(0, y2[0].ToString().Length - 1) + "\n" +
+                    x1[1].ToString().Substring(0, x1[1].ToString().Length - 1) + "\n" +
+                    x2[1].ToString().Substring(0, x2[1].ToString().Length - 1) + "\n" +
+                    y1[1].ToString().Substring(0, y1[1].ToString().Length - 1) + "\n" +
+                    y2[1].ToString().Substring(0, y2[1].ToString().Length - 1) + "\n");
+
+                // Create the theorical areas file
+                Console.WriteLine("Creating regions " + s.name);
+
             }
             return true;
         }

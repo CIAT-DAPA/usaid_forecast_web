@@ -28,13 +28,17 @@
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @item.Roles.First().ToString()
+                @foreach (var role in item.Roles)
+                {
+                    @role.ToString()
+                    <span>, </span>
+                }
             </td>
             <td>
                 @item.LockoutEnabled
             </td>
             <td>
-                
+                @Html.ActionLink("Editar", "Edit", new { id = item.Email })
             </td>
         </tr>
     }

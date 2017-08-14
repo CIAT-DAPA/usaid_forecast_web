@@ -40,6 +40,9 @@ Export Data
 
 -co				Create a file by every weather station with their
 				coordinates.
+
+-cpt			Export the configuration for cpt. It includes the
+				theorical regions and cpt modes.
 -----------------------------------------------------------------
 Import Data
 
