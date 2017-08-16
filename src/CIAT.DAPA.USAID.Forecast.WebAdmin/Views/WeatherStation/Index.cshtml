@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.WeatherStation>
+﻿@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.WeatherStation>
 @{
     ViewBag.Title = "Estaciones climáticas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,7 +30,8 @@
     {
         <tr>
             <td>
-                @item.municipality.ToString()
+                @{ var m = ((List<Municipality>)ViewBag.municipalities).FirstOrDefault(p => p.id == item.municipality); }
+                @m.name
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)

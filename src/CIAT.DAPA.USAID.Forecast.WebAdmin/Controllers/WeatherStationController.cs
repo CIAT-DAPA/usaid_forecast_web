@@ -41,6 +41,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.weatherStation.listEnableAsync();
+                ViewBag.municipalities = await db.municipality.listEnableAsync();
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }

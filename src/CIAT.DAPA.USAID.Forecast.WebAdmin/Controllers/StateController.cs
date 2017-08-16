@@ -395,6 +395,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         }
                     });
                 }
+                if (regions.Count() == 0)
+                    return RedirectToAction("Configuration", new { id = id });
+
                 conf.regions = regions.ToList();
                 await db.state.addConfigurationCPTAsync(entity_new, conf);
                 await writeEventAsync(id + " conf add: " + conf.ToString(), LogEvent.upd);

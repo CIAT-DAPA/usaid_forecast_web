@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Municipality>
+﻿@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Municipality>
 @{
     ViewBag.Title = "Municipios";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +11,7 @@
     @Html.ActionLink("Registrar nuevo", "Create")
 </p>
 <table class="table">
-    <tr>        
+    <tr>
         <th>
             Estado
         </th>
@@ -22,7 +24,8 @@
     {
         <tr>
             <td>
-                @item.state.ToString()
+                @{ var s = ((List<State>)ViewBag.states).FirstOrDefault(p => p.id == item.state); }
+                @s.name
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
@@ -33,5 +36,5 @@
                 @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
             </td>
         </tr>
-    }
+                    }
 </table>

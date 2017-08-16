@@ -40,6 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async override Task<State> insertAsync(State entity)
         {
             entity.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            entity.conf = new List<ConfigurationCPT>();
             await collection.InsertOneAsync(entity);
             return entity;
         }

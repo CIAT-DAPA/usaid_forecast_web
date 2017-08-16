@@ -99,6 +99,7 @@
         <th>Gamma</th>
         <th>Cant. modos x</th>
         <th>Cant. modos y</th>
+        <th>Regiones</th>
         <th></th>
     </tr>
 
@@ -122,6 +123,23 @@
             </td>
             <td>
                 @item.y_mode
+            </td>
+            <td>
+                <ul>
+                    @foreach (var c in item.regions)
+                    {
+
+                        <li>
+                            @c.left_lower.lat
+                            -
+                            @c.left_lower.lon
+                            ,
+                            @c.rigth_upper.lat
+                            -
+                            @c.rigth_upper.lon
+                        </li>
+                    }
+                </ul>
             </td>
             <td>
                 @using (Html.BeginForm("ConfigurationDelete", "State", FormMethod.Post))

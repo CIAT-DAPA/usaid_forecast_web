@@ -85,16 +85,21 @@
 <h3>Configuraciones disponibles</h3>
 <table class="table">
     <tr>
+        <th>Fecha</th>
         <th>Estación climática</th>
         <th>Cultivar</th>
         <th>Suelos</th>
         <th>Días</th>
+        <th>Archivos</th>
         <th></th>
     </tr>
 
     @foreach (var item in Model.Where(p => p.track.enable))
     {
         <tr>
+            <td>
+                @item.track.register.ToString("yyyy-MM-dd")
+            </td>
             <td>
                 @item.weather_station_name
             </td>
@@ -106,6 +111,17 @@
             </td>
             <td>
                 @item.days
+            </td>
+            <td>
+                <ul>
+                    @foreach (var f in item.conf_files)
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Data/Configuration/" + @f.path.Split('\\').Last())" target="_blank">@f.name</a>
+                        </li>
+                    }
+                </ul>
+
             </td>
             <td>
                 @using (Html.BeginForm("SetupDelete", "Crop", FormMethod.Post))
