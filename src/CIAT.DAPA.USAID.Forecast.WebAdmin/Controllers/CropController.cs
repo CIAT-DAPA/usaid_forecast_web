@@ -319,5 +319,25 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return RedirectToAction("Setup", new { id = crop });
             }
         }
+
+        // GET: /Crop/SetupFile/
+        [HttpGet]
+        public async Task<IActionResult> SetupFile(string file)
+        {
+            try
+            {
+                string path = configurationPath + file;
+                if (System.IO.File.Exists(path))
+                {
+                    return File(path, "plain/txt");
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return NotFound();
+            }
+        }
     }
 }

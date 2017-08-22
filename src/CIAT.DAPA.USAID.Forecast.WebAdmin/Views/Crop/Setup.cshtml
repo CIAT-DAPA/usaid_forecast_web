@@ -117,7 +117,7 @@
                     @foreach (var f in item.conf_files)
                     {
                         <li>
-                            <a href="@Url.Content("~/Data/Configuration/" + @f.path.Split('\\').Last())" target="_blank">@f.name</a>
+                            @Html.ActionLink(f.name,"SetupFile","Crop",new { file = @f.path.Split('\\').Last() })
                         </li>
                     }
                 </ul>
