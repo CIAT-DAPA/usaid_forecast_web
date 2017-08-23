@@ -1,6 +1,8 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
@@ -33,5 +35,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
+        /// <summary>
+        /// Contains active cpt configurations for each state
+        /// </summary>
+        [BsonRequired]
+        public IEnumerable<ClimateConfiguration> climate_conf { get; set; }
     }
 }
