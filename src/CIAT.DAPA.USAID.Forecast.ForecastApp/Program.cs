@@ -34,6 +34,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_PATH_WS_FILES = conf["Out_PATH_WS_FILES"],
                     Out_CROPS_COORDINATES = conf["Out_CROPS_COORDINATES"].Split(','),
                     Out_PATH_FILE_COORDINATES = conf["Out_PATH_FILE_COORDINATES"],
+                    Out_PATH_USERS = conf["Out_PATH_USERS"],
                     In_PATH_FS_PROBABILITIES = conf["In_PATH_FS_PROBABILITIES"],
                     In_PATH_FS_FILE_PROBABILITY = conf["In_PATH_FS_FILE_PROBABILITY"],
                     In_PATH_FS_FILE_PERFORMANCE = conf["In_PATH_FS_FILE_PERFORMANCE"],
@@ -113,6 +114,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     {
                         Console.WriteLine("Exporting CPT setup");
                         await output.exportCPTSetupAsync(args[path + 1]);
+                    }
+                    // Export emails users
+                    // -out -usr -p "C:\Users\hsotelo\Desktop\test export\\"
+                    int usr = Program.searchParameter(args, "-usr");
+                    if (usr >= 0)
+                    {
+                        Console.WriteLine("Exporting CPT setup");
+                        await output.exportUsersEmailsAsync(args[path + 1]);
                     }
                 }
                 else if (Program.searchParameter(args, "-in") == 0)

@@ -275,6 +275,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         }
 
         /// <summary>
+        /// Method to export the configuration files by weather station
+        /// </summary>
+        /// <param name="path">Path where the files will be located</param>
+        public async Task<bool> exportUsersEmailsAsync(string path)
+        {
+            // Create directory
+            if (!Directory.Exists(path + Program.settings.Out_PATH_USERS))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_USERS);
+            var users = await db.user.listEnableAsync();
+            StringBuilder line = new StringBuilder();
+            Console.WriteLine("Exporting users");
+            foreach (var usr in users)
+                line.Append(usr.Email + "\n");
+            File.WriteAllText(path + Program.settings.Out_PATH_USERS + @"\notify.csv", line.ToString());
+            return true;
+        }
+
+        /// <summary>
         /// Method that return the extension name of the file
         /// </summary>
         /// <param name="path">Path of file</param>
