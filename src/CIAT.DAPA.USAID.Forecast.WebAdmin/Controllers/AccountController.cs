@@ -366,5 +366,53 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return View("Error");
             }
         }
+
+        // GET: /Account/ResetPassword
+        [HttpGet]
+        public async Task<IActionResult> Manage()
+        {
+            try
+            {
+                ViewBag.user = (await GetCurrentUserAsync()).Email;
+                await writeEventAsync("User is trying to manage the account", LogEvent.upd);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Manage(ManageViewModel model)
+        {
+            try
+            {
+                await writeEventAsync("User is trying to change the password", LogEvent.upd);
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var user = await managerUser.FindByNameAsync((await GetCurrentUserAsync()).Email);
+
+                var result = await managerUser.ChangePasswordAsync(user, model.CurrentPassword, model.Password);
+                if (result.Succeeded)
+                {
+                    await writeEventAsync("User changed the password. Password changed [" + user + "]", LogEvent.upd);
+                    return RedirectToAction("Index", "Home");
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View("Error");
+            }
+        }
+
     }
 }
