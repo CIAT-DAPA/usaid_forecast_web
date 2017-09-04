@@ -9,6 +9,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     /// <summary>
     /// This entity has the platform users
     /// </summary>
+    
     public class User : IdentityUser
     {
         /// <summary>

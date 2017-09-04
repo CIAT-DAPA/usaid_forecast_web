@@ -34,15 +34,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             var states = await db.state.listEnableAsync();
             foreach (var s in states)
                 climate_conf.Add(new ClimateConfiguration() { state = s.id, conf = s.conf.ToList().Where(p => p.track.enable) });            
-            // Create a forecast
-            Console.WriteLine("Creating forecast");
+            // Create a forecast            
             var forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
             {
                 start = DateTime.Now,
                 end = DateTime.Now,
                 confidence = cf,
                 climate_conf = climate_conf
-            });            
+            });
+            Console.WriteLine("Created forecast " + forecast.id.ToString());
             // Load probabilities
             Console.WriteLine("Getting probabilities and performance");
             Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES);

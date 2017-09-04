@@ -120,7 +120,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     int usr = Program.searchParameter(args, "-usr");
                     if (usr >= 0)
                     {
-                        Console.WriteLine("Exporting CPT setup");
+                        Console.WriteLine("Exporting Users");
                         await output.exportUsersEmailsAsync(args[path + 1]);
                     }
                 }

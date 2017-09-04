@@ -283,11 +283,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_USERS))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_USERS);
-            var users = await db.user.listEnableAsync();
+            var users = await db.user.listEnableBsonAsync();
             StringBuilder line = new StringBuilder();
             Console.WriteLine("Exporting users");
             foreach (var usr in users)
-                line.Append(usr.Email + "\n");
+                line.Append(usr["Email"].ToString() + "\n");
             File.WriteAllText(path + Program.settings.Out_PATH_USERS + @"\notify.csv", line.ToString());
             return true;
         }
