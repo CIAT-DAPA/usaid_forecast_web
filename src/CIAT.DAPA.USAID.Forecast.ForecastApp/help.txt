@@ -43,6 +43,8 @@ Export Data
 
 -cpt			Export the configuration for cpt. It includes the
 				theorical regions and cpt modes.
+
+-usr			Export the enable users in the webadmin.
 -----------------------------------------------------------------
 Import Data
 
