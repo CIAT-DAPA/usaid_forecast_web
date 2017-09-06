@@ -2,6 +2,7 @@
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.MongoDB;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async Task<List<User>> listAllAsync()
         {
             return await collection.Find(_=>true).ToListAsync<User>();
+        }
+
+        public async Task<List<BsonDocument>> listEnableBsonAsync()
+        {
+            var collection_temp = db.GetCollection<BsonDocument>(name_collection);
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Eq("LockoutEnabled", true);
+            return await collection_temp.Find<BsonDocument>(filter).ToListAsync();
         }
     }
 }
