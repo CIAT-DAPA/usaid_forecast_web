@@ -59,6 +59,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new BadRequestResult();
                 }
                 Soil entity = await db.soil.byIdAsync(id);
+                ViewBag.crop = await db.crop.byIdAsync(entity.crop.ToString());
                 if (entity == null)
                 {
                     await writeEventAsync("Not found id: " + id, LogEvent.err);
