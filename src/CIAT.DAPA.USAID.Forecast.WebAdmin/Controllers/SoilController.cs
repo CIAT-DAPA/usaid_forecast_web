@@ -34,6 +34,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                ViewBag.crops = await db.crop.listEnableAsync();
                 var list = await db.soil.listEnableAsync();
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);

@@ -16,6 +16,9 @@
             Municipio
         </th>
         <th>
+            ID
+        </th>
+        <th>
             Nombre
         </th>
         <th>
@@ -32,6 +35,9 @@
             <td>
                 @{ var m = ((List<Municipality>)ViewBag.municipalities).FirstOrDefault(p => p.id == item.municipality); }
                 @m.name
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
