@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Cultivar>
+﻿@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Cultivar>
 @{
     ViewBag.Title = "Cultivar";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,8 +16,11 @@
             Cultivo
         </th>
         <th>
+            ID
+        </th>
+        <th>
             Nombre
-        </th>        
+        </th>
         <th>
             Es secano?
         </th>
@@ -28,11 +33,15 @@
     {
         <tr>
             <td>
-                @item.crop.ToString()
+                @{ var c = ((List<Crop>)ViewBag.crops).FirstOrDefault(p => p.id == item.crop); }
+                @c.name
+            </td>
+            <td>
+                @item.id.ToString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
-            </td>            
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.rainfed)
             </td>
@@ -45,5 +54,5 @@
                 @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
             </td>
         </tr>
-    }
+                    }
 </table>

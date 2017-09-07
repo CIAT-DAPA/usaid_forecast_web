@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Soil>
+﻿@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Soil>
 @{
     ViewBag.Title = "Suelos";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,6 +16,9 @@
             Cultivo
         </th>
         <th>
+            ID
+        </th>
+        <th>
             Nombre
         </th>        
         <th></th>
@@ -22,7 +27,11 @@
     {
         <tr>
             <td>
-                @item.crop.ToString()
+                @{ var c = ((List<Crop>)ViewBag.crops).FirstOrDefault(p => p.id == item.crop); }
+                @c.name
+            </td>
+            <td>
+                @item.id.ToString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)

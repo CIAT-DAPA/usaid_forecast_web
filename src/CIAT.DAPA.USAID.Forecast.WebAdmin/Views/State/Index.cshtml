@@ -15,6 +15,9 @@
             País
         </th>
         <th>
+            ID
+        </th>
+        <th>
             Nombre
         </th>
         <th></th>
@@ -24,6 +27,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.country.name)
+            </td>
+            <td>
+                @item.id.ToString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)

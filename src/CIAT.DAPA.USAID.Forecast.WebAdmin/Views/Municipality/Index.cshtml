@@ -16,6 +16,9 @@
             Estado
         </th>
         <th>
+            ID
+        </th>
+        <th>
             Nombre
         </th>
         <th></th>
@@ -26,6 +29,9 @@
             <td>
                 @{ var s = ((List<State>)ViewBag.states).FirstOrDefault(p => p.id == item.state); }
                 @s.name
+            </td>
+            <td>
+                @item.id.ToString()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
