@@ -241,7 +241,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     .Select(p => new MonthlyDataStation()
                                     {
                                         month = p.month,
-                                        data = scenarios.Where(p2 => p2.ws == data.ws && p2.scenario == data.scenario && p2.year == data.year)
+                                        data = scenarios.Where(p2 => p2.ws == data.ws && p2.scenario == data.scenario && p2.year == data.year && p2.month == p.month)
                                                 .Select(p2 => new ClimaticData()
                                                 {
                                                     measure = (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), p2.measure, true),

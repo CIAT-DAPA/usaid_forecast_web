@@ -53,6 +53,7 @@
                   ClimateScenarioFactory.getScenarios($scope.ws.id).then(
                   function (data_fs) {
                       $scope.scenario = data_fs;
+                      console.log($scope.scenario);
                       // Get limit lower of the climatology for the months of the forecast 
                       ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
                       function (data_l) {
