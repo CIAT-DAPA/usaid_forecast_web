@@ -67,6 +67,7 @@ angular
       /* Names in spanish about dates */
       month_names: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
       days_names: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+      days_names_calendar: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
       /* Climate vars */
       climate_vars: [
           {
@@ -128,10 +129,15 @@ angular
       ],
       /* Assist data */
       assist: [
-          { id: 'forecast', alt: 'forecast', title: 'Predicción climática', text: 'Predicción climatica', url: 'https://www.youtube.com/embed/8ncXEbYGHrU' },
-          { id: 'forecast', alt: 'yield', title: 'Pronóstico agroclimatico', text: 'Pronóstico agroclimatico', url: 'https://www.youtube.com/embed/okIT7QZLHss' },
-          { id: 'historical', alt: 'precipitation', title: 'Precipitación Histórica', text: 'Precipitación Histórica', url: 'https://www.youtube.com/embed/Ag3fv67zr88' },
-          { id: 'climate', alt: 'climate', title: 'Acerca de', text: 'Acerca de', url: 'https://www.youtube.com/embed/c03280UMJoU' },
+          { id: 'forecast', alt: 'forecast', title: 'Predicción climática', text: '', url: 'https://www.youtube.com/embed/LtEzsImuZkY' },
+          { id: 'historical', alt: 'precipitation', title: 'Precipitación histórica', text: '', url: 'https://www.youtube.com/embed/u4OLlHomJP4' },
+          { id: 'historical', alt: 'temperature', title: 'Histórico de temperatura', text: '', url: 'https://www.youtube.com/embed/nmi9n72ywfM' },
+          { id: 'historical', alt: 'solar_radiation', title: 'Histórico de radiación solar', text: '', url: 'https://www.youtube.com/embed/uRkqX6Uc65s' },
+          { id: 'forecast', alt: 'yield', title: 'Pronóstico agroclimático', text: '', url: 'https://www.youtube.com/embed/0Qz_qYi_5Bk' },
+          { id: 'historical', alt: 'historical', title: 'Pronóstico agroclimático', text: '', url: 'https://www.youtube.com/embed/0Qz_qYi_5Bk' },
+          { id: 'expert', alt: '', title: 'Bases de datos', text: '', url: 'https://www.youtube.com/embed/s_GVjbHXuTU' },
+          { id: 'glossary', alt: '', title: 'Glosario', text: '', url: 'https://www.youtube.com/embed/DI8qN6Lb7sI' },
+          { id: 'about', alt: '', title: 'Acerca de', text: '', url: 'https://www.youtube.com/embed/VIatel_3Ntw' },
       ]
   })
 ;

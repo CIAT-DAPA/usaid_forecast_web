@@ -41,7 +41,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     In_PATH_FS_SCENARIOS = conf["In_PATH_FS_SCENARIOS"],
                     In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],
                     In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"],
-                    In_PATH_FS_CLIMATE = conf["In_PATH_FS_CLIMATE"]
+                    In_PATH_FS_CLIMATE = conf["In_PATH_FS_CLIMATE"],
+                    Social_Network_Message = conf["Social_Network_Message"]
                 };
             }
             catch (Exception ex)
@@ -61,6 +62,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 if (Program.searchParameter(args, "-test") == 0)
                 {
                     await (new ForecastDB(Program.settings.ConnectionString, Program.settings.Database)).testConnectionAsync();
+                }
+                else if (Program.searchParameter(args, "-share") == 0)
+                {
+                    
                 }
                 // Check the first parameter to validate if the action is export (-out) or import (-in)
                 else if (Program.searchParameter(args, "-out") == 0)
