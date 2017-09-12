@@ -14,9 +14,10 @@ angular.module('ForecastApp')
 
       $scope.subSections = setup.listSubMenuOption($scope.type);      
             
-      $scope.renderView = function ($value, $name, $section) {          
-          $rootScope.setAssistParameters($value, $section);
+      $scope.renderView = function ($value, $name, $section) {                    
           if ($scope.type === 'climate' || $scope.type === 'crop') {
+              console.log($value + ' ' + $section);
+              $rootScope.setAssistParameters($section, $value);
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");
               $(".sections").hide();
@@ -25,6 +26,7 @@ angular.module('ForecastApp')
               $rootScope.drawFunction($value);              
           }
           else if ($scope.type === 'expert') {
+              $rootScope.setAssistParameters($scope.type, '');
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");
               $("#content_" + $section).show();
@@ -32,6 +34,10 @@ angular.module('ForecastApp')
               $rootScope.drawFunction($value);
           }
           else {
+              if ($scope.type === 'glossary')
+                  $rootScope.setAssistParameters($scope.type, '');
+              else ($scope.type === 'about')
+                  $rootScope.setAssistParameters($scope.type, '');
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");
               $(".sections").hide();
