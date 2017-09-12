@@ -127,6 +127,13 @@ angular.module('ForecastApp')
         }
 
         /*
+        * Method that return all days in spanish
+       */
+        dataFactory.getDaysCalendar = function () {
+            return config.days_names_calendar;
+        }
+
+        /*
          * Method that return all months in spanish
         */
         dataFactory.getMonths = function () {
