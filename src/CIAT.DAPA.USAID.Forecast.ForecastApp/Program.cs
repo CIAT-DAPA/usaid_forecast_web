@@ -37,6 +37,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_PATH_USERS = conf["Out_PATH_USERS"],
                     In_PATH_FS_PROBABILITIES = conf["In_PATH_FS_PROBABILITIES"],
                     In_PATH_FS_FILE_PROBABILITY = conf["In_PATH_FS_FILE_PROBABILITY"],
+                    In_PATH_FS_RASTER_SOURCE = conf["In_PATH_FS_RASTER_SOURCE"],
+                    In_PATH_FS_RASTER_DESTINATION = conf["In_PATH_FS_RASTER_DESTINATION"],
                     In_PATH_FS_FILE_PERFORMANCE = conf["In_PATH_FS_FILE_PERFORMANCE"],
                     In_PATH_FS_SCENARIOS = conf["In_PATH_FS_SCENARIOS"],
                     In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],

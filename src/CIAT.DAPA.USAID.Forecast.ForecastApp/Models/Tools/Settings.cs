@@ -48,6 +48,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string In_PATH_FS_PROBABILITIES { get; set; }
         /// <summary>
+        /// Name of directory to get the raster files of the forecast
+        /// </summary>
+        public string In_PATH_FS_RASTER_SOURCE { get; set; }
+        /// <summary>
+        /// Name of directory to copy the raster files of the forecast
+        /// </summary>
+        public string In_PATH_FS_RASTER_DESTINATION { get; set; }
+        /// <summary>
         /// File's name of the forecast probabilities
         /// </summary>
         public string In_PATH_FS_FILE_PROBABILITY { get; set; }

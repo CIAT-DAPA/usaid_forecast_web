@@ -2,6 +2,7 @@
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import;
+using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -249,6 +250,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                                 }).ToList()
                                     }).ToList()
                 });
+
+            // Load yield data
+            Console.WriteLine("Copying raster");
+            Console.WriteLine(path + Program.settings.In_PATH_FS_RASTER_SOURCE);
+            if (Directory.Exists(Program.settings.In_PATH_FS_RASTER_DESTINATION))
+            {
+                string raster_d = Program.settings.In_PATH_FS_RASTER_DESTINATION + @"\" + forecast.id.ToString();
+                DirectoryHelper.DirectoryCopy(path + Program.settings.In_PATH_FS_RASTER_SOURCE, raster_d, true);
+            }
 
             // Load yield data
             Console.WriteLine("Getting yield");
