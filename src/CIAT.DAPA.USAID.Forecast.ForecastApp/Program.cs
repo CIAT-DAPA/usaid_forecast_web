@@ -44,7 +44,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],
                     In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"],
                     In_PATH_FS_CLIMATE = conf["In_PATH_FS_CLIMATE"],
-                    Social_Network_Message = conf["Social_Network_Message"]
+                    Social_Network_Message = conf["Social_Network_Message"],
+                    Social_Network_Twitter_AccessToken = conf["Social_Network_Twitter_AccessToken"],
+                    Social_Network_Twitter_AccessTokenSecret = conf["Social_Network_Twitter_AccessTokenSecret"],
+                    Social_Network_Twitter_ConsumerKey = conf["Social_Network_Twitter_ConsumerKey"],
+                    Social_Network_Twitter_ConsumerKeySecret = conf["Social_Network_Twitter_ConsumerKeySecret"]
                 };
             }
             catch (Exception ex)
@@ -67,7 +71,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 }
                 else if (Program.searchParameter(args, "-share") == 0)
                 {
-                    
+                    CSocialNetworks socialNetworks = new CSocialNetworks();
+                    await socialNetworks.shareForecast();
                 }
                 // Check the first parameter to validate if the action is export (-out) or import (-in)
                 else if (Program.searchParameter(args, "-out") == 0)
