@@ -9,6 +9,7 @@ using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson;
 using System.Text;
+using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -144,17 +145,41 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                 var f = await db.forecast.getLatestAsync();
                 var fy = await db.forecastYield.byForecastAndWeatherStationAsync(f.id, ws);
+
+                // This cicle join all data by weather station
+                List<WeatherStationYieldEntity> fy_ws = new List<WeatherStationYieldEntity>();
+                foreach (var fy_temp in fy.Select(p => new { weather_station = p.weather_station }).Distinct())
+                {
+                    WeatherStationYieldEntity fy_ws_temp = new WeatherStationYieldEntity() { ws = fy_temp.weather_station, yield = new List<YieldCropEntity>() };
+                    var yield_crop_soil_cultivar = fy.Where(p => p.weather_station == fy_temp.weather_station);
+                    foreach (var ycss in yield_crop_soil_cultivar)
+                    {
+                        foreach (var yield_ycss in ycss.yield)
+                            fy_ws_temp.yield.Add(new YieldCropEntity()
+                            {
+                                cultivar = ycss.cultivar,
+                                soil = ycss.soil,
+                                start = yield_ycss.start,
+                                end = yield_ycss.end,
+                                data = yield_ycss.data.ToList()
+                            });
+
+                    }
+                    fy_ws.Add(fy_ws_temp);
+                }
+
+                // Build a json to return
                 var json = new
                 {
                     forecast = f.id.ToString(),
                     confidence = f.confidence,
-                    yield = fy.Select(p => new
+                    yield = fy_ws.Select(p => new
                     {
-                        weather_station = p.weather_station.ToString(),
+                        weather_station = p.ws.ToString(),
                         yield = p.yield.Select(p2 => new
                         {
-                            cultivar = p.cultivar.ToString(),
-                            soil = p.soil.ToString(),
+                            cultivar = p2.cultivar.ToString(),
+                            soil = p2.soil.ToString(),
                             start = p2.start,
                             end = p2.end,
                             data = p2.data.Select(p3 => new
