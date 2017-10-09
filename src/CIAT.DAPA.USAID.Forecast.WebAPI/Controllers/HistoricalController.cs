@@ -207,8 +207,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     source = p.source.ToString(),
                     yield = p.yield.Select(p2 => new
                     {
-                        soil = p2.soil.ToString(),
-                        cultivar = p2.cultivar.ToString(),
+                        soil = p.soil.ToString(),
+                        cultivar = p.cultivar.ToString(),
                         start = p2.start,
                         end = p2.end,
                         data = p2.data.Select(p3 => new

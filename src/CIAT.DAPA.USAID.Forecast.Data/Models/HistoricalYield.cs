@@ -31,6 +31,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Data of the pronostic for the crop
         /// </summary>
+        /// /// <summary>
+        /// ID's soil
+        /// </summary>
+        [BsonRequired]
+        public ObjectId soil { get; set; }
+        /// <summary>
+        /// ID's cultivar
+        /// </summary>
+        [BsonRequired]
+        public ObjectId cultivar { get; set; }
         [BsonRequired]
         public IEnumerable<YieldCrop> yield { get; set; }
         /// <summary>

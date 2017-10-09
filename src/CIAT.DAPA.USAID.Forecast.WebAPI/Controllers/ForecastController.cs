@@ -153,8 +153,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         weather_station = p.weather_station.ToString(),
                         yield = p.yield.Select(p2 => new
                         {
-                            cultivar = p2.cultivar.ToString(),
-                            soil = p2.soil.ToString(),
+                            cultivar = p.cultivar.ToString(),
+                            soil = p.soil.ToString(),
                             start = p2.start,
                             end = p2.end,
                             data = p2.data.Select(p3 => new

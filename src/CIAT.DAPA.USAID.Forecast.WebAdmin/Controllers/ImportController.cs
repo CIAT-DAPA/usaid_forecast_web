@@ -28,7 +28,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public ImportController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+        public ImportController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
             base(settings, LogEntity.lc_weather_station, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
@@ -47,7 +47,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -189,7 +189,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-        
+
         // POST: /Import/ImportClimatology
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -340,7 +340,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     // Read the file
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     string line = string.Empty;
-                    int lines = 0;
+                    int lines = 0, total_lines = 0;
                     List<HistoricalYieldViewImport> raw = new List<HistoricalYieldViewImport>();
                     string[] values = null;
                     // Read the file
@@ -350,61 +350,59 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         if (!string.IsNullOrEmpty(line))
                         {
                             lines += 1;
+                            total_lines += 1;
                             // Don't reade the headers
                             if (lines != 1)
                             {
-                                // Fixed the values to view import historical climate
-                                // The first two columns are the year and month
-                                values = line.Split(',');
-                                raw.Add(new HistoricalYieldViewImport()
+                                try
                                 {
-                                    weather_station = values[0],
-                                    soil = values[1],
-                                    cultivar = values[2],
-                                    start = DateTime.SpecifyKind(DateTime.Parse(values[3]), DateTimeKind.Utc),
-                                    end = DateTime.SpecifyKind(DateTime.Parse(values[4]), DateTimeKind.Utc),
-                                    measure = (MeasureYield)Enum.Parse(typeof(MeasureYield), values[5]),
-                                    median = double.Parse(values[6]),
-                                    avg = double.Parse(values[7]),
-                                    min = double.Parse(values[8]),
-                                    max = double.Parse(values[9]),
-                                    quar_1 = double.Parse(values[10]),
-                                    quar_2 = double.Parse(values[11]),
-                                    quar_3 = double.Parse(values[12]),
-                                    conf_lower = double.Parse(values[13]),
-                                    conf_upper = double.Parse(values[14]),
-                                    sd = double.Parse(values[15]),
-                                    perc_5 = double.Parse(values[16]),
-                                    perc_95 = double.Parse(values[17]),
-                                    coef_var = double.Parse(values[18])
-                                });
+                                    // Fixed the values to view import historical climate
+                                    // The first two columns are the year and month
+                                    values = line.Split(',');
+                                    raw.Add(new HistoricalYieldViewImport()
+                                    {
+                                        weather_station = values[0],
+                                        soil = values[1],
+                                        cultivar = values[2],
+                                        start = DateTime.SpecifyKind(DateTime.Parse(values[3]), DateTimeKind.Utc),
+                                        end = DateTime.SpecifyKind(DateTime.Parse(values[4]), DateTimeKind.Utc),
+                                        measure = (MeasureYield)Enum.Parse(typeof(MeasureYield), values[5]),
+                                        median = double.Parse(values[6]),
+                                        avg = double.Parse(values[7]),
+                                        min = double.Parse(values[8]),
+                                        max = double.Parse(values[9]),
+                                        quar_1 = double.Parse(values[10]),
+                                        quar_2 = double.Parse(values[11]),
+                                        quar_3 = double.Parse(values[12]),
+                                        conf_lower = double.Parse(values[13]),
+                                        conf_upper = double.Parse(values[14]),
+                                        sd = double.Parse(values[15]),
+                                        perc_5 = double.Parse(values[16]),
+                                        perc_95 = double.Parse(values[17]),
+                                        coef_var = double.Parse(values[18])
+                                    });
+                                }
+                                catch (Exception ex){
+                                    lines -= 1;
+                                    Console.WriteLine(ex);
+                                }                                
                             }
                         }
                     }
                     // Import to the database
-                    HistoricalYield hy_new, hy_entity;
+                    HistoricalYield hy_new;
                     YieldCrop yc_entity;
                     List<YieldCrop> yc_entities;
                     List<YieldData> yd_entities;
                     // En esta sección se crean los nuevos registros de rendimientos para las estaciones climatologicas.
-                    // Se obtiene la información de las estaciones climátologicas, luego se filtra
-                    // 
-                    // 
-                    foreach (var ws in raw.Select(p => p.weather_station).Distinct())
+                    foreach (var ws in raw.Select(p => new { p.weather_station, p.cultivar, p.soil }).Distinct())
                     {
-                        /*
-                        hy_entity = await db.historicalYield.byWeatherStationSourceAsync(ForecastDB.parseId(ws), source);
-                        if (hy_entity == null)
-                            hy_new = new HistoricalYield() { source = source, weather_station = getId(ws) };
-                        else
-                            hy_new = new HistoricalYield() { id = hy_entity.id, source = hy_entity.source, weather_station = hy_entity.weather_station, yield = hy_entity.yield };*/
-                        hy_new = new HistoricalYield() { source = getId(source), weather_station = getId(ws) };
-                        var yield_crop = raw.Where(p => p.weather_station == ws);
+                        hy_new = new HistoricalYield() { source = getId(source), weather_station = getId(ws.weather_station), soil = getId(ws.soil), cultivar = getId(ws.cultivar) };
+                        var yield_crop = raw.Where(p => p.weather_station == ws.weather_station && p.soil == ws.soil && p.cultivar == ws.cultivar);
                         yc_entities = new List<YieldCrop>();
-                        //int count_yc = yield_crop.Count();
                         foreach (var yc in yield_crop)
                         {
-                            yc_entity = new YieldCrop() { cultivar = getId(yc.cultivar), soil = getId(yc.soil), start = yc.start, end = yc.end };
+                            yc_entity = new YieldCrop() { start = yc.start, end = yc.end };
                             var yield_data = yield_crop.Where(p => p.cultivar == yc.cultivar && p.soil == yc.soil && p.start == yc.start && p.end == yc.end);
                             int count_yd = yield_data.Count();
                             yd_entities = new List<YieldData>();
@@ -431,16 +429,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         }
                         hy_new.yield = yc_entities;
                         await db.historicalYield.insertAsync(hy_new);
-                        /*
-                        if (hy_entity == null)
-                            await db.historicalYield.insertAsync(hy_new);
-                        else
-                            await db.historicalYield.updateAsync(hy_entity, hy_new);*/
-
                     }
                     msg = new Message()
                     {
-                        content = "Historical Yield WS. The file was imported correctly. Records imported: (" + (lines - 1).ToString() + ")  rows",
+                        content = "Historical Yield WS. The file was imported correctly. Records imported: " + (lines - 1).ToString() + " from: " + (total_lines - 1).ToString() + "  rows",
                         type = MessageType.successful
                     };
                     await writeEventAsync(msg.content, LogEvent.cre, new List<LogEntity>() { LogEntity.lc_weather_station, LogEntity.hs_historical_yield });

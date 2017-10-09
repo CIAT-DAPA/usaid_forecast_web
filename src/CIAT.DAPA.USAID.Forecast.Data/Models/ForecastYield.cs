@@ -28,6 +28,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public ObjectId weather_station { get; set; }
         /// <summary>
+        /// ID's soil
+        /// </summary>
+        [BsonRequired]
+        public ObjectId soil { get; set; }
+        /// <summary>
+        /// ID's cultivar
+        /// </summary>
+        [BsonRequired]
+        public ObjectId cultivar { get; set; }
+        /// <summary>
         /// Data of the pronostic for the crop
         /// </summary>
         [BsonRequired]

@@ -249,7 +249,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             value = p2.value
                         }).ToList()
                     });
-                }                
+                }
                 await db.forecastScenario.insertAsync(new ForecastScenario()
                 {
                     forecast = forecast.id,
@@ -262,12 +262,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             // Load yield data
             Console.WriteLine("Copying raster");
-            Console.WriteLine(path + Program.settings.In_PATH_FS_RASTER_SOURCE);
+            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_RASTER_SOURCE);
             if (Directory.Exists(Program.settings.In_PATH_FS_RASTER_DESTINATION))
             {
                 string raster_d = Program.settings.In_PATH_FS_RASTER_DESTINATION + @"\" + forecast.id.ToString();
-                DirectoryHelper.DirectoryCopy(path + Program.settings.In_PATH_FS_RASTER_SOURCE, raster_d, true);
+                DirectoryHelper.DirectoryCopy(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_RASTER_SOURCE, raster_d, true);
             }
+            else
+                Console.WriteLine("Folder to save the raster files doesn't exist: " + Program.settings.In_PATH_FS_RASTER_DESTINATION);
 
             // Load yield data
             Console.WriteLine("Getting yield");
@@ -326,15 +328,22 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             YieldCrop yc_entity;
             List<YieldCrop> yc_entities;
             List<YieldData> yd_entities;
-            foreach (var ws in yields.Select(p => p.weather_station).Distinct())
+            foreach (var ws in yields.Select(p => new { p.weather_station, p.cultivar, p.soil }).Distinct())
             {
-                fy_new = new ForecastYield() { forecast = forecast.id, weather_station = ForecastDB.parseId(ws) };
-                var yield_crop = yields.Where(p => p.weather_station == ws);
+                Console.WriteLine("Working in ws: " + ws.weather_station + " soil: " + ws.soil + " cultivar: " + ws.cultivar);
+                fy_new = new ForecastYield()
+                {
+                    forecast = forecast.id,
+                    weather_station = ForecastDB.parseId(ws.weather_station),
+                    cultivar = ForecastDB.parseId(ws.cultivar),
+                    soil = ForecastDB.parseId(ws.soil)
+                };
+                var yield_crop = yields.Where(p => p.weather_station == ws.weather_station && p.soil == ws.soil && p.cultivar == ws.cultivar);
                 yc_entities = new List<YieldCrop>();
                 int count_yc = yield_crop.Count();
                 foreach (var yc in yield_crop)
                 {
-                    yc_entity = new YieldCrop() { cultivar = ForecastDB.parseId(yc.cultivar), soil = ForecastDB.parseId(yc.soil), start = yc.start, end = yc.end };
+                    yc_entity = new YieldCrop() { start = yc.start, end = yc.end };
                     var yield_data = yield_crop.Where(p => p.cultivar == yc.cultivar && p.soil == yc.soil && p.start == yc.start && p.end == yc.end);
                     int count_yd = yield_data.Count();
                     yd_entities = new List<YieldData>();

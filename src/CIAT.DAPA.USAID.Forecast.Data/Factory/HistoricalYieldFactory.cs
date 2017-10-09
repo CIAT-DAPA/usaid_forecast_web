@@ -76,10 +76,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                     id = hy.id,
                     source = hy.source,
                     weather_station = hy.weather_station,
+                    cultivar = hy.cultivar,
+                    soil = hy.soil,
                     yield = hy.yield.Where(p2 => years.Contains(p2.start.Year)).OrderBy(p => p.start).Select(p => new YieldCrop()
-                    {
-                        cultivar = p.cultivar,
-                        soil = p.soil,
+                    {                        
                         data = p.data,
                         start = DateTime.SpecifyKind(p.start, DateTimeKind.Utc),
                         end = DateTime.SpecifyKind(p.end, DateTimeKind.Utc)
