@@ -161,7 +161,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                 soil = ycss.soil,
                                 start = yield_ycss.start,
                                 end = yield_ycss.end,
-                                data = yield_ycss.data.ToList()
+                                data = yield_ycss.data
                             });
 
                     }
