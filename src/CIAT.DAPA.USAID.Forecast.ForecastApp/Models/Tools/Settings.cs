@@ -48,6 +48,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string In_PATH_FS_PROBABILITIES { get; set; }
         /// <summary>
+        /// Name of directory to get the raster files of the forecast
+        /// </summary>
+        public string In_PATH_FS_RASTER_SOURCE { get; set; }
+        /// <summary>
+        /// Name of directory to copy the raster files of the forecast
+        /// </summary>
+        public string In_PATH_FS_RASTER_DESTINATION { get; set; }
+        /// <summary>
         /// File's name of the forecast probabilities
         /// </summary>
         public string In_PATH_FS_FILE_PROBABILITY { get; set; }
@@ -72,8 +80,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string In_PATH_FS_CLIMATE { get; set; }
         /// <summary>
-        /// Name of directory to import the climate of the forecast
+        /// Message to share in the social networks
         /// </summary>
         public string Social_Network_Message { get; set; }
+        /// <summary>
+        /// Consumer key of the twitter
+        /// </summary>
+        public string Social_Network_Twitter_ConsumerKey { get; set; }
+        /// <summary>
+        /// Consumer Key Secret of the twitter
+        /// </summary>
+        public string Social_Network_Twitter_ConsumerKeySecret { get; set; }
+        /// <summary>
+        /// Access Token of the twitter
+        /// </summary>
+        public string Social_Network_Twitter_AccessToken { get; set; }
+        /// <summary>
+        /// Access Token Secret of the twitter
+        /// </summary>
+        public string Social_Network_Twitter_AccessTokenSecret { get; set; }
     }
 }

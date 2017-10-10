@@ -121,11 +121,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     // Get the weather station with data in the forecast for the crop
                     foreach (var y in yield_forecast)
                     {
+                        if (cultivars.Contains(y.cultivar) && !ws_forecast.Contains(y.weather_station))
+                            ws_forecast.Add(y.weather_station);
+                        /*
                         foreach (var c in y.yield)
                         {
                             if (cultivars.Contains(c.cultivar) && !ws_forecast.Contains(y.weather_station))
                                 ws_forecast.Add(y.weather_station);
-                        }
+                        }*/
                     }
 
                     var ws_result = weatherstations.Where(p => ws_forecast.Contains(p.id));

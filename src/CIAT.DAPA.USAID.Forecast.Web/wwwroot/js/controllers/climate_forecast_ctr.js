@@ -31,7 +31,7 @@
           if (!$scope.loaded)
               load_data();
           else
-            draw_forecast();
+              draw_forecast();
       }
 
       function load_data() {
@@ -53,7 +53,6 @@
                   ClimateScenarioFactory.getScenarios($scope.ws.id).then(
                   function (data_fs) {
                       $scope.scenario = data_fs;
-                      console.log($scope.scenario);
                       // Get limit lower of the climatology for the months of the forecast 
                       ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
                       function (data_l) {
@@ -165,27 +164,15 @@
                                         '<tr><th>Variable</th><th>Minímo</th><th>Promedio</th><th>Máximo</th></tr>';
               var cl_vars = setup.getClimateVarsScenario();
               var scenarios_vars = ['min', 'avg', 'max'];
+              var scenario_year = $scope.scenario.filter(function (item) { return item.year == m.year; });
+
               for (var k = 0; k < cl_vars.length; k++) {
                   content_scenario = content_scenario + '<tr><td>' + cl_vars[k].name + '</td>';
                   for (var l = 0; l < scenarios_vars.length; l++) {
-                      var s = $scope.scenario.filter(function (item) { return item.scenario === scenarios_vars[l]; })[0];
-                      var s_var = s.content.filter(function (item) { return item.measure === cl_vars[k].value && item.year == m.year; });
-                      var sum = 0;
-                      var count = 0;
-                      for (var n = 0; n < s_var.length; n++) {
-                          var s_monthly = s_var[n].data.filter(function (item) { return item.month == m.month;});
-                          var s_data = s_monthly.map(function (item) {
-                              return {
-                                  sum: item.values.reduce((a, b) =>a + b, 0),
-                                  count: item.values.length
-                              };
-                          });
-                          for (var o = 0; o < s_data.length; o++) {
-                              sum += s_data[o].sum;
-                              count += s_data[o].count;
-                          }                          
-                      }
-                      content_scenario = content_scenario + '<td>' + (sum / count).toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                      var s = scenario_year.filter(function (item) { return item.name === scenarios_vars[l]; })[0];
+                      var s_m = s.monthly_data.filter(function (item) { return item.month == m.month; })[0];
+                      var s_m_v = s_m.data.filter(function (item) { return item.measure === cl_vars[k].value; })[0];
+                      content_scenario = content_scenario + '<td>' + s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
                   }
                   content_scenario = content_scenario + '</tr>';
               }
