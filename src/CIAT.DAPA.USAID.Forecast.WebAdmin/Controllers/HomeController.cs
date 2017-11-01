@@ -48,12 +48,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 string path = string.Empty;
+                // type == 1 is for the configuration files
                 if (type == 1)
                     path = configurationPath + file;
 
                 if (System.IO.File.Exists(path))
                 {
-                    Stream file_temp = new FileStream(path, FileMode.Open);
+                    Stream file_temp = new FileStream(path, FileMode.Open, FileAccess.Read);
                     return File(file_temp, "plain/txt", file);
                 }
 

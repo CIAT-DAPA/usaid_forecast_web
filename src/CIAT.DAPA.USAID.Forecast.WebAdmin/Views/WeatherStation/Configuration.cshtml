@@ -63,7 +63,7 @@
     {
         <tr>
             <td>
-                @item.name
+                @Html.ActionLink(item.name, "Download", "Home", new { file = item.path.Split('\\').Last(), type = 1 }, new { target = "_blank" })                
             </td>
             <td>
                 @item.date
