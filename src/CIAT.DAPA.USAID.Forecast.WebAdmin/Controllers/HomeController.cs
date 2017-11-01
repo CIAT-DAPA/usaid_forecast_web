@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.MongoDB;
+using System.IO;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -21,7 +22,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+        public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
             base(settings, LogEntity.users, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
@@ -37,6 +38,32 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        // GET: /Home/Download/
+        [HttpGet]
+        [Authorize(Roles = "ADMIN,IMPROVER,CLIMATOLOGIST,TECH")]
+        public async Task<IActionResult> Download(string file, int type)
+        {
+            try
+            {
+                string path = string.Empty;
+                if (type == 1)
+                    path = configurationPath + file;
+
+                if (System.IO.File.Exists(path))
+                {
+                    Stream file_temp = new FileStream(path, FileMode.Open);
+                    return File(file_temp, "plain/txt", file);
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return NotFound();
+            }
         }
     }
 }
