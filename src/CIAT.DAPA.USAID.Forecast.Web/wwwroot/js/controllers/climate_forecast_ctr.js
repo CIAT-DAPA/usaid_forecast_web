@@ -53,9 +53,9 @@
                   ClimateScenarioFactory.getScenarios($scope.ws.id).then(
                   function (data_fs) {
                       $scope.scenario = data_fs;
-                      // Get limit lower of the climatology for the months of the forecast 
+                      // Get limit lower of the climatology for the months of the forecast                       
                       ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().lower).then(
-                      function (data_l) {
+                      function (data_l) {                          
                           $scope.climatology_lower = data_l;
                           // Get limit upper of the climatology for the months of the forecast
                           ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
@@ -137,8 +137,8 @@
           // This cicle add the graphic pie and render the information of the forecast
           for (var i = 0; i < $scope.forecast.length; i++) {
               var m = $scope.forecast[i];
-              var cl_lower = $scope.climatology_lower[i].value.toFixed(setup.getFloat());
-              var cl_upper = $scope.climatology_upper[i].value.toFixed(setup.getFloat());
+              var cl_lower = $scope.climatology_lower.filter(function (item) { return item.month == m.month; })[0].value.toFixed(setup.getFloat());
+              var cl_upper = $scope.climatology_upper.filter(function (item) { return item.month == m.month; })[0].value.toFixed(setup.getFloat());
               if (i == 0)
                   $scope.period_start = m.month_name + ', ' + m.year;
               if (i == ($scope.months.length - 1))
