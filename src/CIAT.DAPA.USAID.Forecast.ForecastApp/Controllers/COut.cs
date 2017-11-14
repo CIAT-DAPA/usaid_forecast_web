@@ -193,6 +193,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
             var states = await db.state.listEnableAsync();
+            // Filter the states with configuration
+            var states_ctp = from s_cpt in states
+                             where s_cpt.conf.Where(p => p.track.enable).Count() > 0
+                             select s_cpt;
             foreach (var s in states)
             {
                 Console.WriteLine("Creating " + s.name);
