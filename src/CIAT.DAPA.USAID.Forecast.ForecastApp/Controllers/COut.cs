@@ -197,7 +197,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             var states_ctp = from s_cpt in states
                              where s_cpt.conf.Where(p => p.track.enable).Count() > 0
                              select s_cpt;
-            foreach (var s in states)
+            foreach (var s in states_ctp)
             {
                 Console.WriteLine("Creating " + s.name);
                 if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString()))
