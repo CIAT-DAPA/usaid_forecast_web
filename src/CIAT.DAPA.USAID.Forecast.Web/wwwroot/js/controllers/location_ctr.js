@@ -13,38 +13,56 @@ angular.module('ForecastApp')
       // Get the source the type of request
       $scope.type = tools.source();
       // Get the municipality from the url
-      $scope.municipality_name = tools.search('municipio');
+      $scope.state_name = tools.search(1);
+      $scope.municipality_name = tools.search(2);
+      $scope.station_name = tools.search(3);
       // Global vars      
       $scope.states_climate = null;
       $scope.states_rice = null;
       $scope.states_maize = null;
       $scope.crop_name = null;
-
+      
       // Remove active link
       $(".navbar-default li").removeClass("active");
+
+      // Enable active menu
+      if ($scope.type !== 'climate' && $scope.type !== 'crop')
+          $('#menu_main_' + $scope.type).addClass('active');
+      
+      // Enable the dropdown list to search data
+      $('#navbar_main > ul > li > a').on('click', function (event) {          
+          $(this).parent().toggleClass('open');
+      });
 
       // Get the geographic information for weather
       GeographicFactory.get().then(function (g) {
           $scope.states_climate = g.data;
-
+          $scope.menu_climate = [];
+          
           if ($scope.type === 'climate') {
               $('#menu_main_climate').addClass('active');
               // Validate the parameter municipio
-              if ($scope.municipality_name == null || $scope.municipality_name === '')
-                  $window.location.href = "/Clima?municipio=" + $scope.states_climate[0].municipalities[0].name;
+              if ($scope.station_name == null || $scope.station_name === '') 
+                  $window.location.href = "/Clima/" + $scope.states_climate[0].name + "/" + $scope.states_climate[0].municipalities[0].name + "/" + $scope.states_climate[0].municipalities[0].weather_stations[0].name;
+                  
               // Search if the name of parameter exist in the configuration app
               var founded = false;
               for (var i = 0; i < $scope.states_climate.length; i++) {
                   for (var j = 0; j < $scope.states_climate[i].municipalities.length; j++) {
-                      if ($scope.states_climate[i].municipalities[j].name.toLowerCase() === $scope.municipality_name.toLowerCase()) {
-                          founded = true;
-                          break;
-                      }
+                      for (var k = 0; k < $scope.states_climate[i].municipalities[j].weather_stations.length; k++) {
+                          $scope.menu_climate.push({ s_id: $scope.states_climate[i].id, s_name: $scope.states_climate[i].name, m_id: $scope.states_climate[i].municipalities[j].id, m_name: $scope.states_climate[i].municipalities[j].name, w_id: $scope.states_climate[i].municipalities[j].weather_stations[k].id, w_name: $scope.states_climate[i].municipalities[j].weather_stations[k].name });
+                          if (!founded)
+                            founded = $scope.states_climate[i].municipalities[j].weather_stations[k].name.toLowerCase() === $scope.station_name.toLowerCase() && $scope.states_climate[i].municipalities[j].name.toLowerCase() === $scope.municipality_name.toLowerCase() && $scope.states_climate[i].name.toLowerCase() === $scope.state_name.toLowerCase();
+                      }   
                   }
               }
+              var menu_climate_cbo = $('#menu_climate_cbo').select2();
+              menu_climate_cbo.on("change", function (e) {
+                  $window.location.href = "/Clima/" + $('#menu_climate_cbo').val();
+              });
               // Validate if the municipality was found
               if (!founded)
-                  $window.location.href = "/Clima?municipio=" + $scope.states[0].municipalities[0].name;
+                  $window.location.href = "/Clima/" + $scope.states_climate[0].name + "/" + $scope.states_climate[0].municipalities[0].name + "/" + $scope.states_climate[0].municipalities[0].weather_stations[0].name;
           }
       },
       function (err) { console.log(err); });
@@ -90,7 +108,4 @@ angular.module('ForecastApp')
       },
       function (err) { console.log(err); });
       
-      // Enable active menu
-      if ($scope.type !== 'climate' && $scope.type !== 'crop') 
-          $('#menu_main_' + $scope.type).addClass('active');
   });

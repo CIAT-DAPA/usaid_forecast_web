@@ -1,11 +1,15 @@
-﻿<nav class="navbar-collapse collapse" id="navbar_main" >
+﻿<nav class="navbar-collapse collapse" id="navbar_main">
     <ul class="nav navbar-nav" ng-controller="LocationCtrl">
-        <li id="menu_main_climate" class="dropdown">            
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-asterisk"></span> Clima<span class="caret"></span></a>
+        <li id="menu_main_climate" class="dropdown">
+            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-asterisk"></span> Clima<span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li ng-repeat="s in states_climate" style="padding:5px 15px;">
-                    <b>{{s.name}}</b>
-                    <a ng-repeat="m in s.municipalities" href="/Clima?municipio={{m.name}}">{{m.name}}</a>
+                <li style="padding:5px 15px;">
+                    <b>Buscar</b>                    
+                </li>
+                <li style="padding:5px 15px;">
+                    <select id="menu_climate_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
+                        <option ng-repeat="mc in menu_climate" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>
+                    </select>
                 </li>
             </ul>
         </li>
@@ -18,7 +22,7 @@
                 </li>
             </ul>
         </li>
-        <li id="menu_main_maize" class="dropdown">            
+        <li id="menu_main_maize" class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> Maíz<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li ng-repeat="s in states_maize" style="padding:5px 15px;">

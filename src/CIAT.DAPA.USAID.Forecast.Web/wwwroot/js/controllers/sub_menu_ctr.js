@@ -16,7 +16,6 @@ angular.module('ForecastApp')
             
       $scope.renderView = function ($value, $name, $section) {                    
           if ($scope.type === 'climate' || $scope.type === 'crop') {
-              console.log($value + ' ' + $section);
               $rootScope.setAssistParameters($section, $value);
               $(".subMenuItem").removeClass("active");
               $("#subMenu-" + $value).addClass("active");

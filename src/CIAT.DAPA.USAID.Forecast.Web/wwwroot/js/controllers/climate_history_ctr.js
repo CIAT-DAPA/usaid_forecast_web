@@ -3,7 +3,7 @@
                                     WeatherStationFactory,
                                     ClimateClimatologyFactory, ClimateHistoricalFactory) {
       // Get the municipality from the url
-      $scope.municipality_name = tools.search('municipio');
+      $scope.municipality_name = tools.search(2);
       //$scope.municipalities = [];
       $scope.ws = null;
       $scope.gv_months = $("#gv_months").val().split(',');

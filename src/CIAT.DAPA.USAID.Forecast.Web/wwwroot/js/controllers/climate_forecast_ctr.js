@@ -4,7 +4,7 @@
                                     ClimateClimatologyFactory,
                                     ClimateForecastFactory, ClimateScenarioFactory) {
       // Get the municipality from the url
-      $scope.municipality_name = tools.search('municipio');
+      $scope.municipality_name = tools.search(2);
       // Vars view
       $scope.period_start = null;
       $scope.period_end = null;
