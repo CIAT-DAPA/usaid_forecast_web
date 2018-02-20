@@ -3,7 +3,9 @@
                                     WeatherStationFactory,
                                     ClimateClimatologyFactory, ClimateHistoricalFactory) {
       // Get the municipality from the url
+      $scope.state_name = tools.search(1);
       $scope.municipality_name = tools.search(2);
+      $scope.ws_name = tools.search(3);
       //$scope.municipalities = [];
       $scope.ws = null;
       $scope.gv_months = $("#gv_months").val().split(',');
@@ -41,7 +43,7 @@
       function load_data() {
           // Load data from web web api
           // Get data of the weather station
-          WeatherStationFactory.getByMunicipality($scope.municipality_name).then(
+          WeatherStationFactory.search($scope.state_name, $scope.municipality_name, $scope.ws_name).then(
           function (data_ws) {
               $scope.ws = data_ws;
 

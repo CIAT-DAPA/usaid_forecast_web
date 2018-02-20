@@ -4,7 +4,9 @@
                                     ClimateClimatologyFactory,
                                     ClimateForecastFactory, ClimateScenarioFactory) {
       // Get the municipality from the url
+      $scope.state_name = tools.search(1);
       $scope.municipality_name = tools.search(2);
+      $scope.ws_name = tools.search(3);
       // Vars view
       $scope.period_start = null;
       $scope.period_end = null;
@@ -37,7 +39,7 @@
       function load_data() {
           // Load data from web web api
           // Get data of the weather station
-          WeatherStationFactory.getByMunicipality($scope.municipality_name).then(
+          WeatherStationFactory.search($scope.state_name,$scope.municipality_name, $scope.ws_name).then(
           function (data_ws) {
               $scope.ws = data_ws;
               // Get climate forecast data of the precipitation

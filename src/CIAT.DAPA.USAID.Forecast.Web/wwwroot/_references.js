@@ -47,3 +47,4 @@
 /// <reference path="lib/jquery-validation/dist/jquery.validate.js" />
 /// <reference path="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" />
 /// <reference path="lib/please-wait/build/please-wait.js" />
+/// <reference path="lib/select2/dist/js/select2.js" />

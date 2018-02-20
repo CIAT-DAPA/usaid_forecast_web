@@ -15,13 +15,7 @@ angular.module('ForecastApp')
          * Method that get the value of the parameter from url
          * (string) name: Parameter name
         */
-        dataFactory.search = function (pos) {
-            /*var url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));*/
+        dataFactory.search = function (pos) {            
             var url = window.location.href;
             var parameters = url.split("/");
             return parameters.length > (pos+3) ? decodeURIComponent(parameters[pos+3]) : null;
@@ -73,7 +67,7 @@ angular.module('ForecastApp')
         dataFactory.updateBackground = function () {
             var bg = '';            
             if (window.location.href.includes('/Cultivo') || window.location.href.includes('/cultivo')) {
-                var para = dataFactory.search('cultivo').toLowerCase();
+                var para = dataFactory.search(4).toLowerCase();
                 bg = (para === 'arroz' ? 'bg-rice' : 'bg-maize');
             }
             else
