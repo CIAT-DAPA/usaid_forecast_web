@@ -45,7 +45,7 @@ angular.module('ForecastApp')
           $scope.menu_climate = menu_c.menu;
 
           // Transform the select 
-          var menu_climate_cbo = $('#menu_climate_cbo').select2();
+          var menu_climate_cbo = $('#menu_climate_cbo').select2({placeholder: 'Seleccione una localidad'});
           menu_climate_cbo.on("change", function (e) {
               $window.location.href = "/Clima/" + $('#menu_climate_cbo').val();
           });
@@ -67,11 +67,11 @@ angular.module('ForecastApp')
           $scope.menu_maize = states_maize.menu;
                               
           // Transform the select 
-          var menu_rice_cbo = $('#menu_rice_cbo').select2();
+          var menu_rice_cbo = $('#menu_rice_cbo').select2({ placeholder: 'Seleccione una localidad' });
           menu_rice_cbo.on("change", function (e) {
               $window.location.href = "/Cultivo/" + $('#menu_rice_cbo').val() + "/arroz";
           });
-          var menu_maize_cbo = $('#menu_maize_cbo').select2();
+          var menu_maize_cbo = $('#menu_maize_cbo').select2({ placeholder: 'Seleccione una localidad' });
           menu_maize_cbo.on("change", function (e) {
               $window.location.href = "/Cultivo/" + $('#menu_maize_cbo').val() + "/maíz";
           });

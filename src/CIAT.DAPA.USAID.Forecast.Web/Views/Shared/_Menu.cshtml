@@ -8,6 +8,7 @@
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_climate_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
+                        <option value=""></option>                        
                         <option ng-repeat="mc in menu_climate" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>                        
                     </select>
                 </li>
@@ -20,7 +21,8 @@
                     <b>Buscar</b>
                 </li>
                 <li style="padding:5px 15px;">
-                    <select id="menu_rice_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
+                    <select id="menu_rice_cbo" name="menu_rice_cbo" class="form-control" style="width:100%;">
+                        <option value=""></option>
                         <option ng-repeat="mc in menu_rice" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>
                     </select>
                 </li>
@@ -33,7 +35,8 @@
                     <b>Buscar</b>
                 </li>
                 <li style="padding:5px 15px;">
-                    <select id="menu_maize_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
+                    <select id="menu_maize_cbo" name="menu_maize_cbo" class="form-control" style="width:100%;">
+                        <option value=""></option>
                         <option ng-repeat="mc in menu_maize" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>
                     </select>
                 </li>
