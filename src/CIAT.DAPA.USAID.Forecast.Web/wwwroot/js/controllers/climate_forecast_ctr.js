@@ -174,7 +174,10 @@
                       var s = scenario_year.filter(function (item) { return item.name === scenarios_vars[l]; })[0];
                       var s_m = s.monthly_data.filter(function (item) { return item.month == m.month; })[0];
                       var s_m_v = s_m.data.filter(function (item) { return item.measure === cl_vars[k].value; })[0];
-                      content_scenario = content_scenario + '<td>' + s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                      if (cl_vars[k].value === 'prec')
+                          content_scenario = content_scenario + '<td>' + s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                      else
+                          content_scenario = content_scenario + '<td>' + (s_m_v.value.toFixed(setup.getFloat()) == 0 ? 'N/A' : s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric) + '</td>';
                   }
                   content_scenario = content_scenario + '</tr>';
               }
