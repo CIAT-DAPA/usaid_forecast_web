@@ -12,6 +12,35 @@ angular.module('ForecastApp')
         var dataFactory = { cache: true, format: "json" };
 
         /*
+        * Method that filter the weather station
+        * (string) s: Name of the state
+        * (string) m: Name of the municipality
+        * (string) w: Name of the weather station
+        */
+        dataFactory.search = function (s,m,w) {
+            var defer = $q.defer();
+            GeographicFactory.db.init(dataFactory.cache, dataFactory.format);
+
+            GeographicFactory.get().then(
+            function (result) {
+                var raw = result.data;
+                raw = raw.filter(function (item) { return item.name === s; });
+                if (raw == null || raw.length <= 0)
+                    defer.resolve(null);
+                raw = raw[0].municipalities.filter(function (item) { return item.name === m; });
+                if (raw == null || raw.length <= 0)
+                    defer.resolve(null);
+                var ws = raw[0].weather_stations.filter(function (item) { return item.name === w; });
+                if (raw == null || raw.length <= 0)
+                    defer.resolve(null);
+                defer.resolve(ws[0]);
+            },
+            function (err) { console.log(err); });
+
+            return defer.promise;
+        }
+
+        /*
         * Method that filter all weather stations by their municipality
         * (string) municipality: Name of the municipality
         */

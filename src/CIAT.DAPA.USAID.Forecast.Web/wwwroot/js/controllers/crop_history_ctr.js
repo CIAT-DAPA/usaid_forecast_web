@@ -12,9 +12,14 @@ angular.module('ForecastApp')
                                     WeatherStationFactory,
                                     AgronomyFactory, CultivarFactory, SoilFactory,
                                     CropYieldHistoricalFactory, CropVarsFactory) {
-      $scope.crop_name = tools.search('cultivo');
+      // Get the municipality from the url
+      $scope.state_name = tools.search(1);
+      $scope.municipality_name = tools.search(2);
+      $scope.ws_name = tools.search(3);
       // Get vars to show by crop
-      $scope.municipality_name = tools.search('municipio');
+      $scope.crop_name = tools.search(4);
+      
+
       $scope.ws = null;
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);

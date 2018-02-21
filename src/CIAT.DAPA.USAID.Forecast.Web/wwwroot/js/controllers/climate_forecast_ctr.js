@@ -4,7 +4,9 @@
                                     ClimateClimatologyFactory,
                                     ClimateForecastFactory, ClimateScenarioFactory) {
       // Get the municipality from the url
-      $scope.municipality_name = tools.search('municipio');
+      $scope.state_name = tools.search(1);
+      $scope.municipality_name = tools.search(2);
+      $scope.ws_name = tools.search(3);
       // Vars view
       $scope.period_start = null;
       $scope.period_end = null;
@@ -37,7 +39,7 @@
       function load_data() {
           // Load data from web web api
           // Get data of the weather station
-          WeatherStationFactory.getByMunicipality($scope.municipality_name).then(
+          WeatherStationFactory.search($scope.state_name,$scope.municipality_name, $scope.ws_name).then(
           function (data_ws) {
               $scope.ws = data_ws;
               // Get climate forecast data of the precipitation
@@ -172,7 +174,10 @@
                       var s = scenario_year.filter(function (item) { return item.name === scenarios_vars[l]; })[0];
                       var s_m = s.monthly_data.filter(function (item) { return item.month == m.month; })[0];
                       var s_m_v = s_m.data.filter(function (item) { return item.measure === cl_vars[k].value; })[0];
-                      content_scenario = content_scenario + '<td>' + s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                      if (cl_vars[k].value === 'prec')
+                          content_scenario = content_scenario + '<td>' + s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                      else
+                          content_scenario = content_scenario + '<td>' + (s_m_v.value.toFixed(setup.getFloat()) == 0 ? 'N/A' : s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric) + '</td>';
                   }
                   content_scenario = content_scenario + '</tr>';
               }

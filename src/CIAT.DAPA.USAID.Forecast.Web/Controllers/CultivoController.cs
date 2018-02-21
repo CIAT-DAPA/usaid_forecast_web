@@ -23,8 +23,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
         }
 
-        // GET: /Cultivo/Index/?municipio=&cultivo=
-        public async Task<IActionResult> Index(string municipio, string cultivo)
+        // GET: /Cultivo/state/municipality/station/crop
+        [Route("/[controller]/{state?}/{municipality?}/{station?}/{crop?}")]
+        public async Task<IActionResult> Index(string state, string municipality, string station, string crop)
         {
             try
             {
@@ -32,6 +33,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 loadAPIs();
                 // Load the dates of the forecast
                 loadMonthsCrop();
+                // Set the parameters                
+                ViewBag.s = state ?? string.Empty;
+                ViewBag.m = municipality ?? string.Empty;
+                ViewBag.w = station ?? string.Empty;
+                ViewBag.c = crop ?? string.Empty;
                 return View();
             }
             catch(Exception ex)

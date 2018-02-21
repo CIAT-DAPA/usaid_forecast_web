@@ -13,9 +13,11 @@ angular.module('ForecastApp')
                                     AgronomyFactory, CultivarFactory, SoilFactory,
                                     CropYieldForecastFactory, CropVarsFactory) {
       // Get the municipality from the url
-      $scope.municipality_name = tools.search('municipio');
-      $scope.crop_name = tools.search('cultivo');
-      $scope.crop = tools.search('cultivo').toLowerCase().trim();
+      $scope.state_name = tools.search(1);
+      $scope.municipality_name = tools.search(2);
+      $scope.ws_name = tools.search(3);
+      $scope.crop_name = tools.search(4);
+      $scope.crop = tools.search(4).toLowerCase().trim();
       // Get vars to show by crop
       $scope.crop_vars = CropVarsFactory.getVarsByCrop($scope.crop_name);
       $scope.crop_yield_var = CropVarsFactory.getDefaultVarByCrop($scope.crop_name);
@@ -68,7 +70,7 @@ angular.module('ForecastApp')
               $scope.soils = SoilFactory.getByCrop($scope.data_a, $scope.crop_name);
 
               // Get all geographic data able with information
-              WeatherStationFactory.getByMunicipality($scope.municipality_name).then(
+              WeatherStationFactory.search($scope.state_name, $scope.municipality_name, $scope.ws_name).then(
               function (data_ws) {
                   $scope.ws = data_ws;
                   // Get yield ranges

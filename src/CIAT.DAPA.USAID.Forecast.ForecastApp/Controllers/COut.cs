@@ -218,7 +218,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 // This cicle is by every quarter of year
                 foreach (string q in Enum.GetNames(typeof(Quarter)))
                 {
-                    var conf = s.conf.SingleOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q));
+                    var conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
                     // the cpt configuration 
                     header_cpt.Append(q + ",");
                     x_m.Append((conf.x_mode.ToString() ?? string.Empty) + ",");

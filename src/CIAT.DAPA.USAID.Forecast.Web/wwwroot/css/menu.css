@@ -104,3 +104,11 @@
 #menu_main_maize:hover img{
     opacity:1;
 }
+
+.navbar-nav>li>.dropdown-menu {
+    min-width:300px;
+}
+
+.menu-item{
+    width:100%;
+}

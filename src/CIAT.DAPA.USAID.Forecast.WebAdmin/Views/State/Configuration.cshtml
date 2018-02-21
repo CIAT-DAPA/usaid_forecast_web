@@ -74,10 +74,10 @@
             <table class="table" id="conf_regions">
                 <thead>
                     <tr>
-                        <th>Esq. izquierda inferior Latitud</th>
-                        <th>Esq. izquierda inferior Longitud</th>
-                        <th>Esq. derecha superior Latitud</th>
-                        <th>Esq. derecha superior Longitud</th>
+                        <th>Y min.</th>
+                        <th>X min.</th>
+                        <th>Y max.</th>
+                        <th>X min.</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -151,6 +151,7 @@
                     <input type="hidden" id="gamma" name="gamma" value="@item.gamma.ToString()" />
                     <input type="hidden" id="x" name="x" value="@item.x_mode.ToString()" />
                     <input type="hidden" id="y" name="y" value="@item.y_mode.ToString()" />
+                    <input type="hidden" id="register" name="register" value="@item.track.register.ToString("yyyy-MM-dd HH:mm:ss")" />
                     <input class="btn btn-danger" type="submit" value="Eliminar" />
                 }
             </td>

@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Clima";
-    ViewData["Meta_Description"] = "Visualización de pronóstico (predicción) y datos históricos del clima en Colombia.";
-    ViewData["Meta_Keywords"] = "pronóstico,clima,predicción,tiempo,precipitación,radiación solar,brillo solar,temperatura,temperatura máxima,temperatura mínima,historial climático,histórico climático,climatología";
+    ViewData["Meta_Description"] = "Predicción y datos históricos del clima en " + ViewBag.s + ", " + ViewBag.m + ", " + ViewBag.w;
+    ViewData["Meta_Keywords"] = "pronóstico,predicción,clima,precipitación,radiación solar,temperatura,temperatura máxima,temperatura mínima,histórico climático,climatología," + ViewBag.s + "," + ViewBag.m + "," + ViewBag.w; 
 }
 <!-- Start global variables -->
 <input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
