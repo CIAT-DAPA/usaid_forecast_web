@@ -1,14 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  <!-- Experto -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
   <url>
     <loc>https://pronosticos.aclimatecolombia.org/Experto</loc>
   </url>
-  <!-- Clima -->
+  <url>
+    <loc>https://pronosticos.aclimatecolombia.org/Home/Glosario</loc>
+  </url>
+  <url>
+    <loc>https://pronosticos.aclimatecolombia.org/Home/AcercaDe</loc>
+  </url>
+  
   <url>
     <loc>https://pronosticos.aclimatecolombia.org/Clima/Casanare/Aguazul/Aguazul</loc>
   </url>
@@ -75,7 +77,7 @@
   <url>
     <loc>https://pronosticos.aclimatecolombia.org/Clima/Sucre/San_Marcos/Hda_Eureka</loc>
   </url>  
-  <!-- Cultivos: Maíz -->
+  
   <url>
     <loc>https://pronosticos.aclimatecolombia.org/Cultivo/C%C3%B3rdoba/Ceret%C3%A9/Turipana/ma%C3%ADz</loc>
   </url>
@@ -85,7 +87,7 @@
   <url>
     <loc>https://pronosticos.aclimatecolombia.org/Cultivo/Valle%20del%20Cauca/La%20Union/CentAdmoLaUnion/ma%C3%ADz</loc>
   </url>
-  <!-- Cultivos: Arroz -->
+  
   <url>
     <loc>https://pronosticos.aclimatecolombia.org/Cultivo/Casanare/Aguazul/Aguazul/arroz</loc>
   </url>
