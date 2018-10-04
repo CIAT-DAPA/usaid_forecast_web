@@ -328,7 +328,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             YieldCrop yc_entity;
             List<YieldCrop> yc_entities;
             List<YieldData> yd_entities;
-            foreach (var ws in yields.Select(p => new { p.weather_station, p.cultivar, p.soil }).Distinct())
+            var ws_list = yields.Select(p => new { p.weather_station, p.cultivar, p.soil }).Distinct();
+            foreach (var ws in ws_list)
             {
                 Console.WriteLine("Working in ws: " + ws.weather_station + " soil: " + ws.soil + " cultivar: " + ws.cultivar);
                 fy_new = new ForecastYield()
@@ -337,14 +338,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     weather_station = ForecastDB.parseId(ws.weather_station),
                     cultivar = ForecastDB.parseId(ws.cultivar),
                     soil = ForecastDB.parseId(ws.soil)
+                     
                 };
                 var yield_crop = yields.Where(p => p.weather_station == ws.weather_station && p.soil == ws.soil && p.cultivar == ws.cultivar);
                 yc_entities = new List<YieldCrop>();
+                var dates_list = yield_crop.Select(p => new { start = p.start, end = p.end }).Distinct();
                 int count_yc = yield_crop.Count();
-                foreach (var yc in yield_crop)
+                foreach (var dc in dates_list)
                 {
-                    yc_entity = new YieldCrop() { start = yc.start, end = yc.end };
-                    var yield_data = yield_crop.Where(p => p.cultivar == yc.cultivar && p.soil == yc.soil && p.start == yc.start && p.end == yc.end);
+                    yc_entity = new YieldCrop() { start = dc.start, end = dc.end };
+                    var yield_data = yield_crop.Where(p => p.start == dc.start && p.end == dc.end);
                     int count_yd = yield_data.Count();
                     yd_entities = new List<YieldData>();
                     foreach (var yd in yield_data)

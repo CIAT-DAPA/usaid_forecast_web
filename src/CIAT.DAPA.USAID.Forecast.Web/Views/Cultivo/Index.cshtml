@@ -39,7 +39,7 @@
             <article class="row section-content borderBox" ng-repeat="cu in cultivars" id="{{cu.id}}">
                 <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id,$index)">
                     <label class="cultivar_name" ng-switch="crop">
-                        <img ng-switch-when="maíz" style="margin-top: -7px;" src="../images/corn_black.png" height="19" width="19" /> 
+                        <img ng-switch-when="maíz" style="margin-top: -7px;" src="/images/corn_black.png" height="19" width="19" /> 
                         <span ng-switch-when="arroz" class="glyphicon glyphicon-grain"></span> 
                         {{cu.name}}
                     </label>
