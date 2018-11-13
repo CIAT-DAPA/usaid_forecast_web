@@ -176,6 +176,8 @@
                       var s_m_v = s_m.data.filter(function (item) { return item.measure === cl_vars[k].value; })[0];
                       if (cl_vars[k].value === 'prec')
                           content_scenario = content_scenario + '<td>' + s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric + '</td>';
+                      else if (cl_vars[k].value === 'sol_rad')
+                          content_scenario = content_scenario + '<td>' + (s_m_v.value.toFixed(setup.getFloat()) == 0 ? 'N/A' : (s_m_v.value/0.041868).toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric) + '</td>';
                       else
                           content_scenario = content_scenario + '<td>' + (s_m_v.value.toFixed(setup.getFloat()) == 0 ? 'N/A' : s_m_v.value.toFixed(setup.getFloat()) + ' ' + cl_vars[k].metric) + '</td>';
                   }
