@@ -20,9 +20,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
             try
             {
                 // Load the configuration file
-                var builder = new ConfigurationBuilder()
+                /*var builder = new ConfigurationBuilder()
                     .AddJsonFile($"appsettings.json", true, true)
-                    .AddEnvironmentVariables();
+                    .AddEnvironmentVariables();*/
+                var builder = new ConfigurationBuilder()
+                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json", optional: true,reloadOnChange: true);
                 var conf = builder.Build();
                 Program.settings = new Settings()
                 {

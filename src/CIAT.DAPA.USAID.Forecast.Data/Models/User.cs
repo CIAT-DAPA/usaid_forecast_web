@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.MongoDB;
+﻿
+using AspNetCore.Identity.Mongo.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     /// This entity has the platform users
     /// </summary>
     
-    public class User : IdentityUser
+    public class User : MongoUser
     {
         /// <summary>
         /// Get or set the user password

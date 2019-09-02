@@ -5,8 +5,6 @@ using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -14,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -50,15 +49,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <summary>
         /// Get the user manager
         /// </summary>
-        protected UserManager<IdentityUser> managerUser { get; private set; }
+        protected UserManager<User> managerUser { get; private set; }
         /// <summary>
         /// Get the role manager
         /// </summary>
-        protected RoleManager<IdentityRole> managerRole { get; private set; }
+        protected RoleManager<Role> managerRole { get; private set; }
         /// <summary>
         /// Get the signin manager
         /// </summary>
-        protected SignInManager<IdentityUser> managerSignIn { get; private set; }
+        protected SignInManager<User> managerSignIn { get; private set; }
         /// <summary>
         /// Get or set email sender
         /// </summary>
@@ -82,8 +81,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="settings">Settings options</param>
         /// <param name="entity">List of entities affected</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public WebAdminBaseController(IOptions<Settings> settings, LogEntity entity, IHostingEnvironment environment, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : base()
+        public WebAdminBaseController(IOptions<Settings> settings, LogEntity entity, IHostingEnvironment environment, 
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<Role> roleManager, IEmailSender emailSender) : base()
         {
             init(settings, entity, environment);
             managerUser = userManager;
@@ -154,7 +155,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// Method that return the current user
         /// </summary>
         /// <returns></returns>
-        protected Task<IdentityUser> GetCurrentUserAsync()
+        protected Task<User> GetCurrentUserAsync()
         {
             try
             {
@@ -177,7 +178,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                var user = new IdentityUser { UserName = email, Email = email };
+                var user = new User { UserName = email, Email = email };
                 await writeEventAsync("Register user email: " + email + " role: " + role, LogEvent.rea);
                 var result = await managerUser.CreateAsync(user, password);
                 if (result.Succeeded)
@@ -211,7 +212,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 {
                     var r = await db.role.byNameAsync(role);
                     if (r == null)
-                        await managerRole.CreateAsync(new IdentityRole(role));
+                        await managerRole.CreateAsync(new Role(role));
                 }
                 return true;
             }

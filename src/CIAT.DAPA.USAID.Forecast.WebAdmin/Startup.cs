@@ -8,10 +8,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Identity;
 using CIAT.DAPA.USAID.Forecast.Data.Database;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using AspNetCore.Identity.Mongo;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 {
@@ -27,8 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 
             if (env.IsDevelopment())
             {
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
+                
             }
             Configuration = builder.Build();
         }
@@ -37,7 +45,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
@@ -55,7 +63,26 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             });
 
             // Register identity framework services and also Mongo storage. 
-            services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
+            services.Configure<PasswordHasherOptions>(options =>
+                    options.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV2
+                );
+
+            services.AddIdentityMongoDbProvider<User, Role>(identityOptions =>
+            {
+                identityOptions.Password.RequiredLength = 8;
+                identityOptions.Password.RequireLowercase = true;
+                identityOptions.Password.RequireUppercase = true;
+                identityOptions.Password.RequireNonAlphanumeric = true;
+                identityOptions.Password.RequireDigit = true;
+                identityOptions.User.RequireUniqueEmail = true;                
+                identityOptions.SignIn.RequireConfirmedEmail = true;
+                //identityOptions
+            }, mongoIdentityOptions => {
+                //mongoIdentityOptions.ConnectionString = Configuration.GetSection("ForecastConnection:ConnectionString").Value;
+                mongoIdentityOptions.ConnectionString = "mongodb://localhost:27017/forecast_db";
+            }).AddDefaultTokenProviders();            
+
+            /*services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
                 .AddDefaultTokenProviders();
 
             // Settings to manage user
@@ -75,13 +102,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.User.RequireUniqueEmail = true;
                 // Signin settings
                 options.SignIn.RequireConfirmedEmail = true;
-            });
+            }); */
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
 
             // Add framework services
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,7 +120,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {

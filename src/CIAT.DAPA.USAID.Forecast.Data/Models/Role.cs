@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.MongoDB;
+﻿using AspNetCore.Identity.Mongo.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     /// <summary>
     /// This entity has the platform roles
     /// </summary>
-    public partial class Role: IdentityRole
+    public partial class Role: MongoRole
     {
         
     }

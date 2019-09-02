@@ -17,7 +17,6 @@ using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 using CIAT.DAPA.USAID.Forecast.Data.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.MongoDB;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -29,7 +28,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public WeatherStationController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+        public WeatherStationController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<Role> roleManager, IEmailSender emailSender) : 
             base(settings, LogEntity.lc_weather_station, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
