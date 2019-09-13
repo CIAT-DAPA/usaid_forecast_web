@@ -38,6 +38,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.m = municipality ?? string.Empty;
                 ViewBag.w = station ?? string.Empty;
                 ViewBag.c = crop ?? string.Empty;
+                ViewBag.Section = SectionSite.Crop;
                 return View();
             }
             catch(Exception ex)

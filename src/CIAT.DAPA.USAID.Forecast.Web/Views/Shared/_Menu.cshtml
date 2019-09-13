@@ -1,10 +1,10 @@
 ﻿<nav class="navbar-collapse collapse" id="navbar_main">
     <ul class="nav navbar-nav" ng-controller="LocationCtrl">
         <li id="menu_main_climate" class="dropdown">
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-asterisk"></span> Clima<span class="caret"></span></a>
+            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Weather"]<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li style="padding:5px 15px;">
-                    <b>Buscar</b>                    
+                    <b>@Localizer["Search"]</b>                    
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_climate_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
@@ -15,10 +15,10 @@
             </ul>
         </li>
         <li id="menu_main_rice" class="dropdown">
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> Arroz<span class="caret"></span></a>
+            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> @Localizer["CropRice"]<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li style="padding:5px 15px;">
-                    <b>Buscar</b>
+                    <b>@Localizer["Search"]</b>
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_rice_cbo" name="menu_rice_cbo" class="form-control" style="width:100%;">
@@ -29,10 +29,10 @@
             </ul>
         </li>
         <li id="menu_main_maize" class="dropdown">
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> Maíz<span class="caret"></span></a>
+            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> @Localizer["CropMaize"]<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li style="padding:5px 15px;">
-                    <b>Buscar</b>
+                    <b>@Localizer["Search"]</b>
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_maize_cbo" name="menu_maize_cbo" class="form-control" style="width:100%;">
@@ -42,13 +42,13 @@
                 </li>
             </ul>
         </li>
-        <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Bases de datos</a></li>
-        <li id="menu_main_glossary"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> Glosario</a></li>
-        <li id="menu_main_about"><a href="/Home/AcercaDe"><span class="glyphicon glyphicon-eye-open"></span> Acerca De</a></li>
+        <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>
+        <li id="menu_main_glossary"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
+        <li id="menu_main_about"><a href="/Home/AcercaDe"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
     </ul>
     <!-- Start Help -->
     <ul class="nav navbar-nav navbar-right" ng-controller="AssistCtrl">
-        <li><a href="#" class="sharedLink" title="Ver ayuda" ng-click="assist()" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-play-circle"></span> Ayuda</a></li>
+        <li><a href="#" class="sharedLink" ng-click="assist()" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-play-circle"></span> @Localizer["Help"]</a></li>
     </ul>
     <!-- End Help -->
 </nav>

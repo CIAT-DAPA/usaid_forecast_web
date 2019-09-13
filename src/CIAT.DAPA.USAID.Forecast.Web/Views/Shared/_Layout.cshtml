@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Steven Sotelo" />
-    <title>@ViewData["Title"] - Aclímate Colombia Pronósticos</title>
+    <title>@ViewData["Title"] - @Localizer["Title"]</title>
     <meta name="description" content="@ViewData["Meta_Description"]">
     <meta name="keywords" content="@ViewData["Meta_Keywords"]">
 
@@ -12,11 +12,24 @@
     <script src="~/js/seo/analytics.js"></script>
     <!-- End SEO -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/menu.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/menu.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
     <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">
     <link rel="stylesheet" href="~/lib/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/menu.css" />
     <link rel="shortcut icon" href="~/favicon.ico">
 
 </head>
@@ -35,7 +48,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@Localizer["Title"]</a>
             </div>
 
             @Html.Partial("_Menu")
@@ -53,7 +66,7 @@
         <div class="form-group">
             <div class="col-lg-6 form-group">
                 <div class="col-lg-12" style="color:white;">
-                    <h4>Nuestros socios</h4>
+                    <h4>@Localizer["FooterPartnersTitle"]</h4>
                     <hr />
                 </div>
                 <div class="col-lg-3 col-xs-6 form-group">
@@ -79,7 +92,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="col-lg-12" style="color:white;">
-                    <h4>Donantes</h4>
+                    <h4>@Localizer["FooterSponsorsTitle"]</h4>
                     <hr />
                 </div>
                 <div class="col-lg-3 col-xs-6">
@@ -94,19 +107,16 @@
             <div class="col-lg-12">
                 <div class="col-md-4">
                     <p class="text-justify">
-                        CIAT All Rights reserved <br />
-                        Teléfonos de contacto: (2) 4450000 Ext. 3367, 3579 <br />
-                        Email: aclimatecolombia@gmail.com <br />
-                        Colombia<br />
-                        Fotos tomadas de <a href="https://www.flickr.com/photos/ciat/" target="_blank">CIAT</a>
+                        @Localizer["FooterCopyRight"]
                     </p>
                 </div>
                 <div class="col-md-offset-4 col-md-4">
                     <p class="text-justify">
-                        <a href="http://aclimatecolomb.wpengine.com/contactenos/">Contáctenos</a> /
-                        <a href="http://aclimatecolomb.wpengine.com/html-site-map">Mapa del Sitio</a> /
-                        <a href="">Políticas de Privacidad</a>
+                        <a href="@Localizer["FooterContactUrl"]">@Localizer["FooterContactLabel"]</a> /
+                        <a href="@Localizer["FooterSitemapUrl"]">@Localizer["FooterSitemapLabel"]</a> /
+                        <a href="@Localizer["FooterPrivacyUrl"]">@Localizer["FooterPrivacyLabel"]</a>
                     </p>
+                    @await Html.PartialAsync("_SelectLanguagePartial")
                 </div>
             </div>
         </div>
@@ -155,7 +165,29 @@
     <script src="~/js/controllers/sub_menu_ctr.js"></script>
     <script src="~/js/controllers/location_ctr.js"></script>
     <script src="~/js/controllers/assist_ctr.js"></script>
-    <script src="~/js/controllers/social_media_ctr.js"></script>
+        
+    <partial name="_CookieConsentPartial" />    
+
+    <environment include="Development">
+        <script src="~/lib/d3/d3.min.js"></script>
+        <script src="~/lib/nvd3/nv.d3.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM">
+        </script>
+        <script src="~/lib/d3/d3.min.js"></script>
+        <script src="~/lib/nvd3/nv.d3.min.js"></script>
+    </environment>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

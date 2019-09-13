@@ -32,6 +32,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 loadAPIs();
                 // Load the dates of the forecast
                 loadMonthsClimate();
+                ViewBag.Section = SectionSite.Expert;
                 return View();
             }
             catch(Exception ex)

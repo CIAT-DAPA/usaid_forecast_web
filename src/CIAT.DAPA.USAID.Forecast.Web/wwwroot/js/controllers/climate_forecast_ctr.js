@@ -63,10 +63,10 @@
                           ClimateClimatologyFactory.getMonthlyData($scope.ws.id, $scope.months, setup.getClimatologyVarsForecast().upper).then(
                           function (data_u) {
                               $scope.climatology_upper = data_u;
-                              // Draw graphic
+                              /*// Draw graphic
                               draw_forecast();
                               // Close loading 
-                              tools.updateBackground();
+                              tools.updateBackground();*/
                               window.loading_screen.finish();
                               // Show tutorial
                               $rootScope.showTutorial();
@@ -100,7 +100,7 @@
           var period = '';
           // This cicle add the html code for the graphic pie.
           for (var i = 0; i < $scope.forecast.length; i++) {
-              var m = $scope.forecast[i];
+              var m = $scope.forecast[i];              
               if (i == 0)
                   period = m.month_name + ', ' + m.year + ' a ';
               else if (i == ($scope.forecast.length - 1))

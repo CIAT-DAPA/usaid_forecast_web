@@ -63,6 +63,7 @@ angular.module('ForecastApp')
                     var p = new Array({ label: 'Arriba de lo normal', type: 'upper', value: probabilities.upper },
                         { label: 'Normal', type: 'normal', value: probabilities.normal },
                         { label: 'Debajo de lo normal', type: 'lower', value: probabilities.lower });
+                    console.log(config.month_names);
                     return {
                         year: item.year,
                         month: item.month,

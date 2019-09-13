@@ -391,6 +391,15 @@ footer img {
     display: none;
 }
 
+/* Plots */
+.plot svg{
+    width: 100%;
+    min-height: 400px;
+}
+
+.plot_pie {
+    
+}
 /* Axis Charts */
 
 .x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {

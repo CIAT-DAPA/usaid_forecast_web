@@ -18,6 +18,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// </summary>
         protected WebAPIForecast apiForecast { get; set; }
 
+        protected string Root { get; set; }
+
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -26,10 +28,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public WebBaseController(IOptions<Settings> settings, IHostingEnvironment environment) : base()
         {
             hostingEnvironment = environment;
-            apiForecast = new WebAPIForecast()
-            {
-                root = settings.Value.api_fs,
-            };
+            Root = settings.Value.api_fs;
         }
 
         /// <summary>
@@ -37,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// </summary>
         protected void loadAPIs()
         {
-            ViewBag.api_fs = apiForecast.root;
+            ViewBag.api_fs = Root;
         }
 
         /// <summary>
