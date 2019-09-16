@@ -99,7 +99,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
                 // Getting climatology
                 RepositoryHistoricalClimatology rHCy = new RepositoryHistoricalClimatology(Root);
-                ViewBag.climatology = await rHCy.SearchAsync(ws.Id);
+                ViewBag.climatology = (await rHCy.SearchAsync(ws.Id)).FirstOrDefault();
+
+                // Settings variables
+                ViewBag.weather_vars = new string[] { "prec", "sol_rad", "t_max", "t_min" };
 
                 return View();
             }

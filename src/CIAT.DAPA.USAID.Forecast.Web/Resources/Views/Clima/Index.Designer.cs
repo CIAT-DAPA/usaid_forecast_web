@@ -61,20 +61,83 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {{{{cv.description_climatology}}}}. The climatology for &lt;span class = &quot;text-bold&quot;&gt; {{{{cv.name}}}} &lt;/span&gt; within the period between &lt;span class = &quot;text-bold&quot;&gt; {{{{cv.month_start }}}} to {{{{cv.month_end}}}} &lt;/span&gt; in the municipality &lt;span class = &quot;text-bold&quot;&gt; {{{{municipality_name}}}} &lt;/span&gt; shows the following: &lt;ul&gt; &lt;li&gt; The month with the highest &lt;span class = &quot;text-bold&quot;&gt; {{{{cv.name}}}} &lt;/span&gt; of the semester is &lt;span class = &quot;text-bold&quot;&gt; {{{{cv.max.month_name}}}} with {{{{cv.max. value | number: 0 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to shows us that.
         /// </summary>
-        public static string ClimatologyContent {
+        public static string ClimatologyContentEnd {
             get {
-                return ResourceManager.GetString("ClimatologyContent", resourceCulture);
+                return ResourceManager.GetString("ClimatologyContentEnd", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Monthly historical average of {{{{cv.name}}}} .
+        ///   Looks up a localized string similar to The climatology for.
+        /// </summary>
+        public static string ClimatologyContentStart {
+            get {
+                return ResourceManager.GetString("ClimatologyContentStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to in the weather station.
+        /// </summary>
+        public static string ClimatologyContentWS {
+            get {
+                return ResourceManager.GetString("ClimatologyContentWS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to average of the last 30 years for each month.
+        /// </summary>
+        public static string ClimatologyDescriptionEnd {
+            get {
+                return ResourceManager.GetString("ClimatologyDescriptionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These plot shows.
+        /// </summary>
+        public static string ClimatologyDescriptionStart {
+            get {
+                return ResourceManager.GetString("ClimatologyDescriptionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month with highest value is.
+        /// </summary>
+        public static string ClimatologyIndicatorHighest {
+            get {
+                return ResourceManager.GetString("ClimatologyIndicatorHighest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month with lowest value is.
+        /// </summary>
+        public static string ClimatologyIndicatorLowest {
+            get {
+                return ResourceManager.GetString("ClimatologyIndicatorLowest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly historical average of.
         /// </summary>
         public static string ClimatologyTitle {
             get {
                 return ResourceManager.GetString("ClimatologyTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string ClimatologyXAxis {
+            get {
+                return ResourceManager.GetString("ClimatologyXAxis", resourceCulture);
             }
         }
         
@@ -250,16 +313,70 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to January.
+        ///   Looks up a localized string similar to it presents the following behavior.
         /// </summary>
-        public static string January {
+        public static string HistoricalContentEnd {
             get {
-                return ResourceManager.GetString("January", resourceCulture);
+                return ResourceManager.GetString("HistoricalContentEnd", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to January, February, March, April, May, June, July, August, September, October, November, December.
+        ///   Looks up a localized string similar to in the weather station.
+        /// </summary>
+        public static string HistoricalContentMid {
+            get {
+                return ResourceManager.GetString("HistoricalContentMid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Historically in the municipality of.
+        /// </summary>
+        public static string HistoricalContentStart {
+            get {
+                return ResourceManager.GetString("HistoricalContentStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can filter the month of interest by clicking on the category.
+        /// </summary>
+        public static string HistoricalDescriptionEnd {
+            get {
+                return ResourceManager.GetString("HistoricalDescriptionEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This plot shows the historical values of.
+        /// </summary>
+        public static string HistoricalDescriptionStart {
+            get {
+                return ResourceManager.GetString("HistoricalDescriptionStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string HistoricalPlotXAxis {
+            get {
+                return ResourceManager.GetString("HistoricalPlotXAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monthly historical behavior of.
+        /// </summary>
+        public static string HistoricalTitle {
+            get {
+                return ResourceManager.GetString("HistoricalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to January,February,March,April,May,June,July,August,September,October,November,December.
         /// </summary>
         public static string Months {
             get {
@@ -300,6 +417,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         public static string sol_rad_unit {
             get {
                 return ResourceManager.GetString("sol_rad_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximun and minimun temperatures.
+        /// </summary>
+        public static string t {
+            get {
+                return ResourceManager.GetString("t", resourceCulture);
             }
         }
         

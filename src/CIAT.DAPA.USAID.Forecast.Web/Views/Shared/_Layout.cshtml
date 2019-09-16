@@ -11,10 +11,11 @@
     <!-- Start SEO -->
     <script src="~/js/seo/analytics.js"></script>
     <!-- End SEO -->
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/nvd3/nv.d3.min.css">
+        <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/menu.css" />
     </environment>
@@ -23,13 +24,14 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
               asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/nvd3/nv.d3.min.css">
+        <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/menu.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 
-    <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">
-    <link rel="stylesheet" href="~/lib/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">    
     <link rel="shortcut icon" href="~/favicon.ico">
 
 </head>
@@ -135,14 +137,40 @@
     </script>
     <!-- Start Loader -->
 
+
+
+    <partial name="_CookieConsentPartial" />
+
+    <environment include="Development">
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/d3/d3.min.js"></script>
+        <script src="~/lib/nvd3/nv.d3.min.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/js/tools/tools.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM">
+        </script>
+        <script src="~/lib/d3/d3.min.js"></script>
+        <script src="~/lib/nvd3/nv.d3.min.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/js/tools/tools.js"></script>
+    </environment>
+
     <script src="~/js/lib/compatibilty/ie.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
     <script src="~/lib/angular/angular.min.js"></script>
     <script src="~/lib/angular-cookies/angular-cookies.min.js"></script>
-    <script src="~/lib/select2/dist/js/select2.full.min.js"></script>
     <script src="~/js/menu.js"></script>
     <script src="~/js/app.js"></script>
     <script src="~/js/services/setup.js"></script>
@@ -165,29 +193,11 @@
     <script src="~/js/controllers/sub_menu_ctr.js"></script>
     <script src="~/js/controllers/location_ctr.js"></script>
     <script src="~/js/controllers/assist_ctr.js"></script>
-        
-    <partial name="_CookieConsentPartial" />    
 
-    <environment include="Development">
-        <script src="~/lib/d3/d3.min.js"></script>
-        <script src="~/lib/nvd3/nv.d3.min.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"
-                asp-fallback-src="~/lib/jquery/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM">
-        </script>
-        <script src="~/lib/d3/d3.min.js"></script>
-        <script src="~/lib/nvd3/nv.d3.min.js"></script>
-    </environment>
     @RenderSection("Scripts", required: false)
+
+    <script type="text/javascript">
+        updateBackground();
+    </script>
 </body>
 </html>

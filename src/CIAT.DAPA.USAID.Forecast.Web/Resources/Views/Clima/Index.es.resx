@@ -117,13 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ClimatologyContent" xml:space="preserve">
-    <value>{{{{cv.description_climatology}}}}. La climatología para la &lt;span class="text-bold"&gt;{{{{cv.name}}}}&lt;/span&gt; en el período de &lt;span class="text-bold"&gt;{{{{cv.month_start}}}} a {{{{cv.month_end}}}}&lt;/span&gt; en el municipio &lt;span class="text-bold"&gt;{{{{municipality_name}}}}&lt;/span&gt; nos indica que: &lt;ul&gt;
-&lt;li&gt; El mes con mayor &lt;span class="text-bold"&gt;{{{{cv.name}}}}&lt;/span&gt; del semestre es &lt;span class="text-bold"&gt;{{{{cv.max.month_name}}}} con {{{{cv.max.value | number : 0}}}} {{{{cv.metric}}}}&lt;/span&gt;. &lt;/li&gt; &lt;li&gt; El mes con menor &lt;span class="text-bold"&gt;{{{{cv.name}}}}&lt;/span&gt; del semestre es &lt;span class="text-bold"&gt;{{{{cv.min.month_name}}}} con {{{{cv.min.value | number : 0}}}} {{{{cv.metric}}}}&lt;/span&gt;. &lt;/li&gt;
-&lt;/ul&gt;</value>
-  </data>
   <data name="ClimatologyTitle" xml:space="preserve">
-    <value>Promedio histórico de {{{{cv.name}}}} mensual</value>
+    <value>Promedio histórico mensual de</value>
   </data>
   <data name="ForecastAbove" xml:space="preserve">
     <value>por encima de lo normal</value>
@@ -167,11 +162,8 @@
   <data name="ForecastWSProvider" xml:space="preserve">
     <value>provista por el</value>
   </data>
-  <data name="January" xml:space="preserve">
-    <value>Enero</value>
-  </data>
   <data name="Months" xml:space="preserve">
-    <value>Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre</value>
+    <value>Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre</value>
   </data>
   <data name="prec" xml:space="preserve">
     <value>Precipitación</value>
@@ -214,5 +206,53 @@
   </data>
   <data name="t_min_unit" xml:space="preserve">
     <value>°C</value>
+  </data>
+  <data name="ClimatologyContentEnd" xml:space="preserve">
+    <value>nos indica que</value>
+  </data>
+  <data name="ClimatologyContentStart" xml:space="preserve">
+    <value>La climatología para</value>
+  </data>
+  <data name="ClimatologyContentWS" xml:space="preserve">
+    <value>en la estación climatológica</value>
+  </data>
+  <data name="ClimatologyDescriptionEnd" xml:space="preserve">
+    <value>promedio de los últimos 30 años para cada mes</value>
+  </data>
+  <data name="ClimatologyDescriptionStart" xml:space="preserve">
+    <value>Esta gráfica muestra</value>
+  </data>
+  <data name="t" xml:space="preserve">
+    <value>Temperaturas máximas y mínimas</value>
+  </data>
+  <data name="ClimatologyXAxis" xml:space="preserve">
+    <value>Mes</value>
+  </data>
+  <data name="ClimatologyIndicatorHighest" xml:space="preserve">
+    <value>El mes con el valor más alto es</value>
+  </data>
+  <data name="HistoricalContentEnd" xml:space="preserve">
+    <value>presenta el siguiente comportamiento</value>
+  </data>
+  <data name="HistoricalContentStart" xml:space="preserve">
+    <value>Históricamente en el municipio de</value>
+  </data>
+  <data name="HistoricalDescriptionEnd" xml:space="preserve">
+    <value>Puede filtrar el mes de interés presionando click sobre la categoria</value>
+  </data>
+  <data name="HistoricalDescriptionStart" xml:space="preserve">
+    <value>Esta gráfica muestra los valores históricos de</value>
+  </data>
+  <data name="HistoricalPlotXAxis" xml:space="preserve">
+    <value>Año</value>
+  </data>
+  <data name="HistoricalTitle" xml:space="preserve">
+    <value>Comportamiento histórico mensual de</value>
+  </data>
+  <data name="ClimatologyIndicatorLowest" xml:space="preserve">
+    <value>El mes con el valor más bajo es</value>
+  </data>
+  <data name="HistoricalContentMid" xml:space="preserve">
+    <value>en la estación climatológica</value>
   </data>
 </root>
