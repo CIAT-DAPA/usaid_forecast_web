@@ -25,7 +25,11 @@
     {
       "library": "select2@4.0.10",
       "destination": "wwwroot/lib/select2/",
-      "files": ["css/select2.min.css", "js/select2.full.min.js"]
+      "files": [ "css/select2.min.css", "js/select2.full.min.js" ]
+    },
+    {
+      "library": "leaflet@1.5.1",
+      "destination": "wwwroot/lib/leaflet/"
     }
   ]
 }

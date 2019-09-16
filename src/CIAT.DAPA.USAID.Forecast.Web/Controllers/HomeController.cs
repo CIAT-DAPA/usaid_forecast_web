@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
@@ -22,9 +23,24 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return RedirectToAction("Index", "Clima");
+            try
+            {
+                // Load the urls of the web api's
+                loadAPIs();
+                // Set the parameters
+                ViewBag.Section = SectionSite.Climate;
+
+                // Searching the weather station, if the parameters don't come, it will redirect a default weather station
+                RepositoryWeatherStations rWS = new RepositoryWeatherStations(Root);
+                var ws = await rWS.ListAsync();
+                return View(ws);
+            }
+            catch(Exception ex)
+            {
+                return View("Error");
+            }
         }
 
         public IActionResult Glosario()

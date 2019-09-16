@@ -11,6 +11,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         Crop,
         Expert,
         Glossary,
-        About
+        About,
+        Map
     }
 }

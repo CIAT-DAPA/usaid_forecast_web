@@ -53,6 +53,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                 ext_id = w.ext_id,
                                 name = w.name,
                                 origin = w.origin,
+                                latitude = w.latitude,
+                                longitude = w.longitude,
                                 ranges = w.ranges.Select(p => new YieldRangeEntity()
                                 {
                                     crop_id = p.crop.ToString(),

@@ -50,5 +50,17 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
                                         .SingleOrDefault(p => p.Name.Equals(ws));
             return answer;
         }
+
+        /// <summary>
+        /// Method that list all weather station by its location
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<WeatherStation>> ListAsync()
+        {
+            var states = await Client.GetGeographicAsync();
+            List<WeatherStation> answer = states.SelectMany(p => p.Municipalities)
+                                        .SelectMany(p => p.Weather_Stations).ToList();
+            return answer;
+        }
     }
 }

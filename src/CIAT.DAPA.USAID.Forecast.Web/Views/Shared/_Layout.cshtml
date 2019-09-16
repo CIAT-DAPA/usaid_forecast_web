@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/nvd3/nv.d3.min.css">
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
+        <link rel="stylesheet" href="~/lib/leaflet/leaflet.css">
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/menu.css" />
     </environment>
@@ -26,6 +27,10 @@
               asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/lib/nvd3/nv.d3.min.css">
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+              asp-fallback-href="~/lib/leaflet/leaflet.css"
+              integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+              crossorigin="" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/menu.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
@@ -35,7 +40,7 @@
     <link rel="shortcut icon" href="~/favicon.ico">
 
 </head>
-<body ng-app="ForecastApp">
+<body>
     <header class="header-logo">
         <h1 class="text-center">
             <a href="http://www.aclimatecolombia.org"><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
@@ -164,7 +169,7 @@
         </script>
         <script src="~/lib/d3/d3.min.js"></script>
         <script src="~/lib/nvd3/nv.d3.min.js"></script>
-        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>        
         <script src="~/js/tools/tools.js"></script>
     </environment>
 
@@ -191,7 +196,7 @@
     <script src="~/js/services/crop_yield_forecast.js"></script>
     <script src="~/js/services/crop_yield_historical.js"></script>
     <script src="~/js/controllers/sub_menu_ctr.js"></script>
-    <script src="~/js/controllers/location_ctr.js"></script>
+    <!-- <script src="~/js/controllers/location_ctr.js"></script> -->
     <script src="~/js/controllers/assist_ctr.js"></script>
 
     @RenderSection("Scripts", required: false)

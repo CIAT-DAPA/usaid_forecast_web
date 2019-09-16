@@ -3,10 +3,7 @@
     ViewData["Meta_Description"] = "Predicción y datos históricos del clima en " + ViewBag.s + ", " + ViewBag.m + ", " + ViewBag.w;
     ViewData["Meta_Keywords"] = "pronóstico,predicción,clima,precipitación,radiación solar,temperatura,temperatura máxima,temperatura mínima,histórico climático,climatología," + ViewBag.s + "," + ViewBag.m + "," + ViewBag.w;
 }
-<!-- Start global variables -->
-<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-<input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-<!-- End global variables -->
+
 @if (ViewBag.ws != null)
 {
     <div id="containerBlock">

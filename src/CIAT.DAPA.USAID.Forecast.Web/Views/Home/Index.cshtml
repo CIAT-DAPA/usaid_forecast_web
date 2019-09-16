@@ -1,5 +1,37 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Meta_Description"] = "Predicción y datos históricos del clima en ";
+    ViewData["Meta_Keywords"] = "pronóstico,predicción,clima,precipitación,radiación solar,temperatura,temperatura máxima,temperatura mínima,histórico climático,climatología," + ViewBag.s + "," + ViewBag.m + "," + ViewBag.w;
 }
 
-<h1>Home</h1>
+
+<div id="containerBlock">
+    <section class="col-md-12 sections">
+        <div class="row section-content">
+            <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
+            <div id="map">
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section Scripts {
+<script src="~/lib/leaflet/leaflet.js"></script>
+<script type="text/javascript">
+    var model = @Html.Raw(Json.Serialize(Model));
+    var map = L.map('map').setView([model[0].latitude, model[0].longitude], 6);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a', 'b', 'c']
+    }).addTo(map);
+
+    for ( var i=0; i < model.length; ++i )
+    {
+       L.marker( [model[i].latitude, model[i].longitude] )
+          .bindPopup( '<a href="' + '" target="_blank">' + model[i].name + '</a>' )
+          .addTo( map );
+    }
+    window.loading_screen.finish();
+</script>
+}

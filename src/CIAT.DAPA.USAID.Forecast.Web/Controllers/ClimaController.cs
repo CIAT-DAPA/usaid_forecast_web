@@ -33,9 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             try
             {
                 // Load the urls of the web api's
-                loadAPIs();
-                // Load the dates of the forecast
-                loadMonthsClimate();
+                loadAPIs();                
                 // Set the parameters
                 ViewBag.s = state ?? string.Empty;
                 ViewBag.m = municipality ?? string.Empty;

@@ -16,6 +16,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Entities
         public string Name { get; set; }
         [DataMember(Name = "origin")]
         public string Origin { get; set; }
+        [DataMember(Name = "latitude")]
+        public double Latitude { get; set; }
+        [DataMember(Name = "longitude")]
+        public double Longitude { get; set; }
         [DataMember(Name = "ranges")]
         public IEnumerable<Range> Ranges { get; set; }
     }
