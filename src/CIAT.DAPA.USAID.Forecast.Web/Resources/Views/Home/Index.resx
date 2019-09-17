@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Description" xml:space="preserve">
+    <value>In this section you can see what are the areas in which we are generating agroclimatic forecasts</value>
+  </data>
   <data name="Title" xml:space="preserve">
-    <value>Map</value>
+    <value>Areas of agroclimatic forecasts</value>
   </data>
 </root>

@@ -55,11 +55,29 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
         /// Method that list all weather station by its location
         /// </summary>
         /// <returns></returns>
-        public async Task<List<WeatherStation>> ListAsync()
+        public async Task<List<WeatherStationFull>> ListAsync()
         {
             var states = await Client.GetGeographicAsync();
-            List<WeatherStation> answer = states.SelectMany(p => p.Municipalities)
-                                        .SelectMany(p => p.Weather_Stations).ToList();
+            List<WeatherStationFull> answer = new List<WeatherStationFull>();
+            foreach (var s in states)
+            {
+                foreach (var m in s.Municipalities)
+                {
+                    foreach (var w in m.Weather_Stations)
+                        answer.Add(new WeatherStationFull()
+                        {
+                            Ext_Id = w.Ext_Id,
+                            Id = w.Id,
+                            Latitude = w.Latitude,
+                            Longitude = w.Longitude,
+                            Name = w.Name,
+                            Origin = w.Origin,
+                            Ranges = w.Ranges,
+                            State = s.Name,
+                            Municipality = m.Name
+                        });
+                }
+            }
             return answer;
         }
     }
