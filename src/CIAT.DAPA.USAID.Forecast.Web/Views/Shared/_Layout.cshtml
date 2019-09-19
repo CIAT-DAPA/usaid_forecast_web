@@ -123,7 +123,6 @@
                         <a href="@Localizer["FooterSitemapUrl"]">@Localizer["FooterSitemapLabel"]</a> /
                         <a href="@Localizer["FooterPrivacyUrl"]">@Localizer["FooterPrivacyLabel"]</a>
                     </p>
-                    @await Html.PartialAsync("_SelectLanguagePartial")
                 </div>
             </div>
         </div>
@@ -154,7 +153,7 @@
         <script src="~/lib/select2/js/select2.full.min.js"></script>
         <script src="~/lib/leaflet/leaflet.js"></script>
         <script src="~/js/tools/tools.js"></script>
-
+        <script src="~/js/tools/menu.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
@@ -174,6 +173,7 @@
         <script src="~/lib/select2/js/select2.full.min.js"></script>
         <script src="~/lib/leaflet/leaflet.js"></script>
         <script src="~/js/tools/tools.js"></script>
+        <script src="~/js/tools/menu.js"></script>
     </environment>
 
     <!--
@@ -182,6 +182,7 @@
     @RenderSection("Scripts", required: false)
 
     <script type="text/javascript">
+        change_searchbox(' @Localizer["ChooseOne"]');
         updateBackground();
     </script>
 </body>

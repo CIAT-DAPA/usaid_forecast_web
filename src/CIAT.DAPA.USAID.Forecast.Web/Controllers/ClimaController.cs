@@ -32,13 +32,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             try
             {
-                // Load the urls of the web api's
-                loadAPIs();                
                 // Set the parameters
                 ViewBag.s = state ?? string.Empty;
                 ViewBag.m = municipality ?? string.Empty;
                 ViewBag.w = station ?? string.Empty;
                 ViewBag.Section = SectionSite.Climate;
+                
+                // Setting data
+                SetWS();
 
                 // Searching the weather station, if the parameters don't come, it will redirect a default weather station                
                 if (string.IsNullOrEmpty(state) || string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(station))

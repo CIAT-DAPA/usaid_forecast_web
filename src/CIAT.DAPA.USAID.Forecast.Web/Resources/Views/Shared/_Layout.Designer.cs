@@ -61,6 +61,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose one locality.
+        /// </summary>
+        public static string ChooseOne {
+            get {
+                return ResourceManager.GetString("ChooseOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string FooterContactLabel {

@@ -1,8 +1,9 @@
 ﻿/* Navbar */
 
-#mainMenu{
-    margin-bottom:0;
+#mainMenu {
+    margin-bottom: 0;
 }
+
 .navbar-default {
     background-color: #2ecc71;
     border-color: #27ae60;
@@ -23,7 +24,7 @@
 
     .navbar-default .navbar-nav > li > a {
         color: #ecf0f1;
-        font-size:1.2em;
+        font-size: 1.2em;
     }
 
         .navbar-default .navbar-nav > li > a:hover,
@@ -97,18 +98,23 @@
 }
 
 /* Maize */
-#menu_main_maize img{
-    opacity:0.9;
+#menu_main_maize img {
+    opacity: 0.9;
 }
 
-#menu_main_maize:hover img{
-    opacity:1;
+#menu_main_maize:hover img {
+    opacity: 1;
 }
 
-.navbar-nav>li>.dropdown-menu {
-    min-width:300px;
+.navbar-nav > li > .dropdown-menu {
+    width: 300px;
 }
 
-.menu-item{
-    width:100%;
+.navbar-nav > li > .drop_language {
+    width: 15px;
+    cursor: pointer;
+}
+
+.menu-item {
+    width: 100%;
 }

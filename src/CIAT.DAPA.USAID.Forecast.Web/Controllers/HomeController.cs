@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
+using System.Web;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
@@ -43,17 +44,22 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         public IActionResult Glosario()
         {
-            // Load the urls of the web api's
-            loadAPIs();
+                       
             ViewBag.Section = SectionSite.Glossary;
+
+            // Setting data
+            SetWS();
+
             return View();
         }
 
         public IActionResult AcercaDe()
         {
-            // Load the urls of the web api's
-            loadAPIs();
             ViewBag.Section = SectionSite.About;
+
+            // Setting data
+            SetWS();
+
             return View();
         }
 
@@ -65,8 +71,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
-
-            return LocalRedirect(returnUrl);
+            string url = System.Web.HttpUtility.UrlPathEncode(returnUrl); //"~/";
+            /*url = url + string.Join(
+                "/",
+                returnUrl.Replace("~/","").Split("/").Select(s => HttpUtility.UrlEncode(s))
+            );*/
+            
+            return Redirect(url);
         }
     }
 }
