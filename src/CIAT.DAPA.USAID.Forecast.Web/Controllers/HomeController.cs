@@ -26,16 +26,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public async Task<IActionResult> Index()
         {
             try
-            {
-                // Load the urls of the web api's
-                loadAPIs();
+            {                
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
 
-                // Searching the weather station, if the parameters don't come, it will redirect a default weather station
-                RepositoryWeatherStations rWS = new RepositoryWeatherStations(Root);
-                var ws = await rWS.ListAsync();
-                return View(ws);
+                // Setting data
+                SetWS();
+
+                return View();
             }
             catch(Exception ex)
             {

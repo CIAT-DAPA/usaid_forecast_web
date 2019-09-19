@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Entities;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,20 +33,29 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             {
                 // Load the urls of the web api's
                 loadAPIs();
-                // Load the dates of the forecast
-                loadMonthsCrop();
-                // Set the parameters                
+                // Set the parameters
                 ViewBag.s = state ?? string.Empty;
                 ViewBag.m = municipality ?? string.Empty;
                 ViewBag.w = station ?? string.Empty;
                 ViewBag.c = crop ?? string.Empty;
                 ViewBag.Section = SectionSite.Crop;
+
+                // Searching the weather station, if the parameters don't come, it will redirect a default weather station
+                RepositoryWeatherStations rWS = new RepositoryWeatherStations(Root);
+                if (string.IsNullOrEmpty(state) || string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(station) || string.IsNullOrEmpty(crop))
+                {
+                    var wsDefault = DefaultWeatherStationCrop();
+                    return RedirectToAction("Index", new { wsDefault.State, wsDefault.Municipality, wsDefault.Station, wsDefault.Crop });
+                }
+                WeatherStation ws = await rWS.SearchAsync(state, municipality, station);
+                ViewBag.ws = ws;
+
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error");
-            }            
+            }
         }
     }
 }

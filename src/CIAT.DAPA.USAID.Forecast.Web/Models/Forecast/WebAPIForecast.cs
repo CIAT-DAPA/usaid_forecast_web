@@ -28,6 +28,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// </summary>
         private static readonly string Geographic = "Geographic/";
         /// <summary>
+        /// Get or set the path to get geographic information 
+        /// </summary>
+        private static readonly string GeographicCrop = "Geographic/Crop/";
+        /// <summary>
         /// Get or set the path to get forecast weather information
         /// </summary>
         private static readonly string ForecastWeather = "Forecast/Climate/";
@@ -40,15 +44,18 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// </summary>
         private static readonly string HistoricalClimatology = "Historical/Climatology/";
         /// <summary>
+        /// Get or set the path to get historical climate information
+        /// </summary>
+        private static readonly string ForecastYield = "Forecast/Yield/";
+        /// <summary>
         /// Get or set the path to get geographic agronomic
         /// </summary>
-        private static readonly string Agronomic = "";
-        
-        /// <summary>
-        /// Get or set the path to get forecast information
-        /// </summary>
-        private static readonly string ForecastYield = "";
+        private static readonly string Agronomic = "";        
 
+        /// <summary>
+        /// Method Construct
+        /// </summary>
+        /// <param name="root"></param>
         public WebAPIForecast(string root)
         {
             Root = root;
@@ -72,15 +79,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
                 string json = reader.ReadToEnd();
                 return json;
             }
-        }
-
-
-        
+        }        
 
         /// <summary>
         /// Method that list all municipalities from the forecast web api 
         /// </summary>
-        /// <returns>List municipalities</returns>
+        /// <returns></returns>
         public async Task<IEnumerable<States>> GetGeographicAsync()
         {
             string json = await RequestDataAsync(Root + Geographic + Format);
@@ -91,7 +95,18 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Method that list all municipalities from the forecast web api 
         /// </summary>
-        /// <returns>List municipalities</returns>
+        /// <returns></returns>
+        public async Task<IEnumerable<StatesCrop>> GetGeographicCropAsync()
+        {
+            string json = await RequestDataAsync(Root + GeographicCrop + Format);
+            var answer = JsonConvert.DeserializeObject<IEnumerable<StatesCrop>>(json);
+            return answer;
+        }
+
+        /// <summary>
+        /// Method that list all municipalities from the forecast web api 
+        /// </summary>
+        /// <returns></returns>
         public async Task<ForecastWeather> GetForecastWeatherAsync(string ws)
         {
             string json = await RequestDataAsync(Root + ForecastWeather + ws + "/true/" + Format);
@@ -102,7 +117,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Method that get all historical climateof weather station
         /// </summary>
-        /// <returns>List municipalities</returns>
+        /// <returns></returns>
         public async Task<IEnumerable<HistoricalClimate>> GetHistoricalClimateAsync(string ws)
         {
             string json = await RequestDataAsync(Root + HistoricalClimate + ws + "/" + Format);
@@ -113,34 +128,23 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Method that list all municipalities from the forecast web api 
         /// </summary>
-        /// <returns>List municipalities</returns>
+        /// <returns></returns>
         public async Task<IEnumerable<HistoricalClimatology>> GetHistoricalClimatologyAsync(string ws)
         {
             string json = await RequestDataAsync(Root + HistoricalClimatology + ws + "/" + Format);
             var answer = JsonConvert.DeserializeObject<IEnumerable<HistoricalClimatology>>(json);
             return answer;
         }
-        /*
-        /// <summary>
-        /// Method that get all configuration agronomic data from the forecast web api 
-        /// </summary>
-        /// <returns>Agronomic</returns>
-        public async Task<IEnumerable<Crop>> getAgronomicAsync()
-        {
-            string json = await requestDataAsync(root + agronomic);
-            var json_agronomic = JsonConvert.DeserializeObject<IEnumerable<Crop>>(json);            
-            return json_agronomic;
-        }
 
         /// <summary>
-        /// Method that get all configuration agronomic data from the forecast web api 
+        /// Method that gets the output of yield forecast for a weather station
         /// </summary>
-        /// <returns>Forecast</returns>
-        public async Task<Forecast> getForecastAsync()
+        /// <returns></returns>
+        public async Task<IEnumerable<ForecastYield>> GetForecastYieldAsync(string ws)
         {
-            string json = await requestDataAsync(root + forecast);
-            var json_forecast = JsonConvert.DeserializeObject<Forecast>(json);
-            return json_forecast;
-        }*/
+            string json = await RequestDataAsync(Root + ForecastYield + ws + "/" + Format);
+            var answer = JsonConvert.DeserializeObject<IEnumerable<ForecastYield>>(json);
+            return answer;
+        }
     }
 }

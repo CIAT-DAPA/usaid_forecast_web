@@ -17,23 +17,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
         }
 
         /// <summary>
-        /// Method that returns the first weather station provide for the API
-        /// </summary>
-        /// <returns></returns>
-        public async Task<DefaultWeatherStation> DefaultWeatherStationAsync()
-        {
-            var states = await Client.GetGeographicAsync();
-            States s = states.FirstOrDefault();
-            DefaultWeatherStation answer = new DefaultWeatherStation()
-            {
-                State = s.Name,
-                Municipality = s.Municipalities.First().Name,
-                Station = s.Municipalities.First().Weather_Stations.First().Name
-            };
-            return answer;
-        }
-
-        /// <summary>
         /// Method that search a weather station by its location
         /// </summary>
         /// <param name="state">Name of state</param>
@@ -71,6 +54,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
                             Latitude = w.Latitude,
                             Longitude = w.Longitude,
                             Name = w.Name,
+                            Station = w.Name,
                             Origin = w.Origin,
                             Ranges = w.Ranges,
                             State = s.Name,
@@ -78,6 +62,43 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
                         });
                 }
             }
+            return answer;
+        }
+
+        /// <summary>
+        /// Method that list all weather station by its location
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<WeatherStationFullCrop>> ListByCropAsync()
+        {
+            var crops = await Client.GetGeographicCropAsync();
+            List<WeatherStationFullCrop> answer = new List<WeatherStationFullCrop>();
+            foreach (var c in crops)
+            {
+                foreach (var s in c.States)
+                {
+                    foreach (var m in s.Municipalities)
+                    {
+                        foreach (var w in m.Weather_Stations)
+                            answer.Add(new WeatherStationFullCrop()
+                            {
+                                Ext_Id = w.Ext_Id,
+                                Id = w.Id,
+                                Latitude = w.Latitude,
+                                Longitude = w.Longitude,
+                                Name = w.Name,
+                                Station = w.Name,
+                                Origin = w.Origin,
+                                Ranges = w.Ranges,
+                                State = s.Name,
+                                Municipality = m.Name,
+                                CropId = c.Id,
+                                Crop = c.Name
+                            });
+                    }
+                }
+            }
+
             return answer;
         }
     }

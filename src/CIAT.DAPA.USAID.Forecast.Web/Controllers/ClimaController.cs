@@ -40,14 +40,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.w = station ?? string.Empty;
                 ViewBag.Section = SectionSite.Climate;
 
-                // Searching the weather station, if the parameters don't come, it will redirect a default weather station
-                RepositoryWeatherStations rWS = new RepositoryWeatherStations(Root);
+                // Searching the weather station, if the parameters don't come, it will redirect a default weather station                
                 if (string.IsNullOrEmpty(state) || string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(station))
                 {
-                    var wsDefault = await rWS.DefaultWeatherStationAsync();
+                    WeatherStationFull wsDefault = DefaultWeatherStation();
                     return RedirectToAction("Index", new { wsDefault.State, wsDefault.Municipality, wsDefault.Station });
                 }
-                WeatherStation ws = await rWS.SearchAsync(state, municipality, station);
+                WeatherStationFull ws = SearchWS(state, municipality, station);
                 ViewBag.ws = ws;
 
                 // Getting the forecast weather information
