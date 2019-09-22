@@ -406,6 +406,10 @@ footer img {
     height: 400px;
 }
 
+.plot_yield_bars svg {
+    width: 100%;
+    height: 265px;
+}
 /* Axis Charts */
 .x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
     display: none;

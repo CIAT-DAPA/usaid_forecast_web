@@ -50,7 +50,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Get or set the path to get geographic agronomic
         /// </summary>
-        private static readonly string Agronomic = "";        
+        private static readonly string Agronomic = "Agronomic/";        
 
         /// <summary>
         /// Method Construct
@@ -59,7 +59,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         public WebAPIForecast(string root)
         {
             Root = root;
-        
         }
                 
         /// <summary>
@@ -140,10 +139,21 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Method that gets the output of yield forecast for a weather station
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<ForecastYield>> GetForecastYieldAsync(string ws)
+        public async Task<ForecastYield> GetForecastYieldAsync(string ws)
         {
             string json = await RequestDataAsync(Root + ForecastYield + ws + "/" + Format);
-            var answer = JsonConvert.DeserializeObject<IEnumerable<ForecastYield>>(json);
+            var answer = JsonConvert.DeserializeObject<ForecastYield>(json);
+            return answer;
+        }
+
+        /// <summary>
+        /// Method that gets the agronomic configuration
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Agronomic>> GetAgronomicAsync()
+        {
+            string json = await RequestDataAsync(Root + Agronomic + "true/" + Format);
+            var answer = JsonConvert.DeserializeObject<IEnumerable<Agronomic>>(json);
             return answer;
         }
     }

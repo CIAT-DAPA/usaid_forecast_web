@@ -6,23 +6,22 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
 {
-    public class RepositoryForecastYield
+    public class RepositoryAgronomic
     {
         private WebAPIForecast Client { get; set; }
 
-        public RepositoryForecastYield(string root)
+        public RepositoryAgronomic(string root)
         {
             Client = new WebAPIForecast(root);
         }
 
         /// <summary>
-        /// Method that gets the forecast information
+        /// Method that gets the configuration of crops
         /// </summary>
-        /// <param name="ws">Weather station ID</param>
         /// <returns></returns>
-        public async Task<ForecastYield> SearchAsync(string ws)
+        public async Task<IEnumerable<Agronomic>> ListAsync()
         {
-            ForecastYield answer = await Client.GetForecastYieldAsync(ws);
+            IEnumerable<Agronomic> answer = await Client.GetAgronomicAsync();
             return answer;
         }
     }

@@ -4,13 +4,14 @@
  * @param {any} control : Div ID
  * @param {any} labels : array with months names
  */
-function bars(data, control, y_axis) {
+function bars(data, control, y_axis, rotate) {
     nv.addGraph(function () {
         var chart_bar = nv.models.discreteBarChart()
             .x(function (d) { return d.label })    //Specify the data accessors.
             .y(function (d) { return d.value })
             .staggerLabels(false)    //Too many bars and not enough room? Try staggering labels.                        
             .showValues(false)       //...instead, show the bar value right on top of each bar.                        
+            .rotateLabels(rotate ? -45 : 0)      //Angle to rotate x-axis labels.                        
             ;
 
         chart_bar.yAxis
@@ -49,7 +50,7 @@ function plot_bars(data, labels, vars, y_axis) {
                 };
             })
         }];
-        bars(b_data, ctrl, y_axis[v]);
+        bars(b_data, ctrl, y_axis[v], false);
     }
 
 }

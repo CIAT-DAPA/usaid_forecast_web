@@ -27,11 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public async Task<IActionResult> Index()
         {
             try
-            {
-                // Load the urls of the web api's
-                loadAPIs();
-                // Load the dates of the forecast
-                loadMonthsClimate();
+            {   
                 ViewBag.Section = SectionSite.Expert;
                 return View();
             }
