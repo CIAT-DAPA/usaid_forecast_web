@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="bio_acu_Description" xml:space="preserve">
+    <value>Cantidad de peso acumulado por todos los organos de la planta</value>
+  </data>
+  <data name="bio_acu_Title" xml:space="preserve">
+    <value>Bíomasa acumulada</value>
+  </data>
+  <data name="climate_Description" xml:space="preserve">
+    <value>Los modelos de predicción  climática son herramientas esenciales para el estudio y avance en la  predicción de la variabilidad climática. Las predicciones climáticas estacionales a 6 meses sobre la precipitación son realizadas con un modelo estadístico, el cual tiene como fundamento identificar los modos de variabilidad del sistema climático y la asociación de estos con variables océano-atmosféricas. Este producto es útil para tener una referencia del comportamiento más probable a ocurrir, pero es necesario aclarar que no considera eventos extremos puntuales y de corta duración que puedan tener lugar en algunas zonas puntuales del país. El pronóstico probabilístico está expresado en porcentaje y representa la probabilidad de que ocurra la condición de precipitación en tres categorías: &lt;ul&gt;
+&lt;li&gt;Precipitaciones por debajo de lo normal: esto indica que se van a presentar valores de precipitación inferiores a los registrados históricamente para el período de interés.&lt;/li&gt;
+&lt;li&gt;Precipitaciones normales: esto indica que se van a presentar valores de precipitación muy similares a lo  registrado históricamente para el período de interés.&lt;/li&gt;
+&lt;li&gt;Precipitaciones por encima de lo normal: esto indica que se van a presentar valores de precipitación superiores a los registrados históricamente para el período de interés.&lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
+  <data name="climate_Title" xml:space="preserve">
+    <value>Predicción Climática</value>
+  </data>
+  <data name="conf_int_Description" xml:space="preserve">
+    <value>En el caso de un pronostico agroclimatico, el intervalo de confianza corresponde al rango de valor (por ejemplo, entre 5 kg/ha y 6kg/ha) dentro del cual hay más certeza que  el pronostico sea acertado (ocurra)</value>
+  </data>
+  <data name="conf_int_Title" xml:space="preserve">
+    <value>Intervalo de confianza</value>
+  </data>
+  <data name="d_dry_Description" xml:space="preserve">
+    <value>Periodo de tiempo medido en días, desde la madurez fisiologica hasta la cosecha</value>
+  </data>
+  <data name="d_dry_Title" xml:space="preserve">
+    <value>Días a secado</value>
+  </data>
+  <data name="d_har_Description" xml:space="preserve">
+    <value>Los días a cosecha corresponden al numero de días entre la siembra de las semillas hasta la cosecha del cultivo.  Por ejemplo se calculan entre 100 y 150 días entre la siembra y la cosecha del maíz. Está información permite calcular la epoca de cosecha. En el caso del pronostico agro-climatico o de rendimiento, el rendimiento potencial esta calculado a partir de la fecha de siembra, asumiendo un numero de día estandar hasta la cosecha</value>
+  </data>
+  <data name="d_har_Title" xml:space="preserve">
+    <value>Días a cosecha</value>
+  </data>
+  <data name="eva_Description" xml:space="preserve">
+    <value>La evapotranspiracion corresponde a la cantidad de agua del suelo que vuelve a la atmósfera como consecuencia de la evaporación del agua de un suelo humedo y de la transpiración de las plantas en crecimiento. La evapotranspiración se mide en milimetros por día (mm/día), y sirve para calcular la necesidad de riego en un cultivo. La evapotranspiración (llamada tambien necesidad hídrica de algun cultivo) depende de las condiciones climáticas de una zona geografica</value>
+  </data>
+  <data name="eva_Title" xml:space="preserve">
+    <value>Evapotranspiración</value>
+  </data>
+  <data name="forecast_Description" xml:space="preserve">
+    <value>El pronostico agroclimatico da información sobre la fecha óptima de siembra y variedad de mejor desempaño de acuerdo a las condiciones climaticas esperadas en una zona especifica. El pronotico agroclimatico se caulcula a partir de un pronóstico climático y con la simulación de desarrollo de un cultivo (calibrado y validado) segun el pronostico climatico. La información proporcionada por el pronostico agroclimatico puede ser valiosa para apoyar la toma de decisiones agronómicas tales como qué sembrar (qué variedad sembrar para obtener mayor rendimiento) y cuando sembrar (qué fecha de siembra es óptima para obtener mayor rendimiento)</value>
+  </data>
+  <data name="forecast_Title" xml:space="preserve">
+    <value>Pronóstico agroclimático</value>
+  </data>
+  <data name="prec_acu_Description" xml:space="preserve">
+    <value>Cantidad diaria de lluvia sumada a traves del tiempo, puede ser útil tener este valor por mes, por semestre de siembra o por año</value>
+  </data>
+  <data name="prec_acu_Title" xml:space="preserve">
+    <value>Precipitación acumulada</value>
+  </data>
+  <data name="prec_Description" xml:space="preserve">
+    <value>La precipitación corresponde a la cantidad de agua que cae (lluvia, granizo) sobre la superficie del suelo. Se mide en milimetros ( 1 mm equivale a 1 litro de agua por cada metro cuadrado) mediante el total de agua recogido en un pluviómetro en 24 horas. Las cantidades diarias se suman por mes y por año, así se determina el promedio de las precipitaciones (lluvias, granizo) obtenidas a lo largo de un número considerable de años (más de 30 años, en general) de una zona</value>
+  </data>
+  <data name="prec_Title" xml:space="preserve">
+    <value>Precipitación</value>
+  </data>
+  <data name="pro_his_Description" xml:space="preserve">
+    <value>Para conocer el comportamiento pasado del clima en una zona y al mismo tiempo ser capaz de predecir su comportamiento a futuro, conocer el promedio historico del clima es importante. El promedio historico climatioco corresponde al promedio de las variables de clima (precipitación, temperatura, viento, humedad...) medido durante muchos años (en general, más de 30 años). Esto permite conocer el comportamientó 'normal' (o promedio) del clima de una zona especifica y de un mes especifico. El comportamiento 'normal' constituye la referencia sobre la cual el pronostico climatico se basa para decir que hay más o menos probabilidad para que el clima sea por encima/ por debajo/ o dentro de los ramgos normales</value>
+  </data>
+  <data name="pro_his_Title" xml:space="preserve">
+    <value>Promedio histórico climático</value>
+  </data>
+  <data name="sol_rad_Description" xml:space="preserve">
+    <value>La radiación solar es aprovechada por las plantas para realizar la fotosíntesis. La producción potencial final de un cultivo (expresada como materia seca total) depende en parte de la cantidad del nivel de captación por la planta. Para obtener altas tasas de fotosíntesis y mayores rendimientos es necesario maximizar la intercepción de la luz</value>
+  </data>
+  <data name="sol_rad_Title" xml:space="preserve">
+    <value>Radiación solar</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Glosario</value>
+  </data>
+  <data name="t_max_acu_Description" xml:space="preserve">
+    <value>Cantidad de calor, medido en grados centígrados de los valores mas altos, a traves de varios días o meses</value>
+  </data>
+  <data name="t_max_acu_Title" xml:space="preserve">
+    <value>Temperatura máxima acumulada</value>
+  </data>
+  <data name="t_max_Description" xml:space="preserve">
+    <value>La temperatura es registrada por los termómetros, y medida en grados centrigrados. Así, la temperarura máxima es el valor más alto (maximo calor) regristrado en un intervalo de tiempo dado. En un día, normalmente corresponde al medio día</value>
+  </data>
+  <data name="t_max_Title" xml:space="preserve">
+    <value>Temperatura máxima</value>
+  </data>
+  <data name="t_min_acu_Description" xml:space="preserve">
+    <value>Cantidad de calor, medido en grados centígrados de los valores mas bajos, a traves de varios días o meses</value>
+  </data>
+  <data name="t_min_acu_Title" xml:space="preserve">
+    <value>Temperatura mínima acumulada</value>
+  </data>
+  <data name="t_min_Description" xml:space="preserve">
+    <value>La temperatura es registrada por los termómetros, y medida en grados centrigrados. Así, la temperarura mínima corresponde con el valor mas bajo registrado en un intervalo de tiempo dado. en un día normalmente corresponde a las horas de la madrugada</value>
+  </data>
+  <data name="t_min_Title" xml:space="preserve">
+    <value>Temperatura mínima</value>
+  </data>
+  <data name="yield_Description" xml:space="preserve">
+    <value>El rendimiento corresponde a la producción total de un cultivo cosechado y se mide usualmente en toneladas  por hectárea (T.M./ha.). Una misma variedad puede generar rendimientos diferentes de una localidad geográfica a otra al variar las condiciones climáticas, aunque los demás factores ambientales sean iguales. Sin embargo, con condiciones climáticas iguales, el rendimiento puede variar de acuerdo con las características del suelo o el manejo dado</value>
+  </data>
+  <data name="yield_pot_Description" xml:space="preserve">
+    <value>Máximo rendimiento que una variedad, híbrido o cultivar puede producir en condiciones ideales</value>
+  </data>
+  <data name="yield_pot_Title" xml:space="preserve">
+    <value>Rendimiento potencial</value>
+  </data>
+  <data name="yield_Title" xml:space="preserve">
+    <value>Rendimiento</value>
+  </data>
+</root>

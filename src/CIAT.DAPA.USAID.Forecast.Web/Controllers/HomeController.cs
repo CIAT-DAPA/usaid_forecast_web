@@ -27,7 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public async Task<IActionResult> Index()
         {
             try
-            {                
+            {
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
 
@@ -36,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error");
             }
@@ -44,9 +44,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         public IActionResult Glosario()
         {
-                       
-            ViewBag.Section = SectionSite.Glossary;
 
+            ViewBag.Section = SectionSite.Glossary;
+            ViewBag.words = new string[] {
+                "bio_acu", "d_dry", "d_har", "eva", "conf_int", "prec", "prec_acu", "climate", "pro_his",
+                "forecast", "sol_rad", "yield", "yield_pot", "t_max", "t_max_acu", "t_min", "t_min_acu"
+            };
             // Setting data
             SetWS();
 
@@ -56,7 +59,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public IActionResult AcercaDe()
         {
             ViewBag.Section = SectionSite.About;
-
+            ViewBag.words = new string[] {
+                "project", "scenarios", "yield_rice", "yield_maize", "validation_maize"
+            };
             // Setting data
             SetWS();
 
@@ -71,12 +76,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
-            string url = System.Web.HttpUtility.UrlPathEncode(returnUrl); //"~/";
-            /*url = url + string.Join(
-                "/",
-                returnUrl.Replace("~/","").Split("/").Select(s => HttpUtility.UrlEncode(s))
-            );*/
-            
+            string url = System.Web.HttpUtility.UrlPathEncode(returnUrl); 
             return Redirect(url);
         }
     }

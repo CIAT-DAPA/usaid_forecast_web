@@ -1,151 +1,27 @@
 ﻿@{
-    ViewData["Title"] = "Acerca De";
+    ViewData["Title"] = Localizer["Title"];
     ViewData["Meta_Description"] = "Información sobre los procesos realizados por la plataforma de pronósticos agroclimáticos.";
     ViewData["Meta_Keywords"] = "acerca de,clima,predicción,cultivos,agroclima,agroclimatico,precipitación,rendimiento,días a cosecha,temperatura,historial rendimiento,histórico rendimiento,producción";
 }
 
-<!-- Start global variables -->
-<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-<!-- End global variables -->
-
-@Html.Partial("_SubMenu")
-
-<div id="containerBlock" ng-controller="AboutCtrl">    
-    <!-- Start Project -->
-    <section class="col-md-12 sections" id="content_project">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Proyecto</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Esta aplicación web está siendo desarrollada por el Centro Internacional de Agricultura
-                Tropical CIAT, la federación nacional de arroceros FEDEARROZ, la federación nacional
-                de cafeteros de Colombia, la federación Nacional de cereales y leguminosas FENALCE,
-                y el instituto de  hidrología Meteorologia y estudios ambientales IDEAM. Y, con el
-                apoyo de la agencia de los estados unidos para el desarrollo internacional USAID.
-                Los métodos y modelos utilizados para la generación de los pronósticos aquí presentados
-                se encuentran en desarrollo prueba y validación. Sin embargo, presentan un buen
-                desempeño. Inicialmente, se están ofreciendo pronósticos climáticos y agroclimáticos
-                para maíz y arroz  en 6 municipios de Colombia. Los gremios seguirán desarrollando
-                esta plataforma para ofrecer pronósticos para otros municipios y variedades.
-            </p>
-        </div>
-    </section>
-    <!-- End Project -->    
-    <!-- Start Scenarios -->
-    <section class="col-md-12 sections" id="content_scenarios" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Generación de escenarios</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Las predicciones estacionales de clima nos dan información probabilística de las categorías -
-                por debajo lo normal, normal y por encima de lo normal- sobre los próximos 6 meses,
-                basados en esta información se pueden obtener obtener diferentes escenarios a nivel diario,
-                los cuales sirven de insumo para ingresar a los modelos de cultivo.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                El proceso de transición de probabilidades a datos diarios de clima puede ser realizado
-                mediante un método de remuestreo, el cual consiste en obtener los terciles de los datos
-                históricos y realizar un remuestreo a cada tercil basado en las probabilidades de las predicciones.
-                Por ejemplo: para una predicción dada de precipitación de 70% por debajo lo normal,
-                20% normal y 10% por encima lo normal, para un mes de interés, entonces el remuestreo
-                escogerá 70 escenarios de datos diarios para el tercil bajo lo normal, 20 escenarios de datos
-                diarios del tercil normal y 10 escenarios de datos diarios del tercil encima lo normal,
-                asumiendo que el total de escenarios a generar serán 100.
-            </p>
-        </div>
-    </section>
-    <!-- End Scenarios -->    
-    <!-- Start Yield Rice -->
-    <section class="col-md-12 sections" id="content_yield_rice" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Pronóstico agroclimático (arroz)</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                El módulo de arroz integra un pronóstico climático estacional y el modelo de
-                cultivo ORYZA (v3) para simular el rendimiento del cultivo de arroz frente a las
-                condiciones climáticas  de  los próximos 6 meses. Durante dicho periodo es posible
-                realizar múltiples simulaciones con fechas de siembra, suelos, variedades y el
-                paquete de manejo agronómico recomendado para cada zona.  Esta informacion se
-                sintetiza en graficas que relacionan el rendimiento en grano (kg/ha) al 14% de
-                humedad con la fecha de siembra, para cada variedad y tipo de suelo.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                El modelo ORYZA (v3) simula el crecimiento y desarrollo del cultivo de arroz bajo
-                diferentes condiciones de producción (potenciales, limitaciones hídricas y de
-                nitrógeno) sin considerar efectos de plagas y enfermedades.
-            </p>
-        </div>
-    </section>
-    <!-- End Yield Rice -->
-    <!-- Start Yield Maize -->
-    <section class="col-md-12 sections" id="content_yield_maize" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Pronóstico agroclimático (maíz)</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Se desarrolló una plataforma para apoyar la toma de decisiones de pequeños,
-                medianos y grandes productores de maíz, la cual con el uso del modelo CERES-MAIZE
-                (DSSAT)   permite estimar por medio de análisis estadísticos y pronósticos
-                semestrales, cuales son las fechas de siembra y las variedades que implican una
-                menor variación con producciones convenientes y favorables para los agricultores,
-                disminuyendo sus probabilidades de pérdida.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                Para el desarrollo de la plataforma se contó con el acompañamiento y la
-                asesoría de FENALCE, en temas de manejo agronómico y fertilización del
-                cultivo en los municipios de “La Unión (Valle del Cauca)”, “El Espinal (Tolima)”
-                y “Cereté (Córdoba)”; además de la participación de personal de CIAT y CIMMYT.
-            </p>
-        </div>
-    </section>
-    <!-- End Yield Maize -->
-    <!-- Start Validation Rice -->
-    <section class="col-md-12 sections" id="content_validation_rice" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Calibración y validación de modelos de cultivos (arroz)</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Un modelo de cultivo busca simular el desarrollo y crecimiento de una variedad
-                en un ambiente específico. Para su uso, requiere ser adaptado a las variedades
-                locales y evaluado en diferentes ambientes (clima y suelo). Estos procesos requieren
-                de múltiples ensayos experimentales donde se obtienen datos para caracterizar y
-                entender el crecimiento y desarrollo de una variedad a lo largo de su ciclo de vida,
-                así como las condiciones climáticas en las que se desarrolla (temperaturas diarias,
-                precipitación, radiación solar, etc), características del suelo (físicas y químicas)
-                y prácticas agronómicas óptimas para cada localidad.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                En el marco del proyecto CSRD-Colombia se utilizó el  modelo de cultivo ORYZA
-                (v3.0)  desarrollado por el Instituto Internacional de Investigación en Arroz
-                (IRRI, por sus siglas en inglés). Tres variedades de sistema de riego (Fedearroz
-                60, Fedearroz 733, Fedearroz 2000) y dos de secano (Fedearroz 2000 y Fedearroz 174)
-                han sido calibradas y validadas en diferentes ambientes de producción de Colombia,
-                utilizando la información generada por el convenio de cooperación entre FEDEARROZ, el Ministerio
-                de Agricultura y Desarrollo Rural y el CIAT, desarrollado entre los años 2013 y
-                2015 en 5 localidades ( Saldaña-Tolima, Aipe-Huila, Montería-Córdoba, Yopal-Casanare
-                y Villavicencio-Meta).
-            </p>
-        </div>
-    </section>
-    <!-- End Validation Rice -->
-    <!-- Start Validation Maize -->
-    <section class="col-md-12 sections" id="content_validation_maize" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Calibración y validación de modelos de cultivos (maíz)</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                La calibración de las variedades que se entregan para el uso de los productores
-                del renglón económico de maíz, son el resultado de un proceso de investigación
-                en campo que inicio del convenio CIAT-MADR en el año 2013 y se prolongó hasta
-                finales de 2015 donde se estudió el comportamiento de 6 variedades en 3 localidades
-                y se documentó sus resultados.  Luego los datos de estos experimentos fueron
-                organizados, evaluados, calibrados y validados dentro del proyecto CSRD, patrocinado
-                por USAID y desarrollado por CIAT durante los años 2016 y comienzos de 2017.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                La entrega final es resultado del trabajo conjunto del área de DAPA y contó
-                con colaboración de FENALCE (Colombia) y del instituto de investigación IRI
-                (Estados Unidos).
-            </p>
-        </div>
-    </section>
-    <!-- End Validation Maize -->    
+<div id="containerBlock">
+    @foreach (var w in ViewBag.words)
+    {
+        <section class="col-md-12 sections">
+            <article class="row section-content borderBox">
+                <div class="col-lg-12 blockTitle closed text-center" data-toggle="collapse" data-target="#@w">
+                    <label class="cultivar_name">@Localizer[w + "_Title"]</label>
+                </div>
+                <div class="collapse" id="@w">
+                    @Localizer[w + "_Description"]
+                </div>
+            </article>
+        </section>
+    }
 </div>
 
 @section Scripts {
-    <script src="~/js/controllers/about_ctr.js"></script>
+    <script type="text/javascript">
+        window.loading_screen.finish();
+    </script>
 }
