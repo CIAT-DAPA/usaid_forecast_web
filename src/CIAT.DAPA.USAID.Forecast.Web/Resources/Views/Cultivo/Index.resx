@@ -201,4 +201,46 @@
   <data name="ForecastVariationTitle" xml:space="preserve">
     <value>Forecast confidence level</value>
   </data>
+  <data name="bio_acu_Description" xml:space="preserve">
+    <value>Accumulated biomass</value>
+  </data>
+  <data name="bio_acu_unit" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="d_dry_Description" xml:space="preserve">
+    <value>Days to dry</value>
+  </data>
+  <data name="d_dry_unit" xml:space="preserve">
+    <value>Day(s)</value>
+  </data>
+  <data name="d_har_Description" xml:space="preserve">
+    <value>Days to harvest</value>
+  </data>
+  <data name="d_har_unit" xml:space="preserve">
+    <value>Day(s)</value>
+  </data>
+  <data name="prec_acu_Description" xml:space="preserve">
+    <value>Accumulated precipitation</value>
+  </data>
+  <data name="prec_acu_unit" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="t_max_acu_Description" xml:space="preserve">
+    <value>Maximum accumulated temperature</value>
+  </data>
+  <data name="t_max_acu_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="t_min_acu_Description" xml:space="preserve">
+    <value>Minimum accumulated temperature</value>
+  </data>
+  <data name="t_min_acu_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="yield_14_Description" xml:space="preserve">
+    <value>Yield at 14% humidity</value>
+  </data>
+  <data name="yield_14_unit" xml:space="preserve">
+    <value>Kg/ha</value>
+  </data>
 </root>

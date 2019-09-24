@@ -70,11 +70,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 IEnumerable<string> soils = yield.Select(p => p.Soil).Distinct().ToList();
                 soils = soils.Where(p => agronomic.Soils.Select(p2 => p2.Id).Distinct().Contains(p));
                 ViewBag.soils = agronomic.Soils.Where(p => soils.Contains(p.Id)).AsEnumerable();
-
+                
                 //
                 ViewBag.agronomic = agronomic;
                 ViewBag.yield = yield;
                 ViewBag.ranges = ws.Ranges.Where(p => p.Crop_Name.ToLower() == crop.ToLower());
+                
 
                 return View();
             }

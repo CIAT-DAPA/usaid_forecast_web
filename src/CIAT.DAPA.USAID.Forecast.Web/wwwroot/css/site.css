@@ -410,6 +410,11 @@ footer img {
     width: 100%;
     height: 265px;
 }
+
+.plot_variation svg {
+    width: 100%;
+    height: 400px;
+}
 /* Axis Charts */
 .x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
     display: none;
