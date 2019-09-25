@@ -2,7 +2,7 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Configuración estación climática";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -29,15 +29,15 @@
     <input type="hidden" id="id" name="id" value="@ViewBag.ws_id" />
     <div class="form-horizontal">
         <fieldset>
-            <legend>Archivo de configuración</legend>
+            <legend>@Localizer["ConfFile"]</legend>
             <div class="form-group">
-                <label for="name" class="control-label col-md-2">Nombre:</label>
+                <label for="name" class="control-label col-md-2">@Localizer["ConfFileName"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("name", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="label" class="control-label col-md-2">Archivo:</label>
+                <label for="label" class="control-label col-md-2">@Localizer["ConfFileFile"]:</label>
                 <div class="col-md-10">
                     <input class="form-control" id="file" name="file" type="file"  />
                 </div>
@@ -45,19 +45,19 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+                <input type="submit" value="@Localizer["ConfFileSave"]" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 <div>
-    @Html.ActionLink("Volver a la estación climática", "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.ws_id })
 </div>
-<h3>Archivos de configuración disponible por estación climática</h3>
+<h3>@Localizer["ConfFileAvalaible"]</h3>
 <table class="table">
     <tr>
-        <th>Nombre</th>
-        <th>Fecha de creación</th>
+        <th>@Localizer["ConfFileName"]</th>
+        <th>@Localizer["Date"]</th>
     </tr>
     @foreach (var item in Model)
     {
@@ -72,7 +72,7 @@
     }
 </table>
 <div>
-    @Html.ActionLink("Volver a la estación climática", "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.ws_id })
 </div>
 
 @section Scripts {

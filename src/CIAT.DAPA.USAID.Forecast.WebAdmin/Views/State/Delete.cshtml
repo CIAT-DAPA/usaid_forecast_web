@@ -1,15 +1,15 @@
 ﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.State
 
 @{
-    ViewBag.Title = "Eliminar";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<h3>Está seguro que desea eliminar el registro?</h3>
+<h3>@Localizer["Message"]</h3>
 <div>
-    <h4>Estado</h4>
+    <h4>@Localizer["State"]</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -60,8 +60,8 @@
         @Html.HiddenFor(model => model.id)
 
         <div class="form-actions no-color">            
-            <input type="submit" value="Eliminar" class="btn btn-default" /> |
-            @Html.ActionLink("Volver a la lista", "Index")
+            <input type="submit" value="@Localizer["DeleteRecord"]" class="btn btn-default" /> |
+            @Html.ActionLink(Localizer["Back"].Value, "Index")
         </div>
     }
 </div>

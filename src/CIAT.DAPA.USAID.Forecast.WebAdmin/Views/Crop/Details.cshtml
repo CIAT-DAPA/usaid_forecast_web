@@ -1,14 +1,14 @@
 ﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Crop
 
 @{
-    ViewBag.Title = "Detalles";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Cultivo</h4>
+    <h4>@Localizer["Crop"]</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -38,7 +38,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Setup", "Setup", new { id = Model.id }) |
-    @Html.ActionLink("Volver a la lista", "Index")
+    @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = Model.id }) |
+    @Html.ActionLink(Localizer["Setup"].Value, "Setup", new { id = Model.id }) |
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
 </p>

@@ -11,6 +11,8 @@ using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using System.IO;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -68,6 +70,18 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await writeExceptionAsync(ex);
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            string url = System.Web.HttpUtility.UrlPathEncode(returnUrl);
+            return Redirect(url);
         }
     }
 }

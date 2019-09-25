@@ -2,14 +2,14 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Importar";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Estado</h4>
+    <h4>@Localizer["State"]</h4>
     <hr />
     @if (ViewBag.message != null)
     {
@@ -51,11 +51,9 @@
     </dl>
 </div>
 <fieldset>
-    <legend>Municipios y estaciones climáticas</legend>
+    <legend>@Localizer["WS"]</legend>
     <p class="text-justify">
-        Esta opción permite cargar un archivo para crear nuevos registros en las colecciones de 
-        los municipios y estaciones climáticas. El archivo debe tener una estructura específica. 
-        Usted puede ver el ejemplo.
+        @Localizer["WSDescription"]
     </p>
     @using (Html.BeginForm("ImportMunicipalitiesWeatherStations", "State", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -64,7 +62,7 @@
         <div class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-md-4" for="file">
-                    Archivo a importar (Separado por coma ",").
+                    @Localizer["File"]
                 </label>
                 <div class="col-md-8">
                     <input type="file" class="form-control" name="file" id="file" />
@@ -73,7 +71,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Importar" class="btn btn-default" />
+                    <input type="submit" value="@Localizer["ImportTitle"]" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -81,6 +79,6 @@
 </fieldset>
 
 <p>
-    @Html.ActionLink("Detalle", "Details", new { id = Model.id }) |
-    @Html.ActionLink("Volver a la lista", "Index")
+    @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = Model.id }) |
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
 </p>

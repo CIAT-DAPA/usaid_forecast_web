@@ -21,6 +21,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 {
@@ -108,7 +111,32 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             services.AddTransient<IEmailSender, AuthMessageSender>();
 
             // Add framework services
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder);
+
+            // Configure supported cultures and localization options
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("es-CO")
+                };
+
+                // State what the default culture for your application is. This will be used if no specific culture
+                // can be determined for a given request.
+                options.DefaultRequestCulture = new RequestCulture(culture: "es-CO", uiCulture: "es-CO");
+
+                // You must explicitly state which cultures your application supports.
+                // These are the cultures the app supports for formatting numbers, dates, etc.
+                options.SupportedCultures = supportedCultures;
+
+                // These are the cultures the app supports for UI strings, i.e. we have localized resources for.
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -116,6 +144,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             if (env.IsDevelopment())
             {

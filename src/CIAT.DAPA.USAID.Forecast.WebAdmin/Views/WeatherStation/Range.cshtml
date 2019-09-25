@@ -2,7 +2,7 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Rangos de producción";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -29,27 +29,27 @@
     <input type="hidden" id="id" name="id" value="@ViewBag.ws_id" />
     <div class="form-horizontal">
         <fieldset>
-            <legend>Rango de producción</legend>
+            <legend>@Localizer["Title"]</legend>
             <div class="form-group">
-                <label for="weather_station" class="control-label col-md-2">Cultivo:</label>
+                <label for="weather_station" class="control-label col-md-2">@Localizer["Crop"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("crop", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="label" class="control-label col-md-2">Descripción:</label>
+                <label for="label" class="control-label col-md-2">@Localizer["Description"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("label", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="lower" class="control-label col-md-2">Límite inferior:</label>
+                <label for="lower" class="control-label col-md-2">@Localizer["LimitLower"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("lower", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="upper" class="control-label col-md-2">Límite superior:</label>
+                <label for="upper" class="control-label col-md-2">@Localizer["LimitUpper"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("upper", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
@@ -57,21 +57,21 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 <div>
-    @Html.ActionLink("Volver a la estación climática", "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.ws_id })
 </div>
-<h3>Rangos por cultivo</h3>
+<h3>@Localizer["RangesCrop"]</h3>
 <table class="table">
     <tr>
-        <th>Cultivo</th>
-        <th>Descripción</th>
-        <th>Límite inferior</th>
-        <th>Límite superior</th>
+        <th>@Localizer["Crop"]</th>
+        <th>@Localizer["Description"]</th>
+        <th>@Localizer["LimitLower"]</th>
+        <th>@Localizer["LimitUpper"]</th>
         <th></th>
     </tr>
 
@@ -99,14 +99,14 @@
                     <input type="hidden" id="label" name="label" value="@item.label" />
                     <input type="hidden" id="lower" name="lower" value="@item.lower.ToString()" />
                     <input type="hidden" id="upper" name="upper" value="@item.upper.ToString()" />
-                    <input class="btn btn-danger" type="submit" value="Eliminar" />
+                    <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
                 }
             </td>
         </tr>
     }
 </table>
 <div>
-    @Html.ActionLink("Volver a la estación climática", "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.ws_id })
 </div>
 
 @section Scripts {

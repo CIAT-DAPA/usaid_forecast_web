@@ -2,7 +2,7 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Configuración";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -32,43 +32,43 @@
     <input type="hidden" id="id" name="id" value="@ViewBag.state.id.ToString()" />
     <div class="form-horizontal">
         <fieldset>
-            <legend>Nueva configuración</legend>
+            <legend>@Localizer["NewSetup"]</legend>
             <div class="form-group">
-                <label for="trimester" class="control-label col-md-2">Trimestre:</label>
+                <label for="trimester" class="control-label col-md-2">@Localizer["Trimester"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("trimester", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="cca" class="control-label col-md-2">Cantidad de modos correlación canónica:</label>
+                <label for="cca" class="control-label col-md-2">@Localizer["AmountCCA"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("cca", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="x" class="control-label col-md-2">Cantidad de modos en x:</label>
+                <label for="x" class="control-label col-md-2">@Localizer["AmountX"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("x", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="y" class="control-label col-md-2">Cantidad de modos en y:</label>
+                <label for="y" class="control-label col-md-2">@Localizer["AmountY"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("y", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             <div class="form-group">
-                <label for="gamma" class="control-label col-md-2">Transformación gamma:</label>
+                <label for="gamma" class="control-label col-md-2">@Localizer["Gamma"]:</label>
                 <div class="col-md-10">
                     @Html.CheckBox("gamma", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
         </fieldset>
         <fieldset>
-            <legend>Regiones</legend>
+            <legend>@Localizer["Regions"]</legend>
             <div class="form-group">
                 <div class="col-md-">
-                    <input type="button" id="add_region" value="Agregar región" class="btn btn-default" />
+                    <input type="button" id="add_region" value="@Localizer["Add"]" class="btn btn-default" />
                 </div>
             </div>
             <table class="table" id="conf_regions">
@@ -77,7 +77,7 @@
                         <th>Y min.</th>
                         <th>X min.</th>
                         <th>Y max.</th>
-                        <th>X min.</th>
+                        <th>X max.</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -85,21 +85,21 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-<h3>Configuraciones disponibles</h3>
+<h3>@Localizer["SetupAvalaible"]</h3>
 <table class="table">
     <tr>
-        <th>Fecha</th>
-        <th>Trimestre</th>
-        <th>Cant. modos correlación</th>
-        <th>Gamma</th>
-        <th>Cant. modos x</th>
-        <th>Cant. modos y</th>
-        <th>Regiones</th>
+        <th>@Localizer["Date"]</th>
+        <th>@Localizer["Trimester"]</th>
+        <th>@Localizer["AmountCCA"]</th>
+        <th>@Localizer["Gamma"]</th>
+        <th>@Localizer["AmountX"]</th>
+        <th>@Localizer["AmountY"]</th>
+        <th>@Localizer["Regions"]</th>
         <th></th>
     </tr>
 
@@ -152,7 +152,7 @@
                     <input type="hidden" id="x" name="x" value="@item.x_mode.ToString()" />
                     <input type="hidden" id="y" name="y" value="@item.y_mode.ToString()" />
                     <input type="hidden" id="register" name="register" value="@item.track.register.ToString("yyyy-MM-dd HH:mm:ss")" />
-                    <input class="btn btn-danger" type="submit" value="Eliminar" />
+                    <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
                 }
             </td>
         </tr>
@@ -160,8 +160,8 @@
 </table>
 
 <p>
-    @Html.ActionLink("Detalles", "Details", new { id = ViewBag.state.id }) |
-    @Html.ActionLink("Volver a la lista", "Index")
+    @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = ViewBag.state.id }) |
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
 </p>
 
 @section Scripts {
