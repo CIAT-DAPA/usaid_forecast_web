@@ -50,8 +50,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <summary>
         /// Get or set the path to get geographic agronomic
         /// </summary>
-        private static readonly string Agronomic = "Agronomic/";        
-
+        private static readonly string Agronomic = "Agronomic/";
+        /// <summary>
+        /// Get or set the path to get historical climate information
+        /// </summary>
+        private static readonly string Exceedance = "Forecast/YieldExceedance/";
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -154,6 +157,17 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         {
             string json = await RequestDataAsync(Root + Agronomic + "true/" + Format);
             var answer = JsonConvert.DeserializeObject<IEnumerable<Agronomic>>(json);
+            return answer;
+        }
+
+        /// <summary>
+        /// Method that gets the output of yield forecast for a weather station
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ForecastYield> GetForecastYieldExceedanceAsync(string ws)
+        {
+            string json = await RequestDataAsync(Root + Exceedance + ws + "/" + Format);
+            var answer = JsonConvert.DeserializeObject<ForecastYield>(json);
             return answer;
         }
     }

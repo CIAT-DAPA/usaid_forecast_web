@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\graphics\exceedance.js~RF17a403ac.TMP" />
     <Content Remove="wwwroot\js\graphics\lines.js~RF154312d1.TMP" />
   </ItemGroup>
 

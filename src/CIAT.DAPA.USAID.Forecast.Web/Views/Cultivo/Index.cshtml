@@ -77,8 +77,7 @@
                                     <table class="table table-responsive" id="ranges_@cu.Id"></table>
                                 </div>
                             </article>
-
-                            <article id="cultivar_calendar" class="col-lg-6 article_content">
+                            <article class="col-lg-6 article_content">
                                 <div class="section-content">
                                     <h4 class="text-center">@Localizer["ForecastCultivarDateTitle"]</h4>
                                     <p class="text-justify">
@@ -102,7 +101,7 @@
                                     </div>
                                 </div>
                             </article>
-                            <article id="cultivar_variation" class="col-lg-12 article_content">
+                            <article class="col-lg-6 article_content">
                                 <div class="section-content">
                                     <h3 class="text-center">@Localizer["ForecastVariationTitle"]</h3>
                                     <p class="text-justify">
@@ -110,6 +109,17 @@
                                     </p>
                                     <select id="cbo_variation_@cu.Id" class="form-control"></select>
                                     <div id="cultivar_variation_@cu.Id" class="plot plot_variation">
+                                        <svg></svg>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="col-lg-6 article_content">
+                                <div class="section-content">
+                                    <h3 class="text-center">@Localizer["ForecastExceedanceTitle"]</h3>
+                                    <p class="text-justify">
+                                        @Localizer["ForecastExceedanceDescription"].
+                                    </p>
+                                    <div id="cultivar_exceedance_@cu.Id" class="plot plot_variation">
                                         <svg></svg>
                                     </div>
                                 </div>
@@ -167,11 +177,13 @@
     <script src="~/js/graphics/bars.js"></script>
     <script src="~/js/graphics/calendar.js"></script>
     <script src="~/js/graphics/area.js"></script>
+    <script src="~/js/graphics/exceedance.js"></script>
     <script type="text/javascript">
             // Getting parameters
             var months = @Html.Raw(Json.Serialize(Localizer["Months"].Value.ToString().Split(",")));
             var days = @Html.Raw(Json.Serialize(Localizer["Days"].Value.ToString().Split(",")));
             var yield = @Html.Raw(Json.Serialize(ViewBag.yield));
+            var yield_exceedance = @Html.Raw(Json.Serialize(ViewBag.yield_exceedance));
             var ranges = @Html.Raw(Json.Serialize(ViewBag.ranges));
             var colors = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
 
@@ -239,10 +251,8 @@
         }];
         bars(b_data, 'cultivar_bars_' + cu, '@Localizer["yield_unit"]', true);
 
-        $('#cbo_variation_' + cu)
-    .find('option')
-    .remove()
-    .end()
+         // variation
+        $('#cbo_variation_' + cu).find('option').remove().end()
         for (var j = 0; j < m_list.length; j++) {
             $('#cbo_variation_' + cu).append(new Option(m_list[j].description, j));
         }
@@ -250,6 +260,32 @@
         plot_variation(cu, yield_filtered);
 
         $('#cbo_variation_' + cu).change(function () { plot_variation(cu, yield_filtered); });
+
+        // filtering exceedance data
+        var yield_exceedance_filtered = yield_exceedance.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); });
+        var fe = yield_exceedance_filtered.map(function (item) {
+                var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
+                return {
+                    x: new Date(item.start.substring(0, 10)),
+                    value: value
+                };
+            });
+
+        //fe = fe.sort(function (a, b) { return a.value > b.value; });        
+        fe = fe.map(function (item, i) {
+            return {
+                x: item.value,
+                y: (1 / ((fe.length+1)/i))*100
+            }
+        });
+        console.log(fe);
+
+        var e_data = [{
+            key: 'yield',
+            values: fe,
+            color:"#C8E6C9"
+        }]
+        exceedance(e_data,'cultivar_exceedance_' + cu, '@Localizer["yield_unit"]',  'Probabilities (%)');
     }
 
     function plot_variation(cu,yield_filtered) {
@@ -296,7 +332,7 @@
                 };
             }),
             color:"#388E3C"
-            },        
+            },
         {
             key: 'perc_5',
             values: yield_filtered.map(function (item) {

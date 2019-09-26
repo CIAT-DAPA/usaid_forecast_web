@@ -59,7 +59,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 // Getting the forecast weather information
                 RepositoryForecastYield rFY = new RepositoryForecastYield(Root);;
                 ForecastYield forecast = await rFY.SearchAsync(ws.Id);
+                ForecastYield forecast_exceedance = await rFY.SearchExceedanceAsync(ws.Id);
+
                 IEnumerable<Yield> yield = forecast.Yield.FirstOrDefault().Yield;
+                IEnumerable<Yield> yield_exceedance = forecast_exceedance.Yield.FirstOrDefault().Yield.OrderByDescending(p=>p.Data.First(p2=>p2.Measure.StartsWith("yield")).Avg);
 
                 // Filtering cultivars
                 IEnumerable<string> cultivars = yield.Select(p => p.Cultivar).Distinct().ToList();
@@ -74,6 +77,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 //
                 ViewBag.agronomic = agronomic;
                 ViewBag.yield = yield;
+                ViewBag.yield_exceedance = yield_exceedance;
                 ViewBag.ranges = ws.Ranges.Where(p => p.Crop_Name.ToLower() == crop.ToLower());
                 
 

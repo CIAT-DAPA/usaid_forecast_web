@@ -25,5 +25,16 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
             ForecastYield answer = await Client.GetForecastYieldAsync(ws);
             return answer;
         }
+
+        /// <summary>
+        /// Method that gets the forecast Exceedance information
+        /// </summary>
+        /// <param name="ws">Weather station ID</param>
+        /// <returns></returns>
+        public async Task<ForecastYield> SearchExceedanceAsync(string ws)
+        {
+            ForecastYield answer = await Client.GetForecastYieldExceedanceAsync(ws);
+            return answer;
+        }
     }
 }

@@ -243,4 +243,10 @@
   <data name="yield_14_unit" xml:space="preserve">
     <value>Kg/ha</value>
   </data>
+  <data name="ForecastExceedanceDescription" xml:space="preserve">
+    <value>En la siguiente gráfica usted podrá ver cuales son las probabilidades de excedencia de acuerdo al rendimiento potencial promedio</value>
+  </data>
+  <data name="ForecastExceedanceTitle" xml:space="preserve">
+    <value>Probabilidades de excedencia</value>
+  </data>
 </root>

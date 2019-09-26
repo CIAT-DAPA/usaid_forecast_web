@@ -55,5 +55,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var filter = builder.Eq("track.enable", true);
             return await collection.Find(filter).SortByDescending(p => p.id).FirstOrDefaultAsync<Models.Forecast>();
         }
+
+        /// <summary>
+        /// Method that return last forecast inserted in the database
+        /// </summary>
+        /// <returns>Forecast</returns>
+        public async Task<List<Models.Forecast>> getExceedanceAsync()
+        {
+            var builder = Builders<Models.Forecast>.Filter;
+            var filter = builder.Eq("track.enable", true);
+            return await collection.Find(filter).SortByDescending(p => p.id).Limit(6).ToListAsync<Models.Forecast>();
+        }
     }
 }
