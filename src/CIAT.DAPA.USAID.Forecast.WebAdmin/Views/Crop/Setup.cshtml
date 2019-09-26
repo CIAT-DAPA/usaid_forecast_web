@@ -2,7 +2,7 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Setup";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -29,44 +29,44 @@
     <input type="hidden" id="id" name="id" value="@ViewBag.crop_id" />
     <div class="form-horizontal">
         <fieldset>
-            <legend>Configuración global</legend>
+            <legend>@Localizer["ConfGlobal"]</legend>
             <div class="form-group">
-                <label for="weather_station" class="control-label col-md-2">Estación climática:</label>
+                <label for="weather_station" class="control-label col-md-2">@Localizer["WS"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("weather_station", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="cultivar" class="control-label col-md-2">Cultivar:</label>
+                <label for="cultivar" class="control-label col-md-2">@Localizer["Cultivar"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("cultivar", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="soil" class="control-label col-md-2">Suelo:</label>
+                <label for="soil" class="control-label col-md-2">@Localizer["Soil"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("soil", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
-                <label for="days" class="control-label col-md-2">Días:</label>
+                <label for="days" class="control-label col-md-2">@Localizer["Days"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("days", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
         </fieldset>
         <fieldset>
-            <legend>Archivos de configuración</legend>
+            <legend>@Localizer["ConfFile"]</legend>
             <div class="form-group">
                 <div class="col-md-">
-                    <input type="button" id="add_file" value="Agregar archivo" class="btn btn-default" />
+                    <input type="button" id="add_file" value="@Localizer["AddFile"]" class="btn btn-default" />
                 </div>
             </div>
             <table class="table" id="conf_files">
                 <thead>
                     <tr>
-                        <th>Nombre de parámetro</th>
-                        <th>Archivo</th>
+                        <th>@Localizer["ParameterName"]</th>
+                        <th>@Localizer["File"]</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -74,23 +74,23 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 <div>
-    @Html.ActionLink("Volver a cultivo", "Details", new { id = ViewBag.crop_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.crop_id })
 </div>
-<h3>Configuraciones disponibles</h3>
+<h3>@Localizer["ConfAvalaible"]</h3>
 <table class="table">
     <tr>
-        <th>Fecha</th>
-        <th>Estación climática</th>
-        <th>Cultivar</th>
-        <th>Suelos</th>
-        <th>Días</th>
-        <th>Archivos</th>
+        <th>@Localizer["Date"]</th>
+        <th>@Localizer["WS"]</th>
+        <th>@Localizer["Cultivar"]</th>
+        <th>@Localizer["Soil"]</th>
+        <th>@Localizer["Days"]</th>
+        <th>@Localizer["File"]</th>
         <th></th>
     </tr>
 
@@ -132,14 +132,14 @@
                     <input type="hidden" id="cu" name="cu" value="@item.cultivar.ToString()" />
                     <input type="hidden" id="so" name="so" value="@item.soil.ToString()" />
                     <input type="hidden" id="days" name="days" value="@item.days.ToString()" />
-                    <input class="btn btn-danger" type="submit" value="Eliminar" />
+                    <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
                 }
             </td>
         </tr>
     }
 </table>
 <div>
-    @Html.ActionLink("Volver a cultivo", "Details", new { id = ViewBag.crop_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.crop_id })
 </div>
 @section Scripts {
     <script src="~/js/setup.js"></script>

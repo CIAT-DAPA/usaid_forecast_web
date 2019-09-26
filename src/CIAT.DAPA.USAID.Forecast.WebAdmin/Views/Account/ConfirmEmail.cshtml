@@ -1,11 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Cuenta confirmada";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewBag.Title</h2>
 <div>
     <p>
-        Gracias por confirmar su email. Por favor <a asp-controller="Account" asp-action="Login">de click aquí</a> 
-        para iniciar sesión.
+        @Localizer["Message"]
     </p>
 </div>

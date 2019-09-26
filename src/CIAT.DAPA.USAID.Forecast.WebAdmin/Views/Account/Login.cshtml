@@ -8,7 +8,7 @@
 @inject SignInManager<User> SignInManager
 
 @{
-    ViewBag.Title = "Iniciar sesion";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -45,11 +45,11 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-default">Iniciar sesion</button>
+                        <button type="submit" class="btn btn-default">@Localizer["SigninCMD"]</button>
                     </div>
                 </div>
                 <p>
-                    <a asp-action="ForgotPassword">Olvidaste tu password?</a>
+                    <a asp-action="ForgotPassword">@Localizer["Remember"]</a>
                 </p>
             </form>
         </section>

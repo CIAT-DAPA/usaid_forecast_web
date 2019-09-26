@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Crop>
 @{
-    ViewBag.Title = "Cultivos";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewBag.Title</h2>
@@ -11,10 +11,10 @@
 <table class="table">
     <tr>
         <th>
-            ID
+            @Localizer["ID"]
         </th>
         <th>
-            Nombre
+            @Localizer["Name"]
         </th>
         <th></th>
     </tr>
@@ -28,10 +28,10 @@
                 @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
-                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
-                @Html.ActionLink("Setup", "Setup", new { id = item.id }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
+                @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Setup"].Value, "Setup", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id })
             </td>
         </tr>
     }
