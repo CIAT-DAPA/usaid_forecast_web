@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a la lista.
+        ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string Back {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detalle.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivo a importar (Separado por coma &quot;,&quot;)..
+        ///   Looks up a localized string similar to File to import (separated by comma &quot;,&quot;)..
         /// </summary>
         public static string File {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string ImportTitle {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estado.
+        ///   Looks up a localized string similar to State.
         /// </summary>
         public static string State {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Title {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Municipios y estaciones climáticas.
+        ///   Looks up a localized string similar to Municipalities and weather stations.
         /// </summary>
         public static string WS {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Esta opción permite cargar un archivo para crear nuevos registros en las colecciones de los municipios y estaciones climáticas. El archivo debe tener una estructura específica. Usted puede ver el ejemplo..
+        ///   Looks up a localized string similar to This option allows you to upload a file to create new records in the collections of municipalities and weather stations. The file must have a specific structure. You can see the example..
         /// </summary>
         public static string WSDescription {
             get {

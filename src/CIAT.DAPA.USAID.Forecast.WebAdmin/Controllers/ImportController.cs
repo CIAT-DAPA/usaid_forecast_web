@@ -19,7 +19,8 @@ using System.IO;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "ADMIN,CLIMATOLOGIST,IMPROVER")]
+    //[Authorize(Roles = "ADMIN,CLIMATOLOGIST,IMPROVER")]
+    [Authorize]
     public class ImportController : WebAdminBaseController
     {
         /// <summary>

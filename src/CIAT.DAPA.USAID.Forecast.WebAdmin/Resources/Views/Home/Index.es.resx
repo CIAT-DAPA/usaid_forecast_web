@@ -117,26 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CropDescription" xml:space="preserve">
+    <value>Establece los cultivares y suelos calibrados que se deben generar en el pronósticos agroclimatico.</value>
+  </data>
+  <data name="CropTitle" xml:space="preserve">
+    <value>Cultivo</value>
+  </data>
   <data name="Footer" xml:space="preserve">
     <value>Fotos tomadas de &lt;a href="https://www.flickr.com/photos/ciat/" target="_blank"&gt;CIAT&lt;/a&gt;</value>
-  </data>
-  <data name="MaizeDescription" xml:space="preserve">
-    <value>Asigna los parametros globales para la generación del pronósticos agroclimático del cultivo de maíz mediante el modelo DSSAT.</value>
-  </data>
-  <data name="MaizeTitle" xml:space="preserve">
-    <value>Maíz</value>
-  </data>
-  <data name="RiceDescription" xml:space="preserve">
-    <value>Establece los cultivares y suelos calibrados que se deben generar en el pronósticos agroclimatico que se realiza con el modelo Oryza.</value>
-  </data>
-  <data name="RiceTitle" xml:space="preserve">
-    <value>Arroz</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Home Page</value>
   </data>
   <data name="WeatherDescription" xml:space="preserve">
-    <value>Configura los parametros de predicción climática para las distintas regiones del país, usando el modelo CPT.</value>
+    <value>Configura los parametros de predicción climática para las distintas regiones del país.</value>
   </data>
   <data name="WeatherTitle" xml:space="preserve">
     <value>Clima</value>

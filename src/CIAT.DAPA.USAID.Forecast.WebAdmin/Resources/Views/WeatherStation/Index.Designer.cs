@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eliminar.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detalles.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {
             get {
@@ -79,11 +79,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editar.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ext ID.
+        /// </summary>
+        public static string Ext_ID {
+            get {
+                return ResourceManager.GetString("Ext_ID", resourceCulture);
             }
         }
         
@@ -97,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Municipio.
+        ///   Looks up a localized string similar to Municipality.
         /// </summary>
         public static string Municipality {
             get {
@@ -106,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nombre.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
@@ -115,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrar nuevo.
+        ///   Looks up a localized string similar to New record.
         /// </summary>
         public static string New {
             get {
@@ -133,7 +142,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rangos de producción.
+        ///   Looks up a localized string similar to Yield ranges.
         /// </summary>
         public static string Ranges {
             get {
@@ -142,7 +151,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuración.
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Setup {
             get {
@@ -151,7 +169,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estaciones climáticas.
+        ///   Looks up a localized string similar to Weather station.
         /// </summary>
         public static string Title {
             get {

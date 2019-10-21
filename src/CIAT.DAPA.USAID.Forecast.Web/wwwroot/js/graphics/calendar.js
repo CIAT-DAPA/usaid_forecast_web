@@ -97,8 +97,8 @@
         var i = lookup.filter(function (item) { return d == item.key });
         if (i.length > 0) {
             var value = i[0].values.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
-            var r = ranges.filter(function (item2) { return item2.lower < value && item2.upper >= value; })[0];
-            answer = r.color;
+            var r = ranges.filter(function (item2) { return item2.lower <= value && item2.upper >= value; })[0];
+            answer = r == undefined ? '' : r.color;
         }
         return answer;
     })

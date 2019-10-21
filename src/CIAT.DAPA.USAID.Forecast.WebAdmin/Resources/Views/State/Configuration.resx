@@ -118,48 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>Agregar región</value>
+    <value>Add region</value>
   </data>
   <data name="AmountCCA" xml:space="preserve">
-    <value>Cant. de modos correlación</value>
+    <value>Amount CCA</value>
   </data>
   <data name="AmountX" xml:space="preserve">
-    <value>Cant. de modos en x</value>
+    <value>Amount X modes</value>
   </data>
   <data name="AmountY" xml:space="preserve">
-    <value>Cant. de modos en y</value>
+    <value>Amount Y modes</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Volver a la lista</value>
+    <value>Back to list</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Fecha</value>
+    <value>Date</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>Delete</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Detalles</value>
+    <value>Details</value>
   </data>
   <data name="Gamma" xml:space="preserve">
-    <value>Transformación gamma</value>
+    <value>Gamma transformation</value>
   </data>
   <data name="NewSetup" xml:space="preserve">
-    <value>Nueva configuración</value>
+    <value>New configuration</value>
   </data>
   <data name="Regions" xml:space="preserve">
-    <value>Regiones</value>
+    <value>Regions</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Guardar</value>
+    <value>Save</value>
   </data>
   <data name="SetupAvalaible" xml:space="preserve">
-    <value>Configuraciones disponibles</value>
+    <value>Configurations available</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Configuración</value>
+    <value>Configuration</value>
   </data>
   <data name="Trimester" xml:space="preserve">
-    <value>Trimestre</value>
+    <value>Trimester</value>
   </data>
 </root>

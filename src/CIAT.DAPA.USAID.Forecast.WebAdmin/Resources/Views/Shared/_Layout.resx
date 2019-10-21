@@ -121,51 +121,51 @@
     <value>&amp;copy; 2016 - CIAT - USAID</value>
   </data>
   <data name="MenuAdmin" xml:space="preserve">
-    <value>Administración</value>
+    <value>Administration</value>
   </data>
   <data name="MenuClimatology" xml:space="preserve">
-    <value>Climatología</value>
+    <value>Climatology</value>
   </data>
   <data name="MenuCrops" xml:space="preserve">
-    <value>Cultivos</value>
+    <value>Crops</value>
   </data>
   <data name="MenuCultivars" xml:space="preserve">
-    <value>Cultivares</value>
+    <value>Cultivars</value>
   </data>
   <data name="MenuGeography" xml:space="preserve">
-    <value>Geografía</value>
+    <value>Geographic</value>
   </data>
   <data name="MenuHistoricalClimatic" xml:space="preserve">
-    <value>Histórico climático</value>
+    <value>Historical climate</value>
   </data>
   <data name="MenuHistoricalYield" xml:space="preserve">
-    <value>Histórico de producción</value>
+    <value>Historical yield</value>
   </data>
   <data name="MenuImport" xml:space="preserve">
-    <value>Importar</value>
+    <value>Import</value>
   </data>
   <data name="MenuMain" xml:space="preserve">
-    <value>Pronósticos</value>
+    <value>Prediction</value>
   </data>
   <data name="MenuMunicipalities" xml:space="preserve">
-    <value>Municipios</value>
+    <value>Municipalities</value>
   </data>
   <data name="MenuProduction" xml:space="preserve">
-    <value>Producción</value>
+    <value>Production</value>
   </data>
   <data name="MenuSoils" xml:space="preserve">
-    <value>Suelos</value>
+    <value>Soils</value>
   </data>
   <data name="MenuSources" xml:space="preserve">
-    <value>Fuentes</value>
+    <value>Sources</value>
   </data>
   <data name="MenuStates" xml:space="preserve">
-    <value>Estados</value>
+    <value>States</value>
   </data>
   <data name="MenuUsers" xml:space="preserve">
-    <value>Usuarios</value>
+    <value>Users</value>
   </data>
   <data name="MenuWS" xml:space="preserve">
-    <value>Estaciones</value>
+    <value>Stations</value>
   </data>
 </root>

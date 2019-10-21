@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a la estación climática.
+        ///   Looks up a localized string similar to Back to weather station.
         /// </summary>
         public static string Back {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivo de configuración.
+        ///   Looks up a localized string similar to Configuration file.
         /// </summary>
         public static string ConfFile {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivos de configuración disponible por estación climática.
+        ///   Looks up a localized string similar to Configurations files.
         /// </summary>
         public static string ConfFileAvalaible {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivo.
+        ///   Looks up a localized string similar to File.
         /// </summary>
         public static string ConfFileFile {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nombre.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string ConfFileName {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guardar.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string ConfFileSave {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fecha de creación.
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Date {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuración estación climática.
+        ///   Looks up a localized string similar to Configuration of weather station.
         /// </summary>
         public static string Title {
             get {

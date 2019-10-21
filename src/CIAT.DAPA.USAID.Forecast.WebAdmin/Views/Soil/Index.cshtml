@@ -10,7 +10,11 @@
 <p>
     @Html.ActionLink(Localizer["New"].Value, "Create")
 </p>
-<table class="table">
+
+<p>
+    <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
+</p>
+<table class="table" id="index_list">
     <tr>
         <th>
             @Localizer["Crop"]
@@ -20,7 +24,7 @@
         </th>
         <th>
             @Localizer["Name"]
-        </th>        
+        </th>
         <th></th>
     </tr>
     @foreach (var item in Model)
@@ -35,7 +39,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
-            </td>            
+            </td>
             <td>
                 @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
                 @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
@@ -44,3 +48,7 @@
         </tr>
     }
 </table>
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}

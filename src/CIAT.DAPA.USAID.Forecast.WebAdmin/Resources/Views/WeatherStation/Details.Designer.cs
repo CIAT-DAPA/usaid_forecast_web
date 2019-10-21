@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a la lista.
+        ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string Back {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editar.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rangos de producción.
+        ///   Looks up a localized string similar to Yield ranges.
         /// </summary>
         public static string Ranges {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuración.
+        ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Setup {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detalles.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Title {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estación climática.
+        ///   Looks up a localized string similar to Weather station.
         /// </summary>
         public static string WS {
             get {

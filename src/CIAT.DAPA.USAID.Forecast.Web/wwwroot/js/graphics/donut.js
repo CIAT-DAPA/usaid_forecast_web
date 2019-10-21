@@ -21,7 +21,7 @@ function donut(data, control) {
             .transition().duration(350)
             .call(chart_donut);
 
-        nv.utils.windowResize(chart_donut.update);
+        nv.utils.windowResize(function () { chart_donut.update(); });
 
         return chart_donut;
     });

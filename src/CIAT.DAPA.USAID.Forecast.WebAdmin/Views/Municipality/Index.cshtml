@@ -10,7 +10,11 @@
 <p>
     @Html.ActionLink(Localizer["New"].Value, "Create")
 </p>
-<table class="table">
+
+<p>
+    <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
+</p>
+<table class="table" id="index_list">
     <tr>
         <th>
             @Localizer["State"]
@@ -21,26 +25,37 @@
         <th>
             @Localizer["Name"]
         </th>
+        <th>
+            @Localizer["Visible"]
+        </th>
         <th></th>
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @{ var s = ((List<State>)ViewBag.states).FirstOrDefault(p => p.id == item.state); }
-                @s.name
-            </td>
-            <td>
-                @item.id.ToString()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
-                @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
-                @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id })
-            </td>
-        </tr>
+<tr>
+    <td>
+        @{ var s = ((List<State>)ViewBag.states).FirstOrDefault(p => p.id == item.state); }
+        @s.name
+    </td>
+    <td>
+        @item.id.ToString()
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.visible)
+    </td>
+    <td>
+        @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
+        @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
+        @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id })
+    </td>
+</tr>
     }
 </table>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}

@@ -77,53 +77,57 @@
                                     <table class="table table-responsive" id="ranges_@cu.Id"></table>
                                 </div>
                             </article>
-                            <article class="col-lg-6 article_content">
-                                <div class="section-content">
-                                    <h4 class="text-center">@Localizer["ForecastCultivarDateTitle"]</h4>
-                                    <p class="text-justify">
-                                        @Localizer["ForecastCultivarDateText1"]
-                                        <span class="text-bold" id="yield_max_@cu.Id"></span>
-                                        @Localizer["ForecastCultivarDateText2"]
-                                        <span class="text-bold" id="yield_date_@cu.Id"></span>
-                                    </p>
-                                    <div id="calendar_@cu.Id" class="plot" style="font-size:0.8em;">
+                            <div class="row">
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h4 class="text-center">@Localizer["ForecastCultivarDateTitle"]</h4>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastCultivarDateText1"]
+                                            <span class="text-bold" id="yield_max_@cu.Id"></span>
+                                            @Localizer["ForecastCultivarDateText2"]
+                                            <span class="text-bold" id="yield_date_@cu.Id"></span>
+                                        </p>
+                                        <div id="calendar_@cu.Id" class="plot" style="font-size:0.8em;">
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
-                            <article class="col-lg-6 article_content">
-                                <div class="section-content">
-                                    <h4 class="text-center">@Localizer["ForecastCultivarBarsTitle"]</h4>
-                                    <p class="text-justify">
-                                        @Localizer["ForecastCultivarBarsText"]
-                                    </p>
-                                    <div id="cultivar_bars_@cu.Id" class="plot plot_yield_bars">
-                                        <svg></svg>
+                                </article>
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h4 class="text-center">@Localizer["ForecastCultivarBarsTitle"]</h4>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastCultivarBarsText"]
+                                        </p>
+                                        <div id="cultivar_bars_@cu.Id" class="plot plot_yield_bars">
+                                            <svg></svg>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
-                            <article class="col-lg-6 article_content">
-                                <div class="section-content">
-                                    <h3 class="text-center">@Localizer["ForecastVariationTitle"]</h3>
-                                    <p class="text-justify">
-                                        @Localizer["ForecastVariationDescription"].
-                                    </p>
-                                    <select id="cbo_variation_@cu.Id" class="form-control"></select>
-                                    <div id="cultivar_variation_@cu.Id" class="plot plot_variation">
-                                        <svg></svg>
+                                </article>
+                            </div>
+                            <div class="row">
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h3 class="text-center">@Localizer["ForecastVariationTitle"]</h3>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastVariationDescription"].
+                                        </p>
+                                        <select id="cbo_variation_@cu.Id" class="form-control"></select>
+                                        <div id="cultivar_variation_@cu.Id" class="plot plot_variation">
+                                            <svg></svg>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
-                            <article class="col-lg-6 article_content">
-                                <div class="section-content">
-                                    <h3 class="text-center">@Localizer["ForecastExceedanceTitle"]</h3>
-                                    <p class="text-justify">
-                                        @Localizer["ForecastExceedanceDescription"].
-                                    </p>
-                                    <div id="cultivar_exceedance_@cu.Id" class="plot plot_variation">
-                                        <svg></svg>
+                                </article>
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h3 class="text-center">@Localizer["ForecastExceedanceTitle"]</h3>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastExceedanceDescription"].
+                                        </p>                                        
+                                        <div id="cultivar_exceedance_@cu.Id" class="plot plot_variation">
+                                            <svg></svg>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
+                                </article>
+                            </div>
                         </div>
                     </article>
                 </section>
@@ -172,12 +176,12 @@
 @section Scripts {
     <script src="https://d3js.org/d3-time.v1.min.js"></script>
     <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
-
     <script src="~/js/graphics/ranges.js"></script>
     <script src="~/js/graphics/bars.js"></script>
     <script src="~/js/graphics/calendar.js"></script>
     <script src="~/js/graphics/area.js"></script>
     <script src="~/js/graphics/exceedance.js"></script>
+
     <script type="text/javascript">
             // Getting parameters
             var months = @Html.Raw(Json.Serialize(Localizer["Months"].Value.ToString().Split(",")));
@@ -188,14 +192,30 @@
             var colors = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
 
     var measures = {
-        '@Localizer["CropRice"]': [
+        'Rice': [
                     { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
                     { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
                     { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                     { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
                     { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
         ],
-        '@Localizer["CropMaize"]': [
+        'Maize': [
+                    { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                    { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                    { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                    { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                    { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                    { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+        ],
+        'Wheat': [
+                    { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                    { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                    { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                    { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                    { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                    { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+        ],
+        'Sorghum': [
                     { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
                     { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                     { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
@@ -203,6 +223,7 @@
                     { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
                     { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
         ]
+
     };
     var me = '@ViewBag.c';
     var m_list = measures[me];
@@ -210,6 +231,7 @@
     // Sorting parameters
     ranges = ranges.sort(function (item) { return item.upper });
     ranges = merge_ranges_colors(ranges, colors);
+    
     function update_forecast(cu, so) {
         // Ploting ranges
         plot_ranges(ranges,'ranges_' + cu);
@@ -240,7 +262,7 @@
             key: '@Localizer["yield_unit"]',
             values: yield_filtered.map(function (item) {
                 var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
-                var r = ranges.filter(function (item2) { return item2.lower < value && item2.upper >= value; } )[0];
+                var r = ranges.filter(function (item2) { return item2.lower <= value && item2.upper >= value; } )[0];
                 return {
                     "label": item.start.substring(0, 10),
                     "value": value,
@@ -262,7 +284,9 @@
         $('#cbo_variation_' + cu).change(function () { plot_variation(cu, yield_filtered); });
 
         // filtering exceedance data
-        var yield_exceedance_filtered = yield_exceedance.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); });
+        var yield_exceedance_filtered = yield_exceedance.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); })
+            //.filter(function (d, i) { return i % 4 == 0; })
+            ;
         var fe = yield_exceedance_filtered.map(function (item) {
                 var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
                 return {
@@ -271,21 +295,20 @@
                 };
             });
 
-        //fe = fe.sort(function (a, b) { return a.value > b.value; });        
         fe = fe.map(function (item, i) {
             return {
-                x: item.value,
-                y: (1 / ((fe.length+1)/i))*100
+                x: d3.format("0f")(item.value),
+                y: d3.format(".2f")((1 / ((fe.length+1)/i))*100)
             }
         });
-        console.log(fe);
 
         var e_data = [{
-            key: 'yield',
+            key: '@Localizer["probability_unit"]',
             values: fe,
             color:"#C8E6C9"
         }]
-        exceedance(e_data,'cultivar_exceedance_' + cu, '@Localizer["yield_unit"]',  'Probabilities (%)');
+        exceedance(e_data, 'cultivar_exceedance_' + cu, '@Localizer["yield_unit"]', '@Localizer["probability_unit"]');
+
     }
 
     function plot_variation(cu,yield_filtered) {
@@ -345,6 +368,7 @@
             color:"#C8E6C9"
         }];
 
+        $('#cultivar_variation_' + cu + ' svg').html('');
         area(l_data,'cultivar_variation_' + cu, '',  m_list[me_selected].metric);
     }
 

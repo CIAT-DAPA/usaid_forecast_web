@@ -26,7 +26,7 @@ function lines(data, control, y_axis, x_axis) {
             .call(chart_lines)
             ;
 
-        nv.utils.windowResize(chart_lines.update);
+        nv.utils.windowResize(function () { chart_lines.update(); });
 
         return chart_lines;
     });

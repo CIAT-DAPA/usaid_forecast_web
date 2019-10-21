@@ -118,48 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddFile" xml:space="preserve">
-    <value>Agregar archivo</value>
+    <value>Add file</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Volver a cultivo</value>
+    <value>Back to crop</value>
   </data>
   <data name="ConfAvalaible" xml:space="preserve">
-    <value>Configuraciones disponibles</value>
+    <value>Configurations enable</value>
   </data>
   <data name="ConfFile" xml:space="preserve">
-    <value>Archivos de configuración</value>
+    <value>Configurations files</value>
   </data>
   <data name="ConfGlobal" xml:space="preserve">
-    <value>Configuración global</value>
+    <value>Global configuration</value>
   </data>
   <data name="Cultivar" xml:space="preserve">
     <value>Cultivar</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Fecha</value>
+    <value>Date</value>
   </data>
   <data name="Days" xml:space="preserve">
-    <value>Días</value>
+    <value>Days</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>Delete</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>Archivo</value>
+    <value>File</value>
   </data>
   <data name="ParameterName" xml:space="preserve">
-    <value>Nombre de parámetro</value>
+    <value>Parameter name</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Guardar</value>
+    <value>Save</value>
   </data>
   <data name="Soil" xml:space="preserve">
-    <value>Suelo</value>
+    <value>Soil</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Setup</value>
   </data>
   <data name="WS" xml:space="preserve">
-    <value>Estación climática</value>
+    <value>Weather station</value>
   </data>
 </root>

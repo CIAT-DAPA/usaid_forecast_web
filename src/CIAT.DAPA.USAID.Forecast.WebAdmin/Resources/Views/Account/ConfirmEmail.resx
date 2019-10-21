@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Message" xml:space="preserve">
-    <value>Gracias por confirmar su email. Por favor &lt;a asp-controller="Account" asp-action="Login"&gt;de click aquí&lt;/a&gt; para iniciar sesión.</value>
+    <value>Thank you for confirming your email. Please &lt;a asp-controller="Account" asp-action="Login"&gt;click here&lt;/a&gt; to login.</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Cuenta confirmada</value>
+    <value>Account confirmed</value>
   </data>
 </root>

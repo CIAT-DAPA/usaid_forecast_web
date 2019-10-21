@@ -118,6 +118,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="entities_affected">List of the entities affected</param>
         public async Task writeEventAsync(string content, LogEvent e, List<LogEntity> entities_affected)
         {
+            Console.WriteLine(e);
+            Console.WriteLine(entities_affected);
+            Console.WriteLine(content);
             var user = await GetCurrentUserAsync();
             log.writeAsync(content, entities_affected, e, user == null ? "anonymous" : user.Id.ToString());
         }

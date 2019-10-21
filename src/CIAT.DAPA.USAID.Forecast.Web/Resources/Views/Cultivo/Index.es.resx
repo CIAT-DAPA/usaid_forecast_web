@@ -244,9 +244,27 @@
     <value>Kg/ha</value>
   </data>
   <data name="ForecastExceedanceDescription" xml:space="preserve">
-    <value>En la siguiente gráfica usted podrá ver cuales son las probabilidades de excedencia de acuerdo al rendimiento potencial promedio</value>
+    <value>En la siguiente gráfica usted podrá ver cuales son las probabilidades de excedencia de acuerdo al rendimiento potencial promedio o fecha de siembra</value>
   </data>
   <data name="ForecastExceedanceTitle" xml:space="preserve">
     <value>Probabilidades de excedencia</value>
+  </data>
+  <data name="planting_date_Description" xml:space="preserve">
+    <value>Fecha de siembra</value>
+  </data>
+  <data name="planting_date_unit" xml:space="preserve">
+    <value>Día del año</value>
+  </data>
+  <data name="probability_unit" xml:space="preserve">
+    <value>Probabilidad (%)</value>
+  </data>
+  <data name="yield_0_Description" xml:space="preserve">
+    <value>Rendimiento al 0% de húmedad</value>
+  </data>
+  <data name="yield_0_unit" xml:space="preserve">
+    <value>Kg/ha</value>
+  </data>
+  <data name="yield_Description" xml:space="preserve">
+    <value>Rendimiento</value>
   </data>
 </root>

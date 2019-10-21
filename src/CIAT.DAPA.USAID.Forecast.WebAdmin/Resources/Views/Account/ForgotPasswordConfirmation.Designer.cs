@@ -62,7 +62,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Por favor revisa tu email para cambiar tu password..
+        ///   Looks up a localized string similar to Please check your email to change your password..
         /// </summary>
         public static string Message {
             get {
@@ -71,7 +71,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirmación de olvido de password.
+        ///   Looks up a localized string similar to Password Forgot Confirmation.
         /// </summary>
         public static string Title {
             get {

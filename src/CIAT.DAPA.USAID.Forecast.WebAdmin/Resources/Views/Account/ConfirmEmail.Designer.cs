@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gracias por confirmar su email. Por favor &lt;a asp-controller=&quot;Account&quot; asp-action=&quot;Login&quot;&gt;de click aquí&lt;/a&gt; para iniciar sesión..
+        ///   Looks up a localized string similar to Thank you for confirming your email. Please &lt;a asp-controller=&quot;Account&quot; asp-action=&quot;Login&quot;&gt;click here&lt;/a&gt; to login..
         /// </summary>
         public static string Message {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cuenta confirmada.
+        ///   Looks up a localized string similar to Account confirmed.
         /// </summary>
         public static string Title {
             get {

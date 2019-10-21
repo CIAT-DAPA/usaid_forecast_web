@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administración.
+        ///   Looks up a localized string similar to Administration.
         /// </summary>
         public static string MenuAdmin {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Climatología.
+        ///   Looks up a localized string similar to Climatology.
         /// </summary>
         public static string MenuClimatology {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cultivos.
+        ///   Looks up a localized string similar to Crops.
         /// </summary>
         public static string MenuCrops {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cultivares.
+        ///   Looks up a localized string similar to Cultivars.
         /// </summary>
         public static string MenuCultivars {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Geografía.
+        ///   Looks up a localized string similar to Geographic.
         /// </summary>
         public static string MenuGeography {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Histórico climático.
+        ///   Looks up a localized string similar to Historical climate.
         /// </summary>
         public static string MenuHistoricalClimatic {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Histórico de producción.
+        ///   Looks up a localized string similar to Historical yield.
         /// </summary>
         public static string MenuHistoricalYield {
             get {
@@ -133,7 +133,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string MenuImport {
             get {
@@ -142,7 +142,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pronósticos.
+        ///   Looks up a localized string similar to Prediction.
         /// </summary>
         public static string MenuMain {
             get {
@@ -151,7 +151,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Municipios.
+        ///   Looks up a localized string similar to Municipalities.
         /// </summary>
         public static string MenuMunicipalities {
             get {
@@ -160,7 +160,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Producción.
+        ///   Looks up a localized string similar to Production.
         /// </summary>
         public static string MenuProduction {
             get {
@@ -169,7 +169,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suelos.
+        ///   Looks up a localized string similar to Soils.
         /// </summary>
         public static string MenuSoils {
             get {
@@ -178,7 +178,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fuentes.
+        ///   Looks up a localized string similar to Sources.
         /// </summary>
         public static string MenuSources {
             get {
@@ -187,7 +187,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estados.
+        ///   Looks up a localized string similar to States.
         /// </summary>
         public static string MenuStates {
             get {
@@ -196,7 +196,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuarios.
+        ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string MenuUsers {
             get {
@@ -205,7 +205,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estaciones.
+        ///   Looks up a localized string similar to Stations.
         /// </summary>
         public static string MenuWS {
             get {

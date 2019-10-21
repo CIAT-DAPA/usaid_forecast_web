@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enviar.
+        ///   Looks up a localized string similar to Send.
         /// </summary>
         public static string Send {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cambiar password.
+        ///   Looks up a localized string similar to Change password.
         /// </summary>
         public static string Title {
             get {

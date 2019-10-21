@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrar.
+        ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string Save {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrar.
+        ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string Title {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrar nuevo usuario.
+        ///   Looks up a localized string similar to Register a new user.
         /// </summary>
         public static string User {
             get {

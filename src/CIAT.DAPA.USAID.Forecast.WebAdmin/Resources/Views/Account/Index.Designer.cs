@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activo.
+        ///   Looks up a localized string similar to Active.
         /// </summary>
         public static string Active {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrar nuevo.
+        ///   Looks up a localized string similar to New.
         /// </summary>
         public static string Back {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editar.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuarios.
+        ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string Title {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuario.
+        ///   Looks up a localized string similar to User.
         /// </summary>
         public static string User {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuarios.
+        ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string Users {
             get {

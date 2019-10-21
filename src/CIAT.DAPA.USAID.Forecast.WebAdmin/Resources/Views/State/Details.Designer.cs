@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a la lista.
+        ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string Back {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editar.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string Import {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estado.
+        ///   Looks up a localized string similar to State.
         /// </summary>
         public static string State {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detalle.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Title {
             get {

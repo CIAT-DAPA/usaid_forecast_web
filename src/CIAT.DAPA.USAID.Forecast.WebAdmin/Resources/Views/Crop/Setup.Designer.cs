@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar archivo.
+        ///   Looks up a localized string similar to Add file.
         /// </summary>
         public static string AddFile {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a cultivo.
+        ///   Looks up a localized string similar to Back to crop.
         /// </summary>
         public static string Back {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuraciones disponibles.
+        ///   Looks up a localized string similar to Configurations enable.
         /// </summary>
         public static string ConfAvalaible {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivos de configuración.
+        ///   Looks up a localized string similar to Configurations files.
         /// </summary>
         public static string ConfFile {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuración global.
+        ///   Looks up a localized string similar to Global configuration.
         /// </summary>
         public static string ConfGlobal {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fecha.
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Date {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Días.
+        ///   Looks up a localized string similar to Days.
         /// </summary>
         public static string Days {
             get {
@@ -133,7 +133,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eliminar.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -142,7 +142,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivo.
+        ///   Looks up a localized string similar to File.
         /// </summary>
         public static string File {
             get {
@@ -151,7 +151,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nombre de parámetro.
+        ///   Looks up a localized string similar to Parameter name.
         /// </summary>
         public static string ParameterName {
             get {
@@ -160,7 +160,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guardar.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
@@ -169,7 +169,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suelo.
+        ///   Looks up a localized string similar to Soil.
         /// </summary>
         public static string Soil {
             get {
@@ -187,7 +187,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Crop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estación climática.
+        ///   Looks up a localized string similar to Weather station.
         /// </summary>
         public static string WS {
             get {

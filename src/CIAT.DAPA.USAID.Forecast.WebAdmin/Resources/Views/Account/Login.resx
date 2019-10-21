@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remember" xml:space="preserve">
-    <value>Olvidaste tu password?</value>
+    <value>Forgotten your password?</value>
   </data>
   <data name="SigninCMD" xml:space="preserve">
-    <value>Iniciar sesion</value>
+    <value>Sign in</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Iniciar sesion</value>
+    <value>Login</value>
   </data>
 </root>

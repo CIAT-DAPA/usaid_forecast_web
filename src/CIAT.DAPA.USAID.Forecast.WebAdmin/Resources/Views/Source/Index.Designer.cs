@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Source {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eliminar.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Source {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detalles.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Source {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editar.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Source {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nombre.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Source {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registrar nuevo.
+        ///   Looks up a localized string similar to New record.
         /// </summary>
         public static string New {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Source {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fuente.
+        ///   Looks up a localized string similar to Source.
         /// </summary>
         public static string Title {
             get {

@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Back" xml:space="preserve">
-    <value>Volver a la estación climática</value>
+    <value>Back to weather station</value>
   </data>
   <data name="ConfFile" xml:space="preserve">
-    <value>Archivo de configuración</value>
+    <value>Configuration file</value>
   </data>
   <data name="ConfFileAvalaible" xml:space="preserve">
-    <value>Archivos de configuración disponible por estación climática</value>
+    <value>Configurations files</value>
   </data>
   <data name="ConfFileFile" xml:space="preserve">
-    <value>Archivo</value>
+    <value>File</value>
   </data>
   <data name="ConfFileName" xml:space="preserve">
-    <value>Nombre</value>
+    <value>Name</value>
   </data>
   <data name="ConfFileSave" xml:space="preserve">
-    <value>Guardar</value>
+    <value>Save</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Fecha de creación</value>
+    <value>Date</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Configuración estación climática</value>
+    <value>Configuration of weather station</value>
   </data>
 </root>

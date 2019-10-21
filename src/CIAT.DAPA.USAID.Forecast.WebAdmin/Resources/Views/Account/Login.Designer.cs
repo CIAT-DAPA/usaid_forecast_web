@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Olvidaste tu password?.
+        ///   Looks up a localized string similar to Forgotten your password?.
         /// </summary>
         public static string Remember {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Iniciar sesion.
+        ///   Looks up a localized string similar to Sign in.
         /// </summary>
         public static string SigninCMD {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Iniciar sesion.
+        ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Title {
             get {

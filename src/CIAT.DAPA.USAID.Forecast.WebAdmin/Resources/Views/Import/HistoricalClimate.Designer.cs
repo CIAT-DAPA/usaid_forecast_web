@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Código externo.
+        ///   Looks up a localized string similar to External ID.
         /// </summary>
         public static string ExtID {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivo para importar (separado por coma &quot;,&quot;)..
+        ///   Looks up a localized string similar to File to import (separated by comma &quot;,&quot;)..
         /// </summary>
         public static string File {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Esta opción permite cargar un archivo para crear nuevos registros en la colección de clima histórico. El archivo debe tener una estructura específica. Usted puede ver el ejemplo..
+        ///   Looks up a localized string similar to This option allows you to upload a file to create new records in the historical weather collection. The file must have a specific structure. You can see the example..
         /// </summary>
         public static string HistoricalDescription {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Históricos climáticos.
+        ///   Looks up a localized string similar to Historical weather.
         /// </summary>
         public static string HistoricalTitle {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string ImportCMD {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Medida.
+        ///   Looks up a localized string similar to Measure.
         /// </summary>
         public static string Measure {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nombre.
+        ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar histórico climático.
+        ///   Looks up a localized string similar to Import historical climate.
         /// </summary>
         public static string Title {
             get {
@@ -133,7 +133,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo de búsqueda.
+        ///   Looks up a localized string similar to Type of search.
         /// </summary>
         public static string TypeSearch {
             get {

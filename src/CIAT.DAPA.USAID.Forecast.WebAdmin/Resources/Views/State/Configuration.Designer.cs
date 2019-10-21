@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agregar región.
+        ///   Looks up a localized string similar to Add region.
         /// </summary>
         public static string Add {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cant. de modos correlación.
+        ///   Looks up a localized string similar to Amount CCA.
         /// </summary>
         public static string AmountCCA {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cant. de modos en x.
+        ///   Looks up a localized string similar to Amount X modes.
         /// </summary>
         public static string AmountX {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cant. de modos en y.
+        ///   Looks up a localized string similar to Amount Y modes.
         /// </summary>
         public static string AmountY {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a la lista.
+        ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string Back {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fecha.
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Date {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eliminar.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detalles.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {
             get {
@@ -133,7 +133,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transformación gamma.
+        ///   Looks up a localized string similar to Gamma transformation.
         /// </summary>
         public static string Gamma {
             get {
@@ -142,7 +142,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nueva configuración.
+        ///   Looks up a localized string similar to New configuration.
         /// </summary>
         public static string NewSetup {
             get {
@@ -151,7 +151,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Regiones.
+        ///   Looks up a localized string similar to Regions.
         /// </summary>
         public static string Regions {
             get {
@@ -160,7 +160,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guardar.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
@@ -169,7 +169,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuraciones disponibles.
+        ///   Looks up a localized string similar to Configurations available.
         /// </summary>
         public static string SetupAvalaible {
             get {
@@ -178,7 +178,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuración.
+        ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Title {
             get {
@@ -187,7 +187,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trimestre.
+        ///   Looks up a localized string similar to Trimester.
         /// </summary>
         public static string Trimester {
             get {

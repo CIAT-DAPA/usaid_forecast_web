@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Install {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuario administrador.
+        ///   Looks up a localized string similar to Administrator user.
         /// </summary>
         public static string AdminUser {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Install {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instalar.
+        ///   Looks up a localized string similar to Install.
         /// </summary>
         public static string Install {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Install {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instalación.
+        ///   Looks up a localized string similar to Installation.
         /// </summary>
         public static string Title {
             get {

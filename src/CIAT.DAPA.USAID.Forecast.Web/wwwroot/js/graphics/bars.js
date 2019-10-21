@@ -23,7 +23,7 @@ function bars(data, control, y_axis, rotate) {
             .datum(data)
             .call(chart_bar);
 
-        nv.utils.windowResize(chart_bar.update);
+        nv.utils.windowResize(function () { chart_bar.update(); });
 
         return chart_bar;
     });

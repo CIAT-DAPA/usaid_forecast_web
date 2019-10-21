@@ -132,6 +132,9 @@
   <data name="Name" xml:space="preserve">
     <value>Nombre</value>
   </data>
+  <data name="New" xml:space="preserve">
+    <value>Registrar nuevo</value>
+  </data>
   <data name="Setup" xml:space="preserve">
     <value>Setup</value>
   </data>

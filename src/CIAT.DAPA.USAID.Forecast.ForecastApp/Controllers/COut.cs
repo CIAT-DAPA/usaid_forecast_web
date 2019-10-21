@@ -40,6 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         {
             StringBuilder csv;
             string header, line;
+            Console.WriteLine("Exporting in: " + path);
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);

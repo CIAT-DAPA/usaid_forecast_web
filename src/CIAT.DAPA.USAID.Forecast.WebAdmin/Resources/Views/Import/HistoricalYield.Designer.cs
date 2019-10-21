@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Archivo para importar (separado por coma &quot;,&quot;)..
+        ///   Looks up a localized string similar to File to import (separated by comma &quot;,&quot;)..
         /// </summary>
         public static string File {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Esta opción permite cargar un archivo para crear nuevos registros en la colección histórica de rendimiento. El archivo debe tener una estructura específica. Usted puede ver el ejemplo..
+        ///   Looks up a localized string similar to This option allows you to upload a file to create new records in the historical yield collection. The file must have a specific structure. You can see the example..
         /// </summary>
         public static string HistoricalDescription {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Históricos de producción.
+        ///   Looks up a localized string similar to Historical yield.
         /// </summary>
         public static string HistoricalTitle {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar.
+        ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string ImportCMD {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fuente.
+        ///   Looks up a localized string similar to Source.
         /// </summary>
         public static string Source {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Import {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Importar histórico de producción.
+        ///   Looks up a localized string similar to Import historical yield.
         /// </summary>
         public static string Title {
             get {

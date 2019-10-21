@@ -23,10 +23,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 /*var builder = new ConfigurationBuilder()
                     .AddJsonFile($"appsettings.json", true, true)
                     .AddEnvironmentVariables();*/
+                string dir = Directory.GetCurrentDirectory();
+                //dir = dir.Contains("forecast_app") ? dir : dir + "\\forecast_app";
                 var builder = new ConfigurationBuilder()
-                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .SetBasePath(dir)                                    
                                     .AddJsonFile("appsettings.json", optional: true,reloadOnChange: true);
                 var conf = builder.Build();
+                Console.WriteLine("Working in: " + dir);
                 Program.settings = new Settings()
                 {
                     splitted = ',',
@@ -51,7 +54,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Social_Network_Twitter_AccessToken = conf["Social_Network_Twitter_AccessToken"],
                     Social_Network_Twitter_AccessTokenSecret = conf["Social_Network_Twitter_AccessTokenSecret"],
                     Social_Network_Twitter_ConsumerKey = conf["Social_Network_Twitter_ConsumerKey"],
-                    Social_Network_Twitter_ConsumerKeySecret = conf["Social_Network_Twitter_ConsumerKeySecret"]
+                    Social_Network_Twitter_ConsumerKeySecret = conf["Social_Network_Twitter_ConsumerKeySecret"],
+                    Add_Day = bool.Parse(conf["Add_Day"])
                 };
             }
             catch (Exception ex)
@@ -154,6 +158,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing forecast");
                         await cin.importForecastAsync(args[path + 1], double.Parse(args[cf + 1]));
                     }
+                    //-in -hs -s "prec" -type 1 -p "C:\data.csv" 
+                    int hs = Program.searchParameter(args, "-hs");
+                    if (hs >= 0)
+                    {
+                        int s = Program.searchParameter(args, "-s");
+                        Program.validateParameter(s, "-s");
+                        int type = Program.searchParameter(args, "-type");
+                        Program.validateParameter(type, "-type");
+                        Console.WriteLine("Importing historical data");
+                        await cin.importHistoricalAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1]), int.Parse(args[type + 1]));
+                    }
                 }
                 else if (Program.searchParameter(args, "-help") == 0)
                 {
@@ -164,7 +179,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 {
                     throw new Exception("The first parameter should indicate if you want export (-out) or import (-in).\nRecommend execute with parameter -help to get more information");
                 }
-
             }
             catch (Exception ex)
             {

@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volver a la estación climática.
+        ///   Looks up a localized string similar to Back to weather station.
         /// </summary>
         public static string Back {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cultivo.
+        ///   Looks up a localized string similar to Crop.
         /// </summary>
         public static string Crop {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eliminar.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Descripción.
+        ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
             get {
@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Límite inferior.
+        ///   Looks up a localized string similar to Lower limit.
         /// </summary>
         public static string LimitLower {
             get {
@@ -106,7 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Límite superior.
+        ///   Looks up a localized string similar to Upper limit.
         /// </summary>
         public static string LimitUpper {
             get {
@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rangos por cultivo.
+        ///   Looks up a localized string similar to Yield ranges.
         /// </summary>
         public static string RangesCrop {
             get {
@@ -124,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guardar.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
@@ -133,7 +133,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.WeatherStation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rangos de producción.
+        ///   Looks up a localized string similar to Yield ranges.
         /// </summary>
         public static string Title {
             get {

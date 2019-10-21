@@ -9,7 +9,10 @@
     @Html.ActionLink(Localizer["New"].Value, "Create")
 </p>
 
-<table class="table">
+<p>
+    <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
+</p>
+<table class="table" id="index_list">
     <tr>
         <th>
             @Localizer["Country"]
@@ -44,3 +47,7 @@
         </tr>
     }
 </table>
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}

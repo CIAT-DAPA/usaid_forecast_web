@@ -126,6 +126,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="Ext_ID" xml:space="preserve">
+    <value>ID Ext.</value>
+  </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Ranges" xml:space="preserve">
     <value>Rangos de producción</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
   </data>
   <data name="Setup" xml:space="preserve">
     <value>Configuración</value>

@@ -141,6 +141,9 @@
   <data name="New" xml:space="preserve">
     <value>Registrar nuevo</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
   <data name="Setup" xml:space="preserve">
     <value>Configuración</value>
   </data>

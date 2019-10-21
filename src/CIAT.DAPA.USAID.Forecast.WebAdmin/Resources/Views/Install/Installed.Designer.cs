@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Install {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La instalación a terminado. Por favor confirme la cuenta de administrador antes de iniciar sesion..
+        ///   Looks up a localized string similar to The installation is finished. Please confirm the administrator account before logging in..
         /// </summary>
         public static string Message {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Install {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Instalación completada.
+        ///   Looks up a localized string similar to Installation succesfull.
         /// </summary>
         public static string Title {
             get {

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,7 +30,7 @@
   </Target>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.2.301" />
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.2.406" />
   </ItemGroup>
 
   <ItemGroup>
@@ -132,6 +133,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Edit.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Cultivar\Index.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Index.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Home\Index.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Index.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Views\Import\Climatology.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -396,6 +407,14 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Edit.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Cultivar\Index.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Index.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Home\Index.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Index.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Import\Climatology.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Climatology.Designer.cs</LastGenOutput>
@@ -540,6 +559,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Range.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Imports\" />
   </ItemGroup>
 
 </Project>

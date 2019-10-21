@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Active" xml:space="preserve">
-    <value>Activo</value>
+    <value>Active</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Volver a la lista</value>
+    <value>Back to list</value>
   </data>
   <data name="EditCMD" xml:space="preserve">
-    <value>Editar</value>
+    <value>Edit</value>
   </data>
   <data name="EditUser" xml:space="preserve">
-    <value>Editar usuario</value>
+    <value>Edit user</value>
   </data>
   <data name="Roles" xml:space="preserve">
     <value>Roles</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Editar</value>
+    <value>Edit</value>
   </data>
 </root>

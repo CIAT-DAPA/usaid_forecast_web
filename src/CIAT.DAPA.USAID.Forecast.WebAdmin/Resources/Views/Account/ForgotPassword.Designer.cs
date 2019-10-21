@@ -61,7 +61,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingresa tu email.
+        ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Message {
             get {
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enviar.
+        ///   Looks up a localized string similar to Send.
         /// </summary>
         public static string Submit {
             get {
@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Olvidaste tu password?.
+        ///   Looks up a localized string similar to Forgotten your password?.
         /// </summary>
         public static string Title {
             get {

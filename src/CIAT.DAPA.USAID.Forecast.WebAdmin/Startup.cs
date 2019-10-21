@@ -48,7 +48,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
+            Console.WriteLine(Configuration);
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
@@ -63,8 +64,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 options.NotifyPort = int.Parse(Configuration.GetSection("Notification:Port").Value);
                 options.NotifyServer = Configuration.GetSection("Notification:Server").Value;
                 options.NotifySsl = bool.Parse(Configuration.GetSection("Notification:Ssl").Value);
+                options.Languages = Configuration.GetSection("Languages").Value.Split(",");
+                options.Crops = Configuration.GetSection("Crops").Value.Split(",");
             });
-
+                        
             // Register identity framework services and also Mongo storage. 
             services.Configure<PasswordHasherOptions>(options =>
                     options.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV2
@@ -81,8 +84,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 identityOptions.SignIn.RequireConfirmedEmail = true;
                 //identityOptions
             }, mongoIdentityOptions => {
-                //mongoIdentityOptions.ConnectionString = Configuration.GetSection("ForecastConnection:ConnectionString").Value;
-                mongoIdentityOptions.ConnectionString = "mongodb://localhost:27017/forecast_db";
+                mongoIdentityOptions.ConnectionString = Configuration.GetSection("ForecastConnection:ConnectionString").Value;
             }).AddDefaultTokenProviders();            
 
             /*services.AddIdentityWithMongoStores(Configuration.GetSection("ForecastConnection:ConnectionString").Value)
@@ -120,15 +122,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[]
+                //string[] languages = Configuration["Languages"].Split(",");
+                string[] languages = new string[] { "en-US","es-CO" };
+                CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
+                for (int i=0;i<languages.Length;i++)
                 {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("es-CO")
-                };
+                    supportedCultures[i] = new CultureInfo(languages[i]);
+                }
 
                 // State what the default culture for your application is. This will be used if no specific culture
                 // can be determined for a given request.
-                options.DefaultRequestCulture = new RequestCulture(culture: "es-CO", uiCulture: "es-CO");
+                options.DefaultRequestCulture = new RequestCulture(culture: languages[0], uiCulture: languages[0]);
 
                 // You must explicitly state which cultures your application supports.
                 // These are the cultures the app supports for formatting numbers, dates, etc.
@@ -141,9 +145,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+        {          
 
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);

@@ -34,7 +34,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             hostingEnvironment = environment;
             Root = settings.Value.api_fs;
             rWS = new RepositoryWeatherStations(Root);
-            Task.Run(() => this.InitAsync()).Wait();
+            try
+            {
+                Task.Run(() => this.InitAsync()).Wait(350000);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
         }
 
         /// <summary>

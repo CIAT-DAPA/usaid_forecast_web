@@ -2,19 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\js\graphics\exceedance.js~RF17a403ac.TMP" />
-    <Content Remove="wwwroot\js\graphics\lines.js~RF154312d1.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="wwwroot\**\*;Views\**\*;Areas\**\Views;robots.txt;sitemap.xml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -24,7 +15,6 @@
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install" />
     <Exec Command="dotnet bundle" />
   </Target>
 
@@ -111,13 +101,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>_SubMenu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\lib\bootstrap\" />
-    <Folder Include="wwwroot\lib\d3\" />
-    <Folder Include="wwwroot\lib\jquery\" />
-    <Folder Include="wwwroot\lib\select2\" />
   </ItemGroup>
 
 </Project>

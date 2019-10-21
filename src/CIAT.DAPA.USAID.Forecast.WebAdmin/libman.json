@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@2.2.3",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [ "jquery.min.js" ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@3.3.6",
+      "destination": "wwwroot/lib/bootstrap/"
+    }
+  ]
+}

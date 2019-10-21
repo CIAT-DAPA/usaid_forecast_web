@@ -118,27 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ClimatologyDescription" xml:space="preserve">
-    <value>Esta opción permite cargar un archivo para crear nuevos registros en la colección de climatología. El archivo debe tener una estructura específica. Usted puede ver el ejemplo.</value>
+    <value>This option allows you to upload a file to create new records in the climatology collection. The file must have a specific structure. You can see the example.</value>
   </data>
   <data name="ClimatologyTitle" xml:space="preserve">
-    <value>Climatología</value>
+    <value>Climatology</value>
   </data>
   <data name="ExtID" xml:space="preserve">
-    <value>Código externo</value>
+    <value>Extern ID</value>
   </data>
   <data name="ImportCMD" xml:space="preserve">
-    <value>Importar</value>
+    <value>Import</value>
   </data>
   <data name="ImportFile" xml:space="preserve">
-    <value>Archivo para importar (separado por coma ",").</value>
+    <value>File to import (separated by comma ",").</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Nombre</value>
+    <value>Name</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Importar climatología</value>
+    <value>Import climatology</value>
   </data>
   <data name="TypeSearch" xml:space="preserve">
-    <value>Tipo de búsqueda</value>
+    <value>Kind of search</value>
   </data>
 </root>

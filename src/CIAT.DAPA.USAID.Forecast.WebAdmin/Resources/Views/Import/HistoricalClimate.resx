@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ExtID" xml:space="preserve">
-    <value>Código externo</value>
+    <value>External ID</value>
   </data>
   <data name="File" xml:space="preserve">
-    <value>Archivo para importar (separado por coma ",").</value>
+    <value>File to import (separated by comma ",").</value>
   </data>
   <data name="HistoricalDescription" xml:space="preserve">
-    <value>Esta opción permite cargar un archivo para crear nuevos registros en la colección de clima histórico. El archivo debe tener una estructura específica. Usted puede ver el ejemplo.</value>
+    <value>This option allows you to upload a file to create new records in the historical weather collection. The file must have a specific structure. You can see the example.</value>
   </data>
   <data name="HistoricalTitle" xml:space="preserve">
-    <value>Históricos climáticos</value>
+    <value>Historical weather</value>
   </data>
   <data name="ImportCMD" xml:space="preserve">
-    <value>Importar</value>
+    <value>Import</value>
   </data>
   <data name="Measure" xml:space="preserve">
-    <value>Medida</value>
+    <value>Measure</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Nombre</value>
+    <value>Name</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Importar histórico climático</value>
+    <value>Import historical climate</value>
   </data>
   <data name="TypeSearch" xml:space="preserve">
-    <value>Tipo de búsqueda</value>
+    <value>Type of search</value>
   </data>
 </root>

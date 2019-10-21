@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="File" xml:space="preserve">
-    <value>Archivo para importar (separado por coma ",").</value>
+    <value>File to import (separated by comma ",").</value>
   </data>
   <data name="HistoricalDescription" xml:space="preserve">
-    <value>Esta opción permite cargar un archivo para crear nuevos registros en la colección histórica de rendimiento. El archivo debe tener una estructura específica. Usted puede ver el ejemplo.</value>
+    <value>This option allows you to upload a file to create new records in the historical yield collection. The file must have a specific structure. You can see the example.</value>
   </data>
   <data name="HistoricalTitle" xml:space="preserve">
-    <value>Históricos de producción</value>
+    <value>Historical yield</value>
   </data>
   <data name="ImportCMD" xml:space="preserve">
-    <value>Importar</value>
+    <value>Import</value>
   </data>
   <data name="Source" xml:space="preserve">
-    <value>Fuente</value>
+    <value>Source</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Importar histórico de producción</value>
+    <value>Import historical yield</value>
   </data>
 </root>
