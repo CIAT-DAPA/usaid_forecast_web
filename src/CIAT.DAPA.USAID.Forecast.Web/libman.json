@@ -31,5 +31,6 @@
       "library": "leaflet@1.5.1",
       "destination": "wwwroot/lib/leaflet/"
     }
+
   ]
 }

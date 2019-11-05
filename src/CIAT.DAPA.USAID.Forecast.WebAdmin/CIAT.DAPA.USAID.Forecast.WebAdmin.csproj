@@ -24,8 +24,7 @@
     <PackageReference Include="MailKit" Version="1.16.0" />
   </ItemGroup>
 
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install" />
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">    
     <Exec Command="dotnet bundle" />
   </Target>
 

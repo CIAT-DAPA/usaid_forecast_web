@@ -10,6 +10,25 @@
 @inject UserManager<User> UserManager
 @inject IOptions<RequestLocalizationOptions> LocOptions
 
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-controller="Account" asp-action="Manage">@UserManager.GetUserName(User)</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">@Localizer["UserSignout"]</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">@Localizer["UserSignin"]</a></li>
+    </ul>
+}
 <ul class="nav navbar-nav navbar-right">
     @{
         var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -34,22 +53,3 @@
         </ul>
     </li>
 </ul>
-@if (SignInManager.IsSignedIn(User))
-{
-    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-controller="Account" asp-action="Manage">@UserManager.GetUserName(User)</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">@Localizer["UserSignout"]</button>
-            </li>
-        </ul>
-    </form>
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">@Localizer["UserSignin"]</a></li>
-    </ul>
-}

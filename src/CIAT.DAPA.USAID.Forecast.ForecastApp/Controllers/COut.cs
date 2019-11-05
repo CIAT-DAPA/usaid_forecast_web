@@ -80,13 +80,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     if (data_measure != null)
                                         line += data_measure.value.ToString() + ",";
                                     else
-                                        line += "0,";
+                                        line += ",";
                                 }
                                 else
-                                    line += "0,";
+                                    line += ",";
                             }
                             else
-                                line += "0,";
+                                line += ",";
                         }
                         // Add line to file
                         csv.AppendLine(line.Substring(0, line.Length - 1));

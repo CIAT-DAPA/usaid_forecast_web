@@ -250,7 +250,7 @@ src/CIAT.DAPA.USAID.Forecast.WebAdmin/Data/Imports/
 src/CIAT.DAPA.USAID.Forecast.WebAdmin/Data/Log/
 
 # Configurations default
-/src/CIAT.DAPA.USAID.Forecast.WebAdmin/appsettings.Development.json
+src/CIAT.DAPA.USAID.Forecast.WebAdmin/appsettings.Development.json
 appsettings.Development.json
 *.Development.json
 

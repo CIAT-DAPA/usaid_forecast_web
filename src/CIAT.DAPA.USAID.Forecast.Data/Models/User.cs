@@ -16,6 +16,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Get or set the user password
         /// </summary>
-        //public string password { get; set; }
+        //public string _id { get; set; }
     }
 }

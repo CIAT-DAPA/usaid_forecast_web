@@ -122,8 +122,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                //string[] languages = Configuration["Languages"].Split(",");
-                string[] languages = new string[] { "en-US","es-CO" };
+                string[] languages = Configuration.GetSection("Languages").Value.Split(",");
+                //string[] languages = new string[] { "en-US","es-CO" };
+
                 CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
                 for (int i=0;i<languages.Length;i++)
                 {

@@ -53,15 +53,18 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[]
+                string[] languages = Configuration.GetSection("Languages").Value.Split(",");
+                //string[] languages = new string[] { "en-US","es-CO" };
+
+                CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
+                for (int i = 0; i < languages.Length; i++)
                 {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("es-CO")
-                };
+                    supportedCultures[i] = new CultureInfo(languages[i]);
+                }
 
                 // State what the default culture for your application is. This will be used if no specific culture
                 // can be determined for a given request.
-                options.DefaultRequestCulture = new RequestCulture(culture: "es-CO", uiCulture: "es-CO");
+                options.DefaultRequestCulture = new RequestCulture(culture: languages[0], uiCulture: languages[0]);
 
                 // You must explicitly state which cultures your application supports.
                 // These are the cultures the app supports for formatting numbers, dates, etc.
@@ -75,9 +78,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
