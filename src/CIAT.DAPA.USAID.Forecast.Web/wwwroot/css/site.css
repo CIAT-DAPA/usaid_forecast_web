@@ -407,89 +407,9 @@ footer img {
     height: 265px;
 }
 
-.nvd3 nv-wrap nv-lineChart {
-    width: 400px !important;
-}
-
 .plot_variation svg {
     width: 100%;
     height: 400px;
-}
-/* Axis Charts */
-.x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
-    display: none;
-}
-
-.y_axis path, .y_axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
-
-.x_axis_ticks .tick line, .y_axis_ticks .tick line {
-    fill: none;
-    stroke: #b3b3b3;
-    stroke-width: 1;
-    stroke-dasharray: 2, 2;
-}
-
-/* Helper class for the graphics */
-.bar_prec, .line_area_area_prec, .line_area_circle_prec {
-    fill: #6bb7c7;
-}
-
-.bar_t_max, .line_area_area_t_max, .line_area_circle_t_max {
-    fill: #c76b6b;
-}
-
-.bar_t_min, .line_area_area_t_min, .line_area_circle_t_min {
-    fill: #c7c76b;
-}
-
-.bar_sol_rad, .line_area_area_sol_rad, .line_area_circle_sol_rad {
-    fill: #c7966b;
-}
-
-/* Climate Pie */
-.pie_upper {
-    fill: #6bb7c7;
-}
-
-.pie_lower {
-    fill: #d79d91;
-}
-
-.pie_normal {
-    fill: #92d892;
-}
-
-.pie_center_inner_circle {
-    fill: #fff;
-}
-
-.pie_center_outer_circle {
-    fill: rgba(255, 255, 255, 0.75);
-}
-
-.pie_center_text_high {
-    font-size: 22px;
-}
-
-.pie_center_text_small {
-    font-size: 10px;
-}
-
-/* Bars */
-.bar_climatology path {
-    stroke: #000;
-}
-
-    .bar_climatology path:hover {
-        opacity: 0.9;
-    }
-
-.bar_climatology rect:hover {
-    opacity: 0.8;
 }
 
 /* Line */

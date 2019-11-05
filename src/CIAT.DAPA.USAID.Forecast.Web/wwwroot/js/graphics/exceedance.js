@@ -7,12 +7,12 @@
 function exceedance(data, control, x_axis, y_axis) {
     nv.addGraph(function () {
         var chart_lines = nv.models.lineChart()
-            .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!            
-            .x(function (d) { return d.x; })
-            .y(function (d) { return d.y; })
-            .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
-            .showYAxis(true)        //Show the y-axis
-            .showXAxis(true)        //Show the x-axis
+            .useInteractiveGuideline(false)  //We want nice looking tooltips and a guideline!            
+            //.x(function (d) { return d.x; })
+            //.y(function (d) { return d.y; })
+            .showLegend(false)       //Show the legend, allowing users to turn on/off line series.
+            //.showYAxis(true)        //Show the y-axis
+            //.showXAxis(true)        //Show the x-axis
             ;
         chart_lines.xAxis     //Chart x-axis settings
             .axisLabel(x_axis)
