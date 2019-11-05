@@ -37,13 +37,15 @@ function lines(data, control, y_axis, x_axis) {
  * @param {any} data
  * @param {any} labels
  * @param {any} vars
+ * @param {any} labels_enable
  */
-function plot_lines(data, labels, vars, y_axis) {
+function plot_lines(data, labels, vars, y_axis, x_axis, labels_enable) {
+    var d = new Date();
+    var m = d.getMonth();
     for (var i = 0; i < vars.length; i++) {
         var v = vars[i];
         var ctrl = 'line_historical_' + v;
         var l_data = [];
-
         for (var j = 0; j < labels.length; j++) {
             l_data.push({
                 key: labels[j],
@@ -62,7 +64,8 @@ function plot_lines(data, labels, vars, y_axis) {
                         return { x: item.year, y: month_data[0] };
                     else
                         return { x: item.year, y: null };
-                }).filter(function (item) { return item.y != null; })
+                }).filter(function (item) { return item.y != null; }),
+                disabled: labels_enable.filter(function (d) { return d == j; }).length > 0 ? false : true
             });
         }
         lines(l_data, ctrl, y_axis[v], x_axis);

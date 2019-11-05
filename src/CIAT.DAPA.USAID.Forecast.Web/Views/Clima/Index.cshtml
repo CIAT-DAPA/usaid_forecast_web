@@ -54,7 +54,7 @@
                                 string summary = "ForecastNormal";
                                 if (p.Lower >= p.Normal && p.Lower >= p.Upper) { summary = "ForecastBelow"; }
                                 else if (p.Upper >= p.Normal && p.Upper >= p.Lower) { summary = "ForecastAbove"; }
-                                HistoricalClimateMonthly climatology_month = ((HistoricalClimatology)ViewBag.climatology).Monthly_Data.FirstOrDefault(o => o.Month == month2);                                
+                                HistoricalClimateMonthly climatology_month = ((HistoricalClimatology)ViewBag.climatology).Monthly_Data.FirstOrDefault(o => o.Month == month2);
                                 <section class="item active forecast_slide" id="forecast_slide">
                                     <article class="col-lg-4 article_content col-sm-offset-1">
                                         <div class="section-content">
@@ -227,26 +227,37 @@
         var donuts_data = @Html.Raw(Json.Serialize(ViewBag.climate_data));
         var donuts_labels = { "normal":'@Localizer["ForecastNormal"]', "upper":'@Localizer["ForecastAbove"]', "lower":'@Localizer["ForecastBelow"]'};
         plot_donut(donuts_data, donuts_labels);
-    
+
         var bars_data = @Html.Raw(Json.Serialize(ViewBag.climatology.Monthly_Data));
         var bars_labels = @Html.Raw(Json.Serialize(Localizer["Months"].Value.ToString().Split(",")));
         var bars_vars = @Html.Raw(Json.Serialize(ViewBag.weather_vars));
-        var y_axis = { 'prec': '@Localizer["prec_unit"]' ,  'sol_rad': '@Localizer["sol_rad_unit"]' ,  't_max': '@Localizer["t_max_unit"]', 't_min': '@Localizer["t_min_unit"]' };
-        plot_bars(bars_data, bars_labels, bars_vars, y_axis);
-    
+        var y_axis_bars = { 'prec': '@Localizer["prec_unit"]' ,  'sol_rad': '@Localizer["sol_rad_unit"]' ,  't_max': '@Localizer["t_max_unit"]', 't_min': '@Localizer["t_min_unit"]' };
+        plot_bars(bars_data, bars_labels, bars_vars, y_axis_bars);
+
         var lines_data = @Html.Raw(Json.Serialize(ViewBag.historical));
         var lines_labels = @Html.Raw(Json.Serialize(Localizer["Months"].Value.ToString().Split(",")));
         var lines_vars = @Html.Raw(Json.Serialize(ViewBag.weather_vars));
         var y_axis = { 'prec': '@Localizer["prec_unit"]' ,  'sol_rad': '@Localizer["sol_rad_unit"]' ,  't_max': '@Localizer["t_max_unit"]', 't_min': '@Localizer["t_min_unit"]' };
-        var x_axis = '@Localizer["HistoricalPlotXAxis"]'
-        plot_lines(lines_data, lines_labels, lines_vars, y_axis, x_axis);
-
-        window.loading_screen.finish();        
+        var x_axis = '@Localizer["HistoricalPlotXAxis"]';
+        @{
+            int i = -1;
+            List<int> months_final = new List<int>();
+            foreach (ForecastClimateData d in ViewBag.climate_data)
+            {
+                i = i + 1;
+                int month1 = d.Month == 1 ? 12 : d.Month - 1;
+                int month2 = d.Month;
+                int month3 = d.Month == 12 ? 1 : d.Month + 1;
+                months_final.AddRange( new int[] { month1-1, month2-1, month3-1 } );
+            }
+        }
+        plot_lines(lines_data, lines_labels, lines_vars, y_axis, x_axis, @Html.Raw(Json.Serialize(months_final)));
+        window.loading_screen.finish();
 
         $('.forecast_slide').removeClass("active");
         $('.forecast_slide').last().addClass("active");
-        $('#climate_carousel').bind('slide.bs.carousel', function (e) {            
-            plot_donut(donuts_data, donuts_labels);
+        $('#climate_carousel').bind('slide.bs.carousel', function (e) {
+                plot_donut(donuts_data, donuts_labels);
         });
     </script>
 }
