@@ -4,6 +4,7 @@
  * @param {any} control : Div ID
  */
 function donut(data, control) {
+    $("#" + control + " svg").html("");
     nv.addGraph(function () {
         var chart_donut = nv.models.pieChart()
             .x(function (d) { return d.label })
