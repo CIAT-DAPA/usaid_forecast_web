@@ -358,6 +358,7 @@
 
         function load_historical(id) {
             $("#loading").css("display", "block");
+            $("#cultivar_heatmap_model").html("");
             var url = root;
             url = url + "Historical/HistoricalYield/" + id + "/" + $('#txt_years').val() + "/json";
 
@@ -370,12 +371,17 @@
                         for (var i = 0; i < data.length; i++) {
                             yield = yield.concat(data[i].yield);
                         }
+                        $("#cultivar_heatmap_model").html("");
                         // Plotting calendar
                         calendar(yield, 'cultivar_heatmap_model', months, days, ranges, '@Localizer["yield_unit"]', false);
                     }
+                    else {
+                        $("#cultivar_heatmap_model").html('<p class="bg-danger">NO DATA</p>');
+                    }                    
                     $("#loading").css("display", "none");
                 })
                 .fail(function () {
+                    $("#cultivar_heatmap_model").html('<p class="bg-danger">NO DATA</p>');
                     $("#loading").css("display", "none");
                 });
         }
