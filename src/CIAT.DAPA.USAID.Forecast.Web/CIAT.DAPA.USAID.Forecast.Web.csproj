@@ -34,6 +34,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Index.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Views\Home\AcercaDe.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AcercaDe.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Views\Home\Glosario.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -77,6 +82,10 @@
     <EmbeddedResource Update="Resources\Views\Experto\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Home\AcercaDe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AcercaDe.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Home\Glosario.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

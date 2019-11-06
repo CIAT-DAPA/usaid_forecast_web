@@ -1,17 +1,16 @@
-﻿function calendar(myData, control, months_names, days_names, ranges, units) {
-
+﻿function calendar(myData, control, months_names, days_names, ranges, units, split) {
+    
     var calendarRows = function (month) {
         var m = d3.timeMonth.floor(month);
         return d3.timeWeeks(d3.timeWeek.floor(m), d3.timeMonth.offset(m, 1)).length;
     }
-
     var minDate = d3.min(myData, function (d) { return new Date(d.end); });
     var maxDate = d3.max(myData, function (d) { return new Date(d.end); });
-
-    var width_full = ($(document).width() / 2) * 0.9;
+   
+    var width_full = (split ? $(document).width() / 2 : $(document).width()) * 0.9;
 
     var cellMargin = 2,
-        cellSize = width_full / 17;
+        cellSize = (split ? width_full / 17 : width_full / 59);
 
     var day = d3.time.format("%w"),
         week = d3.time.format("%U"),
@@ -23,7 +22,7 @@
     }
 
     $("#" + control + ' svg').remove();
-
+    
     var svg = d3.select("#" + control).selectAll("svg")
         .data(months)
         .enter().append("svg")

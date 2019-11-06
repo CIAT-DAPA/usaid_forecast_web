@@ -137,36 +137,42 @@
         </div>
         <!-- End Forecast -->
         <!-- Start Historical -->
-        <section class="col-md-12 sections" ng-controller="CropHistoryCtrl" id="content_historical" style="display:none;">
+        <section class="col-md-12 sections" id="content_historical">
             <article class="row section-content">
                 <div class="col-lg-12">
-                    <h2 class="text-center">Histórico de rendimiento</h2>
+                    <h2 class="text-center">@Localizer["HistoricalTitle"]</h2>
                     <p class="text-justify">
-                        Los datos históricos presentados a continuación son el resultado de los datos generados por el
-                        modelo del cultivo con los datos históricos presentados en este municipio.
-                        Los rendimientos son promediados de acuerdo a su clasificación
-                        (nacional o importada).
+                        @Localizer["HistoricalDescription"]
                     </p>
                     <form class="form-inline">
                         <div class="form-group">
-                            <label class="control-label" for="sel_model_years">Año:</label>
-                            <select class="form-control" id="sel_model_years" ng-model="year_selected" ng-options="y for y in data_h_years"></select>
+                            <label class="control-label">
+                                @Localizer["Year"]:
+                            </label>
+
+                            <input type="number" id="txt_years" class="form-control" value="1980" />
+
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Tipo de cultivar:</label>
-                            <label class="radio-inline">
-                                <input type="radio" ng-model="cultivar_type" value="national" checked="checked">Nacional
+                            <label class="control-label">
+                                @Localizer["TypeCultivar"]:
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" ng-model="cultivar_type" value="imported">Importada
+                                <input type="radio" name="type_cultivar" id="type_cultivar" value="national" checked="checked">@Localizer["TypeCultivarNational"]
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="type_cultivar" id="type_cultivar" value="imported">@Localizer["TypeCultivarImported"]
                             </label>
                         </div>
                         <div class="form-group">
-                            <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical()">Buscar</button>
-                            <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
+                            <button id="cmd_model" type="button" class="btn btn-primary" onclick="load_historical('@ViewBag.ws.Id')">@Localizer["Search"]</button>
+                        </div>
+                        <div class="form-group">
+                            <img alt="" src="~/images/loading.gif" id="loading" class="icon_loading" style="display: none;" />
                         </div>
                     </form>
-                    <div id="cultivar_heatmap_model"></div>
+                    <div id="cultivar_heatmap_model" class="plot" style="font-size:0.4em;">
+                    </div>
                 </div>
             </article>
         </section>
@@ -190,149 +196,188 @@
         var yield = @Html.Raw(Json.Serialize(ViewBag.yield));
         var yield_exceedance = @Html.Raw(Json.Serialize(ViewBag.yield_exceedance));
         var ranges = @Html.Raw(Json.Serialize(ViewBag.ranges));
-        var colors = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];        
-        
-    var measures = {
-        'Arroz': [
-                    { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
-                    { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
-                    { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
-                    { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
-                    { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
-        ],
-        'Maíz': [
-                    { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
-                    { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
-                    { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
-                    { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
-                    { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
-                    { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
-        ],
-        'Wheat': [
-                    { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
-                    { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
-                    { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
-                    { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
-                    { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
-                    { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
-        ],
-        'Sorghum': [
-                    { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
-                    { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
-                    { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
-                    { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
-                    { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
-                    { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
-        ]
-    };
+        var colors = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
+        var root = @Html.Raw(Json.Serialize(ViewBag.Root));
 
-    var me = '@ViewBag.c.ToString()';
-    var m_list = measures[me];
+        var measures = {
+            'Arroz': [
+                        { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
+                        { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
+            ],
+            'Maíz': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ],
+            'Rice': [
+                        { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
+                        { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
+            ],
+            'Maize': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ],
+            'Wheat': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ],
+            'Sorghum': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ]
+        };
 
-    // Sorting parameters
-    ranges = ranges.sort(function (item) { return item.upper });
-    ranges = merge_ranges_colors(ranges, colors);
+        var me = '@ViewBag.c.ToString()';
+        var m_list = measures[me];
 
-    function update_forecast(cu, so) {
-        // Ploting ranges
-        plot_ranges(ranges,'ranges_' + cu);
-        // Filtering yield data
-        var yield_filtered = yield.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); });
+        // Sorting parameters
+        ranges = ranges.sort(function (item) { return item.upper });
+        ranges = merge_ranges_colors(ranges, colors);
 
-        // Filtering best date
-        var best = null;
-        var max = null;
-        var best_max = null;
-        for (var j = 0; j < yield_filtered.length; j++) {
-            max = yield_filtered[j].data.findIndex(x => x.measure.startsWith('yield'));
-            if (best == null || best.data[max].avg < yield_filtered[j].data[max].avg) {
-                best = yield_filtered[j];
-                best_max = max;
+        function update_forecast(cu, so) {
+            // Ploting ranges
+            plot_ranges(ranges,'ranges_' + cu);
+            // Filtering yield data
+            var yield_filtered = yield.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); });
+
+            // Filtering best date
+            var best = null;
+            var max = null;
+            var best_max = null;
+            for (var j = 0; j < yield_filtered.length; j++) {
+                max = yield_filtered[j].data.findIndex(x => x.measure.startsWith('yield'));
+                if (best == null || best.data[max].avg < yield_filtered[j].data[max].avg) {
+                    best = yield_filtered[j];
+                    best_max = max;
+                }
             }
-        }
-        if (best != null) {
-            $('#yield_max_' + cu).html(d3.format("0f")(best.data[best_max].avg) + ' @Localizer["yield_unit"]');
-            $('#yield_date_' + cu).html(best.start.substring(0,10));
-        }
-
-        // Plotting for calendar
-        calendar(yield_filtered, 'calendar_' + cu, months, days, ranges, '@Localizer["yield_unit"]');
-
-        // filtering for yield bars
-        var b_data = [{
-            key: '@Localizer["yield_unit"]',
-            values: yield_filtered.map(function (item) {
-                var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
-                var r = ranges.filter(function (item2) { return item2.lower <= value && item2.upper >= value; } )[0];
-                return {
-                    "label": item.start.substring(0, 10),
-                    "value": value,
-                    "color": r.color
-                };
-            }).filter(function (d, i) { return i % 2 == 0; })
-
-        }];
-        bars(b_data, 'cultivar_bars_' + cu, '@Localizer["yield_unit"]', true);
-
-         // variation
-        $('#cbo_variation_' + cu).find('option').remove().end()
-        for (var j = 0; j < m_list.length; j++) {
-            $('#cbo_variation_' + cu).append(new Option(m_list[j].description, j));
-        }
-
-        plot_variation(cu, yield_filtered);
-
-        $('#cbo_variation_' + cu).change(function () { plot_variation(cu, yield_filtered); });
-
-        // filtering exceedance data
-        var yield_exceedance_filtered = yield_exceedance.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); })
-            //.filter(function (d, i) { return i % 4 == 0; })
-            ;
-        var fe = yield_exceedance_filtered.map(function (item) {
-                var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
-                return {
-                    x: new Date(item.start.substring(0, 10)),
-                    value: value
-                };
-            });
-
-        fe = fe.map(function (item, i) {
-            return {
-                x: parseInt(d3.format("0f")(item.value)),
-                y: parseFloat(d3.format(".2f")((1 / ((fe.length+1)/i))*100))
+            if (best != null) {
+                $('#yield_max_' + cu).html(d3.format("0f")(best.data[best_max].avg) + ' @Localizer["yield_unit"]');
+                $('#yield_date_' + cu).html(best.start.substring(0,10));
             }
-        });
 
-        var e_data = [{
-            key: '@Localizer["probability_unit"]',
-            values: fe,
-            color:"#C8E6C9"
-        }]
-        exceedance(e_data, 'cultivar_exceedance_' + cu, '@Localizer["yield_unit"]', '@Localizer["probability_unit"]');
-    }
+            // Plotting for calendar
+            calendar(yield_filtered, 'calendar_' + cu, months, days, ranges, '@Localizer["yield_unit"]', true);
 
-    function plot_variation(cu,yield_filtered) {
-        var me_selected = $('#cbo_variation_' + cu).val();
-        var variation_vars = [{name:'perc_95',color:'#C8E6C9'},{name:'conf_Upper',color:'#388E3C'},{name:'avg',color:'#000000'},{name:'conf_Lower',color:'#388E3C'},{name:'perc_5',color:'#C8E6C9'}];        
-        //var variation_vars = [{name:'perc_5',color:'#C8E6C9'},{name:'perc_95',color:'#C8E6C9'}];
-        var l_data = []
-        for (var i = 0; i < variation_vars.length; i++) {
-            l_data.push({
-                key: variation_vars[i].name,
+            // filtering for yield bars
+            var b_data = [{
+                key: '@Localizer["yield_unit"]',
                 values: yield_filtered.map(function (item) {
-                    var value = item.data.filter(function (item2) { return item2.measure === m_list[me_selected].name; })[0][variation_vars[i].name];
-                    var date = new Date(item.start.substring(0, 10))
-                    date.setDate(date.getDate() + 1);
+                    var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
+                    var r = ranges.filter(function (item2) { return item2.lower <= value && item2.upper >= value; } )[0];
                     return {
-                        x: date.getTime(),
-                        y: parseInt(d3.format("0f")(value))
+                        "label": item.start.substring(0, 10),
+                        "value": value,
+                        "color": r.color
                     };
-                }),
-                color: variation_vars[i].color
+                }).filter(function (d, i) { return i % 2 == 0; })
+
+            }];
+            bars(b_data, 'cultivar_bars_' + cu, '@Localizer["yield_unit"]', true);
+
+             // variation
+            $('#cbo_variation_' + cu).find('option').remove().end()
+            for (var j = 0; j < m_list.length; j++) {
+                $('#cbo_variation_' + cu).append(new Option(m_list[j].description, j));
+            }
+
+            plot_variation(cu, yield_filtered);
+
+            $('#cbo_variation_' + cu).change(function () { plot_variation(cu, yield_filtered); });
+
+            // filtering exceedance data
+            var yield_exceedance_filtered = yield_exceedance.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); })
+                //.filter(function (d, i) { return i % 4 == 0; })
+                ;
+            var fe = yield_exceedance_filtered.map(function (item) {
+                    var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
+                    return {
+                        x: new Date(item.start.substring(0, 10)),
+                        value: value
+                    };
+                });
+
+            fe = fe.map(function (item, i) {
+                return {
+                    x: parseInt(d3.format("0f")(item.value)),
+                    y: parseFloat(d3.format(".2f")((1 / ((fe.length+1)/i))*100))
+                }
             });
+
+            var e_data = [{
+                key: '@Localizer["probability_unit"]',
+                values: fe,
+                color:"#C8E6C9"
+            }]
+            exceedance(e_data, 'cultivar_exceedance_' + cu, '@Localizer["yield_unit"]', '@Localizer["probability_unit"]');
         }
-        $('#cultivar_variation_' + cu + ' svg').html('');
-        area(l_data,'cultivar_variation_' + cu, '',  m_list[me_selected].metric);
+
+        function plot_variation(cu,yield_filtered) {
+            var me_selected = $('#cbo_variation_' + cu).val();
+            var variation_vars = [{name:'perc_95',color:'#C8E6C9'},{name:'conf_Upper',color:'#388E3C'},{name:'avg',color:'#000000'},{name:'conf_Lower',color:'#388E3C'},{name:'perc_5',color:'#C8E6C9'}];
+            var l_data = []
+            for (var i = 0; i < variation_vars.length; i++) {
+                l_data.push({
+                    key: variation_vars[i].name,
+                    values: yield_filtered.map(function (item) {
+                        var value = item.data.filter(function (item2) { return item2.measure === m_list[me_selected].name; })[0][variation_vars[i].name];
+                        var date = new Date(item.start.substring(0, 10))
+                        date.setDate(date.getDate() + 1);
+                        return {
+                            x: date.getTime(),
+                            y: parseInt(d3.format("0f")(value))
+                        };
+                    }),
+                    color: variation_vars[i].color
+                });
+            }
+            $('#cultivar_variation_' + cu + ' svg').html('');
+            area(l_data,'cultivar_variation_' + cu, '',  m_list[me_selected].metric);
+        }
+
+        function load_historical(id) {
+            $("#loading").css("display", "block");
+            var url = root;
+            url = url + "Historical/HistoricalYield/" + id + "/" + $('#txt_years').val() + "/json";
+
+            //$('#type_cultivar').val()
+            $.getJSON(url, function (data) {
+            })
+                .done(function (data) {
+                    var yield = []
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            yield = yield.concat(data[i].yield);
+                        }
+                        // Plotting calendar
+                        calendar(yield, 'cultivar_heatmap_model', months, days, ranges, '@Localizer["yield_unit"]', false);
+                    }
+                    $("#loading").css("display", "none");
+                })
+                .fail(function () {
+                    $("#loading").css("display", "none");
+                });
         }
 
         // Rendering plots when collapse panel is shown
@@ -340,6 +385,8 @@
             var cu_id_col = this.id.substring(9, this.id.length);
             update_forecast(cu_id_col, '#cbo_soil_' + cu_id_col);
         });
+
+
 
         // Closing the loading page
         window.loading_screen.finish();

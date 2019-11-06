@@ -41,6 +41,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
                 // Setting data
                 SetWS();
+                ViewBag.Root = Root;
 
                 // Searching the weather station, if the parameters don't come, it will redirect a default weather station
                 if (string.IsNullOrEmpty(state) || string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(station) || string.IsNullOrEmpty(crop))

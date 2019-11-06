@@ -244,7 +244,7 @@
     <value>Kg/ha</value>
   </data>
   <data name="ForecastExceedanceDescription" xml:space="preserve">
-    <value>En la siguiente gráfica usted podrá ver cuales son las probabilidades de excedencia de acuerdo al rendimiento potencial promedio o fecha de siembra</value>
+    <value>En la siguiente gráfica usted podrá ver cuales son las probabilidades de excedencia de acuerdo al rendimiento potencial promedio</value>
   </data>
   <data name="ForecastExceedanceTitle" xml:space="preserve">
     <value>Probabilidades de excedencia</value>
@@ -266,5 +266,26 @@
   </data>
   <data name="yield_Description" xml:space="preserve">
     <value>Rendimiento</value>
+  </data>
+  <data name="HistoricalDescription" xml:space="preserve">
+    <value>Los datos históricos presentados a continuación son el resultado de los datos generados por el modelo del cultivo con los datos históricos presentados en este municipio. Los rendimientos son promediados de acuerdo a su clasificación (nacional o importada).</value>
+  </data>
+  <data name="HistoricalTitle" xml:space="preserve">
+    <value>Histórico de rendimiento</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="TypeCultivar" xml:space="preserve">
+    <value>Tipo de cultivar</value>
+  </data>
+  <data name="TypeCultivarImported" xml:space="preserve">
+    <value>Importado</value>
+  </data>
+  <data name="TypeCultivarNational" xml:space="preserve">
+    <value>Nacional</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Año</value>
   </data>
 </root>
