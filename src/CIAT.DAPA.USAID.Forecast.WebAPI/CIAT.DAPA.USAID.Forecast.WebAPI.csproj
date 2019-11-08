@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.Identity.Mongo" Version="5.2.1" />
+    <PackageReference Include="AspNetCore.Identity.Mongo" Version="5.1.0.17" />
   </ItemGroup>
 
 </Project>

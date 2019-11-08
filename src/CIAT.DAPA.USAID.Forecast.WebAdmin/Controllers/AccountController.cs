@@ -171,7 +171,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Login
         [HttpGet]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Index()
         {
             try
@@ -190,7 +190,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Register
         [HttpGet]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -202,7 +202,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             try
@@ -313,7 +313,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Edit
         [HttpGet]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -345,7 +345,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Edit(UserEditViewModel model)
         {
             try
