@@ -33,7 +33,7 @@
                 <li style="padding:5px 15px;">
                     <select id="menu_rice_cbo" name="menu_rice_cbo" class="form-control" style="width:100%;">
                         <option value=""></option>
-                        @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => p.Crop == Localizer["CropRice"].Value))
+                        @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "rice", "arroz" }).Contains(p.Crop.ToLower()) ))
                         {
                             <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
                         }
@@ -50,7 +50,7 @@
                 <li style="padding:5px 15px;">
                     <select id="menu_maize_cbo" name="menu_maize_cbo" class="form-control" style="width:100%;">
                         <option value=""></option>
-                        @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => p.Crop == Localizer["CropMaize"].Value))
+                        @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower()) ))
                         {
                             <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
                         }

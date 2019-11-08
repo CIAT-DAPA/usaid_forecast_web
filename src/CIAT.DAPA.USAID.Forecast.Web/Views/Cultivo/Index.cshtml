@@ -190,24 +190,30 @@
     <script src="~/js/graphics/exceedance.js"></script>
 
     <script type="text/javascript">
-            // Getting parameters
+            // Getting parameters        
         var months = @Html.Raw(Json.Serialize(Localizer["Months"].Value.ToString().Split(",")));
         var days = @Html.Raw(Json.Serialize(Localizer["Days"].Value.ToString().Split(",")));
         var yield = @Html.Raw(Json.Serialize(ViewBag.yield));
         var yield_exceedance = @Html.Raw(Json.Serialize(ViewBag.yield_exceedance));
         var ranges = @Html.Raw(Json.Serialize(ViewBag.ranges));
         var colors = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
-        var root = @Html.Raw(Json.Serialize(ViewBag.Root));
-
+        var root = @Html.Raw(Json.Serialize(ViewBag.Root));        
         var measures = {
-            'Arroz': [
+            'arroz': [
+                        { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
+                        { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
+            ],            
+            'rice': [
                         { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
                         { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
                         { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                         { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
                         { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
             ],
-            'Maíz': [
+            'maiz': [
                         { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
                         { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                         { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
@@ -215,14 +221,7 @@
                         { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
                         { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
             ],
-            'Rice': [
-                        { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
-                        { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
-                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
-                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
-                        { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
-            ],
-            'Maize': [
+            'maize': [
                         { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
                         { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                         { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
@@ -230,7 +229,7 @@
                         { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
                         { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
             ],
-            'Wheat': [
+            'wheat': [
                         { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
                         { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                         { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
@@ -238,7 +237,7 @@
                         { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
                         { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
             ],
-            'Sorghum': [
+            'sorghum': [
                         { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
                         { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
                         { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
@@ -248,9 +247,10 @@
             ]
         };
 
-        var me = '@ViewBag.c.ToString()';
-        var m_list = measures[me];
 
+        var me = '@Html.Raw(ViewBag.c.ToString().ToLower())';
+        me = me.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        var m_list = measures[me];
         // Sorting parameters
         ranges = ranges.sort(function (item) { return item.upper });
         ranges = merge_ranges_colors(ranges, colors);
