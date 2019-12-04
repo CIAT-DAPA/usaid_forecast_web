@@ -127,7 +127,7 @@
     <value>below normal</value>
   </data>
   <data name="ForecastExplanation" xml:space="preserve">
-    <value>Note that the month shown corresponds to the central month of the forecasted quarter. For example: if the month is March, the quarter that was used for the prediction was February-March-April. the climatic prediction is given in percentage of probability with respect to the normal range of precipitation of a place and a specific month. In the part below, you will be able to find the normal range of precipitation for a selected municipality and the month of the prediction.</value>
+    <value>The climate prediction is given in percentage of probability with respect to the normal range of precipitation of an area and a specific quarter. Below, you can find the most probable category for the selected municipality and the forecast quarter.</value>
   </data>
   <data name="ForecastMunicipality" xml:space="preserve">
     <value>The weather forecast is presented, for the city</value>
@@ -142,19 +142,19 @@
     <value>Precipitation probabilities (%)</value>
   </data>
   <data name="ForecastSummaryMonth" xml:space="preserve">
-    <value>For</value>
+    <value>For the quarter</value>
   </data>
   <data name="ForecastSummaryNormal" xml:space="preserve">
     <value>normal precipitation is between</value>
   </data>
   <data name="ForecastSummaryResult" xml:space="preserve">
-    <value>The weather forecast could be more likely</value>
+    <value>the climate forecast suggests that precipitation is most likely</value>
   </data>
   <data name="ForecastSummaryWS" xml:space="preserve">
     <value>In the municipality</value>
   </data>
   <data name="ForecastTitle" xml:space="preserve">
-    <value>Weather forecast</value>
+    <value>Climate forecast</value>
   </data>
   <data name="ForecastWS" xml:space="preserve">
     <value>The reference weather station to make this predictions was</value>

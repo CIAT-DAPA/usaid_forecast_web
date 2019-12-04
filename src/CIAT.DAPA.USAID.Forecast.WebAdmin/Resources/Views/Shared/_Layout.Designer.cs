@@ -142,7 +142,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agroclimatic forecasting platform.
+        ///   Looks up a localized string similar to WebAdmin.
         /// </summary>
         public static string MenuMain {
             get {

@@ -112,7 +112,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
             var weather_stations = await db.weatherStation.listEnableAsync();
-            foreach (var ws in weather_stations.Where(p => p.visible))
+            foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
             {
                 Console.WriteLine("Exporting files ws: " + ws.name);
                 var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
@@ -134,7 +134,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
             var weather_stations = await db.weatherStation.listEnableAsync();
-            foreach (var ws in weather_stations.Where(p => p.visible))
+            foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
             {
                 Console.WriteLine("Exporting coords ws: " + ws.name);
                 StringBuilder coords = new StringBuilder();

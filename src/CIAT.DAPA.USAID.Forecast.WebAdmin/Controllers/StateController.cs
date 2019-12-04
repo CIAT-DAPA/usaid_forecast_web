@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Globalization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -298,8 +299,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                         await db.weatherStation.insertAsync(new WeatherStation()
                         {
                             ext_id = ws_ext_id.ElementAt(i),
-                            latitude = double.Parse(ws_lat.ElementAt(i)),
-                            longitude = double.Parse(ws_lon.ElementAt(i)),
+                            latitude = double.Parse(ws_lat.ElementAt(i), CultureInfo.InvariantCulture),
+                            longitude = double.Parse(ws_lon.ElementAt(i), CultureInfo.InvariantCulture),
                             municipality = m_temp.id,
                             name = ws_name.ElementAt(i).Trim(),
                             origin = ws_origin,

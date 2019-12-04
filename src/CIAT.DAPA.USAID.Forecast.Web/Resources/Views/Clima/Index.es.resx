@@ -127,7 +127,7 @@
     <value>por debajo de lo normal</value>
   </data>
   <data name="ForecastExplanation" xml:space="preserve">
-    <value>Tenga en cuenta que el mes que se muestra corresponde al mes central del trimestre pronosticado. Por ejemplo: si el mes es Marzo, el trimestre que se usó para la predicción fue Febrero-Marzo-Abril. la predicción climática es dada en porcentaje de probabilidad con respecto al rango normal de precipitación de una zona y un mes especifico. En la parte de abajo, usted podrá encontrar cual es el rango normal de precipitación para un municipio seleccionado y el mes de la predicción.</value>
+    <value>La predicción climática es dada en porcentaje de probabilidad con respecto al rango normal de precipitación de una zona y un trimestre especifico. En la parte de abajo, usted podrá encontrar cual es la categoría más probable para el municipio seleccionado y el trimestre de la predicción.</value>
   </data>
   <data name="ForecastMunicipality" xml:space="preserve">
     <value>Se presenta la predicción del clima, para la ciudad de</value>
@@ -142,7 +142,7 @@
     <value>Probabilidad de precipitación (%)</value>
   </data>
   <data name="ForecastSummaryMonth" xml:space="preserve">
-    <value>Para </value>
+    <value>Para el trimestre</value>
   </data>
   <data name="ForecastSummaryNormal" xml:space="preserve">
     <value>lo normal es que haya una precipitación entre</value>
@@ -151,7 +151,7 @@
     <value>la predicción climática sugiere que lo más probable es que la precipitación esté</value>
   </data>
   <data name="ForecastSummaryWS" xml:space="preserve">
-    <value>en el municipio</value>
+    <value>en el municipio de</value>
   </data>
   <data name="ForecastTitle" xml:space="preserve">
     <value>Predicción climática</value>
