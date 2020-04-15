@@ -299,22 +299,22 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     weather_station = fields[0],
                                     soil = fields[1],
                                     cultivar = fields[2],
-                                    start = DateTime.Parse(fields[3]),
-                                    end = DateTime.Parse(fields[4]),
+                                    start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
+                                    end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
                                     measure = fields[5],
-                                    median = double.Parse(fields[6]),
-                                    avg = double.Parse(fields[7]),
-                                    min = double.Parse(fields[8]),
-                                    max = double.Parse(fields[9]),
-                                    quar_1 = double.Parse(fields[10]),
-                                    quar_2 = double.Parse(fields[11]),
-                                    quar_3 = double.Parse(fields[12]),
-                                    conf_lower = double.Parse(fields[13]),
-                                    conf_upper = double.Parse(fields[14]),
-                                    sd = double.Parse(fields[15]),
-                                    perc_5 = double.Parse(fields[16]),
-                                    perc_95 = double.Parse(fields[17]),
-                                    coef_var = double.Parse(fields[18])
+                                    avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
+                                    median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),                                    
+                                    min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
+                                    max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
+                                    quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
+                                    quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
+                                    quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
+                                    conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
+                                    conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
+                                    sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
+                                    perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
+                                    perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
+                                    coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
                                 });
                             }
                             count += 1;
@@ -338,7 +338,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     weather_station = ForecastDB.parseId(ws.weather_station),
                     cultivar = ForecastDB.parseId(ws.cultivar),
                     soil = ForecastDB.parseId(ws.soil)
-                     
+
                 };
                 var yield_crop = yields.Where(p => p.weather_station == ws.weather_station && p.soil == ws.soil && p.cultivar == ws.cultivar);
                 yc_entities = new List<YieldCrop>();
@@ -376,6 +376,104 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
 
             Console.WriteLine("Forecast imported");
+            return true;
+        }
+
+        public async Task<bool> importHistoricalAsync(string path, MeasureClimatic mc, int search)
+        {
+            StreamReader file;
+            string line = string.Empty;
+            int lines = 0;
+            IEnumerable<WeatherStation> ws = null;
+            List<HistoricalClimateViewImport> raw = new List<HistoricalClimateViewImport>();
+            string[] patterns = null;
+            string[] values = null;
+
+            Console.WriteLine("Importing: " + path);
+            // Read the file
+            using (file = File.OpenText(path))
+            {
+                // Read line
+                Console.WriteLine("Loading data");
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        lines += 1;
+                        // Reading the headers
+                        if (lines == 1)
+                        {
+                            patterns = line.Split(',').Skip(2).ToArray();
+                            // Searching the weather stations according of the parameter to seek
+                            if (search == 1)
+                                ws = await db.weatherStation.listEnableByExtIDsAsync(patterns);
+                            else if (search == 2)
+                                ws = await db.weatherStation.listEnableByNamesAsync(patterns);
+                        }
+                        else
+                        {
+                            // Fixed the values to view import historical climate
+                            // The first two columns are the year and month
+                            values = line.Split(',');
+                            for (int i = 2; i < values.Length; i++)
+                                raw.Add(new HistoricalClimateViewImport()
+                                {
+                                    year = int.Parse(values[0]),
+                                    month = int.Parse(values[1]),
+                                    ext_id = search == 1 ? patterns[i - 2] : string.Empty,
+                                    name = search == 2 ? patterns[i - 2] : string.Empty,
+                                    value = double.Parse(values[i])
+                                });
+                        }
+                    }
+                }
+                Console.WriteLine("Data loaded: " + raw.Count.ToString());
+                // Import to the database
+                WeatherStation ws_entity;
+                HistoricalClimatic hc_entity, hc_new;
+                List<ClimaticData> data;
+                // In this section it is filtered the data of the field loaded and the historical information is added to the data base.
+                // We first get the ids of the climate stations, then it is filtered the information of each year and each station. 
+                // With this information we look for in the data base if it historical information stored, in case that it is not created in 
+                // a new identity. It is filtered the information of every month in order to add the data to the field.
+                // At the end it is updated the information. If there is not a file, it is created as a new one.
+                var ws_patterns = search == 1 ? raw.Select(p => p.ext_id).Distinct() : raw.Select(p => p.name).Distinct();
+                foreach (int y in raw.Select(p => p.year).Distinct())
+                {
+                    foreach (string ws_p in ws_patterns)
+                    {
+                        Console.WriteLine("Processing: " + ws_p + " year: " + y.ToString());
+                        var ws_values = search == 1 ? raw.Where(p => p.ext_id == ws_p && p.year == y) : raw.Where(p => p.name == ws_p && p.year == y);
+                        ws_entity = search == 1 ? ws.FirstOrDefault(p => p.ext_id == ws_p) : ws.FirstOrDefault(p => p.name == ws_p);
+                        if (ws_entity != null)
+                        {
+                            hc_entity = await db.historicalClimatic.byYearWeatherStationAsync(y, ws_entity.id);
+                            if (hc_entity == null)
+                                hc_new = new HistoricalClimatic() { weather_station = ws_entity.id, year = y, monthly_data = new List<MonthlyDataStation>() };
+                            else
+                                hc_new = new HistoricalClimatic() { id = hc_entity.id, weather_station = hc_entity.weather_station, year = y, monthly_data = hc_entity.monthly_data };
+                            var months = ws_values.Select(p => p.month);
+                            foreach (var m in months)
+                            {
+                                var monthlyData = hc_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
+                                var restMonthlyData = hc_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
+                                data = monthlyData.data.ToList();
+                                data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault());
+                                monthlyData.data = data;
+                                restMonthlyData.Add(monthlyData);
+                                hc_new.monthly_data = restMonthlyData;
+                            }
+                            // In case that the entity didn't exist, it will be created in the database
+                            if (hc_entity == null)
+                                await db.historicalClimatic.insertAsync(hc_new);
+                            else
+                                await db.historicalClimatic.updateAsync(hc_entity, hc_new);
+                        }
+                    }
+                }
+
+            }
+            Console.WriteLine("Import process has finished");
             return true;
         }
     }

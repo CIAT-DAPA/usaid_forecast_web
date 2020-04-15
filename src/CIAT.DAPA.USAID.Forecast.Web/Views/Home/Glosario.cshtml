@@ -1,263 +1,28 @@
 ﻿@{
-    ViewData["Title"] = "Glosario";
+    ViewData["Title"] = Localizer["Title"];
     ViewData["Meta_Description"] = "Visualización de pronóstico (predicción) y datos históricos del comportamiento de los cultivos en Colombia.";
     ViewData["Meta_Keywords"] = "glosario,clima,predicción,cultivos,agroclima,producción,biomasa,intervalo de confianza,";
 }
 
-<!-- Start global variables -->
-<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-<!-- End global variables -->
+<div id="containerBlock">
+    @foreach (var w in ViewBag.words)
+    {
+        <section class="col-md-12 sections">
+            <article class="row section-content borderBox">
+                <div class="col-lg-12 blockTitle closed" data-toggle="collapse" data-target="#@w">
+                    <label class="cultivar_name">@Localizer[w + "_Title"]</label>
+                </div>
+                <div class="collapse" id="@w">
+                    <p class="text-justify">@Localizer[w + "_Description"].</p>
+                </div>
+            </article>
+        </section>
+    }
 
-@Html.Partial("_SubMenu")
-
-<div id="containerBlock" ng-controller="GlossaryCtrl">
-    @Html.Partial("_SocialMedia")
-    <!-- Start bio_acu -->
-    <section class="col-md-12 sections" id="content_bio_acu">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Bíomasa acumulada</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Cantidad de peso acumulado por todos los organos de la planta
-            </p>
-        </div>
-    </section>
-    <!-- End bio_acu -->
-    <!-- Start d_dry -->
-    <section class="col-md-12 sections" id="content_d_dry" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Días a secado</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Periodo de tiempo medido en días, desde la madurez fisiologica hasta la cosecha
-            </p>
-        </div>
-    </section>
-    <!-- End d_dry -->
-    <!-- Start d_har -->
-    <section class="col-md-12 sections" id="content_d_har" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Días a cosecha</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Los días a cosecha corresponden al numero de días entre la siembra de las 
-                semillas hasta la cosecha del cultivo.  Por ejemplo se calculan entre 100 y 
-                150 días entre la siembra y la cosecha del maíz. Está información permite 
-                calcular la epoca de cosecha. En el caso del pronostico agro-climatico o de 
-                rendimiento, el rendimiento potencial esta calculado a partir de la fecha de 
-                siembra, asumiendo un numero de día estandar hasta la cosecha.  
-            </p>
-        </div>
-    </section>
-    <!-- End d_har -->
-    <!-- Start eva -->
-    <section class="col-md-12 sections" id="content_eva" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Evapotranspiración</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                La evapotranspiracion corresponde a la cantidad de agua del suelo que 
-                vuelve a la atmósfera como consecuencia de la evaporación del agua de un 
-                suelo humedo y de la transpiración de las plantas en crecimiento. 
-                La evapotranspiración se mide en milimetros por día (mm/día), y sirve para 
-                calcular la necesidad de riego en un cultivo. La evapotranspiración (llamada 
-                tambien necesidad hídrica de algun cultivo) depende de las condiciones 
-                climáticas de una zona geografica. 
-            </p>
-        </div>
-    </section>
-    <!-- End eva -->
-    <!-- Start conf_int -->
-    <section class="col-md-12 sections" id="content_conf_int" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Intervalo de confianza</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                En el caso de un pronostico agroclimatico, el intervalo de confianza corresponde 
-                al rango de valor (por ejemplo, entre 5 kg/ha y 6kg/ha) dentro del cual hay 
-                más certeza que  el pronostico sea acertado (ocurra). 
-            </p>
-        </div>
-    </section>
-    <!-- End conf_int -->
-    <!-- Start prec -->
-    <section class="col-md-12 sections" id="content_prec" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Precipitación</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                La precipitación corresponde a la cantidad de agua que cae (lluvia, granizo) 
-                sobre la superficie del suelo. Se mide en milimetros ( 1 mm equivale a 1 
-                litro de agua por cada metro cuadrado) mediante el total de agua recogido en un 
-                pluviómetro en 24 horas. Las cantidades diarias se suman por mes y por año, así 
-                se determina el promedio de las precipitaciones (lluvias, granizo) obtenidas a 
-                lo largo de un número considerable de años (más de 30 años, en general) de una zona.
-            </p>
-        </div>
-    </section>
-    <!-- End prec -->
-    <!-- Start prec_acu -->
-    <section class="col-md-12 sections" id="content_prec_acu" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Precipitación acumulada</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Cantidad diaria de lluvia sumada a traves del tiempo, 
-                puede ser útil tener este valor por mes, por semestre de 
-                siembra o por año. 
-            </p>
-        </div>
-    </section>
-    <!-- End prec_acu -->    
-    <!-- Start Climate -->
-    <section class="col-md-12 sections" id="content_climate" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Predicción Climática</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Los modelos de predicción  climática son herramientas esenciales para el estudio y
-                avance en la  predicción de la variabilidad climática. Las predicciones climáticas
-                estacionales a 6 meses sobre la precipitación son realizadas con un modelo estadístico,
-                el cual tiene como fundamento identificar los modos de variabilidad del sistema
-                climático y la asociación de estos con variables océano-atmosféricas.
-                Este producto es útil para tener una referencia del comportamiento más probable a ocurrir,
-                pero es necesario aclarar que no considera eventos extremos puntuales y de corta duración
-                que puedan tener lugar en algunas zonas puntuales del país.
-            </p>
-            <p class="text-justify" style="font-size:1.1em;">
-                El pronóstico probabilístico está expresado en porcentaje y representa la probabilidad
-                de que ocurra la condición de precipitación en tres categorías:
-            </p>
-            <ul>
-                <li>
-                    Precipitaciones por debajo de lo normal: esto indica que se van a presentar valores
-                    de precipitación inferiores a los registrados históricamente para el período de interés.
-                </li>
-                <li>
-                    Precipitaciones normales: esto indica que se van a presentar valores de precipitación
-                    muy similares a lo  registrado históricamente para el período de interés.
-                </li>
-                <li>
-                    Precipitaciones por encima de lo normal: esto indica que se van a presentar valores de
-                    precipitación superiores a los registrados históricamente para el período de interés.
-                </li>
-            </ul>
-        </div>
-    </section>
-    <!-- End Climate -->
-    <!-- Start pro_his -->
-    <section class="col-md-12 sections" id="content_pro_his" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Promedio histórico climático</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Para conocer el comportamiento pasado del clima en una zona y al mismo tiempo 
-                ser capaz de predecir su comportamiento a futuro, conocer el promedio historico 
-                del clima es importante. El promedio historico climatioco corresponde al 
-                promedio de las variables de clima (precipitación, temperatura, viento, humedad...) 
-                medido durante muchos años (en general, más de 30 años). Esto permite conocer el 
-                comportamientó 'normal' (o promedio) del clima de una zona especifica y de un mes 
-                especifico. El comportamiento 'normal' constituye la referencia sobre la cual el 
-                pronostico climatico se basa para decir que hay más o menos probabilidad para que 
-                el clima sea por encima/ por debajo/ o dentro de los ramgos normales. 
-            </p>
-        </div>
-    </section>
-    <!-- End pro_his -->    
-    <!-- Start Forecast -->
-    <section class="col-md-12 sections" id="content_forecast" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Pronóstico agroclimático</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                El pronostico agroclimatico da información sobre la fecha óptima de siembra y 
-                variedad de mejor desempaño de acuerdo a las condiciones climaticas esperadas 
-                en una zona especifica. El pronotico agroclimatico se caulcula a partir de un 
-                pronóstico climático y con la simulación de desarrollo de un cultivo 
-                (calibrado y validado) segun el pronostico climatico. La información 
-                proporcionada por el pronostico agroclimatico puede ser valiosa para 
-                apoyar la toma de decisiones agronómicas tales como qué sembrar (qué variedad 
-                sembrar para obtener mayor rendimiento) y cuando sembrar (qué fecha de siembra 
-                es óptima para obtener mayor rendimiento).
-            </p>
-        </div>
-    </section>
-    <!-- End Forecast -->
-    <!-- Start sol_rad -->
-    <section class="col-md-12 sections" id="content_sol_rad" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Radiación solar</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                La radiación solar es aprovechada por las plantas para realizar la fotosíntesis. 
-                La producción potencial final de un cultivo (expresada como materia seca total) 
-                depende en parte de la cantidad del nivel de captación por la planta. Para 
-                obtener altas tasas de fotosíntesis y mayores rendimientos es necesario maximizar 
-                la intercepción de la luz. 
-            </p>
-        </div>
-    </section>
-    <!-- End sol_rad -->
-    <!-- Start yield -->
-    <section class="col-md-12 sections" id="content_yield" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Rendimiento</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                El rendimiento corresponde a la producción total de un cultivo cosechado 
-                y se mide usualmente en toneladas  por hectárea (T.M./ha.). Una misma 
-                variedad puede generar rendimientos diferentes de una localidad geográfica a 
-                otra al variar las condiciones climáticas, aunque los demás factores ambientales 
-                sean iguales. Sin embargo, con condiciones climáticas iguales, el rendimiento 
-                puede variar de acuerdo con las características del suelo o el manejo dado.
-            </p>
-        </div>
-    </section>
-    <!-- End yield -->
-    <!-- Start yield_pot -->
-    <section class="col-md-12 sections" id="content_yield_pot" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Rendimiento potencial</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Maximo rendimiento que una variedad, hibrido o cultivar puede producir en condiciones ideales
-            </p>
-        </div>
-    </section>
-    <!-- End yield_pot -->
-    <!-- Start t_max -->
-    <section class="col-md-12 sections" id="content_t_max" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Temperatura máxima</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                La temperatura es registrada por los termómetros, y medida en grados centrigrados. 
-                Así, la temperarura máxima es el valor más alto (maximo calor) regristrado en un intervalo 
-                de tiempo dado. En un día, normalmente corresponde al medio día.
-            </p>
-        </div>
-    </section>
-    <!-- End t_max -->
-    <!-- Start t_max_acu -->
-    <section class="col-md-12 sections" id="content_t_max_acu" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Temperatura máxima acumulada</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Cantidad de calor, medido en grados centígrados de los valores mas altos, a traves de varios días o meses.
-            </p>
-        </div>
-    </section>
-    <!-- End t_max_acu -->
-    <!-- Start t_min -->
-    <section class="col-md-12 sections" id="content_t_min" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Temperatura mínima</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                La temperatura es registrada por los termómetros, y medida en grados centrigrados. 
-                Así, la temperarura mínima corresponde con el valor mas bajo registrado en un intervalo 
-                de tiempo dado. en un día normalmente corresponde a las horas de la madrugada. 
-            </p>
-        </div>
-    </section>
-    <!-- End t_min -->
-    <!-- Start t_min_acu -->
-    <section class="col-md-12 sections" id="content_t_min_acu" style="display:none;">
-        <div class="row section-content" style="padding-top:25px;">
-            <h3 class="text-center">Temperatura mínima acumulada</h3>
-            <p class="text-justify" style="font-size:1.1em;">
-                Cantidad de calor, medido en grados centígrados de los valores mas bajos, a traves de varios días o meses.
-            </p>
-        </div>
-    </section>
-    <!-- End t_min_acu -->
 </div>
 
 @section Scripts {
-    <script src="~/js/controllers/glossary_ctr.js"></script>
+    <script type="text/javascript">
+        window.loading_screen.finish();
+    </script>
 }

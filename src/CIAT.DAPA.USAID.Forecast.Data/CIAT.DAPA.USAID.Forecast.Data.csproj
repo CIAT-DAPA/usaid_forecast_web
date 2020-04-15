@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.9.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />    
+    <PackageReference Include="AspNetCore.Identity.Mongo" Version="5.1.0.17" />
+  </ItemGroup>
+
+</Project>

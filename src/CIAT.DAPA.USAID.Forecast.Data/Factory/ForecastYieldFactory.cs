@@ -67,5 +67,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                         select fy;
             return query;
         }
+        /// <summary>
+        /// Method that return all records about climate of the forecast
+        /// by forecast
+        /// </summary>
+        /// <param name="forecast">Id Forecast</param>
+        /// <param name="ws">ID weather station array</param>
+        /// <returns>List of the Forecast Climate</returns>
+        public async Task<IEnumerable<ForecastYield>> byForecastAndWeatherStationExceedanceAsync(List<ObjectId> forecast, ObjectId[] ws)
+        {
+            var query = from fy in collection.AsQueryable()
+                        where ws.Contains(fy.weather_station) && forecast.Contains(fy.forecast)
+                        select fy;
+            return query;
+        }
     }
 }

@@ -5,7 +5,6 @@ using CIAT.DAPA.USAID.Forecast.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -24,7 +23,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public AccountController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
+        public AccountController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<Role> roleManager, IEmailSender emailSender) :
             base(settings, LogEntity.users, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
@@ -169,13 +171,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Login
         [HttpGet]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var users = await db.user.listAllAsync();
-                await writeEventAsync("List all users " + users.Count.ToString(), LogEvent.lis);
+                //var users = await db.user.listAllAsync();
+                var users = managerUser.Users;
+                await writeEventAsync("List all users " + users.Count().ToString(), LogEvent.lis);
                 return View(users);
             }
             catch (Exception ex)
@@ -187,7 +190,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Register
         [HttpGet]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -199,7 +202,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             try
@@ -310,7 +313,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Edit
         [HttpGet]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -320,7 +323,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                User entity = await db.user.byIdAsync(id);
+                //User entity = await db.user.byIdAsync(id);
+                User entity = await managerUser.FindByEmailAsync(id);
                 if (entity == null)
                 {
                     await writeEventAsync("Not found id: " + id, LogEvent.err);
@@ -341,18 +345,28 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN,TECH")]
+        //[Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Edit(UserEditViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    User current = await db.user.byIdAsync(model.Email);
-                    User newEntity = await db.user.byIdAsync(model.Email);
-                    newEntity.LockoutEnabled = model.LockoutEnabled;
-                    newEntity.Roles = model.Role;
-                    await db.user.updateAsync(current, newEntity);
+                    //User current = await db.user.byIdAsync(model.Email);
+                    //User newEntity = await db.user.byIdAsync(model.Email);
+
+                    User current = await managerUser.FindByEmailAsync(model.Email); 
+                    foreach(var r in Role.ROLES_PLATFORM)
+                    {
+                        if(current.Roles.Contains(r) && !model.Role.Contains(r))
+                            await managerUser.RemoveFromRoleAsync(current, r);
+                    }
+                    foreach (var r in model.Role)
+                    {
+                        if (!current.Roles.Contains(r))
+                            await managerUser.AddToRoleAsync(current, r);
+                    }
+                    //await db.user.updateAsync(current, newEntity);
                     await writeEventAsync("Update the user: " + model.Email, LogEvent.upd);
                     return RedirectToAction("Index");
                 }

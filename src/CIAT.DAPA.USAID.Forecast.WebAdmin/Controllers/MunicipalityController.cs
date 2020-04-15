@@ -4,7 +4,6 @@ using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
@@ -16,7 +15,8 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
+    //[Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
+    [Authorize]
     public class MunicipalityController : WebAdminBaseController
     {
         /// <summary>
@@ -24,7 +24,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public MunicipalityController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : 
+        public MunicipalityController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<Role> roleManager, IEmailSender emailSender) : 
             base(settings, LogEntity.lc_municipality, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }

@@ -40,6 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         {
             StringBuilder csv;
             string header, line;
+            Console.WriteLine("Exporting in: " + path);
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
@@ -79,13 +80,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     if (data_measure != null)
                                         line += data_measure.value.ToString() + ",";
                                     else
-                                        line += "0,";
+                                        line += ",";
                                 }
                                 else
-                                    line += "0,";
+                                    line += ",";
                             }
                             else
-                                line += "0,";
+                                line += ",";
                         }
                         // Add line to file
                         csv.AppendLine(line.Substring(0, line.Length - 1));

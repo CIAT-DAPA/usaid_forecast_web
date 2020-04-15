@@ -1,9 +1,61 @@
-﻿<div id="secundaryMenu" ng-controller="SubMenuCtrl">
+﻿@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools
+<div id="secundaryMenu" ng-controller="SubMenuCtrl">
     <div id="leftMenu">
-        
+
         <div class="leftMenu-wrapper col-md-12">
             <ul class="row">
-                <li ng-repeat="sb in subSections" id="subMenu-{{sb.value}}" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView(sb.value,sb.name,sb.section)">{{sb.name}}</li>
+                <!--<li id="subMenu-{{sb.value}}" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView(sb.value,sb.name,sb.section)">{{sb.name}}</li>-->
+                @if ((SectionSite)ViewBag.Section == SectionSite.Climate)
+                {
+                    <li id="subMenu-forecast" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('forecast','@Localizer["ClimateForecastName"]','forecast')">@Localizer["ClimateForecastName"]</li>
+                    <li id="subMenu-precipitation" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('precipitation','@Localizer["ClimateHistoricalPrecipitationName"]','historical')">@Localizer["ClimateHistoricalPrecipitationName"]</li>
+                    <li id="subMenu-temperature" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('temperature','@Localizer["ClimateHistoricalTemperatureName"]','historical')">@Localizer["ClimateHistoricalTemperatureName"]</li>
+                    <li id="subMenu-solar_radiation" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('solar_radiation','@Localizer["ClimateHistoricalSolarRadiationName"]','historical')">@Localizer["ClimateHistoricalSolarRadiationName"]</li>
+                }
+                else if ((SectionSite)ViewBag.Section == SectionSite.Crop)
+                {
+                    <li id="subMenu-yield" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield','@Localizer["CropForecasAgroclimatetName"]','forecast')">@Localizer["CropForecasAgroclimatetName"]</li>
+                    <li id="subMenu-historical" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('historical','@Localizer["CropHistoricalAgrocliamteName"]','historical')">@Localizer["CropHistoricalAgrocliamteName"]</li>
+                }
+                else if ((SectionSite)ViewBag.Section == SectionSite.Expert)
+                {
+                    <li id="subMenu-geographic" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('geographic','@Localizer["ExpertGeographicName"]','geographic')">@Localizer["ExpertGeographicName"]</li>
+                    <li id="subMenu-agronomic" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('agronomic','@Localizer["ExpertAgronomicName"]','agronomic')">@Localizer["ExpertAgronomicName"]</li>
+                    <li id="subMenu-climatology" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('climatology','@Localizer["ExpertClimatologyName"]','climatology')">@Localizer["ExpertClimatologyName"]</li>
+                    <li id="subMenu-climate_historical" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('climate_historical','@Localizer["ExpertClimateHistoricalName"]','climate_historical')">@Localizer["ExpertClimateHistoricalName"]</li>
+                    <li id="subMenu-climate_forecast" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('climate_forecast','@Localizer["ExpertClimateForecastName"]','climate_forecast')">@Localizer["ExpertClimateForecastName"]</li>
+                    <li id="subMenu-yield_historical" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield_historical','@Localizer["ExpertYieldHistoricalName"]','yield_historical')">@Localizer["ExpertYieldHistoricalName"]</li>
+                    <li id="subMenu-yield_forecast" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield_forecast','@Localizer["ExpertYieldForecastName"]','yield_forecast')">@Localizer["ExpertYieldForecastName"]</li>
+                }
+                else if ((SectionSite)ViewBag.Section == SectionSite.Glossary)
+                {
+                    <li id="subMenu-bio_acu" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('bio_acu','@Localizer["GlossaryBioAcuName"]','bio_acu')">@Localizer["GlossaryBioAcuName"]</li>
+                    <li id="subMenu-d_dry" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('d_dry','@Localizer["GlossaryDDryName"]','d_dry')">@Localizer["GlossaryDDryName"]</li>
+                    <li id="subMenu-d_har" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('d_har','@Localizer["GlossaryDHarName"]','d_har')">@Localizer["GlossaryDHarName"]</li>
+                    <li id="subMenu-eva" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('eva','@Localizer["GlossaryEvaName"]','eva')">@Localizer["GlossaryEvaName"]</li>
+                    <li id="subMenu-conf_int" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('conf_int','@Localizer["GlossaryConfIntName"]','conf_int')">@Localizer["GlossaryConfIntName"]</li>
+                    <li id="subMenu-prec" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('prec','@Localizer["GlossaryPrecName"]','prec')">@Localizer["GlossaryPrecName"]</li>
+                    <li id="subMenu-prec_acu" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('prec_acu','@Localizer["GlossaryPrecAcuName"]','prec_acu')">@Localizer["GlossaryPrecAcuName"]</li>
+                    <li id="subMenu-climate" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('climate','@Localizer["GlossaryClimateName"]','climate')">@Localizer["GlossaryClimateName"]</li>
+                    <li id="subMenu-pro_his" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('pro_his','@Localizer["GlossaryProHisName"]','pro_his')">@Localizer["GlossaryProHisName"]</li>
+                    <li id="subMenu-forecast" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('forecast','@Localizer["GlossaryForecastName"]','forecast')">@Localizer["GlossaryForecastName"]</li>
+                    <li id="subMenu-sol_rad" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('sol_rad','@Localizer["GlossarySolRadName"]','sol_rad')">@Localizer["GlossarySolRadName"]</li>
+                    <li id="subMenu-yield" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield','@Localizer["GlossaryYieldName"]','yield')">@Localizer["GlossaryYieldName"]</li>
+                    <li id="subMenu-yield_pot" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield_pot','@Localizer["GlossaryYieldPotName"]','yield_pot')">@Localizer["GlossaryYieldPotName"]</li>
+                    <li id="subMenu-t_max" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('t_max','@Localizer["GlossaryTMaxName"]','t_max')">@Localizer["GlossaryTMaxName"]</li>
+                    <li id="subMenu-t_max_acu" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('t_max_acu','@Localizer["GlossaryTMaxAcuName"]','t_max_acu')">@Localizer["GlossaryTMaxAcuName"]</li>
+                    <li id="subMenu-t_min" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('t_min','@Localizer["GlossaryTMinName"]','t_min')">@Localizer["GlossaryTMinName"]</li>
+                    <li id="subMenu-t_min_acu" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('t_min_acu','@Localizer["GlossaryTMinAcuName"]','t_min_acu')">@Localizer["GlossaryTMinAcuName"]</li>
+                }
+                else if ((SectionSite)ViewBag.Section == SectionSite.About)
+                {
+                    <li id="subMenu-project" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('project','@Localizer["AboutProjectName"]','project')">@Localizer["AboutProjectName"]</li>
+                    <li id="subMenu-scenarios" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('scenarios','@Localizer["AboutScenariosName"]','scenarios')">@Localizer["AboutScenariosName"]</li>
+                    <li id="subMenu-yield_rice" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield_rice','@Localizer["AboutYieldRiceName"]','yield_rice')">@Localizer["AboutYieldRiceName"]</li>
+                    <li id="subMenu-yield_maize" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('yield_maize','@Localizer["AboutYieldMaizeName"]','yield_maize')">@Localizer["AboutYieldMaizeName"]</li>
+                    <li id="subMenu-validation_rice" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('validation_rice','@Localizer["AboutValidationRiceName"]','validation_rice')">@Localizer["AboutValidationRiceName"]</li>
+                    <li id="subMenu-validation_maize" class="col-md-12 subMenuItem" ng-class="{active: $index == 0}" ng-click="renderView('validation_maize','@Localizer["AboutValidationMaizeName"]','validation_maize')">@Localizer["AboutValidationMaizeName"]</li>
+                }
             </ul>
         </div>
     </div>

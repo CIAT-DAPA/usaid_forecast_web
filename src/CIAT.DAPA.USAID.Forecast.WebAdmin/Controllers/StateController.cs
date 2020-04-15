@@ -14,14 +14,14 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    [Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
+    //[Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
+    [Authorize]
     public class StateController : WebAdminBaseController
     {
         /// <summary>
@@ -29,7 +29,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public StateController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
+        public StateController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<Role> roleManager, IEmailSender emailSender) :
             base(settings, LogEntity.lc_state, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }

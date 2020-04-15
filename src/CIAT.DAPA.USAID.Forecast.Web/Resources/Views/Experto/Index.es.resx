@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="agronomic_Description" xml:space="preserve">
+    <value>Esta base de datos contiene información sobre la configuración agronómica de los pronósticos y datos históricos que se ofrecen en la plataforma para los cultivos. Usted puede seleccionar si desea obtener los datos sobre los cultivares de cada cultivo o por el contrario, la configuración de suelo para cada uno de estos.</value>
+  </data>
+  <data name="agronomic_Title" xml:space="preserve">
+    <value>Datos agronómicos</value>
+  </data>
+  <data name="climate_forecast_Description" xml:space="preserve">
+    <value>Esta base de datos contiene el resultado sobre la última predicción climática realizada para diferentes zonas geográficas. Las probabilidades de precipitación por cada estación climática está dada por la normalidad, es decir, si está por debajo, dentro o por encima del intervalo normal. Tambien puede descargar los escenarios climáticos según su selección. Usted podrá descargar: los valores de probabilidad de precipitación normal, por encima y por debajo con más número de decimales para los 6 meses pronosticados ó los valores de escenarios climáticos para precipitación, temperatura máxima, mínima y radiación solar. Esta información se podrá descargar para cada estación utilizada para generar la información del municipio seleccionado.</value>
+  </data>
+  <data name="climate_forecast_Title" xml:space="preserve">
+    <value>Predicción climática</value>
+  </data>
+  <data name="climate_historical_Description" xml:space="preserve">
+    <value>Usted puede por cada estación climática obtener los datos históricos mensuales que son usados para realizar la predicción climática. Se pueden obtener datos de variables como temperaturas máximas y mínimas, precipitación y radiación solar de cada mes durante un intervalo de tiempo. Usted podrá descargar el valor para radiación solar, temperatura máxima y temperatura mínima para todos los meses desde 1980 al 2014 provenientes de la estación utilizada para generar la información del municipio seleccionado.</value>
+  </data>
+  <data name="climate_historical_Title" xml:space="preserve">
+    <value>Histórico climático</value>
+  </data>
+  <data name="climatology_Description" xml:space="preserve">
+    <value>En esta base de datos se pueden encontrar filtrados los datos de cada estación climática sobre la climatología. Se pueden obtener los datos de variables como temperaturas máximas y mínimas, precipitación, radiación solar, entre otras. Puede establecer una relación con los datos obtenidos en la sección de datos geográficos. Usted podrá descargar el promedio mensual histórico de datos climáticos (temperatura máxima, mínima, precipitación, radiación solar) de la estación utilizada para generar la información del municipio seleccionado.</value>
+  </data>
+  <data name="climatology_Title" xml:space="preserve">
+    <value>Climatología</value>
+  </data>
+  <data name="Cultivar" xml:space="preserve">
+    <value>Cultivares</value>
+  </data>
+  <data name="geographic_Description" xml:space="preserve">
+    <value>Esta base de datos contiene información sobre los estados, municipios y estaciones climáticas que se encuentran disponibles para los pronósticos y datos históricos que se ofrecen en la plataforma. Es necesaria para poder establecer crear la relación con otras base de datos de esta aplicación.</value>
+  </data>
+  <data name="geographic_Title" xml:space="preserve">
+    <value>Datos geográficos</value>
+  </data>
+  <data name="Soil" xml:space="preserve">
+    <value>Suelos</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Base de datos</value>
+  </data>
+  <data name="yield_forecast_Description" xml:space="preserve">
+    <value>Esta base de datos tiene la información del último pronóstico agroclimático. Esta contiene los datos de producción organizados por estación climática, cultivar y suelo. Los estadistícos son el resultado del modelo del cultivo, ejecutado bajo varios escenarios climáticos. -	Usted podrá descargar los valores pronosticados para: rendimiento, precipitación acumulada, temperatura máxima acumulada, temperatura mínima acumulada, biomasa y días a cosecha de acuerdo con la fecha de siembra. Para cada uno de estos factores climáticos, obtendrá el valor promedio, máximo, mínimo,  desviación estándar, e intervalos de confianza al 95% y 5%. Estos datos se presentan para todos los días pronosticados y para cada estación utilizada para generar la información del municipio seleccionado.</value>
+  </data>
+  <data name="yield_forecast_Title" xml:space="preserve">
+    <value>Pronóstico de producción</value>
+  </data>
+  <data name="yield_historical_Description" xml:space="preserve">
+    <value>Esta base de datos contiene el resultado de los datos de rendimiento de los diferentes cultivos en distintos municipios del país.</value>
+  </data>
+  <data name="yield_historical_Title" xml:space="preserve">
+    <value>Histórico de producción</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Estación climatólogica</value>
+  </data>
+  <data name="Probabilities" xml:space="preserve">
+    <value>Probabilidades</value>
+  </data>
+  <data name="Scenarios" xml:space="preserve">
+    <value>Escenarios</value>
+  </data>
+  <data name="SearchType" xml:space="preserve">
+    <value>Tipo de búsqueda</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>Año</value>
+  </data>
+</root>

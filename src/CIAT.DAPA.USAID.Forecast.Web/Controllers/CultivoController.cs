@@ -7,6 +7,9 @@ using Microsoft.Extensions.Options;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Entities;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Views;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,21 +32,62 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             try
             {
-                // Load the urls of the web api's
-                loadAPIs();
-                // Load the dates of the forecast
-                loadMonthsCrop();
-                // Set the parameters                
+                // Set the parameters
                 ViewBag.s = state ?? string.Empty;
                 ViewBag.m = municipality ?? string.Empty;
                 ViewBag.w = station ?? string.Empty;
                 ViewBag.c = crop ?? string.Empty;
+                ViewBag.Section = SectionSite.Crop;
+
+                // Setting data
+                SetWS();
+                ViewBag.Root = Root;
+
+                // Searching the weather station, if the parameters don't come, it will redirect a default weather station
+                if (string.IsNullOrEmpty(state) || string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(station) || string.IsNullOrEmpty(crop))
+                {
+                    var wsDefault = DefaultWeatherStationCrop();
+                    return RedirectToAction("Index", new { wsDefault.State, wsDefault.Municipality, wsDefault.Station, wsDefault.Crop });
+                }
+                WeatherStationFull ws = SearchWS(state, municipality, station);
+                ViewBag.ws = ws;
+
+                // Getting the agronomic configuration
+                RepositoryAgronomic rA = new RepositoryAgronomic(Root);
+                IEnumerable<Agronomic> agronomics = await rA.ListAsync();
+                Agronomic agronomic = agronomics.SingleOrDefault(p => p.Cp_Name.ToLower() == crop.ToLower());
+                
+                // Getting the forecast weather information
+                RepositoryForecastYield rFY = new RepositoryForecastYield(Root);;
+                ForecastYield forecast = await rFY.SearchAsync(ws.Id);
+                ForecastYield forecast_exceedance = await rFY.SearchExceedanceAsync(ws.Id);
+
+                IEnumerable<Yield> yield = forecast.Yield.FirstOrDefault().Yield;
+                IEnumerable<Yield> yield_exceedance = forecast_exceedance.Yield.FirstOrDefault().Yield.OrderByDescending(p=>p.Data.First(p2=>p2.Measure.StartsWith("yield")).Avg);
+
+                // Filtering cultivars
+                IEnumerable<string> cultivars = yield.Select(p => p.Cultivar).Distinct().ToList();
+                cultivars = cultivars.Where(p=> agronomic.Cultivars.Select(p2 => p2.Id).Distinct().Contains(p));
+                ViewBag.cultivars = agronomic.Cultivars.Where(p => cultivars.Contains(p.Id));
+
+                // Filtering soils
+                IEnumerable<string> soils = yield.Select(p => p.Soil).Distinct().ToList();
+                soils = soils.Where(p => agronomic.Soils.Select(p2 => p2.Id).Distinct().Contains(p));
+                ViewBag.soils = agronomic.Soils.Where(p => soils.Contains(p.Id)).AsEnumerable();
+                
+                //
+                ViewBag.agronomic = agronomic;
+                ViewBag.yield = yield;
+                ViewBag.yield_exceedance = yield_exceedance;
+                ViewBag.ranges = ws.Ranges.Where(p => p.Crop_Name.ToLower() == crop.ToLower());
+                
+
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error");
-            }            
+            }
         }
     }
 }

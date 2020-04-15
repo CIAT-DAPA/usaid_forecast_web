@@ -1,24 +1,27 @@
 ﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.State>
 @{
-    ViewBag.Title = "Estados";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Registrar nuevo", "Create")
+    @Html.ActionLink(Localizer["New"].Value, "Create")
 </p>
 
-<table class="table">
+<p>
+    <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
+</p>
+<table class="table" id="index_list">
     <tr>
         <th>
-            País
+            @Localizer["Country"]
         </th>
         <th>
-            ID
+            @Localizer["ID"]
         </th>
         <th>
-            Nombre
+            @Localizer["Name"]
         </th>
         <th></th>
     </tr>
@@ -35,12 +38,16 @@
                 @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
-                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
-                @Html.ActionLink("Configuración", "Configuration", new { id = item.id }) |
-                @Html.ActionLink("Importar", "Import", new { id = item.id }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
+                @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Setup"].Value, "Configuration", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Import"].Value, "Import", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id })
             </td>
         </tr>
     }
 </table>
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}

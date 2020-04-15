@@ -1,54 +1,95 @@
-﻿<nav class="navbar-collapse collapse" id="navbar_main">
-    <ul class="nav navbar-nav" ng-controller="LocationCtrl">
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+<nav class="navbar-collapse collapse" id="navbar_main">
+    <ul class="nav navbar-nav">
         <li id="menu_main_climate" class="dropdown">
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-asterisk"></span> Clima<span class="caret"></span></a>
-            <ul class="dropdown-menu">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Weather"]<span class="caret"></span></a>
+            <ul class="dropdown-menu" aria-labelledby="drop_weather">
                 <li style="padding:5px 15px;">
-                    <b>Buscar</b>                    
+                    <b>@Localizer["Search"]</b>
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_climate_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
-                        <option value=""></option>                        
-                        <option ng-repeat="mc in menu_climate" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>                        
+                        <option value=""></option>
+                        @foreach (var ws in ViewBag.WeatherStations)
+                        {
+                            <option value="Clima/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality, @ws.Name </option>
+                        }
                     </select>
                 </li>
             </ul>
         </li>
         <li id="menu_main_rice" class="dropdown">
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> Arroz<span class="caret"></span></a>
-            <ul class="dropdown-menu">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_rice" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> @Localizer["CropRice"]<span class="caret"></span></a>
+            <ul class="dropdown-menu" aria-labelledby="drop_rice">
                 <li style="padding:5px 15px;">
-                    <b>Buscar</b>
+                    <b>@Localizer["Search"]</b>
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_rice_cbo" name="menu_rice_cbo" class="form-control" style="width:100%;">
                         <option value=""></option>
-                        <option ng-repeat="mc in menu_rice" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>
+                        @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "rice", "arroz" }).Contains(p.Crop.ToLower()) ))
+                        {
+                            <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                        }
                     </select>
                 </li>
             </ul>
         </li>
         <li id="menu_main_maize" class="dropdown">
-            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> Maíz<span class="caret"></span></a>
-            <ul class="dropdown-menu">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_maize" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> @Localizer["CropMaize"]<span class="caret"></span></a>
+            <ul class="dropdown-menu" aria-labelledby="drop_maize">
                 <li style="padding:5px 15px;">
-                    <b>Buscar</b>
+                    <b>@Localizer["Search"]</b>
                 </li>
                 <li style="padding:5px 15px;">
                     <select id="menu_maize_cbo" name="menu_maize_cbo" class="form-control" style="width:100%;">
                         <option value=""></option>
-                        <option ng-repeat="mc in menu_maize" value="{{mc.s_name}}/{{mc.m_name}}/{{mc.w_name}}">{{mc.s_name}}, {{mc.m_name}}, {{mc.w_name}} </option>
+                        @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower()) ))
+                        {
+                            <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                        }
                     </select>
                 </li>
             </ul>
         </li>
-        <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> Bases de datos</a></li>
-        <li id="menu_main_glossary"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> Glosario</a></li>
-        <li id="menu_main_about"><a href="/Home/AcercaDe"><span class="glyphicon glyphicon-eye-open"></span> Acerca De</a></li>
+        <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>
+        <li id="menu_main_glossary"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
+        <li id="menu_main_about"><a href="/Home/AcercaDe"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
     </ul>
     <!-- Start Help -->
-    <ul class="nav navbar-nav navbar-right" ng-controller="AssistCtrl">
-        <li><a href="#" class="sharedLink" title="Ver ayuda" ng-click="assist()" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-play-circle"></span> Ayuda</a></li>
+    <ul class="nav navbar-nav navbar-right">
+        @{
+            var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+            var cultureItems = LocOptions.Value.SupportedUICultures
+                .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+                .ToList();
+            var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+        }
+        <li id="menu_main_language" class="dropdown">
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_language" role="button" aria-haspopup="true" aria-expanded="true">@requestCulture.RequestCulture.UICulture.Name.ToUpper().Substring(0,2) <span class="caret"></span></a>
+            <ul class="drop_language dropdown-menu" aria-labelledby="drop_language">
+                @foreach (var s in cultureItems)
+                {
+                    <li style="padding:5px 15px;" >
+                        <form id="selectLanguage_@s.Value" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
+                              method="post" class="form-horizontal" role="form">
+                            <input type="hidden" name="culture" id="culture" value="@s.Value" />
+                            <a onclick="$('#selectLanguage_@s.Value').submit();">@s.Value.ToUpper().Substring(0,2)</a>
+                        </form>
+                    </li>
+                }
+            </ul>
+
+
+
+        </li>
+        <li><a href="#" class="sharedLink" data-toggle="modal" data-target="#assit_modal"><span class="glyphicon glyphicon-play-circle"></span> @Localizer["Help"]</a></li>
     </ul>
     <!-- End Help -->
 </nav>

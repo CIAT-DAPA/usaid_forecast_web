@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="project_Description" xml:space="preserve">
+    <value>&lt;p class = "text-justify"&gt; This web application is being developed by the International Center for Tropical Agriculture CIAT, the national federation of rice farmers FEDEARROZ, the national coffee federation of Colombia, the National federation of cereals and legumes FENALCE, and the Institute of Hydrology Meteorology and environmental studies IDEAM. And, with the support of the United States agency for international development USAID. The methods and models used to generate the data found here are under development test and validation. However, they have a good performance. Initially, they are located in the number of climatic and agroclimatic municipalities for corn and rice in 6 municipalities of Colombia. The unions will follow this platform to offer the possibility of other municipalities and varieties. &lt;/p&gt;</value>
+  </data>
+  <data name="project_Title" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="scenarios_Description" xml:space="preserve">
+    <value>&lt;p class = "text-justify"&gt; Seasonal weather predictions give us probabilistic information on the categories - below normal, normal and above normal - over the next 6 months, determined in this information can be obtained obtain different scenarios on a daily basis, which serve as input to enter the crop models. &lt;/p&gt;
+&lt;p class = "text-justify"&gt; The process of transitioning probabilities to daily weather data can be performed using a request method, which consists of obtaining historical data and making a request to each term based on the prediction probabilities. For example: for a given precipitation prediction of 70% below normal, 20% normal and 10% above normal, for a month of interest, then resampling will choose 70 daily data situations for the tertile under normal, 20 daily data scenarios of the tertiary normal and 10 daily data scenarios of the tertile above normal, assuming that the total scenarios to be generated are 100. &lt;/p&gt;</value>
+  </data>
+  <data name="scenarios_Title" xml:space="preserve">
+    <value>Generation of scenarios</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Title1" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="validation_maize_Description" xml:space="preserve">
+    <value>&lt;p class = "text-justify"&gt; The calibration of the varieties that are delivered for the use of the producers of the economic corn line are the result of a field research process that initiated the CIAT-MADR agreement in the year 2013 and lasted until the end of 2015 where the behavior of 6 varieties in 3 locations was studied and their results documented. Then the data of these experiments were organized, evaluated, calibrated and validated within the CSRD project, sponsored by USAID and developed by CIAT during the years 2016 and early 2017. &lt;/p&gt;
+&lt;p class = "text-justify"&gt; The final delivery is the result of the joint work of the DAPA area and was supported by FENALCE (Colombia) and the IRI research institute (United States). &lt;/p&gt;</value>
+  </data>
+  <data name="validation_maize_Title" xml:space="preserve">
+    <value>Calibration and validation of crop models (maize)</value>
+  </data>
+  <data name="validation_rice_Description" xml:space="preserve">
+    <value>&lt;p class = "text-justify"&gt; A crop model seeks to simulate the development and growth of a variety in a specific environment. For its use, it needs to be adapted to local varieties and evaluated in different environments (climate and soil). These processes require multiple experimental trials where data are obtained to characterize and understand the growth and development of a variety throughout its life cycle, as well as the climatic conditions in which it develops (daily temperatures, precipitation, solar radiation, etc), soil characteristics (physical and chemical) and optimal agronomic practices for each location. &lt;/p&gt;
+&lt;p class = "text-justify"&gt; The ORYZA (v3.0) cultivation model developed by the International Rice Research Institute (IRRI) was used within the framework of the CSRD-Colombia project. Three varieties of irrigation system (Fedearroz 60, Fedearroz 733, Fedearroz 2000) and two of dry land (Fedearroz 2000 and Fedearroz 174) have been calibrated and validated in different production environments in Colombia, using the information generated by the cooperation agreement between FEDEARROZ, the Ministry of Agriculture and Rural Development and CIAT, developed between 2013 and 2015 in 5 locations (Saldaña-Tolima, Aipe-Huila, Montería-Córdoba, Yopal-Casanare and Villavicencio-Meta). &lt;/p&gt;</value>
+  </data>
+  <data name="validation_rice_Title" xml:space="preserve">
+    <value>Calibration and validation of crop models (rice)</value>
+  </data>
+  <data name="yield_maize_Description" xml:space="preserve">
+    <value>&lt;p class = "text-justify"&gt; A platform is needed to support the decision making process of small, medium and large corn producers, the quality with the use of the CERES-MAIZE (DSSAT) model allows estimating through statistical analysis and semiannual, what are the sowing dates and the varieties that imply less variation with convenient and favorable productions for the farmers, decreasing their chances of loss. &lt;/p&gt;
+&lt;p class = "text-justify"&gt; For the development of the platform, FENALCE was accompanied and advised on issues of agronomic management and fertilization of the crop in the municipalities of "La Unión (Valle del Cauca)", “El Espinal (Tolima)” and “Cereté (Córdoba)”; In addition to the participation of CIAT and CIMMYT staff. &lt;/p&gt;</value>
+  </data>
+  <data name="yield_maize_Title" xml:space="preserve">
+    <value>Agroclimatic forecast (maize)</value>
+  </data>
+  <data name="yield_rice_Description" xml:space="preserve">
+    <value>&lt;p class = "text-justify"&gt; The rice module integrates a seasonal climate forecast and the ORYZA crop model (v3) to simulate the yield of rice cultivation against the climatic conditions of the next 6 months. During this period it is possible to perform multiple simulations with planting dates, soils, varieties and the recommended agronomic management package for each area. This information is synthesized in graphs that relate the yield in grain (kg / ha) to 14% humidity with the sowing date, for each variety and type of soil. &lt;/p&gt;
+&lt;p class = "text-justify"&gt; The ORYZA model (v3) simulates the growth and development of rice cultivation under different production conditions (potential, water and nitrogen limitations) without considering effects of pests and diseases. &lt;/p&gt;</value>
+  </data>
+  <data name="yield_rice_Title" xml:space="preserve">
+    <value>Agroclimatic forecast (rice)</value>
+  </data>
+</root>

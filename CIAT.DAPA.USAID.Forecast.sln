@@ -1,24 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{81CE765B-A6C2-48DB-AC58-1F7708C6D835}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA1C2691-FCD5-4F2F-AEC2-8B2EEB686A4D}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CIAT.DAPA.USAID.Forecast.Data", "src\CIAT.DAPA.USAID.Forecast.Data\CIAT.DAPA.USAID.Forecast.Data.xproj", "{445FB95A-599D-4BD9-BCDB-6A0091B49822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAT.DAPA.USAID.Forecast.Data", "src\CIAT.DAPA.USAID.Forecast.Data\CIAT.DAPA.USAID.Forecast.Data.csproj", "{445FB95A-599D-4BD9-BCDB-6A0091B49822}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CIAT.DAPA.USAID.Forecast.WebAdmin", "src\CIAT.DAPA.USAID.Forecast.WebAdmin\CIAT.DAPA.USAID.Forecast.WebAdmin.xproj", "{5584E6EA-2160-4305-945B-60534BB5482D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAT.DAPA.USAID.Forecast.WebAdmin", "src\CIAT.DAPA.USAID.Forecast.WebAdmin\CIAT.DAPA.USAID.Forecast.WebAdmin.csproj", "{5584E6EA-2160-4305-945B-60534BB5482D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CIAT.DAPA.USAID.Forecast.WebAPI", "src\CIAT.DAPA.USAID.Forecast.WebAPI\CIAT.DAPA.USAID.Forecast.WebAPI.xproj", "{5668D9BF-22F6-40B8-A918-057BD8329EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAT.DAPA.USAID.Forecast.WebAPI", "src\CIAT.DAPA.USAID.Forecast.WebAPI\CIAT.DAPA.USAID.Forecast.WebAPI.csproj", "{5668D9BF-22F6-40B8-A918-057BD8329EF9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CIAT.DAPA.USAID.Forecast.Web", "src\CIAT.DAPA.USAID.Forecast.Web\CIAT.DAPA.USAID.Forecast.Web.xproj", "{3E6B4539-A9B6-4764-87DD-297AD8F61EBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAT.DAPA.USAID.Forecast.Web", "src\CIAT.DAPA.USAID.Forecast.Web\CIAT.DAPA.USAID.Forecast.Web.csproj", "{3E6B4539-A9B6-4764-87DD-297AD8F61EBB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CIAT.DAPA.USAID.Forecast.ForecastApp", "src\CIAT.DAPA.USAID.Forecast.ForecastApp\CIAT.DAPA.USAID.Forecast.ForecastApp.xproj", "{630E608C-4846-40D6-AE7F-B5EECB914863}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAT.DAPA.USAID.Forecast.ForecastApp", "src\CIAT.DAPA.USAID.Forecast.ForecastApp\CIAT.DAPA.USAID.Forecast.ForecastApp.csproj", "{630E608C-4846-40D6-AE7F-B5EECB914863}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,5 +53,8 @@ Global
 		{5668D9BF-22F6-40B8-A918-057BD8329EF9} = {81CE765B-A6C2-48DB-AC58-1F7708C6D835}
 		{3E6B4539-A9B6-4764-87DD-297AD8F61EBB} = {81CE765B-A6C2-48DB-AC58-1F7708C6D835}
 		{630E608C-4846-40D6-AE7F-B5EECB914863} = {81CE765B-A6C2-48DB-AC58-1F7708C6D835}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0285461-EE0B-4119-9599-708583684F5C}
 	EndGlobalSection
 EndGlobal

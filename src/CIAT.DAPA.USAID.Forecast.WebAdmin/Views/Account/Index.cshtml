@@ -1,23 +1,23 @@
 ﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.User>
 @{
-    ViewBag.Title = "Usuarios";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Usuarios</h2>
+    <h2>@Localizer["Users"]</h2>
 
 <p>
-    @Html.ActionLink("Registrar nuevo", "Register")
+    @Html.ActionLink(Localizer["Back"].Value, "Register")
 </p>
 <table class="table">
     <tr>
         <th>
-            Usuario
+            @Localizer["User"]
         </th>
         <th>
-            Role
+            @Localizer["Role"]
         </th>
         <th>
-            Activo
+            @Localizer["Active"]
         </th>
         <th></th>
     </tr>
@@ -35,10 +35,10 @@
                 }
             </td>
             <td>
-                @item.LockoutEnabled
+                @item.EmailConfirmed
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Email })
+                @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.Email })
             </td>
         </tr>
     }

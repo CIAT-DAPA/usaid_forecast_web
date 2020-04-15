@@ -2,7 +2,7 @@
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
 
 @{
-    ViewBag.Title = "Importar histórico climático";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -23,37 +23,35 @@
     }
 </div>
 <fieldset>
-    <legend>Históricos climáticos</legend>
+    <legend>@Localizer["HistoricalTitle"]</legend>
     <p class="text-justify">
-        Esta opción permite cargar un archivo para crear nuevos registros en la colección
-        de clima histórico. El archivo debe tener una estructura específica.
-        Usted puede ver el ejemplo.
+        @Localizer["HistoricalDescription"]
     </p>
     @using (Html.BeginForm("HistoricalClimate", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
+    {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.id)
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-md-2" for="search">Tipo de búsqueda</label>
+                <label class="control-label col-md-2" for="search">@Localizer["TypeSearch"]</label>
                 <div class="col-md-10">
                     <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="1" checked="checked">Código externo
+                        <input type="radio" name="search" id="search" value="1" checked="checked">@Localizer["ExtID"]
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="search" id="search" value="2">Nombre
+                        <input type="radio" name="search" id="search" value="2">@Localizer["Name"]
                     </label>
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-md-2" for="measures">Medida</label>
+                <label class="control-label col-md-2" for="measures">@Localizer["Measure"]</label>
                 <div class="col-md-10">
                     @Html.DropDownList("measures", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2" for="file">
-                    Archivo para importar (separado por coma ",").                    
+                    @Localizer["File"]
                 </label>
                 <div class="col-md-10">
                     <input type="file" class="form-control" name="file" id="file" />
@@ -62,7 +60,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Importar" class="btn btn-default" />
+                    <input type="submit" value="@Localizer["ImportCMD"]" class="btn btn-default" />
                 </div>
             </div>
         </div>

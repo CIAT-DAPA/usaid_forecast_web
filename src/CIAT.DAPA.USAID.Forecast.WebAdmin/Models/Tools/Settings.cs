@@ -54,5 +54,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         /// Get or set if the notification server uses ssl
         /// </summary>
         public bool NotifySsl { get; set; }
+        /// <summary>
+        /// Get or set the languages available
+        /// </summary>
+        public string[] Languages { get; set; }
+        /// <summary>
+        /// Get or set the crops available
+        /// </summary>
+        public string[] Crops { get; set; }
     }
 }

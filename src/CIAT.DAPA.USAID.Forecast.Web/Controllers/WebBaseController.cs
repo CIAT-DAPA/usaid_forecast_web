@@ -1,4 +1,7 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Entities;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Views;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +16,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
     public abstract class WebBaseController : Controller
     {
         protected IHostingEnvironment hostingEnvironment { get; set; }
-        /// <summary>
-        /// Get or set the object to get information from forecast service
-        /// </summary>
-        protected WebAPIForecast apiForecast { get; set; }
+
+        protected RepositoryWeatherStations rWS { get; set; }
+
+        protected string Root { get; set; }
+
+        protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
+        protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -26,10 +32,17 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public WebBaseController(IOptions<Settings> settings, IHostingEnvironment environment) : base()
         {
             hostingEnvironment = environment;
-            apiForecast = new WebAPIForecast()
+            Root = settings.Value.api_fs;
+            rWS = new RepositoryWeatherStations(Root);
+            try
             {
-                root = settings.Value.api_fs,
-            };
+                Task.Run(() => this.InitAsync()).Wait(350000);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
         }
 
         /// <summary>
@@ -37,23 +50,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// </summary>
         protected void loadAPIs()
         {
-            ViewBag.api_fs = apiForecast.root;
-        }
-
-        /// <summary>
-        /// Method that stablish the months of the forecast
-        /// </summary>
-        protected void loadMonthsClimate()
-        {
-            string dates = string.Empty;
-            DateTime start = DateTime.Now.AddMonths(-1);
-            for (int i = 1; i <= 6; i++)
-            {
-                start = start.AddMonths(1);
-                dates += start.ToString("MM") + ",";
-            }
-            ViewBag.gv_months = dates.Substring(0, dates.Length - 1);
-        }
+            ViewBag.api_fs = Root;
+        }        
 
         /// <summary>
         /// Method that stablish the months of the forecast
@@ -62,7 +60,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             string dates = string.Empty;
             string years = string.Empty;
-            DateTime start = DateTime.Now.AddMonths(-1);            
+            DateTime start = DateTime.Now.AddMonths(-1);
             for (int i = 1; i <= 2; i++)
             {
                 start = start.AddMonths(1);
@@ -71,6 +69,54 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             ViewBag.gv_months = dates.Substring(0, dates.Length - 1);
         }
 
+        /// <summary>
+        /// Method which load all basic information
+        /// </summary>
+        /// <returns></returns>
+        protected async Task<bool> InitAsync()
+        {
+            // laoding data
+            WeatherStations = await rWS.ListAsync();
+            WeatherStationsCrops = await rWS.ListByCropAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Method that transfer data to viewbag
+        /// </summary>
+        protected void SetWS()
+        {
+            // Setting data
+            ViewBag.WeatherStations = WeatherStations;
+            ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+        }
+
+        protected WeatherStationFull SearchWS(string state, string municipality, string ws)
+        {
+            WeatherStationFull answer = WeatherStations.SingleOrDefault(p => p.State.Equals(state) 
+                                                    && p.Municipality.Equals(municipality) 
+                                                    && p.Name.Equals(ws));
+            return answer;
+
+        }
+
+        /// <summary>
+        /// Method that returns the first weather station provide for the API
+        /// </summary>
+        /// <returns></returns>
+        public WeatherStationFull DefaultWeatherStation()
+        {
+            return WeatherStations.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Method that returns the first weather station provide for the API
+        /// </summary>
+        /// <returns></returns>
+        public WeatherStationFullCrop DefaultWeatherStationCrop()
+        {
+            return WeatherStationsCrops.FirstOrDefault();
+        }
 
     }
 }

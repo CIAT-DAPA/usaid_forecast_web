@@ -1,169 +1,400 @@
 ﻿@{
-    ViewData["Title"] = "Cultivo";
+    ViewData["Title"] = @Localizer["Title"];
     ViewData["Meta_Description"] = "Pronóstico agroclimático y datos históricos de producción del cultivo de " + ViewBag.c + ", en " + ViewBag.s + ", " + ViewBag.m + ", " + ViewBag.w;
     ViewData["Meta_Keywords"] = "pronóstico,predicción,clima,cultivos,agroclima,agroclimático,precipitación,rendimiento,días a cosecha,temperatura,temperatura máxima,temperatura mínima,historial de rendimiento,histórico rendimiento,producción," + ViewBag.c + "," + ViewBag.s + "," + ViewBag.m + "," + ViewBag.w;
 }
 
-<!-- Start global variables -->
-<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-<input type="hidden" id="gv_months" name="gv_months" value="@ViewBag.gv_months" />
-<!-- End global variables -->
-
-@Html.Partial("_SubMenu")
-
-<div id="containerBlock">
-    @Html.Partial("_SocialMedia")
-    <!-- Start Forecast -->
-    <div class="sections" ng-controller="CropForecastCtrl" id="content_forecast">
-        <!-- Start Description -->
-        <section class="col-md-12" id="description">
-            <div class="row section-content">
-                <h2 class="text-center" id="sectionTitle" style="">Pronóstico agroclimático del cultivo {{crop_name}}</h2>
-                <div >
-                    <p class="text-justify">
-                        Para el municipio de <span class="text-bold">{{municipality_name}}</span>,
-                        se presenta el pronóstico agroclimático (<span class="text-bold">rendimiento potencial esperado</span>)
-                        según fecha de siembra de
-                        <span class="text-bold">{{period_start}} a {{period_end}}</span> para las variedades calibradas.                        
-                        La estación meteorológica que provee los datos para realizar los cálculos es
-                        <span class="text-bold">{{ws.name}} - {{ws.ext_id}}</span>,
-                        provista por <span class="text-bold">{{ws.origin}}</span>.
-                        Observe el desempeño de todas las variedades antes de seleccionar la variedad a sembrar.
-                    </p>
-                </div>
-            </div>
-        </section>
-        <!-- End Description -->
-        <!-- Start Cultivars -->
-        <section class="col-md-12">
-            <article class="row section-content borderBox" ng-repeat="cu in cultivars" id="{{cu.id}}">
-                <div class="col-lg-12 blockTitle closed" ng-click="collapsable(cu.id,$index)">
-                    <label class="cultivar_name" ng-switch="crop">
-                        <img ng-switch-when="maíz" style="margin-top: -7px;" src="/images/corn_black.png" height="19" width="19" /> 
-                        <span ng-switch-when="arroz" class="glyphicon glyphicon-grain"></span> 
-                        {{cu.name}}
-                    </label>
-                    <p class="text-justify">                        
-                        El pronóstico agroclimático para el cultivar <span class="text-bold">{{cu.name}}</span>
-                        <span ng-show="cu.rainfed" class="text-bold">(secano)</span>.
-                        El color de la celda indica el nivel de rendimiento de acuerdo a una escala definida por el gremio.
-                        Para calcular el rendimiento potencial, por favor seleccione la textura del suelo del lote a sembrar
-                    </p>
-                </div>
-                <div class="graphs" style="display:none;">
-                    <div class="col-md-12">
-                        <select class="form-control" ng-model="cu.soil_selected" ng-change="drawForecast(cu)" ng-options="so.name for so in cu.soils"></select>
+@if (ViewBag.ws != null)
+{
+    <div id="containerBlock">
+        <!-- Start Forecast -->
+        <div class="sections" id="content_forecast">
+            <!-- Start Description -->
+            <section class="col-md-12" id="description">
+                <div class="row section-content">
+                    <h2 class="text-center" id="sectionTitle" style="">@Localizer["DescriptionTitle"] @ViewBag.c</h2>
+                    <div>
+                        <p class="text-justify">
+                            @Localizer["DescriptionPart1"]
+                            <span class="text-bold">@ViewBag.m</span>,
+                            @Localizer["DescriptionPart2"]
+                            (<span class="text-bold">@Localizer["DescriptionPart3"]</span>)
+                            @Localizer["DescriptionPart4"]
+                            <span class="text-bold">@Localizer["Months"].Value.ToString().Split(",")[DateTime.Now.Month - 1], @DateTime.Now.Year - @Localizer["Months"].Value.ToString().Split(",")[DateTime.Now.AddMonths(1).Month - 1], @DateTime.Now.AddMonths(1).Year</span>
+                            @Localizer["DescriptionPart5"].
+                            @Localizer["DescriptionPart6"]
+                            <span class="text-bold"> @ViewBag.ws.Name -  @ViewBag.ws.Ext_Id</span>,
+                            @Localizer["DescriptionPart7"]
+                            <span class="text-bold"> @ViewBag.ws.Origin</span>.
+                            @Localizer["DescriptionPart8"].
+                        </p>
                     </div>
-                    <article id="cultivar_calendar_{{cu.name}}" class="col-lg-12 article_content">
-                        <div class="section-content">
-                            <h3 class="text-center">Rendimiento potencial según fecha de siembra</h3>
-                            <p class="text-justify">                                
-                                <ul>
-                                    <li>
-                                        Para alcanzar el máximo rendimiento potencial
-                                        <span class="text-bold" id="yield_{{cu.id}}_max_yield"></span>
-                                        a la cosecha, la <span class="text-bold">fecha de siembra más favorable</span> es
-                                        <span class="text-bold" id="yield_{{cu.id}}_max_date"></span>                                        
-                                    </li>
-                                </ul>
+                </div>
+            </section>
+            <!-- End Description -->
+            <!-- Start Cultivars -->
+            @foreach (Cultivar cu in ViewBag.cultivars)
+            {
+                <section class="col-md-12">
+                    <article class="row section-content borderBox">
+                        <div class="col-lg-12 blockTitle closed" data-toggle="collapse" data-target="#cultivar_@cu.Id">
+                            <label class="cultivar_name">
+                                @if (ViewBag.agronomic.Cp_Name == Localizer["CropMaize"].Value)
+                                {
+                                    <img style="margin-top: -7px;" src="/images/corn_black.png" height="19" width="19" />
+                                }
+                                else
+                                {
+                                    <span class="glyphicon glyphicon-grain"></span>
+                                }
+                                @cu.Name
+                            </label>
+                            <p class="text-justify">
+                                @Localizer["ForecastCultivarPart1"]
+                                <span class="text-bold">@cu.Name</span>
+                                @if (cu.Rainfed)
+                                {
+                                    <span class="text-bold">(@Localizer["ForecastCultivarPart2"])</span>
+                                }
+                                .
                             </p>
-                            <button id="back_{{cu.id}}" class="btn btn-warning"><</button>
-                            <button id="forward_{{cu.id}}" class="btn btn-warning">></button>
-                            <label id="current_month_{{cu.id}}"></label>
-                            <div id="calendar_{{cu.id}}" style="font-size:0.8em;"></div>
                         </div>
-                    </article>
-                    <article id="cultivar_variation_{{cu.name}}" class="col-lg-12 article_content">
-                        <div class="section-content">
-                            <h3 class="text-center">Nivel de confianza del pronóstico</h3>
-                            <ul class="nav nav-tabs nav-justified" id="tabs_{{cu.id}}" role="tablist">
-                                <li role="presentation" ng-repeat="vr in crop_vars" ng-class="{active:$first}">
-                                    <a href="#content_{{cu.id}}_{{vr.name}}" id="tab_{{cu.id}}_{{vr.name}}" role="tab" data-toggle="tab" aria-controls="content_{{cu.id}}_{{vr.name}}" class="text-bold">{{vr.label}}</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="content_{{cu.id}}">
-                                <div ng-repeat="vr in crop_vars" ng-class="{'fade':true, 'tab-pane':true, 'active':true, 'in':true, 'disable_tab':!$first}" role="tabpanel" id="content_{{cu.id}}_{{vr.name}}" aria-labelledby="tab_{{cu.id}}_{{vr.name}}">
-                                    <p class="text-justify" id="summary_{{cu.id}}_{{vr.name}}">
-                                        Este gráfico muestra el nivel de confianza del pronóstico de rendimiento potencial 
-                                        según la fecha de siembra, calculada a partir de distintos escenarios climáticos. 
-                                        La línea negra es el promedio de rendimiento potencial para cada fecha de siembra 
-                                        (corresponde al valor presentado en el calendario), la franja verde oscuro corresponde 
-                                        a un intervalo de confianza del 95% (alta probabilidad) y la franja verde clara 
-                                        corresponde a extremos (baja probabilidad) del rendimiento potencial esperado en cada fecha;
-                                        para el grano de arroz al 14% de húmedad y para el grano de maíz al 0% de húmedad.
-                                        <br />
-                                        <br />
-                                        <ul>
-                                            <li>
-                                                La fecha <span class="text-bold">con mayor variación</span>
-                                                de <span class="text-bold">{{vr.description}}</span>, es
-                                                <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_date"></span>
-                                                con una desviación standar de
-                                                <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_max_yield"></span>
-                                            </li>
-                                            <li>
-                                                La fecha <span class="text-bold">con menor variación</span>
-                                                de <span class="text-bold">{{vr.description}}</span>, es
-                                                <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_date"></span>
-                                                con una desviación standar de
-                                                <span class="text-bold" id="yield_{{vr.name}}_{{cu.id}}_min_yield"></span>
-                                            </li>
-                                        </ul>
+                        <div class="graphs collapse " id="cultivar_@cu.Id">
+                            <article class="col-md-12 article_content">
+                                <div class="section-content">
+
+                                    <h3 class="text-center">@Localizer["ForecastSubtitle"]</h3>
+                                    <p class="text-justify">
+                                        @Localizer["ForecastCultivarPart3"]
                                     </p>
-                                    <div id="trend_{{cu.id}}_{{vr.name}}" class="trend_yield"></div>
+                                    @{
+                                        var soils = ((IEnumerable<Soil>
+                                            )ViewBag.soils).Select(c => new SelectListItem { Value = c.Id, Text = c.Name }).ToList();
+                                    }
+                                    <select class="form-control" id="cbo_soil_@cu.Id" onchange="update_forecast('@cu.Id', '#cbo_soil_@cu.Id')" asp-items="soils"></select>
+                                    <p class="text-justify">
+                                        @Localizer["ForecastCultivarRangesDescription"].
+                                    </p>
+                                    <table class="table table-responsive" id="ranges_@cu.Id"></table>
                                 </div>
+                            </article>
+                            <div class="row">
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h4 class="text-center">@Localizer["ForecastCultivarDateTitle"]</h4>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastCultivarDateText1"]
+                                            <span class="text-bold" id="yield_max_@cu.Id"></span>
+                                            @Localizer["ForecastCultivarDateText2"]
+                                            <span class="text-bold" id="yield_date_@cu.Id"></span>
+                                        </p>
+                                        <div id="calendar_@cu.Id" class="plot" style="font-size:0.8em;">
+                                        </div>
+                                    </div>
+                                </article>
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h4 class="text-center">@Localizer["ForecastCultivarBarsTitle"]</h4>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastCultivarBarsText"]
+                                        </p>
+                                        <div id="cultivar_bars_@cu.Id" class="plot plot_yield_bars">
+                                            <svg></svg>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="row">
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h3 class="text-center">@Localizer["ForecastVariationTitle"]</h3>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastVariationDescription"].
+                                        </p>
+                                        <select id="cbo_variation_@cu.Id" class="form-control"></select>
+                                        <div id="cultivar_variation_@cu.Id" class="plot plot_variation">
+                                            <svg></svg>
+                                        </div>
+                                    </div>
+                                </article>
+                                <article class="col-lg-6 article_content">
+                                    <div class="section-content">
+                                        <h3 class="text-center">@Localizer["ForecastExceedanceTitle"]</h3>
+                                        <p class="text-justify">
+                                            @Localizer["ForecastExceedanceDescription"].
+                                        </p>
+                                        <div id="cultivar_exceedance_@cu.Id" class="plot plot_variation">
+                                            <svg></svg>
+                                        </div>
+                                    </div>
+                                </article>
                             </div>
                         </div>
                     </article>
-                </div>
+                </section>
+            }
 
+        </div>
+        <!-- End Forecast -->
+        <!-- Start Historical -->
+        <section class="col-md-12 sections" id="content_historical">
+            <article class="row section-content">
+                <div class="col-lg-12">
+                    <h2 class="text-center">@Localizer["HistoricalTitle"]</h2>
+                    <p class="text-justify">
+                        @Localizer["HistoricalDescription"]
+                    </p>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label class="control-label">
+                                @Localizer["Year"]:
+                            </label>
+
+                            <input type="number" id="txt_years" class="form-control" value="1980" />
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">
+                                @Localizer["TypeCultivar"]:
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="type_cultivar" id="type_cultivar" value="national" checked="checked">@Localizer["TypeCultivarNational"]
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="type_cultivar" id="type_cultivar" value="imported">@Localizer["TypeCultivarImported"]
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <button id="cmd_model" type="button" class="btn btn-primary" onclick="load_historical('@ViewBag.ws.Id')">@Localizer["Search"]</button>
+                        </div>
+                        <div class="form-group">
+                            <img alt="" src="~/images/loading.gif" id="loading" class="icon_loading" style="display: none;" />
+                        </div>
+                    </form>
+                    <div id="cultivar_heatmap_model" class="plot" style="font-size:0.4em;">
+                    </div>
+                </div>
             </article>
         </section>
+        <!-- End Historical -->
     </div>
-    <!-- End Forecast -->
-    <!-- Start Historical -->
-    <section class="col-md-12 sections" ng-controller="CropHistoryCtrl" id="content_historical" style="display:none;">
-        <article class="row section-content">
-            <div class="col-lg-12">
-                <h2 class="text-center">Histórico de rendimiento</h2>                
-                <p class="text-justify">
-                    Los datos históricos presentados a continuación son el resultado de los datos generados por el 
-                    modelo del cultivo con los datos históricos presentados en este municipio. 
-                    Los rendimientos son promediados de acuerdo a su clasificación 
-                    (nacional o importada).
-                </p>
-                <form class="form-inline">
-                    <div class="form-group">
-                        <label class="control-label" for="sel_model_years">Año:</label>
-                        <select class="form-control" id="sel_model_years" ng-model="year_selected" ng-options="y for y in data_h_years"></select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Tipo de cultivar:</label>
-                        <label class="radio-inline">
-                            <input type="radio" ng-model="cultivar_type" value="national" checked="checked">Nacional
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" ng-model="cultivar_type" value="imported">Importada
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <button id="cmd_model" type="button" class="btn btn-primary" ng-click="search_historical()">Buscar</button>
-                        <img alt="cargando" src="~/images/loading.gif" class="icon_loading" />
-                    </div>
-                </form>
-                <div id="cultivar_heatmap_model"></div>
-            </div>
-        </article>
-    </section>
-    <!-- End Historical -->
-</div>
+}
 
 @section Scripts {
-    <script src="~/lib/d3/d3.min.js"></script>
-    <script src="~/js/lib/d3graphics/base.js"></script>
-    <script src="~/js/lib/d3graphics/calendar.js"></script>
-    <script src="~/js/lib/d3graphics/trend.js"></script>
-    <script src="~/js/lib/d3graphics/calendarheatmap.js"></script>
-    <script src="~/js/controllers/crop_forecast_ctr.js"></script>
-    <script src="~/js/controllers/crop_history_ctr.js"></script>
+    <script src="https://d3js.org/d3-time.v1.min.js"></script>
+    <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+    <script src="~/js/graphics/ranges.js"></script>
+    <script src="~/js/graphics/bars.js"></script>
+    <script src="~/js/graphics/calendar.js"></script>
+    <script src="~/js/graphics/area.js"></script>
+    <script src="~/js/graphics/exceedance.js"></script>
+
+    <script type="text/javascript">
+            // Getting parameters        
+        var months = @Html.Raw(Json.Serialize(Localizer["Months"].Value.ToString().Split(",")));
+        var days = @Html.Raw(Json.Serialize(Localizer["Days"].Value.ToString().Split(",")));
+        var yield = @Html.Raw(Json.Serialize(ViewBag.yield));
+        var yield_exceedance = @Html.Raw(Json.Serialize(ViewBag.yield_exceedance));
+        var ranges = @Html.Raw(Json.Serialize(ViewBag.ranges));
+        var colors = ['#ad5858', '#ad7e58', '#abad58', '#8fad58', '#69ad58'];
+        var root = @Html.Raw(Json.Serialize(ViewBag.Root));        
+        var measures = {
+            'arroz': [
+                        { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
+                        { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
+            ],            
+            'rice': [
+                        { name: "yield_14", description: '@Localizer["yield_14_Description"]', metric: '@Localizer["yield_14_unit"]'  },
+                        { name:"d_har", description: '@Localizer["d_har_Description"]', metric: '@Localizer["d_har_unit"]' },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu", description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  }
+            ],
+            'maiz': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ],
+            'maize': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ],
+            'wheat': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ],
+            'sorghum': [
+                        { name:"yield_0", description: '@Localizer["yield_0_Description"]', metric: '@Localizer["yield_0_unit"]'  },
+                        { name:"prec_acu", description: '@Localizer["prec_acu_Description"]', metric: '@Localizer["prec_acu_unit"]'  },
+                        { name:"t_max_acu", description: '@Localizer["t_max_acu_Description"]', metric: '@Localizer["t_max_acu_unit"]'  },
+                        { name:"t_min_acu" , description: '@Localizer["t_min_acu_Description"]', metric: '@Localizer["t_min_acu_unit"]'  },
+                        { name:"d_dry", description: '@Localizer["d_dry_Description"]', metric: '@Localizer["d_dry_unit"]'  },
+                        { name:"bio_acu" , description: '@Localizer["bio_acu_Description"]', metric: '@Localizer["bio_acu_unit"]' }
+            ]
+        };
+
+
+        var me = '@Html.Raw(ViewBag.c.ToString().ToLower())';
+        me = me.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        var m_list = measures[me];
+        // Sorting parameters
+        ranges = ranges.sort(function (item) { return item.upper });
+        ranges = merge_ranges_colors(ranges, colors);
+
+        function update_forecast(cu, so) {
+            // Ploting ranges
+            plot_ranges(ranges,'ranges_' + cu);
+            // Filtering yield data
+            var yield_filtered = yield.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); });
+
+            // Filtering best date
+            var best = null;
+            var max = null;
+            var best_max = null;
+            for (var j = 0; j < yield_filtered.length; j++) {
+                max = yield_filtered[j].data.findIndex(x => x.measure.startsWith('yield'));
+                if (best == null || best.data[max].avg < yield_filtered[j].data[max].avg) {
+                    best = yield_filtered[j];
+                    best_max = max;
+                }
+            }
+            if (best != null) {
+                $('#yield_max_' + cu).html(d3.format("0f")(best.data[best_max].avg) + ' @Localizer["yield_unit"]');
+                $('#yield_date_' + cu).html(best.start.substring(0,10));
+            }
+
+            // Plotting for calendar
+            calendar(yield_filtered, 'calendar_' + cu, months, days, ranges, '@Localizer["yield_unit"]', true);
+
+            // filtering for yield bars
+            var b_data = [{
+                key: '@Localizer["yield_unit"]',
+                values: yield_filtered.map(function (item) {
+                    var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
+                    var r = ranges.filter(function (item2) { return item2.lower <= value && item2.upper >= value; } )[0];
+                    return {
+                        "label": item.start.substring(0, 10),
+                        "value": value,
+                        "color": r.color
+                    };
+                }).filter(function (d, i) { return i % 2 == 0; })
+
+            }];
+            bars(b_data, 'cultivar_bars_' + cu, '@Localizer["yield_unit"]', true);
+
+             // variation
+            $('#cbo_variation_' + cu).find('option').remove().end()
+            for (var j = 0; j < m_list.length; j++) {
+                $('#cbo_variation_' + cu).append(new Option(m_list[j].description, j));
+            }
+
+            plot_variation(cu, yield_filtered);
+
+            $('#cbo_variation_' + cu).change(function () { plot_variation(cu, yield_filtered); });
+
+            // filtering exceedance data
+            var yield_exceedance_filtered = yield_exceedance.filter(function (item) { return item.cultivar === cu && item.soil === $(so).val(); })
+                //.filter(function (d, i) { return i % 4 == 0; })
+                ;
+            var fe = yield_exceedance_filtered.map(function (item) {
+                    var value = item.data.filter(function (item2) { return item2.measure.startsWith('yield'); })[0].avg;
+                    return {
+                        x: new Date(item.start.substring(0, 10)),
+                        value: value
+                    };
+                });
+
+            fe = fe.map(function (item, i) {
+                return {
+                    x: parseInt(d3.format("0f")(item.value)),
+                    y: parseFloat(d3.format(".2f")((1 / ((fe.length+1)/i))*100))
+                }
+            });
+
+            var e_data = [{
+                key: '@Localizer["probability_unit"]',
+                values: fe,
+                color:"#C8E6C9"
+            }]
+            exceedance(e_data, 'cultivar_exceedance_' + cu, '@Localizer["yield_unit"]', '@Localizer["probability_unit"]');
+        }
+
+        function plot_variation(cu,yield_filtered) {
+            var me_selected = $('#cbo_variation_' + cu).val();
+            var variation_vars = [{name:'perc_95',color:'#C8E6C9'},{name:'conf_Upper',color:'#388E3C'},{name:'avg',color:'#000000'},{name:'conf_Lower',color:'#388E3C'},{name:'perc_5',color:'#C8E6C9'}];
+            var l_data = []
+            for (var i = 0; i < variation_vars.length; i++) {
+                l_data.push({
+                    key: variation_vars[i].name,
+                    values: yield_filtered.map(function (item) {
+                        var value = item.data.filter(function (item2) { return item2.measure === m_list[me_selected].name; })[0][variation_vars[i].name];
+                        var date = new Date(item.start.substring(0, 10))
+                        date.setDate(date.getDate() + 1);
+                        return {
+                            x: date.getTime(),
+                            y: parseInt(d3.format("0f")(value))
+                        };
+                    }),
+                    color: variation_vars[i].color
+                });
+            }
+            $('#cultivar_variation_' + cu + ' svg').html('');
+            area(l_data,'cultivar_variation_' + cu, '',  m_list[me_selected].metric);
+        }
+
+        function load_historical(id) {
+            $("#loading").css("display", "block");
+            $("#cultivar_heatmap_model").html("");
+            var url = root;
+            url = url + "Historical/HistoricalYield/" + id + "/" + $('#txt_years').val() + "/json";
+
+            //$('#type_cultivar').val()
+            $.getJSON(url, function (data) {
+            })
+                .done(function (data) {
+                    var yield = []
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            yield = yield.concat(data[i].yield);
+                        }
+                        $("#cultivar_heatmap_model").html("");
+                        // Plotting calendar
+                        calendar(yield, 'cultivar_heatmap_model', months, days, ranges, '@Localizer["yield_unit"]', false);
+                    }
+                    else {
+                        $("#cultivar_heatmap_model").html('<p class="bg-danger">NO DATA</p>');
+                    }                    
+                    $("#loading").css("display", "none");
+                })
+                .fail(function () {
+                    $("#cultivar_heatmap_model").html('<p class="bg-danger">NO DATA</p>');
+                    $("#loading").css("display", "none");
+                });
+        }
+
+        // Rendering plots when collapse panel is shown
+        $(".collapse").on('shown.bs.collapse', function () {
+            var cu_id_col = this.id.substring(9, this.id.length);
+            update_forecast(cu_id_col, '#cbo_soil_' + cu_id_col);
+        });
+
+
+
+        // Closing the loading page
+        window.loading_screen.finish();
+    </script>
 }

@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
+using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
+using System.Web;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
@@ -20,23 +24,60 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return RedirectToAction("Index", "Clima");
+            try
+            {
+                // Set the parameters
+                ViewBag.Section = SectionSite.Climate;
+
+                // Setting data
+                SetWS();
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
 
         public IActionResult Glosario()
         {
-            // Load the urls of the web api's
-            loadAPIs();
+
+            ViewBag.Section = SectionSite.Glossary;
+            ViewBag.words = new string[] {
+                "bio_acu", "d_dry", "d_har", "eva", "conf_int", "prec", "prec_acu", "climate", "pro_his",
+                "forecast", "sol_rad", "yield", "yield_pot", "t_max", "t_max_acu", "t_min", "t_min_acu"
+            };
+            // Setting data
+            SetWS();
+
             return View();
         }
 
         public IActionResult AcercaDe()
         {
-            // Load the urls of the web api's
-            loadAPIs();
+            ViewBag.Section = SectionSite.About;
+            ViewBag.words = new string[] {
+                "project", "scenarios", "yield_rice", "yield_maize", "validation_maize"
+            };
+            // Setting data
+            SetWS();
+
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            string url = System.Web.HttpUtility.UrlPathEncode(returnUrl); 
+            return Redirect(url);
         }
     }
 }

@@ -4,23 +4,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Steven Sotelo" />
-    <title>@ViewData["Title"] - Aclímate Colombia Pronósticos</title>
+    <title>@ViewData["Title"] - @Localizer["Title"]</title>
     <meta name="description" content="@ViewData["Meta_Description"]">
     <meta name="keywords" content="@ViewData["Meta_Keywords"]">
 
     <!-- Start SEO -->
     <script src="~/js/seo/analytics.js"></script>
     <!-- End SEO -->
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">
-    <link rel="stylesheet" href="~/lib/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/menu.css" />
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/nvd3/nv.d3.min.css">
+        <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
+        <link rel="stylesheet" href="~/lib/leaflet/leaflet.css">
+        <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/menu.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css"
+              asp-fallback-href="~/lib/leaflet/leaflet.css"/>
+        <link rel="stylesheet" href="~/css/vendor.min.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
     <link rel="shortcut icon" href="~/favicon.ico">
 
 </head>
-<body ng-app="ForecastApp">
+<body>
     <header class="header-logo">
         <h1 class="text-center">
             <a href="http://www.aclimatecolombia.org"><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
@@ -35,7 +47,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Aclímate Colombia - Pronósticos</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@Localizer["Title"]</a>
             </div>
 
             @Html.Partial("_Menu")
@@ -53,7 +65,7 @@
         <div class="form-group">
             <div class="col-lg-6 form-group">
                 <div class="col-lg-12" style="color:white;">
-                    <h4>Nuestros socios</h4>
+                    <h4>@Localizer["FooterPartnersTitle"]</h4>
                     <hr />
                 </div>
                 <div class="col-lg-3 col-xs-6 form-group">
@@ -79,7 +91,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="col-lg-12" style="color:white;">
-                    <h4>Donantes</h4>
+                    <h4>@Localizer["FooterSponsorsTitle"]</h4>
                     <hr />
                 </div>
                 <div class="col-lg-3 col-xs-6">
@@ -94,18 +106,14 @@
             <div class="col-lg-12">
                 <div class="col-md-4">
                     <p class="text-justify">
-                        CIAT All Rights reserved <br />
-                        Teléfonos de contacto: (2) 4450000 Ext. 3367, 3579 <br />
-                        Email: aclimatecolombia@gmail.com <br />
-                        Colombia<br />
-                        Fotos tomadas de <a href="https://www.flickr.com/photos/ciat/" target="_blank">CIAT</a>
+                        @Localizer["FooterCopyRight"]
                     </p>
                 </div>
                 <div class="col-md-offset-4 col-md-4">
                     <p class="text-justify">
-                        <a href="http://aclimatecolomb.wpengine.com/contactenos/">Contáctenos</a> /
-                        <a href="http://aclimatecolomb.wpengine.com/html-site-map">Mapa del Sitio</a> /
-                        <a href="">Políticas de Privacidad</a>
+                        <a href="@Localizer["FooterContactUrl"]">@Localizer["FooterContactLabel"]</a> /
+                        <a href="@Localizer["FooterSitemapUrl"]">@Localizer["FooterSitemapLabel"]</a> /
+                        <a href="@Localizer["FooterPrivacyUrl"]">@Localizer["FooterPrivacyLabel"]</a>
                     </p>
                 </div>
             </div>
@@ -114,8 +122,43 @@
 
     @Html.Partial("_Modal")
 
-    <!-- Start Loader -->
-    <script src="~/lib/please-wait/build/please-wait.js"></script>
+    <partial name="_CookieConsentPartial" />
+
+    <environment include="Development">
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/d3/d3.min.js"></script>
+        <script src="~/lib/nvd3/nv.d3.min.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/lib/leaflet/leaflet.js"></script>
+        <script src="~/lib/please-wait/build/please-wait.js"></script>
+        <script src="~/js/tools/tools.js"></script>
+        <script src="~/js/tools/menu.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"
+                asp-fallback-src="~/lib/leaflet/leaflet.js"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"
+                asp-fallback-src="~/lib/d3/d3.min.js"
+                crossorigin="anonymous">
+        </script>
+        <script src="~/js/vendor.min.js"></script>
+        <script src="~/js/site.min.js"></script>
+    </environment>
+
+    <!-- Start Loader -->    
     <script type="text/javascript">
         window.loading_screen = window.pleaseWait({
             logo: "/images/logo.png",
@@ -124,38 +167,12 @@
         });
     </script>
     <!-- Start Loader -->
-
-    <script src="~/js/lib/compatibilty/ie.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
-    <script src="~/lib/angular/angular.min.js"></script>
-    <script src="~/lib/angular-cookies/angular-cookies.min.js"></script>
-    <script src="~/lib/select2/dist/js/select2.full.min.js"></script>
-    <script src="~/js/menu.js"></script>
-    <script src="~/js/app.js"></script>
-    <script src="~/js/services/setup.js"></script>
-    <script src="~/js/services/assist.js"></script>
-    <script src="~/js/services/tutorial.js"></script>
-    <script src="~/js/services/forecast_api.js"></script>
-    <script src="~/js/services/agronomy.js"></script>
-    <script src="~/js/services/cultivar.js"></script>
-    <script src="~/js/services/soil.js"></script>
-    <script src="~/js/services/crop_vars.js"></script>
-    <script src="~/js/services/geographic.js"></script>
-    <script src="~/js/services/municipality.js"></script>
-    <script src="~/js/services/weather_station.js"></script>
-    <script src="~/js/services/climate_climatology.js"></script>
-    <script src="~/js/services/climate_historical.js"></script>
-    <script src="~/js/services/climate_forecast.js"></script>
-    <script src="~/js/services/climate_scenario.js"></script>
-    <script src="~/js/services/crop_yield_forecast.js"></script>
-    <script src="~/js/services/crop_yield_historical.js"></script>
-    <script src="~/js/controllers/sub_menu_ctr.js"></script>
-    <script src="~/js/controllers/location_ctr.js"></script>
-    <script src="~/js/controllers/assist_ctr.js"></script>
-    <script src="~/js/controllers/social_media_ctr.js"></script>
+    
     @RenderSection("Scripts", required: false)
+
+    <script type="text/javascript">
+        change_searchbox('@Localizer["ChooseOne"]');
+        updateBackground();
+    </script>
 </body>
 </html>

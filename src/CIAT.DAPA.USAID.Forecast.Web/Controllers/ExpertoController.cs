@@ -28,13 +28,19 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             try
             {
-                // Load the urls of the web api's
-                loadAPIs();
-                // Load the dates of the forecast
-                loadMonthsClimate();
+                ViewBag.Section = SectionSite.Expert;
+
+                ViewBag.words = new string[] {
+                    "geographic", "agronomic", "climatology", "climate_historical", "climate_forecast", "yield_historical", "yield_forecast"
+                };
+
+                ViewBag.Root = Root;
+                // Setting data
+                SetWS();
+
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View("Error");
             }

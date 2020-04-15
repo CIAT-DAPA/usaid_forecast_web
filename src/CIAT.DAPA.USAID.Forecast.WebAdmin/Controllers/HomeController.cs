@@ -9,8 +9,10 @@ using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Hosting;
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using System.IO;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -22,7 +24,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) :
+        public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<Role> roleManager, IEmailSender emailSender) :
             base(settings, LogEntity.users, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
@@ -65,6 +70,18 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await writeExceptionAsync(ex);
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            string url = System.Web.HttpUtility.UrlPathEncode(returnUrl);
+            return Redirect(url);
         }
     }
 }

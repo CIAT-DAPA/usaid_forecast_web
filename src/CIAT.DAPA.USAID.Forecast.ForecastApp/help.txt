@@ -59,6 +59,16 @@ Import Data
 
 -cf "value"		This parameter indicates the confidence value for
 				the intervals confidence. It is a float value.
+
+-hs				Import historical data. You should add the 
+				parameter -s and -type
+
+-s	"value"		Import the climate historical data of weather stations.
+				Value can be prec, sol_rad, t_max, t_min
+
+-type value		Set the kind of search of the weather station.
+				Value can be either 1 for Extern Id or 2 for name
+
 -----------------------------------------------------------------
 Examples
 

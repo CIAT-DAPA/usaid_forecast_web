@@ -1,14 +1,14 @@
 ﻿@model CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account.UserEditViewModel
 
 @{
-    ViewBag.Title = "Editar";
+    ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <form asp-controller="Account" asp-action="Edit" method="post" class="form-horizontal">
-    <h4>Editar usuario</h4>
+    <h4>@Localizer["EditUser"]</h4>
     <hr />
     <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="Role" class="col-md-2 control-label">Roles:</label>
+        <label for="Role" class="col-md-2 control-label">@Localizer["Roles"]:</label>
         <div class="col-md-10">
             @foreach (var item in ViewBag.Role)
             {
@@ -32,23 +32,17 @@
                 }
             }
         </div>
-    </div>
-    <div class="form-group">
-        <label for="LockoutEnabled" class="control-label col-md-2">Activo:</label>
-        <div class="col-md-10">
-            @Html.CheckBox("LockoutEnabled", null, new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-    </div>
+    </div>    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Editar</button>
+            <button type="submit" class="btn btn-default">@Localizer["EditCMD"]</button>
         </div>
     </div>
 </form>
 
 
 <div>
-    @Html.ActionLink("Volver a la lista", "Index")
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
 </div>
 
 @section Scripts {

@@ -1,104 +1,144 @@
 ﻿@{
-    ViewData["Title"] = "Datos";
+    ViewData["Title"] = Localizer["Title"];
     ViewData["Meta_Description"] = "Descarga de información sobre pronóstico (predicción) climático y agroclimático en Colombia.";
     ViewData["Meta_Keywords"] = "pronóstico,clima,predicción,tiempo,precipitación,radiación solar,brillo solar,temperatura,temperatura máxima,temperatura mínima,historial climático,histórico climático,climatología,cultivos,producción,rendimiento,días a cosecha";
 }
 
-<!-- Start global variables -->
-<input type="hidden" id="api_fs" name="api_fs" value="@ViewBag.api_fs" />
-<!-- End global variables -->
 
-<!-- Start Description -->
-@Html.Partial("_SubMenu")
 <div id="containerBlock">
-    @Html.Partial("_SocialMedia")
-    <section id="description" class="col-md-12" ng-controller="ExpertCtrl">
-        <article class="row section-content">
-            <h3>
-                {{db_selected.title}}
-            </h3>
-            <p class="text-justify">
-                El diccionario de datos le permitirá conocer el significado de las variables que obtiene al descargar la información. 
-                El diccionario de datos lo puede descargar del siguiente <a href="#" target="_blank">link</a>.
-            </p>
-            <p class="text-justify">
-                {{db_selected.description}}
-            </p>
-            <!-- Start Filter agronomic cultivar and soils -->
-            <div class="form-group" ng-show="show_agronomic">
-                <label class="col-lg-3 control-label" for="cmd_agronomic_source">
-                    Tipo de busqueda:
-                </label>
-                <div class="col-lg-9">
-                    <label class="radio-inline">
-                        <input type="radio" ng-model="agronomic_source" value="true" ng-click="load_agronomic()" checked>Cultivares
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" ng-model="agronomic_source" value="false" ng-click="load_agronomic()">Suelos
-                    </label>
+    @foreach (var w in ViewBag.words)
+    {
+        <section class="col-md-12 sections">
+            <article class="row section-content borderBox">
+                <div class="col-lg-12 blockTitle closed" data-toggle="collapse" onclick="update_data('@w')" data-target="#@w">
+                    <label class="cultivar_name">@Localizer[w + "_Title"]</label>
                 </div>
-            </div>
-            <!-- End Filter agronomic cultivar and soils -->
-            <!-- Start Filter geographic -->
-            <div class="form-horizontal" ng-show="show_geographic">
-                <div class="form-group">
-                    <label class="col-lg-2 control-label" for="states">Departamentos:</label>
-                    <div class="col-lg-2">
-                        <select class="form-control" id="states" ng-model="state" ng-options="s.name for s in data_m" ng-click="update_geographic(db_selected.section)" required></select>
-                    </div>
-                    <label class="col-lg-2 control-label" for="municipalities">Municipios:</label>
-                    <div class="col-lg-2">
-                        <select class="form-control col-lg-2" id="municipalities" ng-model="municipality" ng-options="m.name for m in state.municipalities" ng-click="update_geographic(db_selected.section)" required></select>
-                    </div>
-                    <label class="col-lg-2 control-label" for="ws">Estaciones climáticas:</label>
-                    <div class="col-lg-2">
-                        <select class="form-control col-lg-2" id="ws" ng-model="ws" ng-options="ws.name for ws in municipality.weather_stations" ng-click="update_geographic(db_selected.section)" required></select>
+                <div class="collapse" id="@w">
+                    <p class="text-justify">@Localizer[w + "_Description"]</p>
+
+                    @if (w == "agronomic")
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label" for="cmd_agronomic_source">
+                                @Localizer["SearchType"]
+                            </label>
+                            <div class="col-lg-2">
+                                <select id="cbo_agronomic" class="form-control" onchange="update_data('@w')">
+                                    <option value="true">@Localizer["Cultivar"]</option>
+                                    <option value="false">@Localizer["Soils"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    }
+
+                    @if (w == "climate_forecast")
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label" for="cbo_probabilities">
+                                @Localizer["SearchType"]
+                            </label>
+                            <div class="col-lg-2">
+                                <select id="cbo_probabilities" class="form-control" onchange="update_data('@w')">
+                                    <option value="true">@Localizer["Probabilities"]</option>
+                                    <option value="false">@Localizer["Scenarios"]</option>
+                                </select>
+                            </div>
+                        </div>
+                    }
+
+                    @if (w == "yield_historical")
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label" for="cbo_probabilities">
+                                @Localizer["Years"]
+                            </label>
+                            <div class="col-lg-2">
+                                <input type="number" id="txt_years" class="form-control" onchange="update_data('@w')" value="1980" />
+                            </div>
+                        </div>
+                    }
+
+                    @if (w != "geographic" && w != "agronomic")
+                    {
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label" for="cbo_ws_@w">
+                                @Localizer["Location"]:
+                            </label>
+                            <div class="col-lg-5">
+                                <select id="cbo_ws_@w" name="cbo_ws_@w" onchange="update_data('@w')" class="form-control" style="width:100%;">
+                                    <option value=""></option>
+                                    @foreach (var ws in (w == "climatology" || w == "climate_historical" || w == "climate_forecast" ? ViewBag.WeatherStations : ViewBag.WeatherStationsCrops))
+                                    {
+                                        <option value="@ws.Id">@ws.State, @ws.Municipality, @ws.Name </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-10 text-left">
+                                <p>
+                                    <a id="url_@w" href="" target="_blank"></a>
+                                </p>
+                            </label>
+                            <div class="col-lg-2 pull-right">
+                                <a role="button" class="btn btn-success" id="csv_@w" href="" target="_blank">Descargar CSV</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- End Filter geographic -->
-            <!-- Start Probabilities -->
-            <div class="form-group" ng-show="show_probabilities">
-                <label class="col-lg-3 control-label" for="cmd_agronomic_source">
-                    Tipo de busqueda:
-                </label>
-                <div class="col-lg-9">
-                    <label class="radio-inline">
-                        <input type="radio" ng-model="probabilities" value="true" ng-click="load_climate_forecast()" checked>Probabilidades
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" ng-model="probabilities" value="false" ng-click="load_climate_forecast()">Escenarios climáticos
-                    </label>
-                </div>
-            </div>
-            <!-- End Probabilities -->
-            <!-- Start Filter year -->
-            <div class="form-horizontal" ng-show="show_years">
-                <div class="form-group">
-                    <label class="col-lg-2 control-label" for="states">Año:</label>
-                    <div class="col-lg-2">
-                        <select class="form-control" id="states" ng-model="year_selected" ng-options="y for y in data_h_years" ng-change="update_yield_year()" required></select>
-                    </div>
-                </div>
-            </div>
-            <!-- End Filter year -->
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-lg-10 text-left">
-                        <p>
-                            <a href="{{url_json}}" target="_blank">{{url_json}}</a>
-                        </p>
-                    </label>
-                    <div class="col-lg-2 pull-right">
-                            <a role="button" class="btn btn-success" ng-click="getData(url_csv)">Descargar CSV</a>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </section>
+            </article>
+        </section>
+    }
+
 </div>
 
 
 @section Scripts {
-    <script src="~/js/controllers/expert_ctr.js"></script>
+    <script type="text/javascript">
+    var root = @Html.Raw(Json.Serialize(ViewBag.Root));
+
+    function transform_cbo() {
+        var vars = ["climatology", "climate_historical", "climate_forecast", "yield_historical", "yield_forecast"];
+        var cbo = [];
+        for (var i = 0; i < vars.length; i++) {
+            cbo.push($('#cbo_ws_' + vars[i]).select2({ placeholder: '' }));
+        }
+
+    }
+
+    transform_cbo();
+
+    function update_data(m) {
+        var url = get_url(m) ;
+
+        $("#url_" + m).attr("href", url+ "json");
+        $("#url_" + m).html(url+ "json");
+
+        $("#csv_" + m).attr("href", url+ "csv");
+    }
+    function get_url(m) {
+        var url = root;
+        if (m === "geographic")
+            url = url + "Geographic/";
+        else if (m === "agronomic")
+            url = url + "Agronomic/" + $("#cbo_agronomic").val() + "/";
+        else if (m === "climatology")
+            url = url + "Historical/Climatology/" + $('#cbo_ws_' + m).val() + "/";
+        else if (m === "climate_historical")
+            url = url + "Historical/HistoricalClimatic/" + $('#cbo_ws_' + m).val() + "/";
+        else if (m === "climate_forecast")
+            url = url + "Forecast/Climate/" + $('#cbo_ws_' + m).val() + "/" + $('#cbo_probabilities').val() + "/";
+        else if (m === "yield_historical")
+            url = url + "Historical/HistoricalYield/" + $('#cbo_ws_' + m).val() + "/" + $('#txt_years').val() + "/";
+        else if (m === "yield_forecast")
+            url = url + "Forecast/Yield/" + $('#cbo_ws_' + m).val() + "/";
+        return url;
+    }
+
+        window.loading_screen.finish();
+    </script>
+
 }

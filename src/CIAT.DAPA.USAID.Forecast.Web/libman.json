@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@2.2.3",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [ "jquery.min.js" ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@3.3.6",
+      "destination": "wwwroot/lib/bootstrap/"      
+    },
+    {
+      "library": "d3@3.5.9",
+      "destination": "wwwroot/lib/d3/",
+      "files": [ "d3.min.js" ]
+    },
+    {
+      "library": "nvd3@1.8.6",
+      "destination": "wwwroot/lib/nvd3/",
+      "files": [ "nv.d3.min.js", "nv.d3.min.css", "nv.d3.min.js.map" ]
+    },
+    {
+      "library": "select2@4.0.10",
+      "destination": "wwwroot/lib/select2/",
+      "files": [ "css/select2.min.css", "js/select2.full.min.js" ]
+    },
+    {
+      "library": "leaflet@1.5.1",
+      "destination": "wwwroot/lib/leaflet/"
+    }
+
+  ]
+}

@@ -1,8 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Identity.MongoDB
+@using CIAT.DAPA.USAID.Forecast.Data.Models
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IOptions<RequestLocalizationOptions> LocOptions
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -12,7 +18,7 @@
                 <a asp-controller="Account" asp-action="Manage">@UserManager.GetUserName(User)</a>
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Cerrar sesión</button>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">@Localizer["UserSignout"]</button>
             </li>
         </ul>
     </form>
@@ -20,6 +26,30 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Iniciar sesión</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">@Localizer["UserSignin"]</a></li>
     </ul>
 }
+<ul class="nav navbar-nav navbar-right">
+    @{
+        var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+        var cultureItems = LocOptions.Value.SupportedUICultures
+            .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+            .ToList();
+        var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    }
+    <li class="dropdown">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_language" role="button" aria-haspopup="true" aria-expanded="true">@requestCulture.RequestCulture.UICulture.Name.ToUpper().Substring(0, 2) <span class="caret"></span></a>
+        <ul class="drop_language dropdown-menu" aria-labelledby="drop_language">
+            @foreach (var s in cultureItems)
+            {
+                <li style="padding:5px 15px;">
+                    <form id="selectLanguage_@s.Value" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
+                          method="post" class="form-horizontal" role="form">
+                        <input type="hidden" name="culture" id="culture" value="@s.Value" />
+                        <a onclick="$('#selectLanguage_@s.Value').submit();">@s.Value.ToUpper().Substring(0, 2)</a>
+                    </form>
+                </li>
+            }
+        </ul>
+    </li>
+</ul>

@@ -40,7 +40,7 @@
     #containerBlock {
         float: left;
         background-color: #eee;
-        padding: 6px 6px;
+        padding: 9px 9px;
         width: 100%;
         margin: 60px 0 50px 0;
         position: relative;
@@ -60,6 +60,10 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    #map {
+        height: 600px;
+    }
+
     /*p a {
         font-size: 0.8em;
     }*/
@@ -75,8 +79,8 @@
     #containerBlock {
         float: left;
         background-color: #eee;
-        padding: 6px 6px;
-        width: 78%;
+        padding: 9px 9px;
+        width: 100%;
         margin: 10px 0 50px 0;
         position: relative;
     }
@@ -93,6 +97,10 @@
         background-color: #fff;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+    #map {
+        height: 600px;
+    }
 }
 
 @media (min-width: 1400px) {
@@ -105,8 +113,8 @@
     #containerBlock {
         float: left;
         background-color: #eee;
-        padding: 15px 30px;
-        width: 82%;
+        padding: 9px 9px;
+        width: 100%;
         margin: 10px 0 50px 0;
         position: relative;
     }
@@ -124,6 +132,10 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    #map {
+        height: 600px;
+    }
+
     /*p a {
         font-size: 1em;
     }*/
@@ -134,26 +146,6 @@
 }
 
 /* Social Media */
-.sharedLink {
-    position: absolute;
-    z-index: 99;
-    cursor: pointer;
-}
-
-.facebook {
-    background-color: white;
-    border-radius: 4px;
-    right: 0px;
-    top: -30px;
-}
-
-.twitter {
-    background-color: #1da1f2;
-    border-radius: 4px;
-    right: 40px;
-    top: -30px;
-}
-
 .help {
     background-color: white;
     border-radius: 4px;
@@ -387,86 +379,33 @@ footer img {
 
 .icon_loading {
     width: 30px;
-    height: 30px;
-    display: none;
+    height: 30px;    
 }
 
-/* Axis Charts */
-
-.x_axis_ticks .domain, .x_axis .domain, .y_axis_ticks .domain {
-    display: none;
+/* Plots */
+.plot_pie svg {
+    width: 100%;
+    height: 400px;
 }
 
-.y_axis path, .y_axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
+.plot_climatology svg {
+    width: 100%;
+    height: 400px;
 }
 
-.x_axis_ticks .tick line, .y_axis_ticks .tick line {
-    fill: none;
-    stroke: #b3b3b3;
-    stroke-width: 1;
-    stroke-dasharray: 2, 2;
+.plot_historical svg {
+    width: 100%;
+    height: 400px;
 }
 
-/* Helper class for the graphics */
-.bar_prec, .line_area_area_prec, .line_area_circle_prec {
-    fill: #6bb7c7;
+.plot_yield_bars svg {
+    width: 100%;
+    height: 265px;
 }
 
-.bar_t_max, .line_area_area_t_max, .line_area_circle_t_max {
-    fill: #c76b6b;
-}
-
-.bar_t_min, .line_area_area_t_min, .line_area_circle_t_min {
-    fill: #c7c76b;
-}
-
-.bar_sol_rad, .line_area_area_sol_rad, .line_area_circle_sol_rad {
-    fill: #c7966b;
-}
-
-/* Climate Pie */
-.pie_upper {
-    fill: #6bb7c7;
-}
-
-.pie_lower {
-    fill: #d79d91;
-}
-
-.pie_normal {
-    fill: #92d892;
-}
-
-.pie_center_inner_circle {
-    fill: #fff;
-}
-
-.pie_center_outer_circle {
-    fill: rgba(255, 255, 255, 0.75);
-}
-
-.pie_center_text_high {
-    font-size: 22px;
-}
-
-.pie_center_text_small {
-    font-size: 10px;
-}
-
-/* Bars */
-.bar_climatology path {
-    stroke: #000;
-}
-
-    .bar_climatology path:hover {
-        opacity: 0.9;
-    }
-
-.bar_climatology rect:hover {
-    opacity: 0.8;
+.plot_variation svg {
+    width: 100%;
+    height: 400px;
 }
 
 /* Line */

@@ -1,5 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Meta_Description"] = "Predicción y datos históricos del clima en ";
+    ViewData["Meta_Keywords"] = "pronóstico,predicción,clima,precipitación,radiación solar,temperatura,temperatura máxima,temperatura mínima,histórico climático,climatología," + ViewBag.s + "," + ViewBag.m + "," + ViewBag.w;
 }
 
-<h1>Home</h1>
+
+<div id="containerBlock">
+    <section class="col-md-12 sections">
+        <div class="row section-content">
+            <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
+            <p class="text-justify">
+                @Localizer["Description"]
+            </p>
+            <div id="map">
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/map/map.js"></script>
+    <script type="text/javascript">
+        var models = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
+        var crops = @Html.Raw(Json.Serialize(ViewBag.WeatherStationsCrops));
+        plot_map('map', models, crops);
+        window.loading_screen.finish();
+    </script>
+}

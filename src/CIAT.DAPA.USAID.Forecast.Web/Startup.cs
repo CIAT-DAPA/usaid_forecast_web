@@ -8,12 +8,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace CIAT.DAPA.USAID.Forecast.Web
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -23,8 +28,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web
 
             if (env.IsDevelopment())
             {
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
             }
             Configuration = builder.Build();
         }
@@ -34,8 +37,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
 
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
@@ -43,30 +44,55 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                 options.api_fs = Configuration.GetSection("API_Forecast:api_fs").Value;
             });
 
-            services.AddMvc();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder);
+
+            // Configure supported cultures and localization options
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                string[] languages = Configuration.GetSection("Languages").Value.Split(",");
+                //string[] languages = new string[] { "en-US","es-CO" };
+
+                CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
+                for (int i = 0; i < languages.Length; i++)
+                {
+                    supportedCultures[i] = new CultureInfo(languages[i]);
+                }
+
+                // State what the default culture for your application is. This will be used if no specific culture
+                // can be determined for a given request.
+                options.DefaultRequestCulture = new RequestCulture(culture: languages[0], uiCulture: languages[0]);
+
+                // You must explicitly state which cultures your application supports.
+                // These are the cultures the app supports for formatting numbers, dates, etc.
+                options.SupportedCultures = supportedCultures;
+
+                // These are the cultures the app supports for UI strings, i.e. we have localized resources for.
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {

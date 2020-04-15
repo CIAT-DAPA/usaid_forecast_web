@@ -99,5 +99,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Access Token Secret of the twitter
         /// </summary>
         public string Social_Network_Twitter_AccessTokenSecret { get; set; }
+        /// <summary>
+        /// Set or get if it should add one day for crop forecast
+        /// </summary>
+        public bool Add_Day { get; set; }
     }
 }
