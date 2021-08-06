@@ -160,7 +160,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note that the month shown corresponds to the central month of the forecasted quarter. For example: if the month is March, the quarter that was used for the prediction was February-March-April. the climatic prediction is given in percentage of probability with respect to the normal range of precipitation of a place and a specific month. In the part below, you will be able to find the normal range of precipitation for a selected municipality and the month of the prediction..
+        ///   Looks up a localized string similar to The climate prediction is given in percentage of probability with respect to the normal range of precipitation of an area and a specific quarter. Below, you can find the most probable category for the selected municipality and the forecast quarter..
         /// </summary>
         public static string ForecastExplanation {
             get {
@@ -250,7 +250,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For.
+        ///   Looks up a localized string similar to For the quarter.
         /// </summary>
         public static string ForecastSummaryMonth {
             get {
@@ -268,7 +268,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The weather forecast could be more likely.
+        ///   Looks up a localized string similar to the climate forecast suggests that precipitation is most likely.
         /// </summary>
         public static string ForecastSummaryResult {
             get {
@@ -286,7 +286,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weather forecast.
+        ///   Looks up a localized string similar to Climate forecast.
         /// </summary>
         public static string ForecastTitle {
             get {

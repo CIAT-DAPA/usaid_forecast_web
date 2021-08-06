@@ -117,142 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ClimatologyTitle" xml:space="preserve">
-    <value>Monthly historical average of</value>
+  <data name="CropMaize" xml:space="preserve">
+    <value>በቆሎ</value>
   </data>
-  <data name="ForecastAbove" xml:space="preserve">
-    <value>above normal</value>
+  <data name="CropRice" xml:space="preserve">
+    <value>ሩዝ</value>
   </data>
-  <data name="ForecastBelow" xml:space="preserve">
-    <value>below normal</value>
+  <data name="Help" xml:space="preserve">
+    <value>እገዛ</value>
   </data>
-  <data name="ForecastExplanation" xml:space="preserve">
-    <value>The climate prediction is given in percentage of probability with respect to the normal range of precipitation of an area and a specific quarter. Below, you can find the most probable category for the selected municipality and the forecast quarter.</value>
+  <data name="OtherAbout" xml:space="preserve">
+    <value>ስለ እኛ</value>
   </data>
-  <data name="ForecastMunicipality" xml:space="preserve">
-    <value>The weather forecast is presented, for the city</value>
+  <data name="OtherDatabase" xml:space="preserve">
+    <value>ምረጃ ቋት</value>
   </data>
-  <data name="ForecastNormal" xml:space="preserve">
-    <value>inside normal</value>
+  <data name="OtherGlosary" xml:space="preserve">
+    <value>የቃላት መፍቻ</value>
   </data>
-  <data name="ForecastPeriod" xml:space="preserve">
-    <value>for the period between</value>
+  <data name="Search" xml:space="preserve">
+    <value>ይፈልጉ</value>
   </data>
-  <data name="ForecastProbabilitiesTitle" xml:space="preserve">
-    <value>Precipitation probabilities (%)</value>
-  </data>
-  <data name="ForecastSummaryMonth" xml:space="preserve">
-    <value>For the quarter</value>
-  </data>
-  <data name="ForecastSummaryNormal" xml:space="preserve">
-    <value>normal precipitation is between</value>
-  </data>
-  <data name="ForecastSummaryResult" xml:space="preserve">
-    <value>the climate forecast suggests that precipitation is most likely</value>
-  </data>
-  <data name="ForecastSummaryWS" xml:space="preserve">
-    <value>In the municipality</value>
-  </data>
-  <data name="ForecastTitle" xml:space="preserve">
-    <value>Climate forecast</value>
-  </data>
-  <data name="ForecastWS" xml:space="preserve">
-    <value>The reference weather station to make this predictions was</value>
-  </data>
-  <data name="ForecastWSProvider" xml:space="preserve">
-    <value>provided by</value>
-  </data>
-  <data name="Months" xml:space="preserve">
-    <value>January,February,March,April,May,June,July,August,September,October,November,December</value>
-  </data>
-  <data name="prec" xml:space="preserve">
-    <value>Precipitation</value>
-  </data>
-  <data name="sol_rad" xml:space="preserve">
-    <value>Solar radiation</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Weather</value>
-  </data>
-  <data name="t_max" xml:space="preserve">
-    <value>Maximum temperature</value>
-  </data>
-  <data name="t_min" xml:space="preserve">
-    <value>Minimum temperature</value>
-  </data>
-  <data name="ForecastScenarioAvg" xml:space="preserve">
-    <value>Average</value>
-  </data>
-  <data name="ForecastScenarioDate" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="ForecastScenarioMaximun" xml:space="preserve">
-    <value>Maximun</value>
-  </data>
-  <data name="ForecastScenarioMinimun" xml:space="preserve">
-    <value>Minimun</value>
-  </data>
-  <data name="ForecastScenarioTitle" xml:space="preserve">
-    <value>Prediction scenarios</value>
-  </data>
-  <data name="prec_unit" xml:space="preserve">
-    <value>mm</value>
-  </data>
-  <data name="sol_rad_unit" xml:space="preserve">
-    <value>cal/cm²d</value>
-  </data>
-  <data name="t_max_unit" xml:space="preserve">
-    <value>°C</value>
-  </data>
-  <data name="t_min_unit" xml:space="preserve">
-    <value>°C</value>
-  </data>
-  <data name="ClimatologyContentEnd" xml:space="preserve">
-    <value>shows us that</value>
-  </data>
-  <data name="ClimatologyContentStart" xml:space="preserve">
-    <value>The climatology for</value>
-  </data>
-  <data name="ClimatologyContentWS" xml:space="preserve">
-    <value>in the weather station</value>
-  </data>
-  <data name="ClimatologyDescriptionEnd" xml:space="preserve">
-    <value>average of the last 30 years for each month</value>
-  </data>
-  <data name="ClimatologyDescriptionStart" xml:space="preserve">
-    <value>These plot shows</value>
-  </data>
-  <data name="t" xml:space="preserve">
-    <value>Maximun and minimun temperatures</value>
-  </data>
-  <data name="ClimatologyXAxis" xml:space="preserve">
-    <value>Month</value>
-  </data>
-  <data name="ClimatologyIndicatorHighest" xml:space="preserve">
-    <value>Month with highest value is</value>
-  </data>
-  <data name="HistoricalContentEnd" xml:space="preserve">
-    <value>it presents the following behavior</value>
-  </data>
-  <data name="HistoricalContentStart" xml:space="preserve">
-    <value>Historically in the municipality of</value>
-  </data>
-  <data name="HistoricalDescriptionEnd" xml:space="preserve">
-    <value>You can filter the month of interest by clicking on the category</value>
-  </data>
-  <data name="HistoricalDescriptionStart" xml:space="preserve">
-    <value>This plot shows the historical values of</value>
-  </data>
-  <data name="HistoricalPlotXAxis" xml:space="preserve">
-    <value>Year</value>
-  </data>
-  <data name="HistoricalTitle" xml:space="preserve">
-    <value>Monthly historical behavior of</value>
-  </data>
-  <data name="ClimatologyIndicatorLowest" xml:space="preserve">
-    <value>Month with lowest value is</value>
-  </data>
-  <data name="HistoricalContentMid" xml:space="preserve">
-    <value>in the weather station</value>
+  <data name="Weather" xml:space="preserve">
+    <value>የአየር ሁኔታ</value>
   </data>
 </root>

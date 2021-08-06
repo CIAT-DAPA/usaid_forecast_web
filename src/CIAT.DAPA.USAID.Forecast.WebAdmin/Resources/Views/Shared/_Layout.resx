@@ -145,7 +145,7 @@
     <value>Import</value>
   </data>
   <data name="MenuMain" xml:space="preserve">
-    <value>Agroclimatic forecasting platform</value>
+    <value>WebAdmin</value>
   </data>
   <data name="MenuMunicipalities" xml:space="preserve">
     <value>Municipalities</value>

@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="agronomic_Description" xml:space="preserve">
+    <value>ይህ የመረጃ ቋት የሰብል መድረኩ ላይ የቀረቡት ትንበያዎችን እና ታሪካዊ ውሂብን በተመለከተ መረጃ ይዘዋል ፡፡ በእያንዳንዱ ሰብልና ዝርያዎች ላይ ያለውን መረጃ በመምረጥ ማግኘት ይችላሉ ወይም በተቃራኒው ለእያንዳንዳቸው የአፈር አወቃቀር ማግኘት ይችላሉ ፡፡</value>
+  </data>
+  <data name="agronomic_Title" xml:space="preserve">
+    <value>አግሮኖሚክ መረጃ</value>
+  </data>
+  <data name="climate_forecast_Description" xml:space="preserve">
+    <value>ይህ የመረጃ ቋት ለተለያዩ ጂኦግራፊያዊ አካባቢዎች የተደረገው የቅርብ ጊዜ የአየር ሁኔታ ትንበያ ላይ ውጤትን ይይሉ ፡፡ የእያንዳንዱ የአየር ሁኔታ ወቅት የዝናብ እድሎች በመደበኛነት ይሰጣሉ ፣ ማለትም ከመደበኛ ክልል በታች ወይም ከዛ በላይ ከሆነ። እንዲሁም በመረጡት መሠረት የአየር ንብረት ሁኔታ ሁኔታዎችን ማውረድም ይችላሉ ፡፡ የ 6 ወር ትንበያ ትንበያ መከሴት  ቁጥር, ከብዙዎች በታች ወይም በታች ፣ ዝቅተኛ ፣ ዝቅተኛ የሙቀት እና የፀሐይ ጨረር እሴቶችን በመደበኛ እና የዝናብ የአየር ላይ የዋጋ እሴቶችን እሴት ማውረድ ይችላሉ-። ይህ መረጃ የተመረጠውን ማዘጋጃ ቤት መረጃን ለማመንጨት የሚያገለግል እያንዳንዱ ጣቢያ ሊወርድ ይችላል።</value>
+  </data>
+  <data name="climate_forecast_Title" xml:space="preserve">
+    <value>የአየር ሁኔታ ትንበያ</value>
+  </data>
+  <data name="climate_historical_Description" xml:space="preserve">
+    <value>የአየር ሁኔታ ትንበያዎችን ለመስራት የሚያገለግል ለእያንዳንዱ የአየር ሁኔታ ጣቢያ ወርሃዊ የታሪካዊ መረጃ ማግኘት ይችላሉ ፡፡ እንደ ከፍተኛ እና ዝቅተኛ የሙቀት መጠን ፣ እርጥበት እና የፀሐይ ጨረር ካሉ ከተለዋዋጮች ውሂብ በየወሩ ለተወሰነ ጊዜ ማግኘት ይቻላል። ለተመረጠው ማዘጋጃ ቤት መረጃን ለማመንጨት ከተጠቀሙበት ጣቢያ ለፀሐይ ጨረር ፣ ከፍተኛውን የሙቀት መጠን እና አነስተኛውን የሙቀት መጠን ለ 1980 ወሮች ማውረድ ይችላሉ ፡፡</value>
+  </data>
+  <data name="climate_historical_Title" xml:space="preserve">
+    <value>ታሪካዊ የአየር ንብረት</value>
+  </data>
+  <data name="climatology_Description" xml:space="preserve">
+    <value>በዚህ የመረጃ ቋት ውስጥ በአየር ሁኔታ ላይ ከእያንዳንዱ የአየር ሁኔታ ጣቢያ የተጣራ ውሂብን ማግኘት ይችላሉ ፡፡ እንደ ከፍተኛ እና ዝቅተኛ የሙቀት መጠን ፣ እርጥበት ፣ የፀሐይ ጨረር ካሉ ከተለዋዋጮች መካከል መረጃን ማግኘት ይቻላል ፡፡ በጂዮግራፊያዊ የውሂብ ክፍል ውስጥ ከተገኘው መረጃ ጋር ግንኙነት መመስረት ይችላሉ ፡፡ የተመረጠውን ማዘጋጃ ቤት መረጃን ለማመንጨት ስራ ላይ የዋለውን የጣቢያውን ታሪካዊ አማካይ የአየር ንብረት አማካይ ወርሃዊ አማካይ (ከፍተኛ ፣ ዝቅተኛ የሙቀት መጠን ፣ እርጥበት ፣ የፀሐይ ጨረር) ማውረድ ይችላሉ።</value>
+  </data>
+  <data name="climatology_Title" xml:space="preserve">
+    <value>የአየር ንብረት ጥናት</value>
+  </data>
+  <data name="Cultivar" xml:space="preserve">
+    <value>የተለያዩ ሰብሎች</value>
+  </data>
+  <data name="geographic_Description" xml:space="preserve">
+    <value>ይህ የመረጃ ቋት በመድረኩ ላይ የቀረቡ ትንበያዎች እና ታሪካዊ መረጃዎች የሚገኙትን በክፍለ-ግዛቶች ፣ በማዘጋጃ ቤቶች እና የአየር ሁኔታ ጣቢያዎች ላይ መረጃ ይ containsል ፡፡ ከዚህ ትግበራ ከሌሎች የውሂብ ጎታዎች ጋር ግንኙነቶችን መመስረት ያስፈልጋል ፡፡</value>
+  </data>
+  <data name="geographic_Title" xml:space="preserve">
+    <value>ጂዮግራፊያዊ መረጃ</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>የአየር ሁኔታ ጣቢያዎች</value>
+  </data>
+  <data name="Probabilities" xml:space="preserve">
+    <value>ሊሆኑ የሚችሉ ነገሮች እድሎች</value>
+  </data>
+  <data name="Scenarios" xml:space="preserve">
+    <value>ትዕይንቶች</value>
+  </data>
+  <data name="SearchType" xml:space="preserve">
+    <value>ፍለጋ ይተይቡ</value>
+  </data>
+  <data name="Soil" xml:space="preserve">
+    <value>አፈር</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>የመረጃ ቋቶች</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>አመት</value>
+  </data>
+  <data name="yield_forecast_Description" xml:space="preserve">
+    <value>ይህ የመረጃ ቋት የቅርብ ጊዜ agroclimatic ትንበያ መረጃ አለው። ይህ በአየር ንብረት ጣቢያዎች የተደራጀውን የምርት መረጃ ፣ የአፈሩ እና የአፈርን ይዘት ይ containsል። ስታቲስቲክስ በተለያዩ የአየር ንብረት ሁኔታዎች ውስጥ የተተከለው የሰብል አምሳያ ውጤት ነው። - የተዘበራረቀውን ዋጋ ለእዚህ ማውረድ ይችላሉ-የሰብል ፣ የተከማቸ ዝናብ ፣ ከፍተኛ የተከማቸ የሙቀት መጠን ፣ አነስተኛ የተከማቸ የሙቀት መጠን ፣ ባዮሚሽ እና የዘሩ ቀን ለመከር ቀናት። ለእያንዳንዳቸው እነዚህ የአየር ሁኔታ ምክንያቶች አማካይ ፣ ከፍተኛ ፣ ዝቅተኛ እሴት ፣ መደበኛ መዛባት እና የ 95% እና 5% የትምርት ክፍተቶች ያገኛሉ። እነዚህ መረጃዎች ለሁሉም የተተነበዩ ቀናት እና ለተመረጡት ዞኖች መረጃን ለማመንጨት ለሚጠቀሙባቸው ጣቢያዎች ሁሉ ቀርበዋል ፡፡</value>
+  </data>
+  <data name="yield_forecast_Title" xml:space="preserve">
+    <value>የሰብሎች ምርት ትንበያ</value>
+  </data>
+  <data name="yield_historical_Description" xml:space="preserve">
+    <value>ይህ የመረጃ ቋት በሀገሪቱ የተለያዩ ወረዳዎች ውስጥ የሚገኙ የተለያዩ ሰብሎች የምርታማነት ውጤት ውጤት ይይዛል፡፡</value>
+  </data>
+  <data name="yield_historical_Title" xml:space="preserve">
+    <value>የምርት ታሪክ</value>
+  </data>
+</root>

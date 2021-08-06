@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Import;
 using System.IO;
+using System.Globalization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -103,7 +104,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                                         month = int.Parse(values[1]),
                                         ext_id = search == 1 ? patterns[i - 2] : string.Empty,
                                         name = search == 2 ? patterns[i - 2] : string.Empty,
-                                        value = double.Parse(values[i])
+                                        value = double.Parse(values[i], CultureInfo.InvariantCulture)
                                     });
                             }
                         }
@@ -242,7 +243,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                                         month = int.Parse(values[1]),
                                         ext_id = search == 1 ? patterns[i - 2] : string.Empty,
                                         name = search == 2 ? patterns[i - 2] : string.Empty,
-                                        value = double.Parse(values[i])
+                                        value = double.Parse(values[i], CultureInfo.InvariantCulture)
                                     });
                             }
                         }
@@ -370,19 +371,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                                         start = DateTime.SpecifyKind(DateTime.Parse(values[3]), DateTimeKind.Utc),
                                         end = DateTime.SpecifyKind(DateTime.Parse(values[4]), DateTimeKind.Utc),
                                         measure = (MeasureYield)Enum.Parse(typeof(MeasureYield), values[5]),
-                                        median = double.Parse(values[6]),
-                                        avg = double.Parse(values[7]),
-                                        min = double.Parse(values[8]),
-                                        max = double.Parse(values[9]),
-                                        quar_1 = double.Parse(values[10]),
-                                        quar_2 = double.Parse(values[11]),
-                                        quar_3 = double.Parse(values[12]),
-                                        conf_lower = double.Parse(values[13]),
-                                        conf_upper = double.Parse(values[14]),
-                                        sd = double.Parse(values[15]),
-                                        perc_5 = double.Parse(values[16]),
-                                        perc_95 = double.Parse(values[17]),
-                                        coef_var = double.Parse(values[18])
+                                        median = double.Parse(values[6],CultureInfo.InvariantCulture),
+                                        avg = double.Parse(values[7], CultureInfo.InvariantCulture),
+                                        min = double.Parse(values[8], CultureInfo.InvariantCulture),
+                                        max = double.Parse(values[9], CultureInfo.InvariantCulture),
+                                        quar_1 = double.Parse(values[10], CultureInfo.InvariantCulture),
+                                        quar_2 = double.Parse(values[11], CultureInfo.InvariantCulture),
+                                        quar_3 = double.Parse(values[12], CultureInfo.InvariantCulture),
+                                        conf_lower = double.Parse(values[13], CultureInfo.InvariantCulture),
+                                        conf_upper = double.Parse(values[14], CultureInfo.InvariantCulture),
+                                        sd = double.Parse(values[15], CultureInfo.InvariantCulture),
+                                        perc_5 = double.Parse(values[16], CultureInfo.InvariantCulture),
+                                        perc_95 = double.Parse(values[17], CultureInfo.InvariantCulture),
+                                        coef_var = double.Parse(values[18], CultureInfo.InvariantCulture)
                                     });
                                 }
                                 catch (Exception ex){

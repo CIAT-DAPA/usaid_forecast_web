@@ -81,7 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin
                 identityOptions.Password.RequireNonAlphanumeric = true;
                 identityOptions.Password.RequireDigit = true;
                 identityOptions.User.RequireUniqueEmail = true;                
-                identityOptions.SignIn.RequireConfirmedEmail = true;
+                //identityOptions.SignIn.RequireConfirmedEmail = true;
                 //identityOptions
             }, mongoIdentityOptions => {
                 mongoIdentityOptions.ConnectionString = Configuration.GetSection("ForecastConnection:ConnectionString").Value;

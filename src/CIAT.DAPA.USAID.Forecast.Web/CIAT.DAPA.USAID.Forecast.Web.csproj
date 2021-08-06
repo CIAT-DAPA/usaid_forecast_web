@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
-    <Exec Command="bower install" />
+    
     <Exec Command="dotnet bundle" />
   </Target>
 
@@ -73,7 +73,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\Views\Clima\Index.es.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator></Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Clima\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

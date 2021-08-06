@@ -66,10 +66,10 @@
                                             </div>
                                             <p class="text-justify article_content">
                                                 @Localizer["ForecastSummaryMonth"]
-                                                <span class="text-bold">@months_names[month2 - 1]</span>
+                                                <span class="text-bold">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</span>
                                                 @Localizer["ForecastSummaryWS"]
                                                 <span class="text-bold">@ViewBag.m</span>
-                                                @Localizer["ForecastSummaryNormal"] <span class="text-bold">@climatology_month.Data.FirstOrDefault(o => o.Measure == "prec_ter_1").Value.ToString("F0") @Localizer["prec_unit"] - @climatology_month.Data.FirstOrDefault(o => o.Measure == "prec_ter_2").Value.ToString("F0") @Localizer["prec_unit"]</span>,
+                                                <!-- @Localizer["ForecastSummaryNormal"] <span class="text-bold">@climatology_month.Data.FirstOrDefault(o => o.Measure == "prec_ter_1").Value.ToString("F0") @Localizer["prec_unit"] - @climatology_month.Data.FirstOrDefault(o => o.Measure == "prec_ter_2").Value.ToString("F0") @Localizer["prec_unit"]</span>, -->
                                                 @Localizer["ForecastSummaryResult"] <span class="text-bold">@Localizer[summary]</span>.
                                             </p>
                                         </div>

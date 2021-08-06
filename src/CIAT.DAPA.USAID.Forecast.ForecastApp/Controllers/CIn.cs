@@ -46,8 +46,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             Console.WriteLine("Created forecast " + forecast.id.ToString());
             // Load probabilities
             Console.WriteLine("Getting probabilities and performance");
-            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES);
-            var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_PROBABILITIES);
+            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
+            var f_probabilities = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
             // Get the probabilities file
             List<ImportProbability> probabilities = new List<ImportProbability>();
             string fp = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PROBABILITY));
@@ -179,9 +179,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             // Get folder of the scenarios
             List<ImportScenario> scenarios = new List<ImportScenario>();
             Console.WriteLine("Searching scenarios");
-            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS);
+            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_SCENARIOS);
             // Get a list of files of the scenarios 
-            var d_f_scenario = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_SCENARIOS).Where(p => !p.Contains("scenario")).OrderBy(p => p);
+            var d_f_scenario = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_SCENARIOS).Where(p => !p.Contains("scenario")).OrderBy(p => p);
             // This cicle goes through of the scenarios (max, min, avg)
             foreach (var s in Enum.GetNames(typeof(ScenarioName)))
             {
@@ -195,7 +195,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     {
                         Console.WriteLine("Getting scenario: " + s + " measure: " + me);
                         Console.WriteLine(fs);
-                        var ws_fs = fs.Split('\\')[fs.Split('\\').Length - 1].Substring(0, 24);
+                        var ws_fs = fs.Split(Path.DirectorySeparatorChar)[fs.Split(Path.DirectorySeparatorChar).Length - 1].Substring(0, 24);
                         Console.WriteLine(ws_fs);
                         // Reading the file
                         using (file = File.OpenText(fs))
@@ -262,11 +262,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             // Load yield data
             Console.WriteLine("Copying raster");
-            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_RASTER_SOURCE);
+            Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_RASTER_SOURCE);
             if (Directory.Exists(Program.settings.In_PATH_FS_RASTER_DESTINATION))
             {
-                string raster_d = Program.settings.In_PATH_FS_RASTER_DESTINATION + @"\" + forecast.id.ToString();
-                DirectoryHelper.DirectoryCopy(path + Program.settings.In_PATH_FS_CLIMATE + @"\" + Program.settings.In_PATH_FS_RASTER_SOURCE, raster_d, true);
+                string raster_d = Program.settings.In_PATH_FS_RASTER_DESTINATION + Path.DirectorySeparatorChar + forecast.id.ToString();
+                DirectoryHelper.DirectoryCopy(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_RASTER_SOURCE, raster_d, true);
             }
             else
                 Console.WriteLine("Folder to save the raster files doesn't exist: " + Program.settings.In_PATH_FS_RASTER_DESTINATION);
