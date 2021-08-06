@@ -33,7 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 Program.settings = new Settings()
                 {
                     splitted = ',',
-                    ConnectionString = conf["ConnectionString"],
+                    ConnectionString = conf["DBConnection"],
                     Database = conf["Database"],
                     Out_PATH_FS_FILES = conf["Out_PATH_FS_FILES"],
                     Out_PATH_STATES = conf["Out_PATH_STATES"],
@@ -74,6 +74,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
             {
                 if (Program.searchParameter(args, "-test") == 0)
                 {
+                    Console.WriteLine("Connection: " + Program.settings.ConnectionString + "\nDatabase: " + Program.settings.Database);
                     await (new ForecastDB(Program.settings.ConnectionString, Program.settings.Database)).testConnectionAsync();
                 }
                 else if (Program.searchParameter(args, "-share") == 0)

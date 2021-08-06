@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="bio_acu_Description" xml:space="preserve">
+    <value>የተከማቸ ባዮማስ</value>
+  </data>
+  <data name="bio_acu_unit" xml:space="preserve">
+    <value>ሚሜ</value>
+  </data>
+  <data name="CropMaize" xml:space="preserve">
+    <value>በቆሎ</value>
+  </data>
+  <data name="CropRice" xml:space="preserve">
+    <value>ሩዝ</value>
+  </data>
+  <data name="date_unit" xml:space="preserve">
+    <value>ቀን</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>ማክሰኞ,  ረቡዕ, ሐሙስ, አርብ, ቅዳሜ , እሑድ , ሰኞ</value>
+  </data>
+  <data name="DescriptionPart1" xml:space="preserve">
+    <value>ለዞን</value>
+  </data>
+  <data name="DescriptionPart2" xml:space="preserve">
+    <value>የግብርና ሚትዮሮሎጂ ግብዓት ትንበያ አስቀድሞ ቀርቧል</value>
+  </data>
+  <data name="DescriptionPart3" xml:space="preserve">
+    <value>እምቅ ምርት</value>
+  </data>
+  <data name="DescriptionPart4" xml:space="preserve">
+    <value>በሚተክልበት ቀን ላይ</value>
+  </data>
+  <data name="DescriptionPart5" xml:space="preserve">
+    <value>ለተስተካከሉ ዝርያዎች</value>
+  </data>
+  <data name="DescriptionPart6" xml:space="preserve">
+    <value>ለመገመት መረጃውን የሚሰጥ የአየር ሁኔታ ጣቢያ ነው</value>
+  </data>
+  <data name="DescriptionPart7" xml:space="preserve">
+    <value>የቀረበው በ</value>
+  </data>
+  <data name="DescriptionPart8" xml:space="preserve">
+    <value>ለመትከል የተለያዩ ዝርያዎችን ከመምረጥዎ በፊት የሁሉም ሰብሎች አፈፃፀም ይመልከቱ</value>
+  </data>
+  <data name="DescriptionTitle" xml:space="preserve">
+    <value>የአግሮክላይማቲክ የሰብል ትንበያ</value>
+  </data>
+  <data name="d_dry_Description" xml:space="preserve">
+    <value>መድረቂያ ቀናት</value>
+  </data>
+  <data name="d_dry_unit" xml:space="preserve">
+    <value>እለት</value>
+  </data>
+  <data name="d_har_Description" xml:space="preserve">
+    <value>የመሰብሰቢያ ቀናት</value>
+  </data>
+  <data name="d_har_unit" xml:space="preserve">
+    <value>እለት</value>
+  </data>
+  <data name="ForecastCultivarBarsText" xml:space="preserve">
+    <value>በሚተከለው ምስል ብተለያዩ የመዝሪያ ቀናቶች  መሠረት አማካኝ የምርት መጠን ማየት ይችላሉ</value>
+  </data>
+  <data name="ForecastCultivarBarsTitle" xml:space="preserve">
+    <value>አማካይ እምቅ የምርት መጠን </value>
+  </data>
+  <data name="ForecastCultivarDateText1" xml:space="preserve">
+    <value>ከፍተኛውን አማካይ እምቅ የምርት መጠን ለማግኘት</value>
+  </data>
+  <data name="ForecastCultivarDateText2" xml:space="preserve">
+    <value>በመሰብሰቢያ ወቅት ፣ በጣም አመቺው ተከላ ቀን ነው</value>
+  </data>
+  <data name="ForecastCultivarDateTitle" xml:space="preserve">
+    <value>የመዝሪያ ወቅት</value>
+  </data>
+  <data name="ForecastCultivarPart1" xml:space="preserve">
+    <value>የአግሮክላይማቲክ የሰብል ትንበያ</value>
+  </data>
+  <data name="ForecastCultivarPart2" xml:space="preserve">
+    <value>ዝናብ መዝነብ</value>
+  </data>
+  <data name="ForecastCultivarPart3" xml:space="preserve">
+    <value>ሊገኝ የሚችለውን ምርት ለማስላት እባክዎን ለመትከል የታቀደው የአፈርን አይነት ይምረጡ</value>
+  </data>
+  <data name="ForecastCultivarRangesDescription" xml:space="preserve">
+    <value>በሚቀጥሉት ምስሎት የሚገኘውን የሰብል ዘርያዎች የምርት መጠን በደረጃዎች ይመደባል። ቀለሞቹ በባለሙያዎች በተገለፀው ልኬት መሠረት የምርቱን ደረጃ ያሳያል ፡፡ የምድቦች ቀለም ምን ያህል እንደሆነ ይወክላል</value>
+  </data>
+  <data name="ForecastExceedanceDescription" xml:space="preserve">
+    <value>በሚቀጥሉት ምስሎት ውስጥ አማካይ የምርት መጠንን በማስገባት ሊገኝ ማግኘት የሚቻልባቸውን የምርት ዕድሎች ግምት ማየት ይችላሉ</value>
+  </data>
+  <data name="ForecastExceedanceTitle" xml:space="preserve">
+    <value>የመጠን ዕድሎች</value>
+  </data>
+  <data name="ForecastSubtitle" xml:space="preserve">
+    <value>በሚዘራበት ቀን መሠረት ሊኖር የሚችል ውጤት</value>
+  </data>
+  <data name="ForecastVariationDescription" xml:space="preserve">
+    <value>ይህ ምስል የተለያዩ የአየር ንብረት ሁኔታዎችን በማስላት በመዝሪያ ቀናቶች መሠረት ሊኖረው የሚችለውን እምቅ የምርት መጠን ግምትን ያሳያል ፡፡ ጥቁር መስመሩ ለእያንዳንዱ የመትከያል ቀናቶች አማካኝ እምቅ የምርት መጠን እምቅ አቅም ሲአያሳይ (በቀን መቁጠሪያው ውስጥ ካለው ምሰል ጋር ይዛመዳል) ፣ ጥቁር አረንጓዴው መስመሩ  ከ 95% confidence interval (ከፍ ያለ ዕድል) ጋር ይዛመዳል እና የብርሃን አረንጓዴው መስመር ከከፍታዎቹ ጋር ይዛመዳል (ዝቅተኛ እድል) በእያንዳንዱ ቀን ከሚጠበቀው እምቅ የምርት መጠ አቅም ጋር</value>
+  </data>
+  <data name="ForecastVariationTitle" xml:space="preserve">
+    <value>የትንበያ በራስ መተማመን ደረጃ</value>
+  </data>
+  <data name="HistoricalDescription" xml:space="preserve">
+    <value>ከዚህ በታች የተገለፀው የታሪካዊ መረጃ የሰብል ሞዴል በመጠቀም ለእያንዳንዱ ቀበሌዎች ከታሪካዊ መረጃዎች ጋር የተቀናጀ ውጤት ነው ፡፡ ምርቶቹ በዝርያ ምደባቸው መሠረት አማካይ (ብሄራዊ ወይም ከውጭ)(national or imported) ፡፡</value>
+  </data>
+  <data name="HistoricalTitle" xml:space="preserve">
+    <value>ታሪካዊ ምርት</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>ጥር,የካቲት,መጋቢት,ሚያዝያ,ግንቦት,ሰኔ,ሐምሌ,ነሐሴ,መስከረም,ጥቅምት,ኅዳር,ታኅሣሥ</value>
+  </data>
+  <data name="planting_date_Description" xml:space="preserve">
+    <value>የመዝሪያ ቅን</value>
+  </data>
+  <data name="planting_date_unit" xml:space="preserve">
+    <value>የአመቱ ቀን</value>
+  </data>
+  <data name="prec_acu_Description" xml:space="preserve">
+    <value>የተከማቸ ዝናብ</value>
+  </data>
+  <data name="prec_acu_unit" xml:space="preserve">
+    <value>ሚሜ</value>
+  </data>
+  <data name="probability_unit" xml:space="preserve">
+    <value>እድል (%)</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>ይፈልጉ</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>ሰብል</value>
+  </data>
+  <data name="TypeCultivar" xml:space="preserve">
+    <value>የዝርያ ዓይነት</value>
+  </data>
+  <data name="TypeCultivarImported" xml:space="preserve">
+    <value>ከሀገር ውጭ የገባ</value>
+  </data>
+  <data name="TypeCultivarNational" xml:space="preserve">
+    <value>ብሔራዊ</value>
+  </data>
+  <data name="t_max_acu_Description" xml:space="preserve">
+    <value>ከፍተኛ የተከማቸ የሙቀት መጠን</value>
+  </data>
+  <data name="t_max_acu_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="t_min_acu_Description" xml:space="preserve">
+    <value>ዝቅተኛ የተከማቸ የሙቀት መጠን</value>
+  </data>
+  <data name="t_min_acu_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>አመት</value>
+  </data>
+  <data name="yield_0_Description" xml:space="preserve">
+    <value>የምርት መጠን በ 0% ሞቃት እርጥበት</value>
+  </data>
+  <data name="yield_0_unit" xml:space="preserve">
+    <value>ኪግ/ሄክታር</value>
+  </data>
+  <data name="yield_14_Description" xml:space="preserve">
+    <value>የምርት መጠን በ 14% ሞቃት እርጥበት</value>
+  </data>
+  <data name="yield_14_unit" xml:space="preserve">
+    <value>ኪግ/ሄክታር</value>
+  </data>
+  <data name="yield_Description" xml:space="preserve">
+    <value>ምርት</value>
+  </data>
+  <data name="yield_unit" xml:space="preserve">
+    <value>ኪግ/ሄክታር</value>
+  </data>
+</root>

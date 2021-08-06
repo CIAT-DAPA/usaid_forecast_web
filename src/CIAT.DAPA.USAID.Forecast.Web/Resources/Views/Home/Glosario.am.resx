@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="bio_acu_Description" xml:space="preserve">
+    <value>የእፅዋቱ ሁሉም አካላት የተከማቸ የክብደት መጠን</value>
+  </data>
+  <data name="bio_acu_Title" xml:space="preserve">
+    <value>የተከማቸ ባዮማስ</value>
+  </data>
+  <data name="climate_Description" xml:space="preserve">
+    <value>የአየር ሁኔታ ትንበያ ሞዴሎች ለጥናቱ እና የአየር ንብረት ተለዋዋጭነትን ለመተንበይ አስፈላጊ መሣሪያዎች ናቸው ፡፡ በዝናብ ላይ የ 6 ወር ወቅታዊ የአየር ሁኔታ ትንበያ ከአየር ንብረት ስርዓት ተለዋዋጭ አካላት ሁኔታ ጋር ያላቸውን ቁርኝት በመለየት እና ከእነሱ ጋር ያላቸውን ቁርኝት መሠረት በማድረግ በስታቲስቲካዊ ሞዴል የተሰራ ነው ፡፡ የውቅያኖስ-የከባቢ አየር ተለዋዋጮች ይህ ምርት ሊከሰት ከሚችለው ባህሪ አንፃር ለመጠቆም ጠቃሚ ነው ፣ ነገር ግን በተወሰኑ የአገሪቱ አካባቢዎች ሊከናወኑ የሚችሉ የተወሰኑ እና የአጭር-ጊዜ መጥፎ ክስተቶች አለመኖራቸውን ግልፅ ማድረጉ አስፈላጊ ነው ፡፡ የችግታው ትንበያ እንደ መቶኛ ተገል isል እናም በሶስት ምድቦች ውስጥ የሚከሰተውን የዝናብ መጠን ቅልጥፍናን ይወክላል። &lt;ul&gt;</value>
+  </data>
+  <data name="climate_Title" xml:space="preserve">
+    <value>የአየር ሁኔታ ትንበያ</value>
+  </data>
+  <data name="conf_int_Description" xml:space="preserve">
+    <value>በአግሮክላይሜ ትንበያ ሁኔታ ላይ ፣ በመተማመን መካከል ያለው የጊዜ ልዩነት ከእውነታው ክልል ጋር ይዛመዳል (ለምሳሌ ከ 5 ኪ.ግ / ሄክታር እና ከ 6 ኪ.ግ. / ሄክታር) መካከል ትንበያው ትክክለኛ ስለመሆኑ እርግጠኛ የሆነ (በእርግጠኝነት የሚከሰት)</value>
+  </data>
+  <data name="conf_int_Title" xml:space="preserve">
+    <value>Confidence interval</value>
+  </data>
+  <data name="d_dry_Description" xml:space="preserve">
+    <value>ከፊዚዮሎጂ ብስለት እስከ የምርት መሰብሰቢያ ድረስ ቀናት ውስጥ የሚለካ ጊዜ</value>
+  </data>
+  <data name="d_dry_Title" xml:space="preserve">
+    <value>የመድረቂያ ቀናት</value>
+  </data>
+  <data name="d_har_Description" xml:space="preserve">
+    <value>ምርት መሰብሰቢያ ቀናት ዘሩ በሚዘራበት መካከል ካለው ቀናት እስከ እህል የሚሰበሰበበት ጊዜ ድረስ  ያለው የቀን ብዛት ጋር ይዛመዳል። ለምሳሌ ፣ ከ 100 እስከ 150 ቀናት ባለው የበቆሎ እርሻ ላይ በሚዘራበት እና በሚሰበሰብበት መካከል ይሰላሉ። ይህ መረጃ የመሰብሰቢያ ጊዜውን ለማስላት ያስችላል ፡፡ በagro-climatic ወይም በዝናብ ትንበያ ወቅት እምቅ ምርቱ ከመዝራት ቀን ጀምሮ እስከ የሚሰበሰብበት ጊዜ ድረስ መደበኛ ቀንን በመቁጠር ነው</value>
+  </data>
+  <data name="d_har_Title" xml:space="preserve">
+    <value>የመሰብሰቢያ ቀናት</value>
+  </data>
+  <data name="eva_Description" xml:space="preserve">
+    <value>የአየር እርጥበት መስፋፋት እና ከሚበቅሉ እጽዋት የውሃ መስኖ የተነሳ ወደ ከባቢ አየር ከሚመለሰው የአፈር ውሃ መጠን ጋር ይዛመዳል። ኢቫፖትራፒፕሽን በቀን (ሚሊ / ቀን) የሚለካ እና በአንድ ሰብል ውስጥ የመስኖ ፍላጎትን ለማስላት የሚያገለግል ነው። የአየር ንብረት ለውጥ (የሰብል የውሃ ፍላጎት ተብሎም ይጠራል) በጂዮግራፊያዊ አከባቢ ባለው የአየር ንብረት ሁኔታ ላይ የተመሠረተ ነው</value>
+  </data>
+  <data name="eva_Title" xml:space="preserve">
+    <value>ኢቫፖርስትሪፕሽን</value>
+  </data>
+  <data name="prec_acu_Description" xml:space="preserve">
+    <value>በየቀኑ የሚደመር የዝናብ መጠን ፣ ይህ በወር ፣ በየሰሚስተር ወይም በዓመት ቢመጣ ጠቃሚ ሊሆን ይችላል</value>
+  </data>
+  <data name="prec_acu_Title" xml:space="preserve">
+    <value>የተከማቸ ዝናብ</value>
+  </data>
+  <data name="prec_Description" xml:space="preserve">
+    <value>እርጥበቱ በአፈሩ መሬት ላይ ከወደቀው የውሃ መጠን (ዝናብ ፣ በረዶ) ጋር ይዛመዳል። በ 24 ሰዓታት ውስጥ በዝናብ መለኪያ ውስጥ የተሰበሰበውን አጠቃላይ ውሃ በመጠቀም በ ሚሊሜትር (1 ሚሜ እኩል 1 ካሬ ሜትር በአንድ ካሬ ሜትር) ይለካሉ ፡፡ ዕለታዊ መጠኖች በወር እና በዓመት ውስጥ ይጨመራሉ ፣ ስለሆነም በአንድ አካባቢ ውስጥ ከበርካታ ዓመታት (በአጠቃላይ ከ 30 ዓመት በላይ) የተገኘውን አማካይ የዝናብ መጠን (ዝናብ ፣ በረዶ) የሚወስነው አማካይ መጠን በየወሩ እና በየዓመቱ ይታከላል።</value>
+  </data>
+  <data name="prec_Title" xml:space="preserve">
+    <value>እርጥበት</value>
+  </data>
+  <data name="sol_rad_Description" xml:space="preserve">
+    <value>ፎቶሲንተሲስ ለማከናወን የፀሐይ ጨረር በእጽዋት ይጠቀማል። የመጨረሻው የሰብል ምርት (እንደ አጠቃላይ ደረቅ ነገር ይገለጻል) በከፊል የተወሰነው በእጽዋቱ የመጠጥ ደረጃ ላይ ነው። ከፍተኛ የፎቶሲንተሲስ እና ከፍተኛ ውጤት ለማግኘት የብርሃን ጣልቃ ገብነትን ከፍ ለማድረግ አስፈላጊ ነው</value>
+  </data>
+  <data name="sol_rad_Title" xml:space="preserve">
+    <value>የፀሐይ ጨረር</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>የቃላት መፍቻ</value>
+  </data>
+  <data name="t_max_acu_Description" xml:space="preserve">
+    <value>የሙቀት መጠኑ ፣ ከፍተኛ መጠን ያላቸውን  በዲግሪዎ ሴንትግሬድ  ሲለካ ፣ ከርካታ ቀናት ወይም ወራቶች</value>
+  </data>
+  <data name="t_max_acu_Title" xml:space="preserve">
+    <value>ከፍተኛ የተከማቸ የሙቀት መጠን</value>
+  </data>
+  <data name="t_max_Description" xml:space="preserve">
+    <value>የሙቀት መጠኑ በሜትሮሜትሮች የተመዘገበ ሲሆን በዲግሪዎች ሴንቲግሬድ ውስጥ ይለካሉ። ስለዚህ ከፍተኛው የሙቀት መጠን በተወሰነ የጊዜ ልዩነት የተመዘገበው ከፍተኛው እሴት (ከፍተኛው ሙቀት) ነው ፡፡ በአንድ ቀን ውስጥ አብዛኛውን ጊዜ እኩለ ቀን ጋር ይዛመዳል</value>
+  </data>
+  <data name="t_max_Title" xml:space="preserve">
+    <value>ከፍተኛ የሙቀት መጠን</value>
+  </data>
+  <data name="t_min_acu_Description" xml:space="preserve">
+    <value>የሙቀት መጠን ፣ በትንሽ ቀናት ውስጥ ፣ በበርካታ ቀናት ወይም በወራት ውስጥ በዲግሪዎች ሲለካ</value>
+  </data>
+  <data name="t_min_acu_Title" xml:space="preserve">
+    <value>አነስተኛ የተከማቸ የሙቀት መጠን</value>
+  </data>
+  <data name="t_min_Description" xml:space="preserve">
+    <value>የሙቀት መጠኑ በሜትሮሜትሮች የተመዘገበ ሲሆን በዲግሪዎች ሴንቲግሬድ ውስጥ ይለካሉ። ስለዚህ ዝቅተኛው የሙቀት መጠን በተወሰነ የጊዜ ልዩነት ውስጥ ከተመዘገበው ዝቅተኛ እሴት ጋር ይዛመዳል። በቀን ውስጥ ብዙውን ጊዜ ከጠዋቱ ሰዓታት ጋር ይዛመዳል</value>
+  </data>
+  <data name="t_min_Title" xml:space="preserve">
+    <value>አነስተኛ የሙቀት መጠን</value>
+  </data>
+  <data name="yield_Description" xml:space="preserve">
+    <value>ምርቱ ከሚሰበሰብ ሰብል አጠቃላይ ምርት ጋር ይዛመዳል እናም ብዙውን ጊዜ በሄክታር በ ቶን ይለካል (T.M./ha.)። ምንም እንኳን ሌሎች አካባቢያዊ ሁኔታዎች ተመሳሳይ ቢሆኑም ተመሳሳይ ዝርያዎች ከአንድ ጂዮግራፊያዊ ቦታ ወደ ሌላ የተለያዩ የአየር ንብረት ሁኔታዎችን በማመንጨት የተለያዩ ምርቶችን ማመንጨት ይችላሉ ፡፡ ሆኖም በተመሳሳይ የአየር ሁኔታ ሁኔታዎች ምርቱ በአፈሩ ባህሪዎች ወይም በተሰጠ አስተዳደር መሠረት ሊለያይ ይችላል</value>
+  </data>
+  <data name="yield_pot_Description" xml:space="preserve">
+    <value>የተለያዩ ዝርያዎች፣ ዲቃላ ዝርያዎች በጥሩ ሁኔታ ውስጥ ሊያወጡ የሚችሉት ከፍተኛ መጠን</value>
+  </data>
+  <data name="yield_pot_Title" xml:space="preserve">
+    <value>ሊሰበሰብ የሚችል ምርት</value>
+  </data>
+  <data name="yield_Title" xml:space="preserve">
+    <value>ምርት</value>
+  </data>
+</root>

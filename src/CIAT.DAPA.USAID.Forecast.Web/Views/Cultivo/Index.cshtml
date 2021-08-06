@@ -252,7 +252,7 @@
         me = me.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         var m_list = measures[me];
         // Sorting parameters
-        ranges = ranges.sort(function (item) { return item.lower });
+        ranges = ranges.sort(function (itemx,itemy) { return itemx.lower > itemy.lower });
         ranges = merge_ranges_colors(ranges, colors);
 
         function update_forecast(cu, so) {

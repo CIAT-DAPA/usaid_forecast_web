@@ -48,8 +48,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var s in states)
             {
                 Console.WriteLine("Creating " + s.name);
-                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString()))
-                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString());
+                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
+                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString());
                 csv = new StringBuilder();
                 var weather_stations = await db.weatherStation.listEnableByStateAsync(s.id);
 
@@ -93,7 +93,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     }
                 }
                 // Create the physical file                
-                string file_name = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\stations" + ".csv";
+                string file_name = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "stations" + ".csv";
                 if (File.Exists(file_name))
                     File.Delete(file_name);
                 File.WriteAllText(file_name, header + "\n" + csv.ToString());
@@ -117,7 +117,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Exporting files ws: " + ws.name);
                 var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                 if (f != null)
-                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + COut.getExtension(f.path), true);
+                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
                 else
                     Console.WriteLine("File not found");
             }
@@ -140,7 +140,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 StringBuilder coords = new StringBuilder();
                 coords.Append("lat,lon\n");
                 coords.Append(ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
-                File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + @"\" + ws.id.ToString() + "_coords.csv", coords.ToString());
+                File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + "_coords.csv", coords.ToString());
             }
             return true;
         }
@@ -158,14 +158,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var cp in crops)
             {
                 Console.WriteLine("Exporting " + cp.name);
-                string dir_crop = path + Program.settings.Out_PATH_FS_FILES + @"\" + Tools.folderCropName(cp.name);
+                string dir_crop = path + Program.settings.Out_PATH_FS_FILES + Path.DirectorySeparatorChar + Tools.folderCropName(cp.name);
                 Directory.CreateDirectory(dir_crop);
                 foreach (var st in cp.setup.Where(p => p.track.enable))
                 {
-                    string dir_setup = dir_crop + @"\" + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
+                    string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
                     Directory.CreateDirectory(dir_setup);
                     foreach (var f in st.conf_files)
-                        File.Copy(f.path, dir_setup + @"\" + f.name + COut.getExtension(f.path), true);
+                        File.Copy(f.path, dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
                     // Add csv file with geolocation for rice crop only
                     if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
                     {
@@ -175,7 +175,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         coords.Append("lat," + ws.latitude.ToString() + "\n");
                         coords.Append("long," + ws.longitude.ToString() + "\n");
                         coords.Append("elev," + ws.elevation.ToString() + "\n");
-                        File.WriteAllText(dir_setup + @"\" + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
+                        File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
                     }
                 }
             }
@@ -201,8 +201,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             foreach (var s in states_ctp)
             {
                 Console.WriteLine("Creating " + s.name);
-                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString()))
-                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString());
+                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
+                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString());
 
                 // the cpt configuration 
                 header_cpt = new StringBuilder("var,");
@@ -249,7 +249,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     }
                 }
                 // Create the physical file cpt
-                string file_name_cpt = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\cpt" + ".csv";
+                string file_name_cpt = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "cpt" + ".csv";
                 if (File.Exists(file_name_cpt))
                     File.Delete(file_name_cpt);
                 File.WriteAllText(file_name_cpt, header_cpt.ToString().Substring(0, header_cpt.ToString().Length - 1) + "\n" +
@@ -259,7 +259,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     gamma.ToString().Substring(0, gamma.ToString().Length - 1));
 
                 // Create the physical file regions
-                string file_name_regions = path + Program.settings.Out_PATH_STATES + @"\" + s.id.ToString() + @"\areas" + ".csv";
+                string file_name_regions = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "areas" + ".csv";
                 if (File.Exists(file_name_regions))
                     File.Delete(file_name_regions);
                 File.WriteAllText(file_name_regions, header_areas.ToString().Substring(0, header_areas.ToString().Length - 1) + "\n" +
@@ -293,7 +293,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             Console.WriteLine("Exporting users");
             foreach (var usr in users)
                 line.Append(usr["Email"].ToString() + "\n");
-            File.WriteAllText(path + Program.settings.Out_PATH_USERS + @"\notify.csv", line.ToString());
+            File.WriteAllText(path + Program.settings.Out_PATH_USERS + Path.DirectorySeparatorChar + "notify.csv", line.ToString());
             return true;
         }
 
