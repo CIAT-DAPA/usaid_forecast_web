@@ -13,7 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities
     {
         public string id { get; set; }
         public string name { get; set; }
-        public string country { get; set; }
+        public CountryEntity country { get; set; }
         public List<MunicipalityEntity> municipalities { get; set; }
     }
 }

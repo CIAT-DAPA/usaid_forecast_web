@@ -42,14 +42,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 MunicipalityEntity geo_m;
                 foreach (var s in states)
                 {
-                    geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = s.country.name, municipalities = new List<MunicipalityEntity>() };
+                    geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { iso2 =  s.country.iso2, name = s.country.name }, municipalities = new List<MunicipalityEntity>() };
                     foreach (var m in municipalities.Where(p => p.state == s.id))
                     {
                         geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
                         foreach (var w in weatherstations.Where(p => p.municipality == m.id))
                             geo_m.weather_stations.Add(new WeatherStationEntity()
-                            {
-                                id = w.id.ToString(),
+                            {                                
+                                id = w.id.ToString(),                                
                                 ext_id = w.ext_id,
                                 name = w.name,
                                 origin = w.origin,
@@ -78,11 +78,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 {
                     StringBuilder builder = new StringBuilder();
                     // add header
-                    builder.Append(string.Join<string>(delimiter, new string[] { "country_name", "state_id", "state_name", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "\n" }));
+                    builder.Append(string.Join<string>(delimiter, new string[] { "country_name","country_iso2", "state_id", "state_name", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "\n" }));
                     foreach (var s in json)
                         foreach (var m in s.municipalities)
                             foreach (var w in m.weather_stations)
-                                builder.Append(string.Join<string>(delimiter, new string[] { s.country, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, "\n" }));
+                                builder.Append(string.Join<string>(delimiter, new string[] { s.country.name, s.country.iso2, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, "\n" }));
                     var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
                     return File(file, "text/csv", "geographic.csv");
                 }
@@ -146,7 +146,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         // This cicle is to get all states where is located the crop
                         foreach (var s in st_result)
                         {
-                            geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = s.country.name, municipalities = new List<MunicipalityEntity>() };
+                            geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { iso2 = s.country.iso2, name = s.country.name }, municipalities = new List<MunicipalityEntity>() };
                             foreach (var m in mn_result.Where(p => p.state == s.id))
                             {
                                 geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
@@ -185,12 +185,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 {
                     StringBuilder builder = new StringBuilder();
                     // add header
-                    builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "country_name", "state_id", "state_name", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "\n" }));
+                    builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "country_name", "country_iso2", "state_id", "state_name", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "\n" }));
                     foreach (var c in json)
                         foreach (var s in c.states)
                             foreach (var m in s.municipalities)
                                 foreach (var w in m.weather_stations)
-                                    builder.Append(string.Join<string>(delimiter, new string[] { c.id, c.name, s.country, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, "\n" }));
+                                    builder.Append(string.Join<string>(delimiter, new string[] { c.id, c.name, s.country.name, s.country.iso2, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, "\n" }));
                     var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
                     return File(file, "text/csv", "geographic.csv");
                 }
