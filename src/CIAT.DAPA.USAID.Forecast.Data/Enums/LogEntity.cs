@@ -8,6 +8,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
     public enum LogEntity
     {
         /// <summary>
+        /// Countries' table
+        /// </summary>
+        lc_country,
+        /// <summary>
         /// States' table
         /// </summary>
         lc_state,
