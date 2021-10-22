@@ -94,5 +94,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 Builders<State>.Update.Set("conf", entity.conf));
             return result.ModifiedCount > 0;
         }
+        public async Task<List<State>> listAllAsync()
+        {
+            return await collection.Find("{}").ToListAsync<State>();
+        }
     }
 }

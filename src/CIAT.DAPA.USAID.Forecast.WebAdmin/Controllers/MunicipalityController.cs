@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.municipality.listEnableAsync();
-                ViewBag.states = await db.state.listEnableAsync();                
+                ViewBag.states = await db.state.listAllAsync();                
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -131,13 +131,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
-                await generateListStatesAsync(entity.state.ToString());
+                await generateAllListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                await generateListStatesAsync(entity.state.ToString());
+                await generateAllListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
         }
@@ -225,6 +225,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             var states = (await db.state.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
             if(string.IsNullOrEmpty(selected))
+                ViewData["state"] = new SelectList(states, "id", "name");
+            else
+                ViewData["state"] = new SelectList(states, "id", "name", selected);
+            return states.Count() > 0;
+        }
+        private async Task<bool> generateAllListStatesAsync(string selected)
+        {
+            var states = (await db.state.listAllAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
                 ViewData["state"] = new SelectList(states, "id", "name");
             else
                 ViewData["state"] = new SelectList(states, "id", "name", selected);

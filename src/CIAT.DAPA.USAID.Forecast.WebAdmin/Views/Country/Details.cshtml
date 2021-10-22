@@ -1,0 +1,54 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Country
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>@Localizer["Country"]</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="control-label">
+                @Localizer["CountryName"]
+            </label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["ISO2"]
+            </label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.iso2)
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["RegisterDate"]
+            </label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.track.register)
+        </dd>
+
+        <dt>
+            <label class="control-label">
+                @Localizer["UpdateDate"]
+            </label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.track.updated)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = Model.id }) |
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
+</p>

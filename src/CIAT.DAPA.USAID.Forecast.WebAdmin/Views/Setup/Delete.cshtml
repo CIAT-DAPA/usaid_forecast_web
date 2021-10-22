@@ -1,0 +1,83 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Setup
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>@Localizer["Message"]</h3>
+<div>
+    <h4>@Localizer["Setup"]</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="control-label">
+                @Localizer["ID"]
+            </label>
+        </dt>
+        <dd>
+            @Model.id.ToString()
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["Crop"]
+            </label>
+        </dt>
+        <dd>
+            @ViewBag.crop_name
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["Cultivar"]
+            </label>
+        </dt>
+        <dd>
+            @ViewBag.cultivar_name
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["Soil"]
+            </label>
+        </dt>
+        <dd>
+            @ViewBag.soil_name
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["WS"]
+            </label>
+        </dt>
+        <dd>
+            @ViewBag.ws_name
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["RegisterDate"]
+            </label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.track.register)
+        </dd>
+        <dt>
+            <label class="control-label">
+                @Localizer["UpdateDate"]
+            </label>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.track.updated)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-actions no-color">
+            <input type="submit" value="@Localizer["DeleteRecord"]" class="btn btn-default" /> |
+            @Html.ActionLink(Localizer["Back"].Value, "Index")
+        </div>
+    }
+</div>

@@ -92,7 +92,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                entity.setup = new List<Setup>();
+                //entity.setup = new List<Setup>();
                 if (ModelState.IsValid)
                 {
                     await db.crop.insertAsync(entity);
@@ -233,8 +233,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var cu = await db.cultivar.listEnableAsync();
                 var so = await db.soil.listEnableAsync();
                 List<CropSetup> entities = new List<CropSetup>();
-                foreach (var c in entity.setup)
-                    entities.Add(new CropSetup(c, ws, cu, so));
+                //foreach (var c in entity.setup)
+                //    entities.Add(new CropSetup(c, ws, cu, so));
                 // Fill the select list
                 ViewBag.weather_station = new SelectList(ws, "id", "name");
                 ViewBag.cultivar = new SelectList(cu.Where(p => p.crop == entity.id), "id", "name");
@@ -291,7 +291,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }
                 // Set the files to the setup entity
                 setup.conf_files = files;
-                await db.crop.addSetupAsync(entity_new, setup);
+                //await db.crop.addSetupAsync(entity_new, setup);
                 await writeEventAsync(id + " setup add: " + setup.weather_station.ToString() + "|" + setup.cultivar.ToString() + "|" + setup.soil.ToString() + "|" + setup.days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = id });
             }
@@ -312,7 +312,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Get original crop data
                 Crop entity_new = await db.crop.byIdAsync(crop);
                 // Delete the setup
-                await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
+                //await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
                 await writeEventAsync(crop + " setup del: " + ws + "|" + cu + "|" + so + "|" + days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = crop });
             }

@@ -28,10 +28,5 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
-        /// <summary>
-        /// Shows the trace of the changes that occurred in the entity
-        /// </summary>
-        [BsonRequired]
-        public IEnumerable<Setup> setup{ get; set; }
     }
 }

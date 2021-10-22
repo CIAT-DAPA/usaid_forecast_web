@@ -43,5 +43,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             await collection.InsertOneAsync(entity);
             return entity;
         }
+
+        public async Task<List<Country>> listAllAsync()
+        {
+            return await collection.Find("{}").ToListAsync<Country>();
+        }
+
     }
 }

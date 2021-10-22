@@ -24,6 +24,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         lc_weather_station,
         /// <summary>
+        /// Setup table
+        /// </summary>
+        cp_setup,
+        /// <summary>
         /// Crops' table
         /// </summary>
         cp_crop,

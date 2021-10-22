@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.State>
+﻿@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.State>
 @{
     ViewBag.Title = Localizer["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,7 +31,8 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.country.name)
+                @{ var s = ((List<Country>)ViewBag.countries).FirstOrDefault(p => p.id == item.country); }
+                @s.name
             </td>
             <td>
                 @item.id.ToString()

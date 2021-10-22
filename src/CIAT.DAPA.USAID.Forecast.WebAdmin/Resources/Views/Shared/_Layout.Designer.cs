@@ -88,6 +88,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string MenuCountry {
+            get {
+                return ResourceManager.GetString("MenuCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crops.
         /// </summary>
         public static string MenuCrops {
@@ -165,6 +174,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         public static string MenuProduction {
             get {
                 return ResourceManager.GetString("MenuProduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setups.
+        /// </summary>
+        public static string MenuSetups {
+            get {
+                return ResourceManager.GetString("MenuSetups", resourceCulture);
             }
         }
         

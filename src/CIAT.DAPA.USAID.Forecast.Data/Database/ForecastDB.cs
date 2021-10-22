@@ -105,6 +105,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// Get or set the source entity in the database
         /// </summary>
         public SourceFactory source { get; set; }
+        /// <summary>
+        /// Get or set the state entity in the database
+        /// </summary>
+        public CountryFactory country { get; set; }
+        /// <summary>
+        /// Get or set the setup entity in the database
+        /// </summary>
+        public SetupFactory setup { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -149,6 +157,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             user = new UserFactory(db);
             role = new RoleFactory(db);
             source = new SourceFactory(db);
+            country = new CountryFactory(db);
+            setup = new SetupFactory(db);
             // views
             views = new ViewsFactory(db);
         }

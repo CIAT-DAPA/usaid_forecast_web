@@ -44,7 +44,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 var list = await db.weatherStation.listEnableAsync();
-                ViewBag.municipalities = await db.municipality.listEnableAsync();
+                ViewBag.municipalities = await db.municipality.listAllAsync();
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -136,13 +136,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
-                await generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListAllMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                await generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListAllMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
         }
@@ -165,13 +165,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
-                await generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListAllMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                await generateListMunicipalitiesAsync(entity.municipality.ToString());
+                await generateListAllMunicipalitiesAsync(entity.municipality.ToString());
                 return View(entity);
             }
         }
@@ -400,6 +400,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         private async Task<bool> generateListMunicipalitiesAsync(string selected)
         {
             var municipalities = (await db.municipality.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
+                ViewData["municipality"] = new SelectList(municipalities, "id", "name");
+            else
+                ViewData["municipality"] = new SelectList(municipalities, "id", "name", selected);
+            return municipalities.Count() > 0;
+        }
+        private async Task<bool> generateListAllMunicipalitiesAsync(string selected)
+        {
+            var municipalities = (await db.municipality.listAllAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
             if (string.IsNullOrEmpty(selected))
                 ViewData["municipality"] = new SelectList(municipalities, "id", "name");
             else

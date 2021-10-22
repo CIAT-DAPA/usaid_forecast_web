@@ -1,4 +1,9 @@
-﻿body {
+﻿.img_delete_file {
+    width: 25px;
+    height: 25px;
+}
+
+body {
     
     padding-top: 50px;
     padding-bottom: 20px;

@@ -120,16 +120,28 @@
   <data name="Back" xml:space="preserve">
     <value>Volver a la lista</value>
   </data>
+  <data name="Country" xml:space="preserve">
+    <value>País</value>
+  </data>
   <data name="DeleteRecord" xml:space="preserve">
     <value>Eliminar</value>
   </data>
   <data name="Message" xml:space="preserve">
     <value>Está seguro que desea eliminar el registro?</value>
   </data>
+  <data name="RegisterDate" xml:space="preserve">
+    <value>Fecha de registro</value>
+  </data>
   <data name="State" xml:space="preserve">
     <value>Estado</value>
   </data>
+  <data name="StateName" xml:space="preserve">
+    <value>Nombre del estado</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Eliminar</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>Fecha de actualización</value>
   </data>
 </root>
