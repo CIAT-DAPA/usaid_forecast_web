@@ -57,6 +57,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
                             Station = w.Name,
                             Origin = w.Origin,
                             Ranges = w.Ranges,
+                            Country = s.Country.id,
                             State = s.Name,
                             Municipality = m.Name
                         });
@@ -90,6 +91,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
                                 Station = w.Name,
                                 Origin = w.Origin,
                                 Ranges = w.Ranges,
+                                Country = s.Country.id,
                                 State = s.Name,
                                 Municipality = m.Name,
                                 CropId = c.Id,
@@ -100,6 +102,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
             }
 
             return answer;
+        }
+        public async Task<List<Country>> ListCountryAsync()
+        {
+            var countries = await Client.GetCountryAsync();
+            var listCountries = countries.ToList();
+            return listCountries;
         }
     }
 }

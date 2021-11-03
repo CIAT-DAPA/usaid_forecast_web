@@ -24,7 +24,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
         }
 
-        public async Task<IActionResult> Index()
+        [Route("/{countryId?}")]
+        public async Task<IActionResult> Index(string countryId)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.Section = SectionSite.Climate;
 
                 // Setting data
-                SetWS();
+                SetWS(countryId);
 
                 return View();
             }

@@ -56,6 +56,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// </summary>
         private static readonly string Exceedance = "Forecast/YieldExceedance/";
         /// <summary>
+        /// Get or set the path to get country information 
+        /// </summary>
+        private static readonly string Country = "Country/";
+        /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="root"></param>
@@ -168,6 +172,16 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         {
             string json = await RequestDataAsync(Root + Exceedance + ws + "/" + Format);
             var answer = JsonConvert.DeserializeObject<ForecastYield>(json);
+            return answer;
+        }
+        /// <summary>
+        /// Method that list all countries from the forecast web api 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Country>> GetCountryAsync()
+        {
+            string json = await RequestDataAsync(Root + Country);
+            var answer = JsonConvert.DeserializeObject<IEnumerable<Country>>(json);
             return answer;
         }
     }

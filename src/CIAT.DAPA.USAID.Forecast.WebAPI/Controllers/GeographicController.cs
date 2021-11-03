@@ -33,6 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         {
             try
             {
+                var countries = await db.country.listEnableAsync();
                 var states = await db.state.listEnableAsync();
                 var municipalities = await db.municipality.listEnableVisibleAsync();
                 var weatherstations = await db.weatherStation.listEnableVisibleAsync();
@@ -42,7 +43,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 MunicipalityEntity geo_m;
                 foreach (var s in states)
                 {
-                    geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { iso2 =  s.country.iso2, name = s.country.name }, municipalities = new List<MunicipalityEntity>() };
+                    var countryinstate = countries.Where(p => p.id == s.country);
+                    var countryinstatelist = countryinstate.ToList();
+                    geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { id = countryinstatelist[0].id.ToString(), iso2 = countryinstatelist[0].iso2, name = countryinstatelist[0].name }, municipalities = new List<MunicipalityEntity>() };
                     foreach (var m in municipalities.Where(p => p.state == s.id))
                     {
                         geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
@@ -104,6 +107,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             try
             {
                 // Get data
+                var countries = await db.country.listEnableAsync();
                 var states = await db.state.listEnableAsync();
                 var municipalities = await db.municipality.listEnableVisibleAsync();
                 var weatherstations = await db.weatherStation.listEnableVisibleAsync();
@@ -146,7 +150,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         // This cicle is to get all states where is located the crop
                         foreach (var s in st_result)
                         {
-                            geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { iso2 = s.country.iso2, name = s.country.name }, municipalities = new List<MunicipalityEntity>() };
+                            geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { iso2 = "CO", name = "Colombia" }, municipalities = new List<MunicipalityEntity>() };
                             foreach (var m in mn_result.Where(p => p.state == s.id))
                             {
                                 geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };

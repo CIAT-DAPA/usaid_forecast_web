@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async Task<List<State>> listAllAsync()
         {
             return await collection.Find("{}").ToListAsync<State>();
+        }
+
+        public async Task<List<State>> listByCountryAsync()
+        {
+            var id = "6140ae5af88b8ef0235987f3";
+            var builder = Builders<State>.Filter;
+            var filter = builder.Eq("country", new ObjectId(id));
+            return await collection.Find(filter).ToListAsync<State>();
         }
     }
 }

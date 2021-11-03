@@ -23,6 +23,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
         protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
+        protected List<Country> Countries { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -76,6 +77,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         protected async Task<bool> InitAsync()
         {
             // laoding data
+            Countries = await rWS.ListCountryAsync();
             WeatherStations = await rWS.ListAsync();
             WeatherStationsCrops = await rWS.ListByCropAsync();
             return true;
@@ -84,11 +86,25 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <summary>
         /// Method that transfer data to viewbag
         /// </summary>
-        protected void SetWS()
+        protected void SetWS(string countryId = null)
         {
             // Setting data
-            ViewBag.WeatherStations = WeatherStations;
-            ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+            if (countryId == null || countryId == "")
+            {
+                ViewBag.countryselect = 1;
+                ViewBag.Countries = Countries;
+                ViewBag.WeatherStations = WeatherStations;
+                ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+            }
+            else
+            {
+                ViewBag.countryselect = countryId;
+                ViewBag.Countries = Countries;
+                WeatherStations = WeatherStations.Where(p => p.Country == countryId).ToList();
+                WeatherStationsCrops = WeatherStationsCrops.Where(p => p.Country == countryId).ToList();
+                ViewBag.WeatherStations = WeatherStations;
+                ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+            }
         }
 
         protected WeatherStationFull SearchWS(string state, string municipality, string ws)

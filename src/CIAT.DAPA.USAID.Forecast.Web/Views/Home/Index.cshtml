@@ -22,9 +22,10 @@
 @section Scripts {
     <script src="~/js/map/map.js"></script>
     <script type="text/javascript">
+        var country = @Html.Raw(Json.Serialize(ViewBag.countryselect));
         var models = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
         var crops = @Html.Raw(Json.Serialize(ViewBag.WeatherStationsCrops));
-        plot_map('map', models, crops);
+        plot_map('map', models, crops, country);
         window.loading_screen.finish();
     </script>
 }
