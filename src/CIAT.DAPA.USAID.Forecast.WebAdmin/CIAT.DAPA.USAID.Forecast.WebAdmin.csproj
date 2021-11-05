@@ -234,6 +234,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="Resources\Views\Setup\Details.Designer.cs">
+      <DependentUpon>Details.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Views\Setup\Edit.Designer.cs">
       <DependentUpon>Edit.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -529,6 +534,10 @@
     <EmbeddedResource Update="Resources\Views\Municipality\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Setup\Details.resx">
+      <LastGenOutput>Details.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Setup\Edit.resx">
       <LastGenOutput>Edit.Designer.cs</LastGenOutput>

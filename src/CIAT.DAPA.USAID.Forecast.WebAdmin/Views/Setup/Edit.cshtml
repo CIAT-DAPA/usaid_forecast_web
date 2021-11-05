@@ -63,7 +63,7 @@
                                 @foreach (var item in Model.conf_files.Select((value, i) => new { i, value }))
                                 {
                                 <li>
-                                    <a>@item.value.name</a>
+                                    @Html.ActionLink(@item.value.name, "Download", "Home", new { file = @item.value.path.Split('\\').Last(), type = 1 }, new { target = "_blank" })
                                     <button type="button" id="delete_file_@item.i" value="" title="Delete file" class="btn btn-default" onclick="deleteFileConf(@item.i,'@Model.id')"><img class="img_delete_file" src="~/images/trash.png" /></button>
                                 </li>
                                 }
