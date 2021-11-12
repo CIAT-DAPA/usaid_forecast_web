@@ -24,7 +24,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         }
 
         // GET: /Experto/Index/
-        public async Task<IActionResult> Index()
+        [Route("[controller]/{countryId?}")]
+        public async Task<IActionResult> Index(string countryId)
         {
             try
             {
@@ -36,7 +37,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
                 ViewBag.Root = Root;
                 // Setting data
-                SetWS("6140ae5af88b8ef0235987f2");
+                SetWS(countryId);
 
                 return View();
             }
