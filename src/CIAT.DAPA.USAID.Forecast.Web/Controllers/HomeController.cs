@@ -43,7 +43,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             }
         }
 
-        public IActionResult Glosario()
+        [Route("[controller]/[action]/{countryId?}")]
+        public IActionResult Glosario(string countryId)
         {
 
             ViewBag.Section = SectionSite.Glossary;
@@ -52,19 +53,20 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 "forecast", "sol_rad", "yield", "yield_pot", "t_max", "t_max_acu", "t_min", "t_min_acu"
             };
             // Setting data
-            SetWS();
+            SetWS(countryId);
 
             return View();
         }
 
-        public IActionResult AcercaDe()
+        [Route("/[controller]/[action]/{countryId?}")]
+        public IActionResult AcercaDe(string countryId)
         {
             ViewBag.Section = SectionSite.About;
             ViewBag.words = new string[] {
                 "project", "scenarios", "yield_rice", "yield_maize", "validation_maize"
             };
             // Setting data
-            SetWS();
+            SetWS(countryId);
 
             return View();
         }

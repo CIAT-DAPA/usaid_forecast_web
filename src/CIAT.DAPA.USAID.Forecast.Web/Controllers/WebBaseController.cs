@@ -91,7 +91,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             // Setting data
             if (countryId == null || countryId == "")
             {
-                ViewBag.countryselect = 1;
+                ViewBag.countryselect = countryId;
                 ViewBag.Countries = Countries;
                 ViewBag.WeatherStations = WeatherStations;
                 ViewBag.WeatherStationsCrops = WeatherStationsCrops;

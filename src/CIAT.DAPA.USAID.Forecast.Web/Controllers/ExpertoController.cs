@@ -36,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
                 ViewBag.Root = Root;
                 // Setting data
-                SetWS();
+                SetWS("6140ae5af88b8ef0235987f2");
 
                 return View();
             }

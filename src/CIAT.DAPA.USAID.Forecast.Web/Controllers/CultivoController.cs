@@ -27,8 +27,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         }
 
         // GET: /Cultivo/state/municipality/station/crop
-        [Route("/[controller]/{state?}/{municipality?}/{station?}/{crop?}")]
-        public async Task<IActionResult> Index(string state, string municipality, string station, string crop)
+        [Route("/[controller]/{state?}/{municipality?}/{station?}/{crop?}/{countryId?}")]
+        public async Task<IActionResult> Index(string state, string municipality, string station, string crop, string countryId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.Section = SectionSite.Crop;
 
                 // Setting data
-                SetWS();
+                SetWS(countryId);
                 ViewBag.Root = Root;
 
                 // Searching the weather station, if the parameters don't come, it will redirect a default weather station

@@ -27,8 +27,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         }
 
         // GET: /Clima/state/municipality/station
-        [Route("/[controller]/{state?}/{municipality?}/{station?}")]
-        public async Task<IActionResult> Index(string state, string municipality, string station)
+        [Route("/[controller]/{state?}/{municipality?}/{station?}/{countryId?}")]
+        public async Task<IActionResult> Index(string state, string municipality, string station, string countryId)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.Section = SectionSite.Climate;
                 
                 // Setting data
-                SetWS();
+                SetWS(countryId);
 
                 // Searching the weather station, if the parameters don't come, it will redirect a default weather station                
                 if (string.IsNullOrEmpty(state) || string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(station))

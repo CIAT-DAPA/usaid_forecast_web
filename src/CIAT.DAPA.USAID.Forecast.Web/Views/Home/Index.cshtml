@@ -12,6 +12,25 @@
             <p class="text-justify">
                 @Localizer["Description"]
             </p>
+            <!-- Modal -->
+            <div class="modal fade" id="selectModalCenter" tabindex="-1" role="dialog" aria-labelledby="selectModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="selectModalTitle">@Localizer["ModalTitle"]</h5>
+                        </div>
+                        <div class="modal-body" id="selectModalBody">
+                            <select id="modal_country_cbo" name="modal_country_cbo" class="form-control" style="width:100%;">
+                                <option value=""></option>
+                                @foreach (var co in ViewBag.Countries)
+                                {
+                                    <option value="@co.Id">@co.Iso2, @co.Name </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="map">
             </div>
         </div>
@@ -22,10 +41,11 @@
 @section Scripts {
     <script src="~/js/map/map.js"></script>
     <script type="text/javascript">
+        var countries = @Html.Raw(Json.Serialize(ViewBag.Countries));
         var country = @Html.Raw(Json.Serialize(ViewBag.countryselect));
         var models = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
         var crops = @Html.Raw(Json.Serialize(ViewBag.WeatherStationsCrops));
-        plot_map('map', models, crops, country);
+        plot_map('map', models, crops, country, countries);
         window.loading_screen.finish();
     </script>
 }

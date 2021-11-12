@@ -8,7 +8,7 @@
 <nav class="navbar-collapse collapse" id="navbar_main">
     <ul class="nav navbar-nav">
         <li id="menu_main_country" class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Country"]<span class="caret"></span></a>
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-globe"></span> @Localizer["Country"]<span class="caret"></span></a>
             <ul class="dropdown-menu" aria-labelledby="drop_weather">
                 <li style="padding:5px 15px;">
                     <b>@Localizer["Search"]</b>
@@ -35,7 +35,7 @@
                         <option value=""></option>
                         @foreach (var ws in ViewBag.WeatherStations)
                         {
-                            <option value="Clima/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality, @ws.Name </option>
+                            <option value="Clima/@ws.State/@ws.Municipality/@ws.Name/@ws.Country">@ws.State, @ws.Municipality, @ws.Name </option>
                         }
                     </select>
                 </li>
@@ -52,7 +52,7 @@
                         <option value=""></option>
                         @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "rice", "arroz" }).Contains(p.Crop.ToLower())))
                         {
-                            <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                            <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop/@ws.Country">@ws.State, @ws.Municipality, @ws.Name </option>
                         }
                     </select>
                 </li>
@@ -69,15 +69,15 @@
                         <option value=""></option>
                         @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower())))
                         {
-                            <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                            <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop/@ws.Country">@ws.State, @ws.Municipality, @ws.Name </option>
                         }
                     </select>
                 </li>
             </ul>
         </li>
         <li id="menu_main_expert"><a href="/Experto"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>
-        <li id="menu_main_glossary"><a href="/Home/Glosario"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
-        <li id="menu_main_about"><a href="/Home/AcercaDe"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
+        <li id="menu_main_glossary"><a href= "/Home/Glosario/@ViewBag.countryselect"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
+        <li id="menu_main_about"><a href= "/Home/AcercaDe/@ViewBag.countryselect"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
     </ul>
     <!-- Start Help -->
     <ul class="nav navbar-nav navbar-right">
