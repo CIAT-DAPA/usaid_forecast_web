@@ -14,7 +14,7 @@
     <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
 </p>
 <h3>@Localizer["ConfAvalaible"]</h3>
-<table class="table">
+<table class="table" id="index_list">
     <thead>
         <tr>
         <tr>
@@ -73,3 +73,7 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}
