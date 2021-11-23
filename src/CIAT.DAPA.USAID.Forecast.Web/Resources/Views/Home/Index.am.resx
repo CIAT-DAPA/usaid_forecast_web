@@ -121,7 +121,7 @@
     <value>በዚህ ክፍል ውስጥ የግብርናና አየር ጠባይ ትንበያዎችን የምንሰጥባቸው አካባቢዎች የት እንደሚገኙ ማየት ይችላሉ</value>
   </data>
   <data name="ModalTitle" xml:space="preserve">
-    <value>በእኛ የውሂብ ጎታ ላይ ያልተመዘገበ ቦታ ላይ ነዎት። እባክዎ ለመቀጠል አገር ይምረጡ</value>
+    <value>እባክዎ ለመቀጠል አገር ይምረጡ</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>የግብርና የአየር ሁኔታ ትንበያ አካባቢዎች</value>

@@ -106,6 +106,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }

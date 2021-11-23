@@ -22,6 +22,12 @@ async function plot_map(id, ws, crops, country, countries) {
                         });
                     }
                 });
+        }, () => {
+            $('#selectModalCenter').modal({ backdrop: 'static', keyboard: false });
+            $('#modal_country_cbo').on("change", function (e) {
+                var re = /^https?:\/\/[^/]+/;
+                window.location.href = re.exec(window.location.href)[0] + "/" + $('#modal_country_cbo').val();
+            });
         });
     } else {
         var map = L.map(id).setView([ws[0].latitude, ws[0].longitude], 6);

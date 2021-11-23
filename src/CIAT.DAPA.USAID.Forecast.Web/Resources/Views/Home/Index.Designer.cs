@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Home {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are in unregistered location on our databases. Please select a country to continue.
+        ///   Looks up a localized string similar to Please select a country to continue.
         /// </summary>
         public static string ModalTitle {
             get {

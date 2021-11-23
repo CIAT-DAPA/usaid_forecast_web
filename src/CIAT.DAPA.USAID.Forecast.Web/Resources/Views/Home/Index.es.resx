@@ -121,7 +121,7 @@
     <value>En esta sección usted podrá ver cuales son las áreas en la cuales estamos generando pronósitcos agroclimáticos</value>
   </data>
   <data name="ModalTitle" xml:space="preserve">
-    <value>Usted se encuentra en una ubicación que no esta registrada en nuestras bases de datos. Por favor seleccione un país para continuar</value>
+    <value>Por favor seleccione un país para continuar</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Áreas de pronósticos agroclimaticos</value>
