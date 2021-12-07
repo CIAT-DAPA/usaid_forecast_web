@@ -1,4 +1,5 @@
-﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+﻿using X.PagedList;
+using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools;
 using Microsoft.AspNetCore.Authorization;
@@ -36,11 +37,18 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: SetupController
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, int?page)
         {
             try
             {
-                var setups = await db.setup.listEnableAsync();
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.DatesortParam = sortOrder == "Date" ? "date_asc" : "Date";
+                ViewBag.CropsortParam = sortOrder == "Crop" ? "crop_desc" : "Crop";
+                ViewBag.WSsortParam = sortOrder == "WS" ? "ws_desc" : "WS";
+                ViewBag.CultivarsortParam = sortOrder == "Cultivar" ? "cultivar_desc" : "Cultivar";
+                ViewBag.SoilsortParam = sortOrder == "Soil" ? "soil_desc" : "Soil";
+                ViewBag.DayssortParam = sortOrder == "Days" ? "days_desc" : "Days";
+                var setups = await db.setup.listEnableDescAsync();
                 // Get the data
                 var crp = await db.crop.listEnableAsync();
                 var ws = await db.weatherStation.listEnableVisibleAsync();
@@ -52,8 +60,49 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     entities.Add(new SetupExtend(s, crp, ws, cu, so));
                 }
                 await writeEventAsync(setups.Count().ToString(), LogEvent.lis);
+                switch (sortOrder) 
+                {
+                    case "date_asc":
+                        entities = entities.OrderBy(p => p.track.register).ToList();
+                        break;
+                    case "Crop":
+                        entities = entities.OrderBy(p => p.crop_name).ToList();
+                        break;
+                    case "crop_desc":
+                        entities = entities.OrderByDescending(p => p.crop_name).ToList();
+                        break;
+                    case "WS":
+                        entities = entities.OrderBy(p => p.weather_station_name).ToList();
+                        break;
+                    case "ws_desc":
+                        entities = entities.OrderByDescending(p => p.weather_station_name).ToList();
+                        break;
+                    case "Cultivar":
+                        entities = entities.OrderBy(p => p.cultivar_name).ToList();
+                        break;
+                    case "cultivar_desc":
+                        entities = entities.OrderByDescending(p => p.cultivar_name).ToList();
+                        break;
+                    case "Soil":
+                        entities = entities.OrderBy(p => p.soil_name).ToList();
+                        break;
+                    case "soil_desc":
+                        entities = entities.OrderByDescending(p => p.soil_name).ToList();
+                        break;
+                    case "Days":
+                        entities = entities.OrderBy(p => p.days).ToList();
+                        break;
+                    case "days_desc":
+                        entities = entities.OrderByDescending(p => p.days).ToList();
+                        break;
+                    default:
+                        Console.WriteLine(entities);
+                        break;
+                }
+                var pageSize = 10;
+                var pageNumber = (page ?? 1);
 
-                return View(entities);
+                return View(entities.ToPagedList(pageNumber, pageSize));
             }
             catch (Exception ex)
             {

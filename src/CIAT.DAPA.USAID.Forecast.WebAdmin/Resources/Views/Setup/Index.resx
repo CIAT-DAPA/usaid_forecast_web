@@ -150,6 +150,12 @@
   <data name="New" xml:space="preserve">
     <value>New record</value>
   </data>
+  <data name="Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Page</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>

@@ -150,6 +150,12 @@
   <data name="New" xml:space="preserve">
     <value>Registrar nuevo</value>
   </data>
+  <data name="Of" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Página</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>
   </data>

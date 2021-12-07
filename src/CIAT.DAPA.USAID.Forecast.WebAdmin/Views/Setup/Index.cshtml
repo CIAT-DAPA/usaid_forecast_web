@@ -1,4 +1,6 @@
-﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend.SetupExtend>
+﻿@model X.PagedList.PagedList<CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend.SetupExtend>
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = Localizer["Title"];
@@ -18,14 +20,30 @@
     <thead>
         <tr>
         <tr>
-            <th>@Localizer["ID"]</th>
-            <th>@Localizer["Date"]</th>
-            <th>@Localizer["Crop"]</th>
-            <th>@Localizer["WS"]</th>
-            <th>@Localizer["Cultivar"]</th>
-            <th>@Localizer["Soil"]</th>
-            <th>@Localizer["Days"]</th>
-            <th>@Localizer["File"]</th>
+            <th>
+                @Localizer["ID"]
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Date"].Value, "Index", new { sortOrder = ViewBag.DatesortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Crop"].Value, "Index", new { sortOrder = ViewBag.CropsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["WS"].Value, "Index", new { sortOrder = ViewBag.WSsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Cultivar"].Value, "Index", new { sortOrder = ViewBag.CultivarsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Soil"].Value, "Index", new { sortOrder = ViewBag.SoilsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Days"].Value, "Index", new { sortOrder = ViewBag.DayssortParam })
+            </th>
+            <th>
+                @Localizer["File"]
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -73,6 +91,9 @@
         }
     </tbody>
 </table>
+<br />
+@Localizer["Page"] @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) @Localizer["Of"] @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { sortOrder = ViewBag.CurrentSort, page }))
 
 @section Scripts {
     @await Html.PartialAsync("_ManagementScriptsPartial")

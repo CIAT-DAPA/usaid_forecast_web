@@ -44,5 +44,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var result = await collection.ReplaceOneAsync(Builders<Setup>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }
+
+        public async virtual Task<List<Setup>> listEnableDescAsync()
+        {
+            var builder = Builders<Setup>.Filter;
+            var filter = builder.Eq("track.enable", true);
+            return await collection.Find(filter).SortByDescending(p => p.track.register).ToListAsync<Setup>();
+        }
     }
 }
