@@ -160,12 +160,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Exporting " + cp.name);
                 string dir_crop = path + Program.settings.Out_PATH_FS_FILES + Path.DirectorySeparatorChar + Tools.folderCropName(cp.name);
                 Directory.CreateDirectory(dir_crop);
-                foreach (var st in cp.setup.Where(p => p.track.enable))
+                var setups = await db.setup.listEnableAsync();
+                var dir_def = "\\forecast\\data_configuration\\";
+                foreach (var st in setups.Where(p => p.crop == cp.id))
                 {
                     string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
                     Directory.CreateDirectory(dir_setup);
-                    foreach (var f in st.conf_files)
-                        File.Copy(f.path, dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                    foreach (var f in st.conf_files) {
+                        Console.WriteLine(f.path.Substring(46).ToString());
+                        File.Copy(dir_def + f.path.Substring(46), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                    }
                     // Add csv file with geolocation for rice crop only
                     if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
                     {
