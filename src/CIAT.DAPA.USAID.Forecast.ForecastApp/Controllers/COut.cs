@@ -161,7 +161,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 string dir_crop = path + Program.settings.Out_PATH_FS_FILES + Path.DirectorySeparatorChar + Tools.folderCropName(cp.name);
                 Directory.CreateDirectory(dir_crop);
                 var setups = await db.setup.listEnableAsync();
-                var dir_def = "\\forecast\\data_configuration\\";
+                var dir_def = "data_configuration/";
                 foreach (var st in setups.Where(p => p.crop == cp.id))
                 {
                     string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
