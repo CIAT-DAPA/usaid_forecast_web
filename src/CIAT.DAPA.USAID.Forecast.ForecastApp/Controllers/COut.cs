@@ -112,14 +112,29 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
             var weather_stations = await db.weatherStation.listEnableAsync();
+            var dir_def = "data_configuration/";
             foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
             {
+                var municipality = await db.municipality.byIdAsync(ws.municipality.ToString());
+                var state = await db.state.byIdAsync(municipality.state.ToString());
+                var country = await db.country.byIdAsync(state.country.ToString());
                 Console.WriteLine("Exporting files ws: " + ws.name);
                 var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                 if (f != null)
-                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
-                else
+                {
+                    if (country.name == "Colombia")
+                    {
+                        File.Copy(dir_def + f.path.Substring(40), path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
+                    }
+                    else
+                    {
+                        File.Copy(dir_def + f.path.Substring(48), path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
+                    }
+                }
+                else 
+                {
                     Console.WriteLine("File not found");
+                }
             }
             return true;
         }
@@ -164,11 +179,21 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 var dir_def = "data_configuration/";
                 foreach (var st in setups.Where(p => p.crop == cp.id))
                 {
+                    var weather_station = await db.weatherStation.byIdAsync(st.weather_station.ToString());
+                    var municipality = await db.municipality.byIdAsync(weather_station.municipality.ToString());
+                    var state = await db.state.byIdAsync(municipality.state.ToString());
+                    var country = await db.country.byIdAsync(state.country.ToString());
                     string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
                     Directory.CreateDirectory(dir_setup);
                     foreach (var f in st.conf_files) {
-                        Console.WriteLine(f.path.Substring(46).ToString());
-                        File.Copy(dir_def + f.path.Substring(46), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                        if (country.name == "Colombia")
+                        {
+                            File.Copy(dir_def + f.path.Substring(40), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                        }
+                        else
+                        {
+                            File.Copy(dir_def + f.path.Substring(48), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                        }
                     }
                     // Add csv file with geolocation for rice crop only
                     if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
