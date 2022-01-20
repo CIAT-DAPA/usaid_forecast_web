@@ -87,6 +87,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 {
                     int path = Program.searchParameter(args, "-p");
                     Program.validateParameter(path, "-p");
+                    var country = Program.searchParameter(args, "-c");
+                    Program.validateParameter(country, "-c");
                     COut output = new COut();
                     // Export states
                     // -out -s "prec" -p "C:\Users\hsotelo\Desktop\test export\\" -start 1981 -end 2013
@@ -99,7 +101,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Program.validateParameter(end, "-end");
 
                         Console.WriteLine("Exporting historical climate by states");
-                        await output.exportStatesHistoricalClimateAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1], true), int.Parse(args[start + 1]), int.Parse(args[end + 1]));
+                        await output.exportStatesHistoricalClimateAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1], true), int.Parse(args[start + 1]), int.Parse(args[end + 1]), args[country + 1]);
                     }
                     // Export configuration files from weather stations
                     // -out -wf -p "C:\Users\hsotelo\Desktop\test export\\" -name "daily"
@@ -109,7 +111,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         int name = Program.searchParameter(args, "-name");
                         Program.validateParameter(name, "-name");
                         Console.WriteLine("Exporting configuration file by weather station");
-                        await output.exportFilesWeatherStationAsync(args[path + 1], args[name + 1]);
+                        await output.exportFilesWeatherStationAsync(args[path + 1], args[name + 1], args[country + 1]);
                     }
                     // Export coords from weather stations
                     // -out -co -p "C:\Users\hsotelo\Desktop\test export\\" -name "daily"
@@ -117,7 +119,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     if (co >= 0)
                     {
                         Console.WriteLine("Exporting coordinates of the weather stations");
-                        await output.exportCoordsWeatherStationAsync(args[path + 1]);
+                        await output.exportCoordsWeatherStationAsync(args[path + 1], args[country + 1]);
                     }
                     // Export forecast setup
                     // -out -fs -p "C:\Users\hsotelo\Desktop\test export\\"
@@ -125,7 +127,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     if (fs >= 0)
                     {
                         Console.WriteLine("Exporting forecast setup");
-                        await output.exportForecastSetupAsync(args[path + 1]);
+                        await output.exportForecastSetupAsync(args[path + 1], args[country + 1]);
                     }
                     // Export cpt setup
                     // -out -cpt -p "C:\Users\hsotelo\Desktop\test export\\"
@@ -133,7 +135,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     if (cpt >= 0)
                     {
                         Console.WriteLine("Exporting CPT setup");
-                        await output.exportCPTSetupAsync(args[path + 1]);
+                        await output.exportCPTSetupAsync(args[path + 1], args[country + 1]);
                     }
                     // Export emails users
                     // -out -usr -p "C:\Users\hsotelo\Desktop\test export\\"

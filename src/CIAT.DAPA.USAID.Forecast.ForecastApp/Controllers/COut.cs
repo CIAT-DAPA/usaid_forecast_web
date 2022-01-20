@@ -36,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// <param name="measure">Measure to export</param>
         /// <param name="start">Year to start</param>
         /// <param name="end">Year to end</param>
-        public async Task<bool> exportStatesHistoricalClimateAsync(string path, MeasureClimatic measure, int start, int end)
+        public async Task<bool> exportStatesHistoricalClimateAsync(string path, MeasureClimatic measure, int start, int end, string mainCountry)
         {
             StringBuilder csv;
             string header, line;
@@ -45,7 +45,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
             var states = await db.state.listEnableAsync();
-            foreach (var s in states)
+            IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
+            foreach (var s in statesByCountry)
             {
                 Console.WriteLine("Creating " + s.name);
                 if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
@@ -106,11 +107,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
         /// <param name="name">Name of file to filter</param>
-        public async Task<bool> exportFilesWeatherStationAsync(string path, string name)
+        public async Task<bool> exportFilesWeatherStationAsync(string path, string name, string mainCountry)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
+            var nameCountry = "ETH";
+            if (mainCountry == "61e59d829d5d2486e18d2ea8")
+            {
+                nameCountry = "Colombia";
+            }
             var weather_stations = await db.weatherStation.listEnableAsync();
             var dir_def = "data_configuration/";
             foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
@@ -143,19 +149,30 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method to export the configuration files by weather station
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportCoordsWeatherStationAsync(string path)
+        public async Task<bool> exportCoordsWeatherStationAsync(string path, string mainCountry)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
             var weather_stations = await db.weatherStation.listEnableAsync();
+            var nameCountry = "ETH";
+            if (mainCountry == "61e59d829d5d2486e18d2ea8")
+            {
+                nameCountry = "Colombia";
+            }
             foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
             {
-                Console.WriteLine("Exporting coords ws: " + ws.name);
-                StringBuilder coords = new StringBuilder();
-                coords.Append("lat,lon\n");
-                coords.Append(ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
-                File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + "_coords.csv", coords.ToString());
+                var municipality = await db.municipality.byIdAsync(ws.municipality.ToString());
+                var state = await db.state.byIdAsync(municipality.state.ToString());
+                var country = await db.country.byIdAsync(state.country.ToString());
+                if (country.name == nameCountry)
+                {
+                    Console.WriteLine("Exporting coords ws: " + ws.name);
+                    StringBuilder coords = new StringBuilder();
+                    coords.Append("lat,lon\n");
+                    coords.Append(ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                    File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + "_coords.csv", coords.ToString());
+                }
             }
             return true;
         }
@@ -164,12 +181,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that exports the configuration for the forecast 
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportForecastSetupAsync(string path)
+        public async Task<bool> exportForecastSetupAsync(string path, string mainCountry)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_FS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_FS_FILES);
             var crops = await db.crop.listEnableAsync();
+            var nameCountry = "ETH";
+            if (mainCountry == "61e59d829d5d2486e18d2ea8")
+            {
+                nameCountry = "Colombia";
+            }
             foreach (var cp in crops)
             {
                 Console.WriteLine("Exporting " + cp.name);
@@ -186,7 +208,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
                     Directory.CreateDirectory(dir_setup);
                     foreach (var f in st.conf_files) {
-                        if (country.name == "Colombia")
+                        if (country.name == nameCountry)
                         {
                             File.Copy(dir_def + f.path.Substring(40), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
                         }
@@ -215,7 +237,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that export all cpt  configuration needs by the forecast
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportCPTSetupAsync(string path)
+        public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
         {
             StringBuilder header_cpt, x_m, y_m, cca, gamma, header_areas;
             StringBuilder[] x1, x2, y1, y2;
@@ -223,8 +245,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
             var states = await db.state.listEnableAsync();
+            IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
             // Filter the states with configuration
-            var states_ctp = from s_cpt in states
+            var states_ctp = from s_cpt in statesByCountry
                              where s_cpt.conf.Where(p => p.track.enable).Count() > 0
                              select s_cpt;
             foreach (var s in states_ctp)
