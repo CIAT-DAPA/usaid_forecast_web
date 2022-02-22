@@ -42,6 +42,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             services.Configure<Settings>(options =>
             {
                 options.api_fs = Configuration.GetSection("API_Forecast:api_fs").Value;
+                options.idCountry = Configuration.GetSection("API_Forecast:idCountry").Value;
             });
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -53,8 +54,18 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                string[] languages = Configuration.GetSection("Languages").Value.Split(",");
-                //string[] languages = new string[] { "en-US","es-CO" };
+                //string[] languages = Configuration.GetSection("Languages").Value.Split(",");
+                var idCountry = Configuration.GetSection("API_Forecast:idCountry").Value;
+                //string[] languages = new string[] { "en-US", "es-CO" };
+                string[] languages;
+                if (idCountry == "61e59d829d5d2486e18d2ea8")
+                {
+                    languages = new string[] { "en-US", "es-CO" };
+                }
+                else
+                {
+                    languages = new string[] { "en-US", "am-ET" };
+                }
 
                 CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
                 for (int i = 0; i < languages.Length; i++)

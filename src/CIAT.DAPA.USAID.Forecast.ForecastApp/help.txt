@@ -45,6 +45,9 @@ Export Data
 				theorical regions and cpt modes.
 
 -usr			Export the enable users in the webadmin.
+
+-c	"value"		Mandatory parameter. It is the ObjectId of Country
+				to export data for only country indicated in the parameter.
 -----------------------------------------------------------------
 Import Data
 

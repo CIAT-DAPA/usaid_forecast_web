@@ -15,6 +15,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
     public class HomeController : WebBaseController
     {
+        protected string idCountry { get; set; }
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -22,6 +23,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <param name="hostingEnvironment">Host Enviroment</param>
         public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, hostingEnvironment)
         {
+            idCountry = settings.Value.idCountry;
         }
 
         [Route("/{countryId?}")]
@@ -31,7 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             {
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
-
+                countryId = idCountry;
                 // Setting data
                 SetWS(countryId);
 

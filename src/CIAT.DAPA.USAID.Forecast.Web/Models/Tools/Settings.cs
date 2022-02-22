@@ -14,5 +14,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         /// Root path of the Web Api forecast
         /// </summary>
         public string api_fs { get; set; }
+        public string idCountry { get; set; }
     }
 }
