@@ -39,9 +39,9 @@
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.2.0" />
   </ItemGroup>
 
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">    
+  <!--<Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">    
     <Exec Command="dotnet bundle" />
-  </Target>
+  </Target>-->
 
   <ItemGroup>
     <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.2.406" />
@@ -97,6 +97,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ResetPasswordConfirmation.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Country\ConfigurationPyCpt.Designer.cs">
+      <DependentUpon>ConfigurationPyCpt.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Resources\Views\Country\Create.Designer.cs">
       <DependentUpon>Create.resx</DependentUpon>
@@ -323,6 +328,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Configuration.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Views\State\ConfigurationPyCpt.Designer.cs">
+      <DependentUpon>ConfigurationPyCpt.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\Views\State\Create.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -430,6 +440,10 @@
     <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResetPasswordConfirmation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Country\ConfigurationPyCpt.resx">
+      <LastGenOutput>ConfigurationPyCpt.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Country\Create.resx">
       <LastGenOutput>Create.Designer.cs</LastGenOutput>
@@ -610,6 +624,10 @@
     <EmbeddedResource Update="Resources\Views\State\Configuration.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Configuration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\State\ConfigurationPyCpt.resx">
+      <LastGenOutput>ConfigurationPyCpt.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\State\Create.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

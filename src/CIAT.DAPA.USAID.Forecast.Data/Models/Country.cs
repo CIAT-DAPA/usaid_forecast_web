@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
@@ -34,5 +35,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
+        /// <summary>
+        /// Number that indicate the execution 1= country and 2= state/region
+        /// </summary>
+        [BsonRequired]
+        public int ind_exec { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [BsonRequired]
+        public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
     }
 }

@@ -49,5 +49,16 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return await collection.Find("{}").ToListAsync<Country>();
         }
 
+        public async Task<bool> addConfigurationPyCpt(Country country, ConfigurationPyCPT conf) 
+        {
+            conf.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            List<ConfigurationPyCPT> allConf = country.conf_pycpt.ToList();
+            allConf.Add(conf);
+            country.conf_pycpt = allConf;
+            var result = await collection.UpdateOneAsync(Builders<Country>.Filter.Eq("_id", country.id),
+                Builders<Country>.Update.Set("conf_pycpt", country.conf_pycpt));
+            return result.ModifiedCount > 0;
+        }
+
     }
 }

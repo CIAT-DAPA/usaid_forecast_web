@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
+namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Index {
+    public class ConfigurationPyCpt {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Index() {
+        internal ConfigurationPyCpt() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State.Index", typeof(Index).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country.ConfigurationPyCpt", typeof(ConfigurationPyCpt).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,56 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Country.
+        ///   Looks up a localized string similar to Add.
         /// </summary>
-        public static string Country {
+        public static string Add {
             get {
-                return ResourceManager.GetString("Country", resourceCulture);
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount CCA.
+        /// </summary>
+        public static string AmountCCA {
+            get {
+                return ResourceManager.GetString("AmountCCA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount X modes.
+        /// </summary>
+        public static string AmountX {
+            get {
+                return ResourceManager.GetString("AmountX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount Y modes.
+        /// </summary>
+        public static string AmountY {
+            get {
+                return ResourceManager.GetString("AmountY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back to list.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
             }
         }
         
@@ -88,83 +133,83 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Gamma transformation.
         /// </summary>
-        public static string Edit {
+        public static string Gamma {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("Gamma", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ID.
+        ///   Looks up a localized string similar to New configuration.
         /// </summary>
-        public static string ID {
+        public static string NewSetup {
             get {
-                return ResourceManager.GetString("ID", resourceCulture);
+                return ResourceManager.GetString("NewSetup", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
-        public static string Import {
+        public static string Save {
             get {
-                return ResourceManager.GetString("Import", resourceCulture);
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Configurations available.
         /// </summary>
-        public static string Name {
+        public static string SetupAvalaible {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("SetupAvalaible", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New record.
+        ///   Looks up a localized string similar to Predictandos Espaciales.
         /// </summary>
-        public static string New {
+        public static string SpatialTands {
             get {
-                return ResourceManager.GetString("New", resourceCulture);
+                return ResourceManager.GetString("SpatialTands", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Predictores Espaciales.
         /// </summary>
-        public static string Search {
+        public static string SpatialTors {
             get {
-                return ResourceManager.GetString("Search", resourceCulture);
+                return ResourceManager.GetString("SpatialTors", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuration.
-        /// </summary>
-        public static string Setup {
-            get {
-                return ResourceManager.GetString("Setup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PyCpt Configuration.
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to States.
+        ///   Looks up a localized string similar to PyCPT Configuration.
         /// </summary>
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TGTII Value.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TGTFF Value.
+        /// </summary>
+        public static string ValueFF {
+            get {
+                return ResourceManager.GetString("ValueFF", resourceCulture);
             }
         }
     }

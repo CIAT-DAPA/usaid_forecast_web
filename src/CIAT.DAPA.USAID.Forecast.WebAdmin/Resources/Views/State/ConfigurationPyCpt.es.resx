@@ -117,34 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="AmountCCA" xml:space="preserve">
+    <value>Cant. de modos correlación</value>
+  </data>
+  <data name="AmountX" xml:space="preserve">
+    <value>Cant. de modos en x</value>
+  </data>
+  <data name="AmountY" xml:space="preserve">
+    <value>Cant. de modos en y</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Volver a la lista</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Eliminar</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>Detalles</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="Gamma" xml:space="preserve">
+    <value>Transformación gamma</value>
   </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
+  <data name="NewSetup" xml:space="preserve">
+    <value>Nueva configuración</value>
   </data>
-  <data name="ISO2" xml:space="preserve">
-    <value>ISO2</value>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="SetupAvalaible" xml:space="preserve">
+    <value>Configuraciones disponibles</value>
   </data>
-  <data name="New" xml:space="preserve">
-    <value>New record</value>
+  <data name="SpatialTands" xml:space="preserve">
+    <value>Spatial Predictands</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Setup" xml:space="preserve">
-    <value>PyCPT Configuration</value>
+  <data name="SpatialTors" xml:space="preserve">
+    <value>Spatial Predictors</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Countries</value>
+    <value>Configuración PyCPT</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Valor de TGTII</value>
+  </data>
+  <data name="ValueFF" xml:space="preserve">
+    <value>Valor de TGTFF</value>
   </data>
 </root>

@@ -39,5 +39,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]        
         public Track track { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [BsonRequired]
+        public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
     }
 }
