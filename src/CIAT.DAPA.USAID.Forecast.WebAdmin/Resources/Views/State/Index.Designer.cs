@@ -153,9 +153,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         /// <summary>
         ///   Looks up a localized string similar to PyCpt Configuration.
         /// </summary>
-        public static string String1 {
+        public static string SetupPyCpt {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("SetupPyCpt", resourceCulture);
             }
         }
         

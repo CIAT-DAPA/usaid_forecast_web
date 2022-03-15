@@ -144,6 +144,9 @@
   <data name="Gamma" xml:space="preserve">
     <value>Transformación gamma</value>
   </data>
+  <data name="ind_exec" xml:space="preserve">
+    <value>¿Desea que la ejecución sea por país?</value>
+  </data>
   <data name="NewSetup" xml:space="preserve">
     <value>Nueva configuración</value>
   </data>

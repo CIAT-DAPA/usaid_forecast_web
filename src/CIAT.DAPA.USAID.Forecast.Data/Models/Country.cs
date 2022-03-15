@@ -36,11 +36,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public Track track { get; set; }
         /// <summary>
-        /// Number that indicate the execution 1= country and 2= state/region
-        /// </summary>
-        [BsonRequired]
-        public int ind_exec { get; set; }
-        /// <summary>
         /// 
         /// </summary>
         [BsonRequired]

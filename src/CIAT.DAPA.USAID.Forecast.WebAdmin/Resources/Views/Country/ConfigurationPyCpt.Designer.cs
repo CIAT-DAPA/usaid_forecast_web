@@ -142,6 +142,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Would you like the execution will be by country?.
+        /// </summary>
+        public static string ind_exec {
+            get {
+                return ResourceManager.GetString("ind_exec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New configuration.
         /// </summary>
         public static string NewSetup {

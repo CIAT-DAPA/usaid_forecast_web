@@ -142,6 +142,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public int confidence_level { get; set; }
         /// <summary>
+        /// Number that indicate the execution 0= country and 1= state/region
+        /// </summary>
+        [BsonRequired]
+        public int ind_exec { get; set; }
+        /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
         [BsonRequired]

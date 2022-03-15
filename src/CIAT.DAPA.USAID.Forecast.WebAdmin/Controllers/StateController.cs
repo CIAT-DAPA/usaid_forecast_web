@@ -663,10 +663,30 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     single_models = bool.Parse(form["single_models"]),
                     forecast_anomaly = bool.Parse(form["forecast_anomaly"]),
                     forecast_spi = bool.Parse(form["forecast_spi"]),
-                    confidence_level = int.Parse(form["confidence_level"])
+                    confidence_level = int.Parse(form["confidence_level"]),
+                    ind_exec = 1
                 };
                 await db.state.addConfigurationPyCpt(entity, confPyCpt);
 
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+        }
+        // POST: /Country/ConfigurationDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationPyCptDelete(string id, string obs, string mos, bool station, string predictand, string predictors, int tini, int tend, int xmodes_min, int xmodes_max, int ymodes_min, int ymodes_max, int ccamodes_min, int ccamodes_max, bool force_download, bool single_models, bool forecast_anomaly, bool forecast_spi, int confidence_level, int ind_exec, DateTime register)
+        {
+            try
+            {
+                // Get original crop data
+                State entity_new = await db.state.byIdAsync(id);
+                // Delete the setup
+                await db.state.deleteConfigurationPyCPTAsync(entity_new, (Obs)Enum.Parse(typeof(Obs), obs), (Mos)Enum.Parse(typeof(Mos), mos), station, (Predictand)Enum.Parse(typeof(Predictand), predictand), (Predictors)Enum.Parse(typeof(Predictors), predictors), tini, tend, xmodes_min, xmodes_max, ymodes_min, ymodes_max, ccamodes_min, ccamodes_max, force_download, single_models, forecast_anomaly, forecast_spi, confidence_level, ind_exec, register);
                 return RedirectToAction("ConfigurationPyCpt", new { id = id });
             }
             catch (Exception ex)

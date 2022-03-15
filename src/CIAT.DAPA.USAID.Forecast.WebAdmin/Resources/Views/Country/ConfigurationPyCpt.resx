@@ -144,6 +144,9 @@
   <data name="Gamma" xml:space="preserve">
     <value>Gamma transformation</value>
   </data>
+  <data name="ind_exec" xml:space="preserve">
+    <value>Would you like the execution will be by country?</value>
+  </data>
   <data name="NewSetup" xml:space="preserve">
     <value>New configuration</value>
   </data>

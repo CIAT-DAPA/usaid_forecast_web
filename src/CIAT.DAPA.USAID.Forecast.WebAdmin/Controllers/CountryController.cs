@@ -225,6 +225,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
                 ViewBag.country = entity;
                 IEnumerable<dynamic> buleans = new List<dynamic> { new { id = 0, name = "True"}, new { id = 1, name = "False"} };
+                ViewBag.ind_exec = new SelectList(buleans, "id", "name");
                 ViewBag.station = new SelectList(buleans, "name", "name");
                 ViewBag.force_download = new SelectList(buleans, "name", "name");
                 ViewBag.single_models = new SelectList(buleans, "name", "name");
@@ -390,10 +391,30 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     single_models = bool.Parse(form["single_models"]),
                     forecast_anomaly = bool.Parse(form["forecast_anomaly"]),
                     forecast_spi = bool.Parse(form["forecast_spi"]),
-                    confidence_level = int.Parse(form["confidence_level"])
+                    confidence_level = int.Parse(form["confidence_level"]),
+                    ind_exec = int.Parse(form["ind_exec"])
                 };
                 await db.country.addConfigurationPyCpt(entity, confPyCpt);
 
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+        }
+        // POST: /Country/ConfigurationDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationPyCptDelete(string id, string obs, string mos, bool station, string predictand, string predictors, int tini, int tend, int xmodes_min, int xmodes_max, int ymodes_min, int ymodes_max, int ccamodes_min, int ccamodes_max, bool force_download, bool single_models, bool forecast_anomaly, bool forecast_spi, int confidence_level, int ind_exec, DateTime register)
+        {
+            try
+            {
+                // Get original crop data
+                Country entity_new = await db.country.byIdAsync(id);
+                // Delete the setup
+                await db.country.deleteConfigurationPyCPTAsync(entity_new, (Obs)Enum.Parse(typeof(Obs), obs), (Mos)Enum.Parse(typeof(Mos), mos), station, (Predictand)Enum.Parse(typeof(Predictand), predictand), (Predictors)Enum.Parse(typeof(Predictors), predictors), tini, tend, xmodes_min, xmodes_max, ymodes_min, ymodes_max, ccamodes_min, ccamodes_max, force_download, single_models, forecast_anomaly, forecast_spi, confidence_level, ind_exec, register);
                 return RedirectToAction("ConfigurationPyCpt", new { id = id });
             }
             catch (Exception ex)
