@@ -79,8 +79,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         {
             try
             {
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 WebRequest request = WebRequest.Create(path);
+                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                //ServicePointManager.Expect100Continue = true;
+                //ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                //ServicePointManager.DefaultConnectionLimit = 9999;                
                 request.Method = "GET";
+                
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
