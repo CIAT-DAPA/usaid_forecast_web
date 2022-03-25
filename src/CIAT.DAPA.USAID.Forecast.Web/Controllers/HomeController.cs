@@ -36,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             {
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
-                //countryId = idCountry;
+                countryId = idCountry;
                 // Setting data
                 SetWS(countryId);
 
