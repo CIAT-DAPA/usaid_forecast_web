@@ -19,6 +19,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Get or set the root path of the web api
         /// </summary>
         public string Root { get; set; }
+        private string Patho { get; set; }
         /// <summary>
         /// Get or set the path to get geographic information 
         /// </summary>
@@ -63,9 +64,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Method Construct
         /// </summary>
         /// <param name="root"></param>
-        public WebAPIForecast(string root)
+        public WebAPIForecast(string root, string patho = null)
         {
             Root = root;
+            Patho = patho;
         }
                 
         /// <summary>
@@ -75,15 +77,23 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns>String with the answer</returns>
         private async Task<string> RequestDataAsync(string path)
         {
-            WebRequest request = WebRequest.Create(path);
-            request.Method = "GET";
-            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            try
             {
-                if (response.StatusCode != HttpStatusCode.OK)
-                    throw new Exception(String.Format("Server error (HTTP {0}: {1}).", response.StatusCode, response.StatusDescription));
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-                string json = reader.ReadToEnd();
-                return json;
+                WebRequest request = WebRequest.Create(path);
+                request.Method = "GET";
+                using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        throw new Exception(String.Format("Server error (HTTP {0}: {1}).", response.StatusCode, response.StatusDescription));
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    string json = reader.ReadToEnd();
+                    return json;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText(Patho + DateTime.Now.ToString("yyyyMMdd"), "1... "+ ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
+                throw ex;
             }
         }        
 

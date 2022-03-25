@@ -24,6 +24,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
         protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
         protected List<Country> Countries { get; set; }
+        private string path { get; set; }
 
         /// <summary>
         /// Method Construct
@@ -34,7 +35,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             hostingEnvironment = environment;
             Root = settings.Value.api_fs;
-            rWS = new RepositoryWeatherStations(Root);
+            path = hostingEnvironment.ContentRootPath + "\\Log\\";
+            rWS = new RepositoryWeatherStations(Root, path);
             try
             {
                 Task.Run(() => this.InitAsync()).Wait(350000);
@@ -76,11 +78,19 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <returns></returns>
         protected async Task<bool> InitAsync()
         {
-            // laoding data
-            Countries = await rWS.ListCountryAsync();
-            WeatherStations = await rWS.ListAsync();
-            WeatherStationsCrops = await rWS.ListByCropAsync();
-            return true;
+            try
+            {
+                // laoding data
+                Countries = await rWS.ListCountryAsync();
+                WeatherStations = await rWS.ListAsync();
+                WeatherStationsCrops = await rWS.ListByCropAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), "2... " + ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
+                throw ex;
+            }
         }
 
         /// <summary>

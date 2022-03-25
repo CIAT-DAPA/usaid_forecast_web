@@ -10,12 +10,14 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
 using System.Web;
+using System.IO;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
     public class HomeController : WebBaseController
     {
         protected string idCountry { get; set; }
+        private string path { get; set; }
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -23,6 +25,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <param name="hostingEnvironment">Host Enviroment</param>
         public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, hostingEnvironment)
         {
+            path = hostingEnvironment.ContentRootPath + "\\Log\\";
             idCountry = settings.Value.idCountry;
         }
 
@@ -33,7 +36,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             {
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
-                countryId = idCountry;
+                //countryId = idCountry;
                 // Setting data
                 SetWS(countryId);
 
@@ -41,6 +44,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             }
             catch (Exception ex)
             {
+                System.IO.File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), "3... " + ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
                 return View("Error");
             }
         }

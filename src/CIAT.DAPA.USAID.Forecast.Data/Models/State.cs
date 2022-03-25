@@ -42,7 +42,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// 
         /// </summary>
-        [BsonRequired]
-        public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
+        //[BsonRequired]
+        //public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
     }
 }

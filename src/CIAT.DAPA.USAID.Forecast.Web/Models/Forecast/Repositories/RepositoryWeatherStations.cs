@@ -11,9 +11,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
     {
         private WebAPIForecast Client { get; set; }
 
-        public RepositoryWeatherStations(string root)
+        public RepositoryWeatherStations(string root, string patho)
         {
-            Client = new WebAPIForecast(root);
+            Client = new WebAPIForecast(root, patho);
         }
 
         /// <summary>
@@ -40,30 +40,38 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
         /// <returns></returns>
         public async Task<List<WeatherStationFull>> ListAsync()
         {
-            var states = await Client.GetGeographicAsync();
-            List<WeatherStationFull> answer = new List<WeatherStationFull>();
-            foreach (var s in states)
+            try
             {
-                foreach (var m in s.Municipalities)
+                var states = await Client.GetGeographicAsync();
+                List<WeatherStationFull> answer = new List<WeatherStationFull>();
+                foreach (var s in states)
                 {
-                    foreach (var w in m.Weather_Stations)
-                        answer.Add(new WeatherStationFull()
-                        {
-                            Ext_Id = w.Ext_Id,
-                            Id = w.Id,
-                            Latitude = w.Latitude,
-                            Longitude = w.Longitude,
-                            Name = w.Name,
-                            Station = w.Name,
-                            Origin = w.Origin,
-                            Ranges = w.Ranges,
-                            Country = s.Country.id,
-                            State = s.Name,
-                            Municipality = m.Name
-                        });
+                    foreach (var m in s.Municipalities)
+                    {
+                        foreach (var w in m.Weather_Stations)
+                            answer.Add(new WeatherStationFull()
+                            {
+                                Ext_Id = w.Ext_Id,
+                                Id = w.Id,
+                                Latitude = w.Latitude,
+                                Longitude = w.Longitude,
+                                Name = w.Name,
+                                Station = w.Name,
+                                Origin = w.Origin,
+                                Ranges = w.Ranges,
+                                Country = s.Country.id,
+                                State = s.Name,
+                                Municipality = m.Name
+                            });
+                    }
                 }
+                return answer;
             }
-            return answer;
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         /// <summary>
