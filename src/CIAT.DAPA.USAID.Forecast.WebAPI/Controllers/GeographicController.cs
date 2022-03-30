@@ -10,6 +10,7 @@ using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities;
 using Microsoft.AspNetCore.Cors;
 using System.Text;
 using MongoDB.Bson;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,48 +29,90 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Geographic/
         [HttpGet]
-        [Route("api/[controller]/{format?}")]
-        public async Task<IActionResult> Get(string format)
+        [Route("api/[controller]/{idCountry?}/{format?}")]
+        public async Task<IActionResult> Get(string idCountry, string format)
         {
             try
             {
-                var countries = await db.country.listEnableAsync();
-                var states = await db.state.listEnableAsync();
-                var municipalities = await db.municipality.listEnableVisibleAsync();
-                var weatherstations = await db.weatherStation.listEnableVisibleAsync();
-                var crops = await db.crop.listEnableAsync();
                 List<StateEntity> json = new List<StateEntity>();
-                StateEntity geo_s;
-                MunicipalityEntity geo_m;
-                foreach (var s in states)
+
+                if (string.IsNullOrEmpty(idCountry))
                 {
-                    var countryinstate = countries.Where(p => p.id == s.country);
-                    var countryinstatelist = countryinstate.ToList();
-                    geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { id = countryinstatelist[0].id.ToString(), iso2 = countryinstatelist[0].iso2, name = countryinstatelist[0].name }, municipalities = new List<MunicipalityEntity>() };
-                    foreach (var m in municipalities.Where(p => p.state == s.id))
+                    var countries = await db.country.listEnableAsync();
+                    var states = await db.state.listEnableAsync();
+                    var municipalities = await db.municipality.listEnableVisibleAsync();
+                    var weatherstations = await db.weatherStation.listEnableVisibleAsync();
+                    var crops = await db.crop.listEnableAsync();
+                    StateEntity geo_s;
+                    MunicipalityEntity geo_m;
+                    foreach (var s in states)
                     {
-                        geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
-                        foreach (var w in weatherstations.Where(p => p.municipality == m.id))
-                            geo_m.weather_stations.Add(new WeatherStationEntity()
-                            {                                
-                                id = w.id.ToString(),                                
-                                ext_id = w.ext_id,
-                                name = w.name,
-                                origin = w.origin,
-                                latitude = w.latitude,
-                                longitude = w.longitude,
-                                ranges = w.ranges.Select(p => new YieldRangeEntity()
+                        var countryinstate = countries.Where(p => p.id == s.country);
+                        var countryinstatelist = countryinstate.ToList();
+                        geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { id = countryinstatelist[0].id.ToString(), iso2 = countryinstatelist[0].iso2, name = countryinstatelist[0].name }, municipalities = new List<MunicipalityEntity>() };
+                        foreach (var m in municipalities.Where(p => p.state == s.id))
+                        {
+                            geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
+                            foreach (var w in weatherstations.Where(p => p.municipality == m.id))
+                                geo_m.weather_stations.Add(new WeatherStationEntity()
                                 {
-                                    crop_id = p.crop.ToString(),
-                                    label = p.label,
-                                    lower = p.lower,
-                                    upper = p.upper,
-                                    crop_name = crops.Single(p2 => p2.id == p.crop).name
-                                })
-                            });
-                        geo_s.municipalities.Add(geo_m);
+                                    id = w.id.ToString(),
+                                    ext_id = w.ext_id,
+                                    name = w.name,
+                                    origin = w.origin,
+                                    latitude = w.latitude,
+                                    longitude = w.longitude,
+                                    ranges = w.ranges.Select(p => new YieldRangeEntity()
+                                    {
+                                        crop_id = p.crop.ToString(),
+                                        label = p.label,
+                                        lower = p.lower,
+                                        upper = p.upper,
+                                        crop_name = crops.Single(p2 => p2.id == p.crop).name
+                                    })
+                                });
+                            geo_s.municipalities.Add(geo_m);
+                        }
+                        json.Add(geo_s);
                     }
-                    json.Add(geo_s);
+                }
+                else
+                {
+                    var country = await db.country.byIdAsync(idCountry);
+                    var states = await db.state.listEnableAsync();
+                    var municipalities = await db.municipality.listEnableVisibleAsync();
+                    var weatherstations = await db.weatherStation.listEnableVisibleAsync();
+                    var crops = await db.crop.listEnableAsync();
+                    StateEntity geo_s;
+                    MunicipalityEntity geo_m;
+                    foreach (var s in states.Where(p => p.country == country.id))
+                    {
+                        geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { id = country.id.ToString(), iso2 = country.iso2, name = country.name }, municipalities = new List<MunicipalityEntity>() };
+                        foreach (var m in municipalities.Where(p => p.state == s.id))
+                        {
+                            geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
+                            foreach (var w in weatherstations.Where(p => p.municipality == m.id))
+                                geo_m.weather_stations.Add(new WeatherStationEntity()
+                                {
+                                    id = w.id.ToString(),
+                                    ext_id = w.ext_id,
+                                    name = w.name,
+                                    origin = w.origin,
+                                    latitude = w.latitude,
+                                    longitude = w.longitude,
+                                    ranges = w.ranges.Select(p => new YieldRangeEntity()
+                                    {
+                                        crop_id = p.crop.ToString(),
+                                        label = p.label,
+                                        lower = p.lower,
+                                        upper = p.upper,
+                                        crop_name = crops.Single(p2 => p2.id == p.crop).name
+                                    })
+                                });
+                            geo_s.municipalities.Add(geo_m);
+                        }
+                        json.Add(geo_s);
+                    }
                 }
                 // Write event log
                 writeEvent("Geographic count [" + json.Count().ToString() + "]", LogEvent.lis);
@@ -101,8 +144,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Geographic/Crop/
         [HttpGet]
-        [Route("api/[controller]/Crop/{format?}")]
-        public async Task<IActionResult> GetCrop(string format)
+        [Route("api/[controller]/Crop/{idCountry?}/{format?}")]
+        public async Task<IActionResult> GetCrop(string idCountry, string format)
         {
             try
             {
@@ -176,7 +219,23 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                             }
                             json_state.Add(geo_s);
                         }
-                        json.Add(new CropGeographicEntity() { id = crop.id.ToString(), name = crop.name, states = json_state });
+                        if (string.IsNullOrEmpty(idCountry))
+                        {
+                            if (json_state.Count() != 0)
+                            {
+                                json.Add(new CropGeographicEntity() { id = crop.id.ToString(), name = crop.name, states = json_state });
+                            }
+                        }
+                        else
+                        {
+                            if (json_state.Count() != 0)
+                            {
+                                if (json_state[0].country.id == idCountry)
+                                {
+                                    json.Add(new CropGeographicEntity() { id = crop.id.ToString(), name = crop.name, states = json_state });
+                                }
+                            }
+                        }
                     }
                 }
 
