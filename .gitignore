@@ -256,3 +256,5 @@ appsettings.Development.json
 
 # Databases
 forecast_db/
+
+/src/CIAT.DAPA.USAID.Forecast.Web/Log
