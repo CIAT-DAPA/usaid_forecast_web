@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace CIAT.DAPA.USAID.Forecast.Web
 {
@@ -20,6 +21,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
     {
         public Startup(IConfiguration configuration, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)

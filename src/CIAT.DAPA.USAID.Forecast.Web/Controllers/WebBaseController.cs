@@ -88,7 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             }
             catch (Exception ex)
             {
-                System.IO.File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), "2... " + ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
+                //System.IO.File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), "2... " + ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
                 throw ex;
             }
         }
