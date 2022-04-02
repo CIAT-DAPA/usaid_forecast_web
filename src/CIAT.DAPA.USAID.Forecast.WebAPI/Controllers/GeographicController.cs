@@ -29,8 +29,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Geographic/
         [HttpGet]
-        [Route("api/[controller]/{idCountry?}/{format?}")]
-        public async Task<IActionResult> Get(string idCountry, string format)
+        [Route("api/[controller]/{format?}/{idCountry?}")]
+        public async Task<IActionResult> Get(string format, string idCountry = null)
         {
             try
             {
@@ -144,8 +144,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Geographic/Crop/
         [HttpGet]
-        [Route("api/[controller]/Crop/{idCountry?}/{format?}")]
-        public async Task<IActionResult> GetCrop(string idCountry, string format)
+        [Route("api/[controller]/Crop/{format?}/{idCountry?}")]
+        public async Task<IActionResult> GetCrop(string format, string idCountry = null)
         {
             try
             {
