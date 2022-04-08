@@ -108,33 +108,33 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return await collection.Find(filter).ToListAsync<State>();
         }
 
-        //public async Task<bool> addConfigurationPyCpt(State entity, ConfigurationPyCPT conf)
-        //{
-        //    conf.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
-        //    List<ConfigurationPyCPT> allConf = entity.conf_pycpt.ToList();
-        //    allConf.Add(conf);
-        //    entity.conf_pycpt = allConf;
-        //    var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
-        //        Builders<State>.Update.Set("conf_pycpt", entity.conf_pycpt));
-        //    return result.ModifiedCount > 0;
-        //}
+        public async Task<bool> addConfigurationPyCpt(State entity, ConfigurationPyCPT conf)
+        {
+            conf.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            List<ConfigurationPyCPT> allConf = entity.conf_pycpt.ToList();
+            allConf.Add(conf);
+            entity.conf_pycpt = allConf;
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
+                Builders<State>.Update.Set("conf_pycpt", entity.conf_pycpt));
+            return result.ModifiedCount > 0;
+        }
 
-        //public async Task<bool> deleteConfigurationPyCPTAsync(State entity, Obs obs, Mos mos, bool station, Predictand predictand, Predictors predictors, int tini, int tend, int xmodes_min, int xmodes_max, int ymodes_min, int ymodes_max, int ccamodes_min, int ccamodes_max, bool force_download, bool single_models, bool forecast_anomaly, bool forecast_spi, int confidence_level, int ind_exec, DateTime register)
-        //{
-        //    List<ConfigurationPyCPT> allConf = new List<ConfigurationPyCPT>();
-        //    foreach (var c in entity.conf_pycpt)
-        //    {
-        //        if (c.obs == obs && c.mos == mos && c.station == station && c.predictand == predictand && c.predictors == predictors && c.tini == tini && c.tend == tend && c.xmodes_min == xmodes_min && c.xmodes_max == xmodes_max && c.ymodes_min == ymodes_min && c.ymodes_max == ymodes_max && c.ccamodes_min == ccamodes_min && c.ccamodes_max == ccamodes_max && c.force_download == force_download && c.single_models == single_models && c.forecast_anomaly == forecast_anomaly && c.forecast_spi == forecast_spi && c.confidence_level == confidence_level && c.ind_exec == ind_exec && c.track.register.ToString("yyyy-MM-dd HH:mm:ss") == register.ToString("yyyy-MM-dd HH:mm:ss"))
-        //        {
-        //            c.track.updated = DateTime.Now;
-        //            c.track.enable = false;
-        //        }
-        //        allConf.Add(c);
-        //    }
-        //    entity.conf_pycpt = allConf;
-        //    var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
-        //        Builders<State>.Update.Set("conf_pycpt", entity.conf_pycpt));
-        //    return result.ModifiedCount > 0;
-        //}
+        public async Task<bool> deleteConfigurationPyCPTAsync(State entity, Obs obs, Mos mos, bool station, Predictand predictand, Predictors predictors, int tini, int tend, int xmodes_min, int xmodes_max, int ymodes_min, int ymodes_max, int ccamodes_min, int ccamodes_max, bool force_download, bool single_models, bool forecast_anomaly, bool forecast_spi, int confidence_level, int ind_exec, DateTime register)
+        {
+            List<ConfigurationPyCPT> allConf = new List<ConfigurationPyCPT>();
+            foreach (var c in entity.conf_pycpt)
+            {
+                if (c.obs == obs && c.mos == mos && c.station == station && c.predictand == predictand && c.predictors == predictors && c.tini == tini && c.tend == tend && c.xmodes_min == xmodes_min && c.xmodes_max == xmodes_max && c.ymodes_min == ymodes_min && c.ymodes_max == ymodes_max && c.ccamodes_min == ccamodes_min && c.ccamodes_max == ccamodes_max && c.force_download == force_download && c.single_models == single_models && c.forecast_anomaly == forecast_anomaly && c.forecast_spi == forecast_spi && c.confidence_level == confidence_level && c.ind_exec == ind_exec && c.track.register.ToString("yyyy-MM-dd HH:mm:ss") == register.ToString("yyyy-MM-dd HH:mm:ss"))
+                {
+                    c.track.updated = DateTime.Now;
+                    c.track.enable = false;
+                }
+                allConf.Add(c);
+            }
+            entity.conf_pycpt = allConf;
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
+                Builders<State>.Update.Set("conf_pycpt", entity.conf_pycpt));
+            return result.ModifiedCount > 0;
+        }
     }
 }

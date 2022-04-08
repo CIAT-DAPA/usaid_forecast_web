@@ -39,6 +39,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// 
         /// </summary>
         //[BsonRequired]
-        //public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
+        public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
     }
 }

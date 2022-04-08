@@ -4,8 +4,9 @@
         var m = d3.timeMonth.floor(month);
         return d3.timeWeeks(d3.timeWeek.floor(m), d3.timeMonth.offset(m, 1)).length;
     }
-    var minDate = d3.min(myData, function (d) { return new Date(d.end); });
-    var maxDate = d3.max(myData, function (d) { return new Date(d.end); });
+
+    var minDate = d3.min(myData, function (d) { return new Date(Date.UTC(parseInt(d.end.split("T")[0].split("-")[0]), parseInt(d.end.split("T")[0].split("-")[1])-1, parseInt(d.end.split("T")[0].split("-")[2])+1)); });
+    var maxDate = d3.max(myData, function (d) { return new Date(Date.UTC(parseInt(d.end.split("T")[0].split("-")[0]), parseInt(d.end.split("T")[0].split("-")[1])-1, parseInt(d.end.split("T")[0].split("-")[2])+1)); });
    
     var width_full = (split ? $(document).width() / 2 : $(document).width()) * 0.9;
 

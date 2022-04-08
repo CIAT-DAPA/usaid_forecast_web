@@ -48,6 +48,15 @@ Export Data
 
 -c	"value"		Mandatory parameter. It is the ObjectId of Country
 				to export data for only country indicated in the parameter.
+
+-st	"value"		Optional parameter. It is the ObjectId of State
+				to export coordinates of weather stations by State.
+
+-py				Export json file from pycpt configuration by country or by state depends of indicator.
+
+-pyco			Create a only file of weather station with their
+				coordinates by country or state.
+
 -----------------------------------------------------------------
 Import Data
 

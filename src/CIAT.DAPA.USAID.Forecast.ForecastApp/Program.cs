@@ -38,6 +38,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_PATH_FS_FILES = conf["Out_PATH_FS_FILES"],
                     Out_PATH_STATES = conf["Out_PATH_STATES"],
                     Out_PATH_WS_FILES = conf["Out_PATH_WS_FILES"],
+                    Out_PATH_WSPYCPT_FILES = conf["Out_PATH_WSPYCPT_FILES"],
                     Out_CROPS_COORDINATES = conf["Out_CROPS_COORDINATES"].Split(','),
                     Out_PATH_FILE_COORDINATES = conf["Out_PATH_FILE_COORDINATES"],
                     Out_PATH_USERS = conf["Out_PATH_USERS"],
@@ -84,11 +85,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                 }
                 // Check the first parameter to validate if the action is export (-out) or import (-in)
                 else if (Program.searchParameter(args, "-out") == 0)
-                {
+                 {
                     int path = Program.searchParameter(args, "-p");
                     Program.validateParameter(path, "-p");
                     var country = Program.searchParameter(args, "-c");
                     Program.validateParameter(country, "-c");
+                    var state = Program.searchParameter(args, "-st");
                     COut output = new COut();
                     // Export states
                     // -out -s "prec" -p "C:\Users\hsotelo\Desktop\test export\\" -start 1981 -end 2013
@@ -144,6 +146,30 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     {
                         Console.WriteLine("Exporting Users");
                         await output.exportUsersEmailsAsync(args[path + 1]);
+                    }
+                    // Export json file, pycpt configuration
+                    // -out -py -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444"
+                    int py = Program.searchParameter(args, "-py");
+                    if (py >= 0)
+                    {
+                        Console.WriteLine("Exporting PYCPT configuration");
+                        await output.exportConfigurationPyCpt(args[path + 1], args[country + 1]);
+                    }
+                    // Export coords file, by country and state
+                    // -out -pyco -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444" -st ""5555666677778888"
+                    int pyco = Program.searchParameter(args, "-pyco");
+                    if (pyco >= 0)
+                    {
+                        if (state == -1)
+                        {
+                            Console.WriteLine("Exporting coordinates by country");
+                            await output.exportCoordsWsPycptAsync(args[path + 1], args[country + 1], null);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exporting coordinates by state");
+                            await output.exportCoordsWsPycptAsync(args[path + 1], args[country + 1], args[state + 1]);
+                        }
                     }
                 }
                 else if (Program.searchParameter(args, "-in") == 0)

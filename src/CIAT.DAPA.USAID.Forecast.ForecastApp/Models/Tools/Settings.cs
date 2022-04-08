@@ -27,6 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Name of directory to export the configuration files of weather stations
         /// </summary>
         public string Out_PATH_WS_FILES { get; set; }
+        public string Out_PATH_WSPYCPT_FILES { get; set; }
         /// <summary>
         /// Name of directory to export the setup for the yield forecast
         /// </summary>

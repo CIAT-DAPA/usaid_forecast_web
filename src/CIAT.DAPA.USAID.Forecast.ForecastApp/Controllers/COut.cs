@@ -2,12 +2,14 @@
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Util;
+using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Export;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 {
@@ -349,6 +351,151 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         public static string getExtension(string path)
         {
             return path.Substring(path.Length - 4, 4);
+        }
+
+        public async Task<bool> exportConfigurationPyCpt(string path, string mainCountry)
+        {
+            Console.WriteLine(path);
+            Console.WriteLine(mainCountry);
+            Country country = await db.country.byIdAsync(mainCountry);
+            var conf_pycpt = country.conf_pycpt.Where(p => p.track.enable == true).OrderByDescending(o => o.track.register);
+            foreach (var conf in conf_pycpt)
+            {
+                List<string> models = new List<string>();
+                foreach (var m in conf.models)
+                {
+                    models.Add(m.ToString());
+                }
+                List<string> mons = new List<string>();
+                foreach (var mo in conf.mons)
+                {
+                    mons.Add(mo.ToString());
+                }
+                List<string> tgtii = new List<string>();
+                foreach (var tg in conf.tgtii)
+                {
+                    tgtii.Add(tg.ToString());
+                }
+                List<string> tgtff = new List<string>();
+                foreach (var tgf in conf.tgtff)
+                {
+                    tgtff.Add(tgf.ToString());
+                }
+                List<string> tgts = new List<string>();
+                foreach (var tgs in conf.tgts)
+                {
+                    tgts.Add(tgs.ToString());
+                }
+                ExportConfPyCpt jsonObject = new ExportConfPyCpt()
+                {
+                    spatial_predictors = new SpatialCoords() 
+                    { 
+                        nla = conf.spatial_predictands.nla,
+                        sla = conf.spatial_predictands.elo,
+                        elo = conf.spatial_predictands.elo,
+                        wlo = conf.spatial_predictands.wlo
+                    },
+                    spatial_predictands = new SpatialCoords()
+                    {
+                        nla = conf.spatial_predictands.nla,
+                        sla = conf.spatial_predictands.sla,
+                        elo = conf.spatial_predictands.elo,
+                        wlo = conf.spatial_predictands.wlo
+                    },
+                    models = models,
+                    obs = conf.obs.ToString(),
+                    station = conf.station,
+                    mos = conf.mos.ToString(),
+                    predictand = conf.predictand.ToString(),
+                    predictors = conf.predictors.ToString(),
+                    mons = mons,
+                    tgtii = tgtii,
+                    tgtff = tgtff,
+                    tgts = tgts,
+                    tini = conf.tini,
+                    tend = conf.tend,
+                    xmodes_min = conf.xmodes_min,
+                    xmodes_max = conf.xmodes_max,
+                    ymodes_min = conf.ymodes_min,
+                    ymodes_max = conf.ymodes_max,
+                    ccamodes_min = conf.ccamodes_min,
+                    ccamodes_max = conf.ccamodes_max,
+                    force_download = conf.force_download,
+                    single_models = conf.single_models,
+                    forecast_anomaly = conf.forecast_anomaly,
+                    forecast_spi = conf.forecast_spi,
+                    confidence_level = conf.confidence_level,
+                    ind_exec = conf.ind_exec
+                };
+
+                var jsn = JsonConvert.SerializeObject(jsonObject);
+                File.WriteAllText(path + Path.DirectorySeparatorChar + "inputsPycpt.json", jsn);
+            }
+
+            return true;
+        }
+
+        public async Task<bool> exportCoordsWsPycptAsync(string path, string mainCountry, string mainState = null)
+        {
+            // Create directory
+            if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES);
+            var weather_stations = await db.weatherStation.listEnableAsync();
+            if (mainCountry != null && mainState == null)
+            {
+                foreach (var ws in weather_stations.Where(p => p.visible))
+                {
+                    var municipality = await db.municipality.byIdAsync(ws.municipality.ToString());
+                    var state = await db.state.byIdAsync(municipality.state.ToString());
+                    var country = await db.country.byIdAsync(state.country.ToString());
+                    if (country.id.ToString() == mainCountry)
+                    {
+                        Console.WriteLine("Exporting coords ws: " + ws.name);
+                        StringBuilder coords = new StringBuilder();
+                        if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name))
+                            Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name);
+                        if (!File.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + "stations_coords.csv"))
+                        {
+                            coords.Append("id,lat,lon\n");
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.WriteAllText(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                        }
+                        else
+                        {
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.AppendAllText(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var state = await db.state.byIdAsync(mainState);
+                var country = await db.country.byIdAsync(state.country.ToString());
+                var municipalities = await db.municipality.listEnableAsync();
+                foreach (var municipality in municipalities.Where(p => p.visible && p.state == state.id))
+                {
+                    foreach (var ws in weather_stations.Where(q => q.visible && q.municipality == municipality.id))
+                    {
+                        Console.WriteLine("Exporting coords ws: " + ws.name);
+                        StringBuilder coords = new StringBuilder();
+                        if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString()))
+                            Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString());
+                        if (!File.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv"))
+                        {
+                            coords.Append("id,lat,lon\n");
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.WriteAllText(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                        }
+                        else
+                        {
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.AppendAllText(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
     }
