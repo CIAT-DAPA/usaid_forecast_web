@@ -75,7 +75,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         ///
         /// </summary>
         [BsonRequired]
-        public IEnumerable<Mons> tgts { get; set; }
+        public IEnumerable<Quarter> tgts { get; set; }
         /// <summary>
         ///
         /// </summary>
