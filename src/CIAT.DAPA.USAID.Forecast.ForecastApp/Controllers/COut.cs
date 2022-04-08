@@ -381,11 +381,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 {
                     tgtff.Add(tgf.ToString());
                 }
-                List<string> tgts = new List<string>();
-                foreach (var tgs in conf.tgts)
+                List<string> tgts = conf.getTransformedTgts();
+                //List<string> tgts = new List<string>();
+                /*foreach (var tgs in conf.tgts)
                 {
+
                     tgts.Add(tgs.ToString());
-                }
+                }*/
                 ExportConfPyCpt jsonObject = new ExportConfPyCpt()
                 {
                     spatial_predictors = new SpatialCoords() 
