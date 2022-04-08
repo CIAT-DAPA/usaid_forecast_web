@@ -561,15 +561,22 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         private async Task generateListMonsAsync()
         {
             List<SelectListItem> checks2 = new List<SelectListItem>();
+            List<SelectListItem> checkst = new List<SelectListItem>();
             // List climate variables
             var mons = from Mons q in Enum.GetValues(typeof(Mons))
                        select new { id = (int)q, name = q.ToString() };
+            var qua = from Quarter q in Enum.GetValues(typeof(Quarter))
+                      select new { id = (int)q, name = q.ToString() };
             foreach (var item in mons)
             {
                 checks2.Add(new SelectListItem { Text = item.name.ToString(), Value = item.id.ToString() });
             }
+            foreach (var item in qua)
+            {
+                checkst.Add(new SelectListItem { Text = item.name.ToString(), Value = item.id.ToString() });
+            }
             ViewBag.mons = checks2;
-            ViewBag.tgts = checks2;
+            ViewBag.tgts = checkst;
         }
         // POST: /Satate/ConfigurationPyCpt/5
         [HttpPost, ActionName("ConfigurationPyCpt")]
@@ -585,12 +592,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
-                List<Mons> arrtgts = new List<Mons>();
+                List<Quarter> arrtgts = new List<Quarter>();
                 foreach (var item in form["tgts"])
                 {
                     if (item != "false")
                     {
-                        arrtgts.Add((Mons)int.Parse(item));
+                        arrtgts.Add((Quarter)int.Parse(item));
                     }
                 }
                 List<Mons> arrmons = new List<Mons>();
