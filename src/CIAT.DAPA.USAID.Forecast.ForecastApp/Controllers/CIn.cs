@@ -44,6 +44,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 climate_conf = climate_conf
             });
             Console.WriteLine("Created forecast " + forecast.id.ToString());
+            if (File.Exists(path + "forecast.csv"))
+                File.Delete(path + "forecast.csv");
+            File.WriteAllText(path + "forecast.csv", "forecast_id" + "\n" + forecast.id.ToString());
             // Load probabilities
             Console.WriteLine("Getting probabilities and performance");
             Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);

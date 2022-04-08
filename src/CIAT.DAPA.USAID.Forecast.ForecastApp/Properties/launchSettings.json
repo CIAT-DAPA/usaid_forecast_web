@@ -2,7 +2,7 @@
   "profiles": {
     "CIAT.DAPA.USAID.Forecast.ForecastApp": {
       "commandName": "Project",
-      "commandLineArgs": "-in -hs -s \"prec\" -type 1 -p \"C:\\Users\\hsotelo\\Desktop\\Ethiopia\\new\\Ethio_4Steven\\North Wollo\\North Wollo\\srad_mon_North Wollo.csv\" "
+      "commandLineArgs": "-out -py -p \"D:\\CIAT\\ToBackup\\OneDrive - CGIAR\\Desktop\\py\\\\\" -c \"61e59d829d5d2486e18d2ea9\""
     }
   }
 }
