@@ -34,13 +34,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             base(settings, LogEntity.lc_country, hostingEnvironment, userManager, signInManager, roleManager, emailSender)
         {
         }
-        // GET: /State/
+        // GET: /Country/
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
+                UserPermission permission = await getPermissionAsync();
                 var list = await db.country.listEnableAsync();
+                // FIlter countries by permission
+                list = list.Where(p => permission.countries.Contains(p.id)).ToList();
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
 
                 return View(list);

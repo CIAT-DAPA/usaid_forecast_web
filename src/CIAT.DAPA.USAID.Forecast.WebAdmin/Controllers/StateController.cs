@@ -38,14 +38,37 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
+        private async Task<PermissionList> LoadEnableByPermissionAsync()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listEnableAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listEnableAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            return val;
+        }
+
+        private async Task<PermissionList> LoadAllByPermissionAsync()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listAllAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listAllAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            return val;
+        }
+
         // GET: /State/
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var list = await db.state.listEnableAsync();
-                ViewBag.countries = await db.country.listAllAsync();
+                var obj = await LoadAllByPermissionAsync();
+                var list = obj.states;                
+                ViewBag.countries = obj.countries;
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -173,6 +196,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
+                UserPermission permission = await getPermissionAsync();
                 await generateListAllCountriesAsync(entity.country.ToString());
                 return View(entity);
             }
@@ -463,7 +487,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
         private async Task<bool> generateListCountriesAsync(string selected)
         {
-            var countries = (await db.country.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            var obj = await LoadEnableByPermissionAsync();
+            // Filter states by permission by countries            
+            var countries = obj.countries.Select(p => new { id = p.id.ToString(), name = p.name });
             if (string.IsNullOrEmpty(selected))
                 ViewData["country"] = new SelectList(countries, "id", "name");
             else
@@ -472,7 +498,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         }
         private async Task<bool> generateListAllCountriesAsync(string selected)
         {
-            var countries = (await db.country.listAllAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            var obj = await LoadAllByPermissionAsync();            
+            var countries = obj.countries.Select(p => new { id = p.id.ToString(), name = p.name });
             if (string.IsNullOrEmpty(selected))
                 ViewData["country"] = new SelectList(countries, "id", "name");
             else

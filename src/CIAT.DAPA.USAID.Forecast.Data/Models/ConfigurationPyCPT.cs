@@ -26,6 +26,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// List of models that will include in the forecast process
         /// </summary>
         [BsonRequired]
+        [BsonRepresentation(BsonType.String)]
         public IEnumerable<ModelsPyCpt> models { get; set; }
         /// <summary>
         /// Type of observational data

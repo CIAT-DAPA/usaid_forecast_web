@@ -226,6 +226,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return false;
             }
         }
+        protected async Task<UserPermission> getPermissionAsync()
+        {
+            User user = await GetCurrentUserAsync();
+            UserPermission permission = await db.userPermission.byUserAsync(user.Email);
+            return permission;
+        }
 
         /// <summary>
         /// Method that creates configuration PyCPT from form data
@@ -242,13 +248,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
             Region spt_predictors = new Region()
             {
-                rigth_upper = new Coords() { lat = double.Parse(form["northernmost_lat1"]), lon = double.Parse(form["easternmost_lat1"]) },
-                left_lower = new Coords() { lat = double.Parse(form["southernmost_lat1"]), lon = double.Parse(form["westernmost_lat1"]) },
+                rigth_upper = new Coords() { lat = double.Parse(form["northernmost_lat1"]), lon = double.Parse(form["westernmost_lat1"]) },
+                left_lower = new Coords() { lat = double.Parse(form["southernmost_lat1"]), lon = double.Parse(form["easternmost_lat1"]) },
             };
             Region spt_predictands = new Region()
             {
-                rigth_upper = new Coords() { lat = double.Parse(form["northernmost_lat2"]), lon = double.Parse(form["easternmost_lat2"]) },
-                left_lower = new Coords() { lat = double.Parse(form["southernmost_lat2"]), lon = double.Parse(form["westernmost_lat2"]) },
+                rigth_upper = new Coords() { lat = double.Parse(form["northernmost_lat2"]), lon = double.Parse(form["westernmost_lat2"]) },
+                left_lower = new Coords() { lat = double.Parse(form["southernmost_lat2"]), lon = double.Parse(form["easternmost_lat2"]) },
             };
             ConfigurationPyCPT confPyCpt = new ConfigurationPyCPT()
             {
