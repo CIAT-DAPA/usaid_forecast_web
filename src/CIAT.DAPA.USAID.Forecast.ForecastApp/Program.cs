@@ -148,12 +148,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         await output.exportUsersEmailsAsync(args[path + 1]);
                     }
                     // Export json file, pycpt configuration
-                    // -out -py -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444"
+                    // -out -py -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444" -m "4"
                     int py = Program.searchParameter(args, "-py");
                     if (py >= 0)
                     {
+                        int m = Program.searchParameter(args, "-m");
+                        Program.validateParameter(m, "-m");
                         Console.WriteLine("Exporting PYCPT configuration");
-                        await output.exportConfigurationPyCpt(args[path + 1], args[country + 1]);
+                        await output.exportConfigurationPyCpt(args[path + 1], args[country + 1], args[m+1].Split(",").Select(int.Parse).ToList());
                     }
                     // Export coords file, by country and state
                     // -out -pyco -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444" -st ""5555666677778888"

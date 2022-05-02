@@ -117,10 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
+  <data name="CCAModes" xml:space="preserve">
+    <value>Modos CCA</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Setup PyCPT Country</value>
+  <data name="ConfidenceLevel" xml:space="preserve">
+    <value>Intervalo confianza</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Fecha registro</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="ForecastAnomaly" xml:space="preserve">
+    <value>Anomalias pronóstico</value>
+  </data>
+  <data name="ForecastSpi" xml:space="preserve">
+    <value>Pronóstico spi</value>
+  </data>
+  <data name="Models" xml:space="preserve">
+    <value>Modelos</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Mes</value>
+  </data>
+  <data name="Mos" xml:space="preserve">
+    <value>Mos</value>
+  </data>
+  <data name="Obs" xml:space="preserve">
+    <value>Obs</value>
+  </data>
+  <data name="OthersParameters" xml:space="preserve">
+    <value>Otros parámetros</value>
+  </data>
+  <data name="Predictand" xml:space="preserve">
+    <value>Predictando</value>
+  </data>
+  <data name="Predictors" xml:space="preserve">
+    <value>Predictores</value>
+  </data>
+  <data name="Ranges" xml:space="preserve">
+    <value>Rangos</value>
+  </data>
+  <data name="SetupAvalaible" xml:space="preserve">
+    <value>Configuraciones disponibles</value>
+  </data>
+  <data name="SingleModels" xml:space="preserve">
+    <value>Modelos individuales</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Estaciones</value>
+  </data>
+  <data name="XModes" xml:space="preserve">
+    <value>Modos X</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>Años</value>
+  </data>
+  <data name="YModes" xml:space="preserve">
+    <value>Modos Y</value>
   </data>
 </root>

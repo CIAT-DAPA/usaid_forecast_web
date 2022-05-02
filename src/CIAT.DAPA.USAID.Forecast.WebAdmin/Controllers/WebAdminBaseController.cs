@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -81,7 +83,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="settings">Settings options</param>
         /// <param name="entity">List of entities affected</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public WebAdminBaseController(IOptions<Settings> settings, LogEntity entity, IHostingEnvironment environment, 
+        public WebAdminBaseController(IOptions<Settings> settings, LogEntity entity, IHostingEnvironment environment,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             RoleManager<Role> roleManager, IEmailSender emailSender) : base()
@@ -164,7 +166,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 return managerUser.GetUserAsync(HttpContext.User);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -224,5 +226,97 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return false;
             }
         }
+
+        /// <summary>
+        /// Method that creates configuration PyCPT from form data
+        /// </summary>
+        /// <param name="form">HTTP Form</param>
+        /// <returns>ConfigurationPyCPT</returns>
+        protected ConfigurationPyCPT generatePyCPTConfAsync(IFormCollection form)
+        {
+            List<ModelsPyCpt> arrmodpycpt = new List<ModelsPyCpt>();
+            foreach (var item in form["modelspycpt"])
+            {
+                if (item != "false")
+                    arrmodpycpt.Add((ModelsPyCpt)int.Parse(item));
+            }
+            Region spt_predictors = new Region()
+            {
+                rigth_upper = new Coords() { lat = double.Parse(form["northernmost_lat1"]), lon = double.Parse(form["easternmost_lat1"]) },
+                left_lower = new Coords() { lat = double.Parse(form["southernmost_lat1"]), lon = double.Parse(form["westernmost_lat1"]) },
+            };
+            Region spt_predictands = new Region()
+            {
+                rigth_upper = new Coords() { lat = double.Parse(form["northernmost_lat2"]), lon = double.Parse(form["easternmost_lat2"]) },
+                left_lower = new Coords() { lat = double.Parse(form["southernmost_lat2"]), lon = double.Parse(form["westernmost_lat2"]) },
+            };
+            ConfigurationPyCPT confPyCpt = new ConfigurationPyCPT()
+            {
+                spatial_predictors = spt_predictors,
+                spatial_predictands = spt_predictands,
+                models = arrmodpycpt,
+                obs = (Obs)int.Parse(form["obs"]),
+                mos = (Mos)int.Parse(form["mos"]),
+                month = int.Parse(form["month"]),
+                station = bool.Parse(form["station"]),
+                predictand = (Predictand)int.Parse(form["predictand"]),
+                predictors = (Predictors)int.Parse(form["predictors"]),
+                ranges_years = new RangeParameter() { min = int.Parse(form["tini"]), max = int.Parse(form["tend"]) },
+                xmodes = new RangeParameter() { min = int.Parse(form["xmodes_min"]), max = int.Parse(form["xmodes_max"]) },
+                ymodes = new RangeParameter() { min = int.Parse(form["ymodes_min"]), max = int.Parse(form["ymodes_max"]) },
+                ccamodes = new RangeParameter() { min = int.Parse(form["ccamodes_min"]), max = int.Parse(form["ccamodes_max"]) },
+                force_download = bool.Parse(form["force_download"]),
+                single_models = bool.Parse(form["single_models"]),
+                forecast_anomaly = bool.Parse(form["forecast_anomaly"]),
+                forecast_spi = bool.Parse(form["forecast_spi"]),
+                confidence_level = int.Parse(form["confidence_level"])
+            };
+            return confPyCpt;
+        }
+
+        protected bool generateListsPyCPT()
+        {
+            // Months
+            string[] months = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            ViewBag.months = months;
+            List<SelectListItem> list_months = new List<SelectListItem>();
+            int i = 1;
+            foreach(var m in months)
+            {
+                list_months.Add(new SelectListItem() { Value = i.ToString(), Text = m });
+                i += 1;
+            }
+            ViewBag.month = list_months;
+            // Booleand values
+            IEnumerable<dynamic> bool_values = new List<dynamic> { new { id = 0, name = "False" }, new { id = 1, name = "True" } };
+            ViewBag.bool_values = new SelectList(bool_values, "name", "name");
+            List<SelectListItem> checks = new List<SelectListItem>();
+            // List climate variables
+            var modelspycpt = from ModelsPyCpt q in Enum.GetValues(typeof(ModelsPyCpt))
+                              select new { id = (int)q, name = q.ToString() };
+            foreach (var item in modelspycpt)
+            {
+                checks.Add(new SelectListItem { Text = item.name.ToString(), Value = item.id.ToString() });
+            }
+            ViewBag.modelspycpt = checks;
+            // List climate variables
+            var obs = from Obs q in Enum.GetValues(typeof(Obs))
+                      select new { id = (int)q, name = q.ToString() };
+            ViewBag.obs = new SelectList(obs, "id", "name");
+            // List climate variables
+            var mos = from Mos q in Enum.GetValues(typeof(Mos))
+                      select new { id = (int)q, name = q.ToString() };
+            ViewBag.mos = new SelectList(mos, "id", "name");
+            // List climate variables
+            var predictors = from Predictors q in Enum.GetValues(typeof(Predictors))
+                             select new { id = (int)q, name = q.ToString() };
+            ViewBag.predictors = new SelectList(predictors, "id", "name");
+            // List climate variables
+            var predictand = from Predictand q in Enum.GetValues(typeof(Predictand))
+                             select new { id = (int)q, name = q.ToString() };
+            ViewBag.predictand = new SelectList(predictand, "id", "name");
+            return true;
+        }
+
     }
 }

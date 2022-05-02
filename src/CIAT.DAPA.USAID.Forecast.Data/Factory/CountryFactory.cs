@@ -60,12 +60,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return result.ModifiedCount > 0;
         }
 
-        public async Task<bool> deleteConfigurationPyCPTAsync(Country entity, Obs obs, Mos mos, bool station, Predictand predictand, Predictors predictors, int tini, int tend, int xmodes_min, int xmodes_max, int ymodes_min, int ymodes_max, int ccamodes_min, int ccamodes_max, bool force_download, bool single_models, bool forecast_anomaly, bool forecast_spi, int confidence_level, int ind_exec, DateTime register)
+        public async Task<bool> deleteConfigurationPyCPTAsync(Country entity, int month, long register)
         {
             List<ConfigurationPyCPT> allConf = new List<ConfigurationPyCPT>();
             foreach (var c in entity.conf_pycpt)
             {
-                if (c.obs == obs && c.mos == mos && c.station == station && c.predictand == predictand && c.predictors == predictors && c.tini == tini && c.tend == tend && c.xmodes_min == xmodes_min && c.xmodes_max == xmodes_max && c.ymodes_min == ymodes_min && c.ymodes_max == ymodes_max && c.ccamodes_min == ccamodes_min && c.ccamodes_max == ccamodes_max && c.force_download == force_download && c.single_models == single_models && c.forecast_anomaly == forecast_anomaly && c.forecast_spi == forecast_spi && c.confidence_level == confidence_level && c.ind_exec == ind_exec && c.track.register.ToString("yyyy-MM-dd HH:mm:ss") == register.ToString("yyyy-MM-dd HH:mm:ss"))
+                if (c.month == month && c.track.register.Ticks == register)
                 {
                     c.track.updated = DateTime.Now;
                     c.track.enable = false;

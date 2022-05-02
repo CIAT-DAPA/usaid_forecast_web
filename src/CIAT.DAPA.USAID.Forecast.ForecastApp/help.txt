@@ -49,6 +49,9 @@ Export Data
 -c	"value"		Mandatory parameter. It is the ObjectId of Country
 				to export data for only country indicated in the parameter.
 
+-m	"value"		Mandatory parameter. It is the Month number that you want
+				to export. It just works for PyCPT export file
+
 -st	"value"		Optional parameter. It is the ObjectId of State
 				to export coordinates of weather stations by State.
 

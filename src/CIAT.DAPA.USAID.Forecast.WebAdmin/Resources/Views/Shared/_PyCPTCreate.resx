@@ -117,10 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
+  <data name="CCAModes" xml:space="preserve">
+    <value>CCA Modes</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Setup PyCPT Country</value>
+  <data name="ConfidenceLevel" xml:space="preserve">
+    <value>Confidence level</value>
+  </data>
+  <data name="Elo" xml:space="preserve">
+    <value>Elo</value>
+  </data>
+  <data name="ForceDownload" xml:space="preserve">
+    <value>Force download</value>
+  </data>
+  <data name="ForecastAnomaly" xml:space="preserve">
+    <value>Forecast anomaly</value>
+  </data>
+  <data name="ForecastSpi" xml:space="preserve">
+    <value>Forecast spi</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Máx</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Modelspycpt" xml:space="preserve">
+    <value>Models PyCPT</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Mos" xml:space="preserve">
+    <value>Mos</value>
+  </data>
+  <data name="NewSetup" xml:space="preserve">
+    <value>New setup</value>
+  </data>
+  <data name="Nla" xml:space="preserve">
+    <value>Nla</value>
+  </data>
+  <data name="Obs" xml:space="preserve">
+    <value>Obs</value>
+  </data>
+  <data name="Predictand" xml:space="preserve">
+    <value>Predictand</value>
+  </data>
+  <data name="Predictors" xml:space="preserve">
+    <value>Predictor</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SingleModels" xml:space="preserve">
+    <value>Single models</value>
+  </data>
+  <data name="Sla" xml:space="preserve">
+    <value>Sla</value>
+  </data>
+  <data name="Spatial" xml:space="preserve">
+    <value>Spatial</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Station</value>
+  </data>
+  <data name="Wlo" xml:space="preserve">
+    <value>Wlo</value>
+  </data>
+  <data name="XModes" xml:space="preserve">
+    <value>X Modes</value>
+  </data>
+  <data name="YearRange" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="YModes" xml:space="preserve">
+    <value>Y Modes</value>
   </data>
 </root>

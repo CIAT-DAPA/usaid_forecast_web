@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
@@ -272,6 +273,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>_LoginPartial.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Shared\_PyCPTCreate.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_PyCPTCreate.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Shared\_PyCPTList.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>_PyCPTList.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Views\Soil\Create.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -580,6 +591,14 @@
     <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_PyCPTCreate.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>_PyCPTCreate.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_PyCPTList.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>_PyCPTList.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Soil\Create.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

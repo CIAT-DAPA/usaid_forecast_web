@@ -13,22 +13,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
     public partial class ConfigurationPyCPT
     {
         /// <summary>
-        ///
+        /// Define the spatial region for predictors
         /// </summary>
         [BsonRequired]
-        public SpatialCoords spatial_predictors { get; set; }
+        public Region spatial_predictors { get; set; }
         /// <summary>
-        ///
+        /// Define the spatial region for predictands
         /// </summary>
         [BsonRequired]
-        public SpatialCoords spatial_predictands { get; set; }
+        public Region spatial_predictands { get; set; }
         /// <summary>
-        ///
+        /// List of models that will include in the forecast process
         /// </summary>
         [BsonRequired]
         public IEnumerable<ModelsPyCpt> models { get; set; }
         /// <summary>
-        ///
+        /// Type of observational data
         /// </summary>
         [BsonRepresentation(BsonType.String)]
         [BsonRequired]
@@ -37,7 +37,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         ///
         /// </summary>
         [BsonRequired]
-        public Boolean station { get; set; }
+        public bool station { get; set; }
         /// <summary>
         ///
         /// </summary>
@@ -60,92 +60,52 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         ///
         /// </summary>
         [BsonRequired]
-        public IEnumerable<Mons> mons { get; set; }
+        public int month { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public IEnumerable<String> tgtii { get; set; }
+        public RangeParameter ranges_years { get; set; }        
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public IEnumerable<String> tgtff { get; set; }
+        public RangeParameter xmodes { get; set; }        
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public IEnumerable<Quarter> tgts { get; set; }
+        public RangeParameter ymodes { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public int tini { get; set; }
+        public RangeParameter ccamodes { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public int tend { get; set; }
+        public bool force_download { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public int xmodes_min { get; set; }
+        public bool single_models { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public int xmodes_max { get; set; }
+        public bool forecast_anomaly { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public int ymodes_min { get; set; }
+        public bool forecast_spi { get; set; }
         /// <summary>
         ///
         /// </summary>
         [BsonRequired]
-        public int ymodes_max { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public int ccamodes_min { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public int ccamodes_max { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public Boolean force_download { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public Boolean single_models { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public Boolean forecast_anomaly { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public Boolean forecast_spi { get; set; }
-        /// <summary>
-        ///
-        /// </summary>
-        [BsonRequired]
-        public int confidence_level { get; set; }
-        /// <summary>
-        /// Number that indicate the execution 0= country and 1= state/region
-        /// </summary>
-        [BsonRequired]
-        public int ind_exec { get; set; }
+        public double confidence_level { get; set; }        
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>

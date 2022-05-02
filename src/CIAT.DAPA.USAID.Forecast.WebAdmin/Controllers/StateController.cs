@@ -497,20 +497,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
-                ViewBag.state = entity;
-                IEnumerable<dynamic> buleans = new List<dynamic> { new { id = 0, name = "True" }, new { id = 1, name = "False" } };
-                ViewBag.station = new SelectList(buleans, "name", "name");
-                ViewBag.force_download = new SelectList(buleans, "name", "name");
-                ViewBag.single_models = new SelectList(buleans, "name", "name");
-                ViewBag.forecast_anomaly = new SelectList(buleans, "name", "name");
-                ViewBag.forecast_spi = new SelectList(buleans, "name", "name");
-                await generateListModelsPyCpyAsync();
-                await generateListObsAsync();
-                await generateListMosAsync();
-                await generateListPredictorsAsync();
-                await generateListPredictandAsync();
-                await generateListMonsAsync();
-                return View(entity.conf_pycpt);
+                generateListsPyCPT();
+                return View(entity);
             }
             catch (Exception ex)
             {
@@ -518,66 +506,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return View();
             }
         }
-        private async Task generateListModelsPyCpyAsync()
-        {
-            List<SelectListItem> checks = new List<SelectListItem>();
-            // List climate variables
-            var modelspycpt = from ModelsPyCpt q in Enum.GetValues(typeof(ModelsPyCpt))
-                              select new { id = (int)q, name = q.ToString() };
-            foreach (var item in modelspycpt)
-            {
-                checks.Add(new SelectListItem { Text = item.name.ToString(), Value = item.id.ToString() });
-            }
-            ViewBag.modelspycpt = checks;
-        }
-        private async Task generateListObsAsync()
-        {
-            // List climate variables
-            var obs = from Obs q in Enum.GetValues(typeof(Obs))
-                      select new { id = (int)q, name = q.ToString() };
-            ViewBag.obs = new SelectList(obs, "id", "name");
-        }
-        private async Task generateListMosAsync()
-        {
-            // List climate variables
-            var mos = from Mos q in Enum.GetValues(typeof(Mos))
-                      select new { id = (int)q, name = q.ToString() };
-            ViewBag.mos = new SelectList(mos, "id", "name");
-        }
-        private async Task generateListPredictorsAsync()
-        {
-            // List climate variables
-            var predictors = from Predictors q in Enum.GetValues(typeof(Predictors))
-                             select new { id = (int)q, name = q.ToString() };
-            ViewBag.predictors = new SelectList(predictors, "id", "name");
-        }
-        private async Task generateListPredictandAsync()
-        {
-            // List climate variables
-            var predictand = from Predictand q in Enum.GetValues(typeof(Predictand))
-                             select new { id = (int)q, name = q.ToString() };
-            ViewBag.predictand = new SelectList(predictand, "id", "name");
-        }
-        private async Task generateListMonsAsync()
-        {
-            List<SelectListItem> checks2 = new List<SelectListItem>();
-            List<SelectListItem> checkst = new List<SelectListItem>();
-            // List climate variables
-            var mons = from Mons q in Enum.GetValues(typeof(Mons))
-                       select new { id = (int)q, name = q.ToString() };
-            var qua = from Quarter q in Enum.GetValues(typeof(Quarter))
-                      select new { id = (int)q, name = q.ToString() };
-            foreach (var item in mons)
-            {
-                checks2.Add(new SelectListItem { Text = item.name.ToString(), Value = item.id.ToString() });
-            }
-            foreach (var item in qua)
-            {
-                checkst.Add(new SelectListItem { Text = item.name.ToString(), Value = item.id.ToString() });
-            }
-            ViewBag.mons = checks2;
-            ViewBag.tgts = checkst;
-        }
+        
         // POST: /Satate/ConfigurationPyCpt/5
         [HttpPost, ActionName("ConfigurationPyCpt")]
         [ValidateAntiForgeryToken]
@@ -587,94 +516,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 var form = HttpContext.Request.Form;
                 State entity = await db.state.byIdAsync(id);
-                if (entity == null)
-                {
-                    await writeEventAsync("Not found id: " + id, LogEvent.err);
-                    return new NotFoundResult();
-                }
-                List<Quarter> arrtgts = new List<Quarter>();
-                foreach (var item in form["tgts"])
-                {
-                    if (item != "false")
-                    {
-                        arrtgts.Add((Quarter)int.Parse(item));
-                    }
-                }
-                List<Mons> arrmons = new List<Mons>();
-                foreach (var item in form["mons"])
-                {
-                    if (item != "false")
-                    {
-                        arrmons.Add((Mons)int.Parse(item));
-                    }
-                }
-                List<ModelsPyCpt> arrmodpycpt = new List<ModelsPyCpt>();
-                foreach (var item in form["modelspycpt"])
-                {
-                    if (item != "false")
-                    {
-                        arrmodpycpt.Add((ModelsPyCpt)int.Parse(item));
-                    }
-                }
-                int counttgtii = form.Keys.Where(p => p.Contains("tgtii_value_")).Count();
-                List<String> arrtgtii = new List<string>();
-                for (int i = 0; i < counttgtii; i++)
-                {
-                    int f = i + 1;
-                    arrtgtii.Add(form["tgtii_value_" + f.ToString()]);
-                }
-                int counttgtff = form.Keys.Where(p => p.Contains("tgtff_value_")).Count();
-                List<String> arrtgtff = new List<string>();
-                for (int i = 0; i < counttgtff; i++)
-                {
-                    int f = i + 1;
-                    arrtgtff.Add(form["tgtff_value_" + f.ToString()]);
-                }
-                SpatialCoords spt_predictors = new SpatialCoords()
-                {
-                    nla = int.Parse(form["northernmost_lat1"]),
-                    sla = int.Parse(form["southernmost_lat1"]),
-                    wlo = int.Parse(form["westernmost_lat1"]),
-                    elo = int.Parse(form["easternmost_lat1"]),
-                };
-                SpatialCoords spt_predictands = new SpatialCoords()
-                {
-                    nla = int.Parse(form["northernmost_lat2"]),
-                    sla = int.Parse(form["southernmost_lat2"]),
-                    wlo = int.Parse(form["westernmost_lat2"]),
-                    elo = int.Parse(form["easternmost_lat2"]),
-                };
-                ConfigurationPyCPT confPyCpt = new ConfigurationPyCPT()
-                {
-                    spatial_predictors = spt_predictors,
-                    spatial_predictands = spt_predictands,
-                    models = arrmodpycpt,
-                    obs = (Obs)int.Parse(form["obs"]),
-                    mos = (Mos)int.Parse(form["mos"]),
-                    station = bool.Parse(form["station"]),
-                    predictand = (Predictand)int.Parse(form["predictand"]),
-                    predictors = (Predictors)int.Parse(form["predictors"]),
-                    mons = arrmons,
-                    tgtii = arrtgtii.ToList(),
-                    tgtff = arrtgtff.ToList(),
-                    tgts = arrtgts,
-                    tini = int.Parse(form["tini"]),
-                    tend = int.Parse(form["tend"]),
-                    xmodes_min = int.Parse(form["xmodes_min"]),
-                    xmodes_max = int.Parse(form["xmodes_max"]),
-                    ymodes_min = int.Parse(form["ymodes_min"]),
-                    ymodes_max = int.Parse(form["ymodes_max"]),
-                    ccamodes_min = int.Parse(form["ccamodes_min"]),
-                    ccamodes_max = int.Parse(form["ccamodes_max"]),
-                    force_download = bool.Parse(form["force_download"]),
-                    single_models = bool.Parse(form["single_models"]),
-                    forecast_anomaly = bool.Parse(form["forecast_anomaly"]),
-                    forecast_spi = bool.Parse(form["forecast_spi"]),
-                    confidence_level = int.Parse(form["confidence_level"]),
-                    ind_exec = 1
-                };
+                ConfigurationPyCPT confPyCpt = generatePyCPTConfAsync(form);
                 await db.state.addConfigurationPyCpt(entity, confPyCpt);
-
                 return RedirectToAction("ConfigurationPyCpt", new { id = id });
             }
             catch (Exception ex)
@@ -686,14 +529,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/ConfigurationDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfigurationPyCptDelete(string id, string obs, string mos, bool station, string predictand, string predictors, int tini, int tend, int xmodes_min, int xmodes_max, int ymodes_min, int ymodes_max, int ccamodes_min, int ccamodes_max, bool force_download, bool single_models, bool forecast_anomaly, bool forecast_spi, int confidence_level, int ind_exec, DateTime register)
-        {
+        public async Task<IActionResult> ConfigurationPyCptDelete(string id, int month, long register)
+        {   
             try
             {
                 // Get original crop data
                 State entity_new = await db.state.byIdAsync(id);
                 // Delete the setup
-                await db.state.deleteConfigurationPyCPTAsync(entity_new, (Obs)Enum.Parse(typeof(Obs), obs), (Mos)Enum.Parse(typeof(Mos), mos), station, (Predictand)Enum.Parse(typeof(Predictand), predictand), (Predictors)Enum.Parse(typeof(Predictors), predictors), tini, tend, xmodes_min, xmodes_max, ymodes_min, ymodes_max, ccamodes_min, ccamodes_max, force_download, single_models, forecast_anomaly, forecast_spi, confidence_level, ind_exec, register);
+                await db.state.deleteConfigurationPyCPTAsync(entity_new, month, register);
                 return RedirectToAction("ConfigurationPyCpt", new { id = id });
             }
             catch (Exception ex)

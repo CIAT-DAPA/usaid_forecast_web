@@ -33,7 +33,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// 
         /// </summary>
-        EU_C3S_ECMWF_SEAS,
+        EU_C3S_ECMWF_SEAS5,
         /// <summary>
         /// 
         /// </summary>
