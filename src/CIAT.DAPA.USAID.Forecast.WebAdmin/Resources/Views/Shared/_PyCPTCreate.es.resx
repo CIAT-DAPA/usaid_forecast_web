@@ -124,7 +124,7 @@
     <value>Nivel de confianza</value>
   </data>
   <data name="Elo" xml:space="preserve">
-    <value>Elo</value>
+    <value>Este (longitud)</value>
   </data>
   <data name="ForceDownload" xml:space="preserve">
     <value>Forzar descarga</value>
@@ -154,7 +154,7 @@
     <value>Nueva configuración</value>
   </data>
   <data name="Nla" xml:space="preserve">
-    <value>Nla</value>
+    <value>Norte (latitud)</value>
   </data>
   <data name="Obs" xml:space="preserve">
     <value>Obs</value>
@@ -172,7 +172,7 @@
     <value>Modelos individuales</value>
   </data>
   <data name="Sla" xml:space="preserve">
-    <value>Sla</value>
+    <value>Sur (latitud)</value>
   </data>
   <data name="Spatial" xml:space="preserve">
     <value>Espacial</value>
@@ -181,7 +181,7 @@
     <value>Estaciones</value>
   </data>
   <data name="Wlo" xml:space="preserve">
-    <value>Wlo</value>
+    <value>Oeste (longitud)</value>
   </data>
   <data name="XModes" xml:space="preserve">
     <value>Modos X</value>

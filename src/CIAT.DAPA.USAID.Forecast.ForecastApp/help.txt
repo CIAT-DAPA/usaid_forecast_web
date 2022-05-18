@@ -101,3 +101,14 @@ Examples
 
 #Import forecast
 -in -fs -p "C:\import\\" -cf 0.5
+
+# Normal calls
+
+-out -py -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9" -m "4"
+-out -s "prec" -p "D:\\CIAT\\Aclimate\\" -start 1982 -end 2013 -c "61e59d829d5d2486e18d2ea9"
+-out -wf -p "D:\\CIAT\\Aclimate\\" -name "daily" -c "61e59d829d5d2486e18d2ea9"
+-out -co -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9"
+-out -fs -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9"
+-out -py -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9" -m "5"
+-out -pyco -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9"
+

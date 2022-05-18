@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elo.
+        ///   Looks up a localized string similar to East (longitude).
         /// </summary>
         public static string Elo {
             get {
@@ -169,7 +169,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nla.
+        ///   Looks up a localized string similar to North (latitude).
         /// </summary>
         public static string Nla {
             get {
@@ -223,7 +223,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sla.
+        ///   Looks up a localized string similar to South (latitude).
         /// </summary>
         public static string Sla {
             get {
@@ -250,7 +250,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wlo.
+        ///   Looks up a localized string similar to West (longitud).
         /// </summary>
         public static string Wlo {
             get {

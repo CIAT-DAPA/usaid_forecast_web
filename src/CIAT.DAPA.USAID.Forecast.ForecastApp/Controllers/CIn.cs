@@ -110,7 +110,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 ws = fields[2],
                                 pearson = double.Parse(fields[3]),
                                 kendall = double.Parse(fields[4]),
-                                goodness = double.Parse(fields[5])
+                                goodness = double.Parse(fields[5]),
+                                canonica = double.Parse(fields[6]),
+                                afc2 = double.Parse(fields[7]),
+                                groc = double.Parse(fields[8]),
+                                ignorance = double.Parse(fields[9]),
+                                rpss = double.Parse(fields[10]),
+                                spearman = double.Parse(fields[11])
                             });
                         }
                         count += 1;
@@ -150,6 +156,54 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             month = p.month,
                             name = m,
                             value = p.pearson
+                        }).ToList());
+                    else if (m == MeasurePerformance.canonica)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.canonica
+                        }).ToList());
+                    else if (m == MeasurePerformance.afc2)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.afc2
+                        }).ToList());
+                    else if (m == MeasurePerformance.groc)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.groc
+                        }).ToList());
+                    else if (m == MeasurePerformance.ignorance)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.ignorance
+                        }).ToList());
+                    else if (m == MeasurePerformance.rpss)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.rpss
+                        }).ToList());
+                    else if (m == MeasurePerformance.spearman)
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.spearman
                         }).ToList());
                 }
                 // Saving in the database
