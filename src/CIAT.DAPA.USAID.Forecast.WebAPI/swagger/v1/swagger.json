@@ -1,0 +1,154 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This is a Web API which allows run Oryza model for Aclimate Platform",
+    "version": "1.0.0",
+    "title": "Aclimate Oryza Web API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "login",
+      "description": "Everything about login into into the services"
+    },
+    {
+      "name": "run",
+      "description": "Endpoint for requesting and getting oryza outputs"
+    }
+  ],
+  "paths": {
+    "/api/v1/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Logs user into the system",
+        "produces": [
+          "application/json"
+        ],
+        "requestBody": {
+          "description": "User and password of user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/token"
+            }
+          },
+          "401": {
+            "description": "Failed. Bad post data. Could not verify"
+          }
+        }
+      }
+    },
+    "/api/v1/run": {
+      "post": {
+        "tags": [
+          "run"
+        ],
+        "summary": "Endpoint which allow to users run Oryza model",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Your access token. It is the token value return in the login",
+            "required": "true",
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Zip file with all scenarios and parameters for Oryza",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/inputs"
+              }
+            }
+          }
+        },
+        "produces": [
+          "text/csv"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/output"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "500": {
+            "description": "Server failed. Error during execution."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "auth": {
+        "type": "object",
+        "required": [
+          "user",
+          "password"
+        ],
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "required": [
+          "inputs"
+        ],
+        "properties": {
+          "inputs": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "weather_station": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

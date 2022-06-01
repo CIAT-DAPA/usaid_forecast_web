@@ -13,7 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return Redirect("swagger");
         }
     }
 }

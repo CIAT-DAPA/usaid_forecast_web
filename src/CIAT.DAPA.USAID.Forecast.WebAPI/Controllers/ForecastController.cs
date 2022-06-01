@@ -88,6 +88,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 };
                 // Write event log
                 writeEvent("Forecast lastes climate and scenarios id " + f.id.ToString(), LogEvent.lis);
+                //writeEvent(Json(json).ToJson(), LogEvent.lis);
 
                 //Evaluate the format to export
                 if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))

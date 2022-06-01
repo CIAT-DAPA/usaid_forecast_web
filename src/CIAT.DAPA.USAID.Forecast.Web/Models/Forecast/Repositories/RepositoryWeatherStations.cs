@@ -111,11 +111,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
 
             return answer;
         }
-        public async Task<List<Country>> ListCountryAsync()
+        /*public async Task<List<Country>> ListCountryAsync()
         {
             var countries = await Client.GetCountryAsync();
             var listCountries = countries.ToList();
             return listCountries;
-        }
+        }*/
     }
 }

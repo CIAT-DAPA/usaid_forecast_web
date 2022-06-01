@@ -23,7 +23,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
         protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
-        protected List<Country> Countries { get; set; }
+        //protected List<Country> Countries { get; set; }
         private string path { get; set; }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             try
             {
                 // laoding data
-                Countries = await rWS.ListCountryAsync();
+                //Countries = await rWS.ListCountryAsync();
                 WeatherStations = await rWS.ListAsync();
                 WeatherStationsCrops = await rWS.ListByCropAsync();
                 return true;
@@ -102,14 +102,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             if (countryId == null || countryId == "")
             {
                 ViewBag.countryselect = countryId;
-                ViewBag.Countries = Countries;
+                //ViewBag.Countries = Countries;
                 ViewBag.WeatherStations = WeatherStations;
                 ViewBag.WeatherStationsCrops = WeatherStationsCrops;
             }
             else
             {
                 ViewBag.countryselect = countryId;
-                ViewBag.Countries = Countries;
+                //ViewBag.Countries = Countries;
                 WeatherStations = WeatherStations.Where(p => p.Country == countryId).ToList();
                 WeatherStationsCrops = WeatherStationsCrops.Where(p => p.Country == countryId).ToList();
                 ViewBag.WeatherStations = WeatherStations;

@@ -24,7 +24,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        [Route("api/[controller]/{cultivar?}/{format?}")]
+        [Route("api/[controller]/{cultivar}/{format}")]
         public async Task<IActionResult> Get(bool cultivar, string format)
         {
             try

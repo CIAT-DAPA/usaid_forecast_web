@@ -79,7 +79,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         {
             try
             {
-                WebRequest request = WebRequest.Create(path);
+                WebRequest request = WebRequest.Create(path + Format);
                 request.Method = "GET";
                 
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
@@ -120,7 +120,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<IEnumerable<StatesCrop>> GetGeographicCropAsync()
         {
-            string json = await RequestDataAsync(Root + GeographicCrop + Format);
+            //string json = await RequestDataAsync(Root + GeographicCrop + Format);
+            string json = await RequestDataAsync(Root + GeographicCrop);
             var answer = JsonConvert.DeserializeObject<IEnumerable<StatesCrop>>(json);
             return answer;
         }
@@ -131,7 +132,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<ForecastWeather> GetForecastWeatherAsync(string ws)
         {
-            string json = await RequestDataAsync(Root + ForecastWeather + ws + "/true/" + Format);
+            string json = await RequestDataAsync(Root + ForecastWeather + ws + "/true/");
             var answer = JsonConvert.DeserializeObject<ForecastWeather>(json);
             return answer;
         }
@@ -142,7 +143,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<IEnumerable<HistoricalClimate>> GetHistoricalClimateAsync(string ws)
         {
-            string json = await RequestDataAsync(Root + HistoricalClimate + ws + "/" + Format);
+            string json = await RequestDataAsync(Root + HistoricalClimate + ws + "/" );
             var answer = JsonConvert.DeserializeObject<IEnumerable<HistoricalClimate>>(json);
             return answer;
         }
@@ -153,7 +154,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<IEnumerable<HistoricalClimatology>> GetHistoricalClimatologyAsync(string ws)
         {
-            string json = await RequestDataAsync(Root + HistoricalClimatology + ws + "/" + Format);
+            string json = await RequestDataAsync(Root + HistoricalClimatology + ws + "/" );
             var answer = JsonConvert.DeserializeObject<IEnumerable<HistoricalClimatology>>(json);
             return answer;
         }
@@ -164,7 +165,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<ForecastYield> GetForecastYieldAsync(string ws)
         {
-            string json = await RequestDataAsync(Root + ForecastYield + ws + "/" + Format);
+            string json = await RequestDataAsync(Root + ForecastYield + ws + "/" );
             var answer = JsonConvert.DeserializeObject<ForecastYield>(json);
             return answer;
         }
@@ -175,7 +176,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<IEnumerable<Agronomic>> GetAgronomicAsync()
         {
-            string json = await RequestDataAsync(Root + Agronomic + "true/" + Format);
+            string json = await RequestDataAsync(Root + Agronomic + "true/" );
             var answer = JsonConvert.DeserializeObject<IEnumerable<Agronomic>>(json);
             return answer;
         }
@@ -186,7 +187,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<ForecastYield> GetForecastYieldExceedanceAsync(string ws)
         {
-            string json = await RequestDataAsync(Root + Exceedance + ws + "/" + Format);
+            string json = await RequestDataAsync(Root + Exceedance + ws + "/" );
             var answer = JsonConvert.DeserializeObject<ForecastYield>(json);
             return answer;
         }
@@ -194,11 +195,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Method that list all countries from the forecast web api 
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Country>> GetCountryAsync()
+        /*public async Task<IEnumerable<Country>> GetCountryAsync()
         {
-            string json = await RequestDataAsync(Root + Country);
+            string json = await RequestDataAsync(Root + Country + "/");
             var answer = JsonConvert.DeserializeObject<IEnumerable<Country>>(json);
             return answer;
-        }
+        }*/
     }
 }

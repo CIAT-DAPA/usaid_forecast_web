@@ -29,7 +29,36 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Geographic/
         [HttpGet]
-        [Route("api/[controller]/{format?}/{idCountry?}")]
+        [Route("api/[controller]/Country/{format}")]
+        public async Task<IActionResult> Country(string format)
+        {
+            try
+            {
+                var country = await db.country.listEnableAsync();
+                List<CountryEntity> json = new List<CountryEntity>();
+                CountryEntity geo_c;
+                foreach (var c in country)
+                {
+                    geo_c = new CountryEntity() { id = c.id.ToString(), iso2 = c.iso2, name = c.name };
+
+                    json.Add(geo_c);
+                }
+                // Write event log
+                writeEvent("Country count [" + json.Count().ToString() + "]", LogEvent.lis);
+
+                return Json(json);
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+
+                return new StatusCodeResult(500);
+            }
+        }
+
+        // GET: api/Geographic/
+        [HttpGet]
+        [Route("api/[controller]/{format?}/{idCountry?}")]        
         public async Task<IActionResult> Get(string format, string idCountry = null)
         {
             try

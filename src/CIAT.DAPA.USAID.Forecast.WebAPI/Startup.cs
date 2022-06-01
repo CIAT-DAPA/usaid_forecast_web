@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.OpenApi.Models;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI
 {
@@ -23,7 +24,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
 
             if (env.IsEnvironment("Development"))
             {
-                
+
             }
 
             builder.AddEnvironmentVariables();
@@ -43,10 +44,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
                 options.LogPath = Configuration.GetSection("Log:Path").Value;
                 options.Delimiter = Configuration.GetSection("Delimiter").Value;
             });
-            
+
             services.AddMvc(options =>
             {
-                options.RespectBrowserAcceptHeader = true; 
+                options.RespectBrowserAcceptHeader = true;
             });
 
             // ********************
@@ -62,6 +63,25 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
             services.AddCors(options =>
             {
                 options.AddPolicy("SiteCorsPolicy", corsBuilder.Build());
+            });
+            
+            // ********************
+            // Setup Swagger
+            // ********************
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Aclimate Web API",
+                    Description = "This documentation provide the information about checkout Aclimate API endpoints",
+                    //TermsOfService =  "None",
+                    Contact = new OpenApiContact()
+                    {
+                        Email = "h.sotelo@cgiar.org",
+                        Name = "Steven Sotelo"
+                    }
+                });
             });
         }
 
@@ -82,6 +102,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
             // USE CORS - might not be required.
             // ********************
             app.UseCors("SiteCorsPolicy");
+
+            // ********************
+            // USE Swagger
+            // ********************
+            app.UseSwagger();
+            app.UseSwaggerUI(options=> {
+                //options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                //options.RoutePrefix = string.Empty;
+                //options.EnableFilter();
+            });
         }
     }
 }
