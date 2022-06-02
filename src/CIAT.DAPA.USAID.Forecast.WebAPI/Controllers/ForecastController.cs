@@ -29,7 +29,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Forecast/Climate/{weather_stations}/{format?}
         [HttpGet]
-        [Route("api/[controller]/Climate/{weather_stations}/{probabilities?}/{format?}")]
+        [Route("api/[controller]/Climate/{weather_stations}/{probabilities}/{format}")]
         public async Task<IActionResult> GetClimate(string weather_stations, bool probabilities, string format)
         {
             try
@@ -133,7 +133,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Forecast/Yield
         [HttpGet]
-        [Route("api/[controller]/Yield/{weather_stations}/{format?}")]
+        [Route("api/[controller]/Yield/{weather_stations}/{format}")]
         public async Task<IActionResult> GetYield(string weather_stations, string format)
         {
             try
@@ -235,7 +235,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Forecast/Yield
         [HttpGet]
-        [Route("api/[controller]/YieldExceedance/{weather_stations}/{format?}")]
+        [Route("api/[controller]/YieldExceedance/{weather_stations}/{format}")]
         public async Task<IActionResult> GetYieldExceedance(string weather_stations, string format)
         {
             try

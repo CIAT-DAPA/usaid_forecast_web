@@ -202,15 +202,5 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
             var answer = JsonConvert.DeserializeObject<ForecastYield>(json);
             return answer;
         }
-        /// <summary>
-        /// Method that list all countries from the forecast web api 
-        /// </summary>
-        /// <returns></returns>
-        /*public async Task<IEnumerable<Country>> GetCountryAsync()
-        {
-            string json = await RequestDataAsync(Root + Country + "/");
-            var answer = JsonConvert.DeserializeObject<IEnumerable<Country>>(json);
-            return answer;
-        }*/
     }
 }

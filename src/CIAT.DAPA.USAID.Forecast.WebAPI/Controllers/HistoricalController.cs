@@ -25,7 +25,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/Climatology
         [HttpGet]
-        [Route("api/[controller]/Climatology/{weatherstations}/{format?}")]
+        [Route("api/[controller]/Climatology/{weatherstations}/{format}")]
         public async Task<IActionResult> Climatology(string weatherstations, string format)
         {
             try
@@ -81,7 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalClimatic
         [HttpGet]
-        [Route("api/[controller]/HistoricalClimatic/{weatherstations}/{format?}")]
+        [Route("api/[controller]/HistoricalClimatic/{weatherstations}/{format}")]
         public async Task<IActionResult> HistoricalClimatic(string weatherstations, string format)
         {
             try
@@ -139,7 +139,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalYield
         [HttpGet]
-        [Route("api/[controller]/HistoricalYieldYears/{weatherstations}/{format?}")]
+        [Route("api/[controller]/HistoricalYieldYears/{weatherstations}/{format}")]
         public async Task<IActionResult> HistoricalYieldYears(string weatherstations, string format)
         {
             try
@@ -183,7 +183,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Historical/HistoricalYield
         [HttpGet]
-        [Route("api/[controller]/HistoricalYield/{weatherstations}/{years}/{format?}")]
+        [Route("api/[controller]/HistoricalYield/{weatherstations}/{years}/{format}")]
         public async Task<IActionResult> HistoricalYield(string weatherstations, string years, string format)
         {
             try
