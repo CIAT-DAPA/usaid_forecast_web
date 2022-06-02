@@ -38,7 +38,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.Section = SectionSite.Climate;
                 countryId = idCountry;
                 // Setting data
-                SetWS(countryId);
+                SetWS();
 
                 return View();
             }
@@ -59,7 +59,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 "forecast", "sol_rad", "yield", "yield_pot", "t_max", "t_max_acu", "t_min", "t_min_acu"
             };
             // Setting data
-            SetWS(countryId);
+            SetWS();
 
             return View();
         }
@@ -72,7 +72,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 "project", "scenarios", "yield_rice", "yield_maize", "validation_maize"
             };
             // Setting data
-            SetWS(countryId);
+            SetWS();
 
             return View();
         }

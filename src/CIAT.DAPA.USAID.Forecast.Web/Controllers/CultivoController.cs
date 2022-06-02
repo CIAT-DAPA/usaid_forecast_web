@@ -40,7 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.Section = SectionSite.Crop;
 
                 // Setting data
-                SetWS(countryId);
+                SetWS();
                 ViewBag.Root = Root;
 
                 // Searching the weather station, if the parameters don't come, it will redirect a default weather station
@@ -53,7 +53,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.ws = ws;
 
                 // Getting the agronomic configuration
-                RepositoryAgronomic rA = new RepositoryAgronomic(Root);
+                RepositoryAgronomic rA = new RepositoryAgronomic(Root, IdCountry);
                 IEnumerable<Agronomic> agronomics = await rA.ListAsync();
                 Agronomic agronomic = agronomics.SingleOrDefault(p => p.Cp_Name.ToLower() == crop.ToLower());
                 

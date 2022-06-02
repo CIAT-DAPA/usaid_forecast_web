@@ -20,12 +20,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         protected RepositoryWeatherStations rWS { get; set; }
 
         protected string Root { get; set; }
+        protected string IdCountry { get; set; }
 
         protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
         protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
-        //protected List<Country> Countries { get; set; }
-        private string path { get; set; }
-
+        
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -35,8 +34,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             hostingEnvironment = environment;
             Root = settings.Value.api_fs;
-            path = hostingEnvironment.ContentRootPath + "\\Log\\";
-            rWS = new RepositoryWeatherStations(Root, path);
+            IdCountry = settings.Value.idCountry;
+            rWS = new RepositoryWeatherStations(Root, IdCountry);
             try
             {
                 Task.Run(() => this.InitAsync()).Wait(350000);
@@ -96,15 +95,17 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <summary>
         /// Method that transfer data to viewbag
         /// </summary>
-        protected void SetWS(string countryId = null)
+        protected void SetWS()
         {
             // Setting data
+            ViewBag.WeatherStations = WeatherStations;
+            ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+            /*
             if (countryId == null || countryId == "")
             {
                 ViewBag.countryselect = countryId;
                 //ViewBag.Countries = Countries;
-                ViewBag.WeatherStations = WeatherStations;
-                ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+                
             }
             else
             {
@@ -114,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 WeatherStationsCrops = WeatherStationsCrops.Where(p => p.Country == countryId).ToList();
                 ViewBag.WeatherStations = WeatherStations;
                 ViewBag.WeatherStationsCrops = WeatherStationsCrops;
-            }
+            }*/
         }
 
         protected WeatherStationFull SearchWS(string state, string municipality, string ws)

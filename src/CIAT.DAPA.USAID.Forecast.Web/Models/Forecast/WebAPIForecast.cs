@@ -19,7 +19,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Get or set the root path of the web api
         /// </summary>
         public string Root { get; set; }
-        private string Patho { get; set; }
+        /// <summary>
+        /// Get or set the path to get country information 
+        /// </summary>
+        private static string IdCountry { get; set; }
         /// <summary>
         /// Get or set the path to get geographic information 
         /// </summary>
@@ -56,18 +59,25 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// Get or set the path to get historical climate information
         /// </summary>
         private static readonly string Exceedance = "Forecast/YieldExceedance/";
-        /// <summary>
-        /// Get or set the path to get country information 
-        /// </summary>
-        private static readonly string Country = "Country/";
+
         /// <summary>
         /// Method Construct
         /// </summary>
-        /// <param name="root"></param>
-        public WebAPIForecast(string root, string patho = null)
+        /// <param name="root">Url base</param>
+        public WebAPIForecast(string root)
         {
             Root = root;
-            Patho = patho;
+        }
+
+        /// <summary>
+        /// Method Construct
+        /// </summary>
+        /// <param name="root">Url base</param>
+        /// <param name="id_country">id country</param>
+        public WebAPIForecast(string root, string id_country)
+        {
+            Root = root;
+            IdCountry = id_country;
         }
                 
         /// <summary>
@@ -98,7 +108,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
                                     "1|" + ex.Message.ToString() +
                                     "2|" + ex.StackTrace.ToString() + "\n");*/
                                     //"3|" + ex.InnerException.Message.ToString());
-                throw ex;
+                
+                return string.Empty;
             }
         }        
 
@@ -109,7 +120,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         public async Task<IEnumerable<States>> GetGeographicAsync()
         {
             //string json = await RequestDataAsync(Root + Geographic + Format);
-            string json = await RequestDataAsync(Root + Geographic);
+            string json = await RequestDataAsync(Root + Geographic + IdCountry + "/");
             var answer = JsonConvert.DeserializeObject<IEnumerable<States>>(json);
             return answer;
         }
@@ -121,7 +132,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         public async Task<IEnumerable<StatesCrop>> GetGeographicCropAsync()
         {
             //string json = await RequestDataAsync(Root + GeographicCrop + Format);
-            string json = await RequestDataAsync(Root + GeographicCrop);
+            string json = await RequestDataAsync(Root + GeographicCrop + IdCountry + "/");
             var answer = JsonConvert.DeserializeObject<IEnumerable<StatesCrop>>(json);
             return answer;
         }

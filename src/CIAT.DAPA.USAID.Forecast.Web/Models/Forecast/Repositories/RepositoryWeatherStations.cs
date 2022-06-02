@@ -11,9 +11,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
     {
         private WebAPIForecast Client { get; set; }
 
-        public RepositoryWeatherStations(string root, string patho)
+        public RepositoryWeatherStations(string root, string id_country)
         {
-            Client = new WebAPIForecast(root, patho);
+            Client = new WebAPIForecast(root, id_country);
         }
 
         /// <summary>
