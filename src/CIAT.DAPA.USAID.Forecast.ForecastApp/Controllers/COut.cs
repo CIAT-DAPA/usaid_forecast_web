@@ -364,11 +364,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         private string[] calculatePeriodsPyCPT(int m)
         {
             string[] r;
-            int i1 = (m % 12)-1;
-            int i2 = ((m + 2) % 12) - 1;
-            int i3 = ((m + 3) % 12) - 1;
-            int i4 = ((m + 5) % 12) - 1;
-            r = new string[] { months[i1] + "-" + months[i2], months[i3] + "-" + months[i4] };
+            int i1 = ((m-1) % 12);
+            int i2 = ((m + 1) % 12);
+            int i3 = ((m + 2) % 12);
+            int i4 = ((m + 4) % 12);
+            r = new string[] { months[i1-1] + "-" + months[i2-1], months[i3-1] + "-" + months[i4-1] };
             return r;
         }
 
@@ -415,15 +415,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     confidence_level = con.confidence_level.ToString()
                 });
             var jsn = JsonConvert.SerializeObject(confs);
-            File.WriteAllText(path + Path.DirectorySeparatorChar + "inputsPycpt.json", jsn);
+            if (File.Exists(path + "inputsPycpt.json"))
+                File.Delete(path + "inputsPycpt.json");
+            File.WriteAllText(path + "inputsPycpt.json", jsn);
             return true;
         }
 
         public async Task<bool> exportCoordsWsPycptAsync(string path, string mainCountry, string mainState = null)
         {
             // Create directory
-            if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES))
-                Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES);
+            /*if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES);*/
             var weather_stations = await db.weatherStation.listEnableAsync();
             if (mainCountry != null && mainState == null)
             {
@@ -436,9 +438,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     {
                         Console.WriteLine("Exporting coords ws: " + ws.name);
                         StringBuilder coords = new StringBuilder();
-                        /*if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name))
-                            Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name);*/
-                        //if (!File.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + "stations_coords.csv"))
                         if (!File.Exists(path + "stations_coords.csv"))
                         {
                             coords.Append("id,lat,lon\n");
@@ -448,7 +447,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         else
                         {
                             coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
-                            File.AppendAllText(path + "stations_coords.csv", coords.ToString());
+                            File.AppendAllText(path  + "stations_coords.csv", coords.ToString());
                         }
                     }
                 }
@@ -464,9 +463,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     {
                         Console.WriteLine("Exporting coords ws: " + ws.name);
                         StringBuilder coords = new StringBuilder();
-                        /*if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString()))
-                            Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString());*/
-                        //if (!File.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES + Path.DirectorySeparatorChar + country.name + Path.DirectorySeparatorChar + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv"))
                         if (!File.Exists(path + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv"))
                         {
                             coords.Append("id,lat,lon\n");
@@ -476,7 +472,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         else
                         {
                             coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
-                            File.AppendAllText(path + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                            File.AppendAllText(path  + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
                         }
                     }
                 }
