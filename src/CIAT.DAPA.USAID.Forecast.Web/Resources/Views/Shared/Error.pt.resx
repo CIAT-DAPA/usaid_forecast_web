@@ -117,34 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
+  <data name="Message" xml:space="preserve">
+    <value>Opa!!! Sentimos muito. Foi encontrado um erro no sistema</value>
   </data>
-  <data name="CropMaize" xml:space="preserve">
-    <value>Maize</value>
+  <data name="MetaDescription" xml:space="preserve">
+    <value>Baixe informações sobre previsão climática e agroclimática (previsão) na Colômbia.</value>
   </data>
-  <data name="CropRice" xml:space="preserve">
-    <value>Rice</value>
+  <data name="Meta_Keywords" xml:space="preserve">
+    <value>previsão,clima,previsão,tempo,precipitação,radiação solar,brilho solar,temperatura,temperatura máxima,temperatura mínima,história do clima,história do clima,climatologia,colheitas,produção,rendimento,dias para colheita</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="Indicators" xml:space="preserve">
-    <value>Indices</value>
-  </data>
-  <data name="OtherAbout" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="OtherDatabase" xml:space="preserve">
-    <value>Database</value>
-  </data>
-  <data name="OtherGlosary" xml:space="preserve">
-    <value>Glosary</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="Weather" xml:space="preserve">
-    <value>Weather</value>
+  <data name="Title" xml:space="preserve">
+    <value>Error</value>
   </data>
 </root>

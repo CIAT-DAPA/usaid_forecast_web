@@ -45,6 +45,17 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             {
                 options.api_fs = Configuration.GetSection("API_Forecast:api_fs").Value;
                 options.idCountry = Configuration.GetSection("API_Forecast:idCountry").Value;
+                options.modules_indicators = bool.Parse(Configuration.GetSection("Modules:Indicators").Value);
+                options.modules_rice = bool.Parse(Configuration.GetSection("Modules:Rice").Value);
+                options.modules_maize = bool.Parse(Configuration.GetSection("Modules:Maize").Value);
+                if (options.modules_indicators)
+                {
+                    options.indicator_geoserver_url= Configuration.GetSection("Indicators:GeoserverUrl").Value;
+                    options.indicator_geoserver_workspace = Configuration.GetSection("Indicators:GeoserverWorkspace").Value;
+                    options.indicator_geoserver_average = int.Parse(Configuration.GetSection("Indicators:GeoserverAverage").Value);
+                    string[] limit = Configuration.GetSection("Indicators:GeoserverTime").Value.ToString().Split("-");
+                    options.indicator_geoserver_time = new int[] { int.Parse(limit[0]), int.Parse(limit[1]) };
+                }
             });
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -55,20 +66,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web
 
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
-            {
-                //string[] languages = Configuration.GetSection("Languages").Value.Split(",");
-                var idCountry = Configuration.GetSection("API_Forecast:idCountry").Value;
-                //string[] languages = new string[] { "en-US", "es-CO" };
-                string[] languages;
-                if (idCountry == "61e59d829d5d2486e18d2ea8")
-                {
-                    languages = new string[] { "en-US", "es-CO" };
-                }
-                else
-                {
-                    languages = new string[] { "en-US", "am-ET" };
-                }
-
+            {                
+                string[] languages = Configuration.GetSection("Cultures:Enable").Value.Split(",");
                 CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
                 for (int i = 0; i < languages.Length; i++)
                 {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
+namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class _Menu {
+    public class Index {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal _Menu() {
+        internal Index() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared._Menu", typeof(_Menu).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores.Index", typeof(Index).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,47 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Country.
+        ///   Looks up a localized string similar to Crops.
         /// </summary>
-        public static string Country {
+        public static string Crop {
             get {
-                return ResourceManager.GetString("Country", resourceCulture);
+                return ResourceManager.GetString("Crop", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maize.
+        ///   Looks up a localized string similar to In this section you can see a list of agroclimatic risk indices.
         /// </summary>
-        public static string CropMaize {
+        public static string Description {
             get {
-                return ResourceManager.GetString("CropMaize", resourceCulture);
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rice.
+        ///   Looks up a localized string similar to Agroclimatic indicators.
         /// </summary>
-        public static string CropRice {
+        public static string Group {
             get {
-                return ResourceManager.GetString("CropRice", resourceCulture);
+                return ResourceManager.GetString("Group", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help.
+        ///   Looks up a localized string similar to Period.
         /// </summary>
-        public static string Help {
+        public static string Time {
             get {
-                return ResourceManager.GetString("Help", resourceCulture);
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indices.
+        ///   Looks up a localized string similar to Agroclimatic indices.
         /// </summary>
-        public static string Indicators {
+        public static string Title {
             get {
-                return ResourceManager.GetString("Indicators", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public static string OtherAbout {
-            get {
-                return ResourceManager.GetString("OtherAbout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Database.
-        /// </summary>
-        public static string OtherDatabase {
-            get {
-                return ResourceManager.GetString("OtherDatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Glosary.
-        /// </summary>
-        public static string OtherGlosary {
-            get {
-                return ResourceManager.GetString("OtherGlosary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search.
-        /// </summary>
-        public static string Search {
-            get {
-                return ResourceManager.GetString("Search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Weather.
-        /// </summary>
-        public static string Weather {
-            get {
-                return ResourceManager.GetString("Weather", resourceCulture);
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
     }

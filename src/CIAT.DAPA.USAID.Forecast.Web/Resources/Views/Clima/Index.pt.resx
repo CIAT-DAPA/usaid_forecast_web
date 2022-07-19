@@ -117,34 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
+  <data name="ClimatologyContentEnd" xml:space="preserve">
+    <value>nos diz que</value>
   </data>
-  <data name="CropMaize" xml:space="preserve">
-    <value>Maize</value>
+  <data name="ClimatologyContentStart" xml:space="preserve">
+    <value>O clima para</value>
   </data>
-  <data name="CropRice" xml:space="preserve">
-    <value>Rice</value>
+  <data name="ClimatologyContentWS" xml:space="preserve">
+    <value>na estação meteorológica</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Help</value>
+  <data name="ClimatologyDescriptionEnd" xml:space="preserve">
+    <value>média dos últimos 30 anos para cada mês</value>
   </data>
-  <data name="Indicators" xml:space="preserve">
-    <value>Indices</value>
+  <data name="ClimatologyDescriptionStart" xml:space="preserve">
+    <value>Este gráfico mostra</value>
   </data>
-  <data name="OtherAbout" xml:space="preserve">
-    <value>About</value>
+  <data name="ClimatologyIndicatorHighest" xml:space="preserve">
+    <value>O mês com o maior valor é</value>
   </data>
-  <data name="OtherDatabase" xml:space="preserve">
-    <value>Database</value>
+  <data name="ClimatologyIndicatorLowest" xml:space="preserve">
+    <value>O mês com o menor valor é</value>
   </data>
-  <data name="OtherGlosary" xml:space="preserve">
-    <value>Glosary</value>
+  <data name="ClimatologyTitle" xml:space="preserve">
+    <value>média histórica mensal de</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="ClimatologyXAxis" xml:space="preserve">
+    <value>Mês</value>
   </data>
-  <data name="Weather" xml:space="preserve">
-    <value>Weather</value>
+  <data name="ForecastAbove" xml:space="preserve">
+    <value>acima do normal</value>
+  </data>
+  <data name="ForecastBelow" xml:space="preserve">
+    <value>abaixo do normal</value>
+  </data>
+  <data name="ForecastExplanation" xml:space="preserve">
+    <value>A previsão do clima é dada como uma porcentagem de probabilidade em relação à faixa normal de precipitação para uma área e um trimestre específico. Na parte inferior, você poderá encontrar a categoria mais provável para o município selecionado e o trimestre previsto.</value>
+  </data>
+  <data name="ForecastMunicipality" xml:space="preserve">
+    <value>A previsão do tempo é apresentada para a cidade de</value>
+  </data>
+  <data name="ForecastNormal" xml:space="preserve">
+    <value>dentro do normal</value>
+  </data>
+  <data name="ForecastPeriod" xml:space="preserve">
+    <value>para o período entre</value>
+  </data>
+  <data name="ForecastProbabilitiesTitle" xml:space="preserve">
+    <value>Possibilidade de precipitação (%)</value>
+  </data>
+  <data name="ForecastScenarioAvg" xml:space="preserve">
+    <value>Média</value>
+  </data>
+  <data name="ForecastScenarioDate" xml:space="preserve">
+    <value>Encontro</value>
+  </data>
+  <data name="ForecastScenarioMaximun" xml:space="preserve">
+    <value>Máximo</value>
+  </data>
+  <data name="ForecastScenarioMinimun" xml:space="preserve">
+    <value>Mínimo</value>
+  </data>
+  <data name="ForecastScenarioTitle" xml:space="preserve">
+    <value>Cenários de previsão</value>
+  </data>
+  <data name="ForecastSummaryMonth" xml:space="preserve">
+    <value>para o trimestre</value>
+  </data>
+  <data name="ForecastSummaryNormal" xml:space="preserve">
+    <value>Normalmente, há precipitação entre</value>
+  </data>
+  <data name="ForecastSummaryResult" xml:space="preserve">
+    <value>previsão do clima sugere que a precipitação é mais provável</value>
+  </data>
+  <data name="ForecastSummaryWS" xml:space="preserve">
+    <value>no município de</value>
+  </data>
+  <data name="ForecastTitle" xml:space="preserve">
+    <value>previsão do clima</value>
+  </data>
+  <data name="ForecastWS" xml:space="preserve">
+    <value>A estação meteorológica de referência para fazer essas previsões foi</value>
+  </data>
+  <data name="ForecastWSProvider" xml:space="preserve">
+    <value>fornecido por ele</value>
+  </data>
+  <data name="HistoricalContentEnd" xml:space="preserve">
+    <value>apresenta o seguinte comportamento</value>
+  </data>
+  <data name="HistoricalContentMid" xml:space="preserve">
+    <value>na estação meteorológica</value>
+  </data>
+  <data name="HistoricalContentStart" xml:space="preserve">
+    <value>Historicamente no município de</value>
+  </data>
+  <data name="HistoricalDescriptionEnd" xml:space="preserve">
+    <value>Você pode filtrar o mês de interesse clicando na categoria</value>
+  </data>
+  <data name="HistoricalDescriptionStart" xml:space="preserve">
+    <value>Este gráfico mostra os valores históricos de</value>
+  </data>
+  <data name="HistoricalPlotXAxis" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="HistoricalTitle" xml:space="preserve">
+    <value>Comportamento histórico mensal de</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>Janeiro,Fevereiro,Março,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro</value>
+  </data>
+  <data name="prec" xml:space="preserve">
+    <value>Precipitação</value>
+  </data>
+  <data name="prec_unit" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="sol_rad" xml:space="preserve">
+    <value>Radiação solar</value>
+  </data>
+  <data name="sol_rad_unit" xml:space="preserve">
+    <value>cal/cm²d</value>
+  </data>
+  <data name="t" xml:space="preserve">
+    <value>Temperaturas máximas e mínimas</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Clima</value>
+  </data>
+  <data name="t_max" xml:space="preserve">
+    <value>Temperatura máxima</value>
+  </data>
+  <data name="t_max_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="t_min" xml:space="preserve">
+    <value>Temperatura mínima</value>
+  </data>
+  <data name="t_min_unit" xml:space="preserve">
+    <value>°C</value>
   </data>
 </root>

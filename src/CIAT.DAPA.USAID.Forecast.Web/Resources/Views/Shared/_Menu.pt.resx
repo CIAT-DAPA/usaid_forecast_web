@@ -118,33 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Country" xml:space="preserve">
-    <value>Country</value>
+    <value>País</value>
   </data>
   <data name="CropMaize" xml:space="preserve">
-    <value>Maize</value>
+    <value>Milho</value>
   </data>
   <data name="CropRice" xml:space="preserve">
-    <value>Rice</value>
+    <value>Arroz</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>Ajuda</value>
   </data>
   <data name="Indicators" xml:space="preserve">
-    <value>Indices</value>
+    <value>Indicadores</value>
   </data>
   <data name="OtherAbout" xml:space="preserve">
-    <value>About</value>
+    <value>Sobre</value>
   </data>
   <data name="OtherDatabase" xml:space="preserve">
-    <value>Database</value>
+    <value>Bases de dados</value>
   </data>
   <data name="OtherGlosary" xml:space="preserve">
-    <value>Glosary</value>
+    <value>Glossário</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>Procurar</value>
   </data>
   <data name="Weather" xml:space="preserve">
-    <value>Weather</value>
+    <value>Clima</value>
   </data>
 </root>

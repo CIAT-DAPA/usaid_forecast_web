@@ -27,8 +27,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         }
 
         // GET: /Cultivo/state/municipality/station/crop
-        [Route("/[controller]/{state?}/{municipality?}/{station?}/{crop?}/{countryId?}")]
-        public async Task<IActionResult> Index(string state, string municipality, string station, string crop, string countryId)
+        [Route("/[controller]/{state?}/{municipality?}/{station?}/{crop?}")]
+        public async Task<IActionResult> Index(string state, string municipality, string station, string crop)
         {
             try
             {

@@ -117,34 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Country" xml:space="preserve">
-    <value>Country</value>
+  <data name="ChooseOne" xml:space="preserve">
+    <value>Selecione um local</value>
   </data>
-  <data name="CropMaize" xml:space="preserve">
-    <value>Maize</value>
+  <data name="FooterContactLabel" xml:space="preserve">
+    <value>Contate-nos</value>
   </data>
-  <data name="CropRice" xml:space="preserve">
-    <value>Rice</value>
+  <data name="FooterContactUrl" xml:space="preserve">
+    <value>http://aclimatecolomb.wpengine.com/contactenos/</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Help</value>
+  <data name="FooterCopyRight" xml:space="preserve">
+    <value>CIAT All Rights reserved &lt;br /&gt;
+Teléfonos de contacto: (2) 4450000 Ext. 3367, 3579 &lt;br /&gt;
+Email: aclimatecolombia@gmail.com &lt;br /&gt;
+Colombia&lt;br /&gt;
+Fotos tomadas de &lt;a href="https://www.flickr.com/photos/ciat/" target="_blank"&gt;CIAT&lt;/a&gt;</value>
   </data>
-  <data name="Indicators" xml:space="preserve">
-    <value>Indices</value>
+  <data name="FooterPartnersTitle" xml:space="preserve">
+    <value>Nossos parceiros</value>
   </data>
-  <data name="OtherAbout" xml:space="preserve">
-    <value>About</value>
+  <data name="FooterPrivacyLabel" xml:space="preserve">
+    <value>Políticas de privacidade</value>
   </data>
-  <data name="OtherDatabase" xml:space="preserve">
-    <value>Database</value>
+  <data name="FooterPrivacyUrl" xml:space="preserve">
+    <value />
   </data>
-  <data name="OtherGlosary" xml:space="preserve">
-    <value>Glosary</value>
+  <data name="FooterSitemapLabel" xml:space="preserve">
+    <value>Mapa do site</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
+  <data name="FooterSitemapUrl" xml:space="preserve">
+    <value>http://aclimatecolomb.wpengine.com/html-site-map</value>
   </data>
-  <data name="Weather" xml:space="preserve">
-    <value>Weather</value>
+  <data name="FooterSponsorsTitle" xml:space="preserve">
+    <value>Doadores</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Aclímate</value>
   </data>
 </root>

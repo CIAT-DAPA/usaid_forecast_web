@@ -118,112 +118,114 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="bio_acu_Description" xml:space="preserve">
-    <value>Cantidad de peso acumulado por todos los órganos de la planta</value>
+    <value>Quantidade de peso acumulada por todos os órgãos da planta</value>
   </data>
   <data name="bio_acu_Title" xml:space="preserve">
-    <value>Bíomasa acumulada</value>
+    <value>Biomassa acumulada</value>
   </data>
   <data name="climate_Description" xml:space="preserve">
-    <value>Los modelos de predicción  climática son herramientas esenciales para el estudio y avance en la  predicción de la variabilidad climática. Las predicciones climáticas estacionales a 6 meses sobre la precipitación son realizadas con un modelo estadístico, el cual tiene como fundamento identificar los modos de variabilidad del sistema climático y la asociación de estos con variables océano-atmosféricas. Este producto es útil para tener una referencia del comportamiento más probable a ocurrir, pero es necesario aclarar que no considera eventos extremos puntuales y de corta duración que puedan tener lugar en algunas zonas puntuales del país. El pronóstico probabilístico está expresado en porcentaje y representa la probabilidad de que ocurra la condición de precipitación en tres categorías: &lt;ul&gt;
-&lt;li&gt;Precipitaciones por debajo de lo normal: esto indica que se van a presentar valores de precipitación inferiores a los registrados históricamente para el período de interés.&lt;/li&gt;
-&lt;li&gt;Precipitaciones normales: esto indica que se van a presentar valores de precipitación muy similares a lo  registrado históricamente para el período de interés.&lt;/li&gt;
-&lt;li&gt;Precipitaciones por encima de lo normal: esto indica que se van a presentar valores de precipitación superiores a los registrados históricamente para el período de interés.&lt;/li&gt;
+    <value>1,339 / 5,000
+Translation results
+Os modelos de previsão climática são ferramentas essenciais para o estudo e progresso na previsão da variabilidade climática. As previsões climáticas sazonais de 6 meses da precipitação são feitas com um modelo estatístico, que se baseia na identificação dos modos de variabilidade do sistema climático e sua associação com variáveis ​​oceano-atmosféricas. Este produto é útil para ter uma referência do comportamento mais provável de ocorrer, mas é necessário esclarecer que ele não considera eventos extremos específicos e de curto prazo que possam ocorrer em algumas áreas específicas do país. A previsão probabilística é expressa em porcentagem e representa a probabilidade da condição de precipitação ocorrer em três categorias: &lt;ul&gt;
+&lt;li&gt;Precipitação abaixo do normal: indica que haverá valores de precipitação inferiores aos registrados historicamente para o período de interesse.&lt;/li&gt;
+&lt;li&gt;Precipitação normal: indica que os valores de precipitação serão muito semelhantes aos registrados historicamente para o período de interesse.&lt;/li&gt;
+&lt;li&gt;Precipitação acima do normal: indica que haverá valores de precipitação superiores aos registrados historicamente para o período de interesse.&lt;/li&gt;
 &lt;/ul&gt;</value>
   </data>
   <data name="climate_Title" xml:space="preserve">
-    <value>Predicción Climática</value>
+    <value>Previsão Climática</value>
   </data>
   <data name="conf_int_Description" xml:space="preserve">
-    <value>En el caso de un pronostico agroclimatico, el intervalo de confianza corresponde al rango de valor (por ejemplo, entre 5 kg/ha y 6kg/ha) dentro del cual hay más certeza que  el pronostico sea acertado (ocurra)</value>
+    <value>No caso de uma previsão agroclimática, o intervalo de confiança corresponde ao intervalo de valores (por exemplo, entre 5 kg/ha e 6 kg/ha) dentro do qual há mais certeza de que a previsão está correta (acontecerá)</value>
   </data>
   <data name="conf_int_Title" xml:space="preserve">
-    <value>Intervalo de confianza</value>
+    <value>Intervalo de confiança</value>
   </data>
   <data name="d_dry_Description" xml:space="preserve">
-    <value>Periodo de tiempo medido en días, desde la madurez fisiologica hasta la cosecha</value>
+    <value>Período de tempo medido em dias, desde a maturidade fisiológica até a colheita</value>
   </data>
   <data name="d_dry_Title" xml:space="preserve">
-    <value>Días a secado</value>
+    <value>Dias para secar</value>
   </data>
   <data name="d_har_Description" xml:space="preserve">
-    <value>Los días a cosecha corresponden al numero de días entre la siembra de las semillas hasta la cosecha del cultivo.  Por ejemplo se calculan entre 100 y 150 días entre la siembra y la cosecha del maíz. Está información permite calcular la epoca de cosecha. En el caso del pronostico agro-climatico o de rendimiento, el rendimiento potencial esta calculado a partir de la fecha de siembra, asumiendo un numero de día estandar hasta la cosecha</value>
+    <value>Os dias de colheita correspondem ao número de dias entre a semeadura das sementes e a colheita da cultura. Por exemplo, entre 100 e 150 dias são calculados entre a semeadura e a colheita do milho. Esta informação permite calcular o tempo de colheita. No caso da previsão agroclimática ou de rendimento, o rendimento potencial é calculado a partir da data de semeadura, assumindo um número padrão de dias até a colheita.</value>
   </data>
   <data name="d_har_Title" xml:space="preserve">
-    <value>Días a cosecha</value>
+    <value>Dias para colher</value>
   </data>
   <data name="eva_Description" xml:space="preserve">
-    <value>La evapotranspiracion corresponde a la cantidad de agua del suelo que vuelve a la atmósfera como consecuencia de la evaporación del agua de un suelo humedo y de la transpiración de las plantas en crecimiento. La evapotranspiración se mide en milimetros por día (mm/día), y sirve para calcular la necesidad de riego en un cultivo. La evapotranspiración (llamada tambien necesidad hídrica de algun cultivo) depende de las condiciones climáticas de una zona geografica</value>
+    <value>A evapotranspiração corresponde à quantidade de água do solo que retorna à atmosfera como resultado da evaporação da água de um solo úmido e da transpiração das plantas em crescimento. A evapotranspiração é medida em milímetros por dia (mm/dia), e é utilizada para calcular a necessidade de irrigação em uma cultura. A evapotranspiração (também chamada de necessidade de água de algumas culturas) depende das condições climáticas de uma área geográfica.</value>
   </data>
   <data name="eva_Title" xml:space="preserve">
-    <value>Evapotranspiración</value>
+    <value>Evapotranspiração</value>
   </data>
   <data name="forecast_Description" xml:space="preserve">
-    <value>El pronostico agroclimatico da información sobre la fecha óptima de siembra y variedad de mejor desempaño de acuerdo a las condiciones climaticas esperadas en una zona especifica. El pronotico agroclimatico se caulcula a partir de un pronóstico climático y con la simulación de desarrollo de un cultivo (calibrado y validado) segun el pronostico climatico. La información proporcionada por el pronostico agroclimatico puede ser valiosa para apoyar la toma de decisiones agronómicas tales como qué sembrar (qué variedad sembrar para obtener mayor rendimiento) y cuando sembrar (qué fecha de siembra es óptima para obtener mayor rendimiento)</value>
+    <value>A previsão agroclimática fornece informações sobre a data ideal de semeadura e a variedade com melhor desempenho de acordo com as condições climáticas esperadas em uma área específica. A previsão agroclimática é calculada a partir de uma previsão climática e com a simulação do desenvolvimento de uma cultura (calibrada e validada) de acordo com a previsão climática. As informações fornecidas pela previsão agroclimática podem ser valiosas para apoiar a tomada de decisões agronômicas, como o que plantar (qual variedade plantar para maior rendimento) e quando plantar (qual data de plantio é ideal para maior rendimento)</value>
   </data>
   <data name="forecast_Title" xml:space="preserve">
-    <value>Pronóstico agroclimático</value>
+    <value>Previsão agroclimática</value>
   </data>
   <data name="prec_acu_Description" xml:space="preserve">
-    <value>Cantidad diaria de lluvia sumada a traves del tiempo, puede ser útil tener este valor por mes, por semestre de siembra o por año</value>
+    <value>Quantidade diária de chuva adicionada ao longo do tempo, pode ser útil ter esse valor por mês, por semestre de plantio ou por ano</value>
   </data>
   <data name="prec_acu_Title" xml:space="preserve">
-    <value>Precipitación acumulada</value>
+    <value>Precipitação acumulada</value>
   </data>
   <data name="prec_Description" xml:space="preserve">
-    <value>La precipitación corresponde a la cantidad de agua que cae (lluvia, granizo) sobre la superficie del suelo. Se mide en milimetros ( 1 mm equivale a 1 litro de agua por cada metro cuadrado) mediante el total de agua recogido en un pluviómetro en 24 horas. Las cantidades diarias se suman por mes y por año, así se determina el promedio de las precipitaciones (lluvias, granizo) obtenidas a lo largo de un número considerable de años (más de 30 años, en general) de una zona</value>
+    <value>A precipitação corresponde à quantidade de água que cai (chuva, granizo) na superfície do solo. É medido em milímetros (1 mm equivale a 1 litro de água por metro quadrado) por meio da quantidade total de água coletada em um pluviômetro em 24 horas. As quantidades diárias são somadas por mês e por ano, determinando assim a precipitação média (chuva, granizo) obtida ao longo de um número considerável de anos (mais de 30 anos, em geral) em uma área</value>
   </data>
   <data name="prec_Title" xml:space="preserve">
-    <value>Precipitación</value>
+    <value>Precipitação</value>
   </data>
   <data name="pro_his_Description" xml:space="preserve">
-    <value>Para conocer el comportamiento pasado del clima en una zona y al mismo tiempo ser capaz de predecir su comportamiento a futuro, conocer el promedio historico del clima es importante. El promedio historico climatioco corresponde al promedio de las variables de clima (precipitación, temperatura, viento, humedad...) medido durante muchos años (en general, más de 30 años). Esto permite conocer el comportamientó 'normal' (o promedio) del clima de una zona especifica y de un mes especifico. El comportamiento 'normal' constituye la referencia sobre la cual el pronostico climatico se basa para decir que hay más o menos probabilidad para que el clima sea por encima/ por debajo/ o dentro de los ramgos normales</value>
+    <value>Para conhecer o comportamento passado do clima em uma área e ao mesmo tempo ser capaz de prever seu comportamento futuro, é importante conhecer a média histórica do clima. A média histórica climática corresponde à média das variáveis ​​climáticas (precipitação, temperatura, vento, humidade...) medidas ao longo de muitos anos (em geral, mais de 30 anos). Isso permite conhecer o comportamento 'normal' (ou médio) do clima de uma área específica e de um mês específico. O comportamento 'normal' constitui a referência em que se baseia a previsão do clima para dizer que há mais ou menos probabilidade de o clima estar acima/abaixo/ou dentro das faixas normais.</value>
   </data>
   <data name="pro_his_Title" xml:space="preserve">
-    <value>Promedio histórico climático</value>
+    <value>Média climática histórica</value>
   </data>
   <data name="sol_rad_Description" xml:space="preserve">
-    <value>La radiación solar es aprovechada por las plantas para realizar la fotosíntesis. La producción potencial final de un cultivo (expresada como materia seca total) depende en parte de la cantidad del nivel de captación por la planta. Para obtener altas tasas de fotosíntesis y mayores rendimientos es necesario maximizar la intercepción de la luz</value>
+    <value>A radiação solar é usada pelas plantas para realizar a fotossíntese. O rendimento potencial final de uma cultura (expresso como matéria seca total) depende em parte da quantidade de nível de absorção pela planta. Para obter altas taxas de fotossíntese e maiores rendimentos, é necessário maximizar a interceptação da luz.</value>
   </data>
   <data name="sol_rad_Title" xml:space="preserve">
-    <value>Radiación solar</value>
+    <value>Radiação solar</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Glosario</value>
+    <value>Glossário</value>
   </data>
   <data name="t_max_acu_Description" xml:space="preserve">
-    <value>Cantidad de calor, medido en grados centígrados de los valores mas altos, a traves de varios días o meses</value>
+    <value>Quantidade de calor, medida em graus centígrados a partir dos valores mais altos, durante vários dias ou meses</value>
   </data>
   <data name="t_max_acu_Title" xml:space="preserve">
     <value>Temperatura máxima acumulada</value>
   </data>
   <data name="t_max_Description" xml:space="preserve">
-    <value>La temperatura es registrada por los termómetros, y medida en grados centrigrados. Así, la temperarura máxima es el valor más alto (maximo calor) regristrado en un intervalo de tiempo dado. En un día, normalmente corresponde al medio día</value>
+    <value>A temperatura é registrada por termômetros e medida em graus centígrados. Assim, a temperatura máxima é o valor mais alto (calor máximo) registrado em um determinado intervalo de tempo. Em um dia, normalmente corresponde ao meio-dia</value>
   </data>
   <data name="t_max_Title" xml:space="preserve">
     <value>Temperatura máxima</value>
   </data>
   <data name="t_min_acu_Description" xml:space="preserve">
-    <value>Cantidad de calor, medido en grados centígrados de los valores mas bajos, a traves de varios días o meses</value>
+    <value>Quantidade de calor, medida em graus centígrados a partir de valores mais baixos, durante vários dias ou meses</value>
   </data>
   <data name="t_min_acu_Title" xml:space="preserve">
     <value>Temperatura mínima acumulada</value>
   </data>
   <data name="t_min_Description" xml:space="preserve">
-    <value>La temperatura es registrada por los termómetros, y medida en grados centrigrados. Así, la temperarura mínima corresponde con el valor mas bajo registrado en un intervalo de tiempo dado. en un día normalmente corresponde a las horas de la madrugada</value>
+    <value>A temperatura é registrada por termômetros e medida em graus centígrados. Assim, a temperatura mínima corresponde ao menor valor registrado em um determinado intervalo de tempo. em um dia normalmente corresponde às primeiras horas da manhã</value>
   </data>
   <data name="t_min_Title" xml:space="preserve">
     <value>Temperatura mínima</value>
   </data>
   <data name="yield_Description" xml:space="preserve">
-    <value>El rendimiento corresponde a la producción total de un cultivo cosechado y se mide usualmente en toneladas  por hectárea (T.M./ha.). Una misma variedad puede generar rendimientos diferentes de una localidad geográfica a otra al variar las condiciones climáticas, aunque los demás factores ambientales sean iguales. Sin embargo, con condiciones climáticas iguales, el rendimiento puede variar de acuerdo con las características del suelo o el manejo dado</value>
+    <value>O rendimento corresponde à produção total de uma cultura colhida e é normalmente medido em toneladas por hectare (T.M./ha.). A mesma variedade pode gerar rendimentos diferentes de uma localização geográfica para outra devido a condições climáticas variadas, mesmo que outros fatores ambientais sejam os mesmos. No entanto, com as mesmas condições climáticas, o desempenho pode variar de acordo com as características do solo ou do manejo realizado.</value>
   </data>
   <data name="yield_pot_Description" xml:space="preserve">
-    <value>Máximo rendimiento que una variedad, híbrido o cultivar puede producir en condiciones ideales</value>
+    <value>Rendimento máximo que uma variedade, híbrido ou cultivar pode produzir em condições ideais</value>
   </data>
   <data name="yield_pot_Title" xml:space="preserve">
-    <value>Rendimiento potencial</value>
+    <value>Desempenho potencial</value>
   </data>
   <data name="yield_Title" xml:space="preserve">
-    <value>Rendimiento</value>
+    <value>Desempenho</value>
   </data>
 </root>

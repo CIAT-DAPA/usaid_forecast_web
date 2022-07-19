@@ -16,14 +16,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
     public abstract class WebBaseController : Controller
     {
         protected IHostingEnvironment hostingEnvironment { get; set; }
-
         protected RepositoryWeatherStations rWS { get; set; }
-
         protected string Root { get; set; }
         protected string IdCountry { get; set; }
-
         protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
         protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
+        protected Settings Configurations { get; set; }
         
         /// <summary>
         /// Method Construct
@@ -33,8 +31,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public WebBaseController(IOptions<Settings> settings, IHostingEnvironment environment) : base()
         {
             hostingEnvironment = environment;
+            Configurations = settings.Value;
             Root = settings.Value.api_fs;
-            IdCountry = settings.Value.idCountry;
+            IdCountry = settings.Value.idCountry;            
             rWS = new RepositoryWeatherStations(Root, IdCountry);
             try
             {
@@ -45,6 +44,16 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+        }
+
+        /// <summary>
+        /// Method that load the permission for modules
+        /// </summary>
+        protected void loadModules()
+        {
+            ViewBag.modules_indicators = Configurations.modules_indicators;
+            ViewBag.modules_maize = Configurations.modules_maize;
+            ViewBag.modules_rice = Configurations.modules_rice;
         }
 
         /// <summary>
@@ -77,19 +86,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <returns></returns>
         protected async Task<bool> InitAsync()
         {
-            try
-            {
-                // laoding data
-                //Countries = await rWS.ListCountryAsync();
-                WeatherStations = await rWS.ListAsync();
-                WeatherStationsCrops = await rWS.ListByCropAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                //System.IO.File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), "2... " + ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
-                throw ex;
-            }
+            // laoding data
+            WeatherStations = await rWS.ListAsync();
+            WeatherStationsCrops = await rWS.ListByCropAsync();
+            return true;
         }
 
         /// <summary>
@@ -100,22 +100,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             // Setting data
             ViewBag.WeatherStations = WeatherStations;
             ViewBag.WeatherStationsCrops = WeatherStationsCrops;
-            /*
-            if (countryId == null || countryId == "")
-            {
-                ViewBag.countryselect = countryId;
-                //ViewBag.Countries = Countries;
-                
-            }
-            else
-            {
-                ViewBag.countryselect = countryId;
-                //ViewBag.Countries = Countries;
-                WeatherStations = WeatherStations.Where(p => p.Country == countryId).ToList();
-                WeatherStationsCrops = WeatherStationsCrops.Where(p => p.Country == countryId).ToList();
-                ViewBag.WeatherStations = WeatherStations;
-                ViewBag.WeatherStationsCrops = WeatherStationsCrops;
-            }*/
+            loadModules();
         }
 
         protected WeatherStationFull SearchWS(string state, string municipality, string ws)

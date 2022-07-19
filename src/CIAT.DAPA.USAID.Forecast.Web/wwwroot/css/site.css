@@ -31,6 +31,14 @@
     background-image: url(/images/bg_climate.jpg);
 }
 
+#map {
+    height: 600px;
+}
+
+.map_indices {
+    height: 600px;
+}
+
 @media (max-width: 1099px) {
     #secundaryMenu {
         float: left;
@@ -60,13 +68,7 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    #map {
-        height: 600px;
-    }
-
-    /*p a {
-        font-size: 0.8em;
-    }*/
+    
 }
 
 @media (min-width: 1100px) {
@@ -98,9 +100,6 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    #map {
-        height: 600px;
-    }
 }
 
 @media (min-width: 1400px) {
@@ -132,13 +131,7 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    #map {
-        height: 600px;
-    }
-
-    /*p a {
-        font-size: 1em;
-    }*/
+    
 }
 
 .body-content .container-fluid {

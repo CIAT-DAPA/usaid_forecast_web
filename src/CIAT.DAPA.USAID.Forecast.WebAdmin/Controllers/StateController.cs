@@ -365,7 +365,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             ViewBag.message = msg;
-            return View("Import", entity);
+            return View("Import", new { id = entity.id.ToString() });
         }
 
         // GET: /State/Configuration/5

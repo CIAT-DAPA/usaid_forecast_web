@@ -16,8 +16,6 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
     public class HomeController : WebBaseController
     {
-        protected string idCountry { get; set; }
-        private string path { get; set; }
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -25,18 +23,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// <param name="hostingEnvironment">Host Enviroment</param>
         public HomeController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, hostingEnvironment)
         {
-            path = hostingEnvironment.ContentRootPath + "\\Log\\";
-            idCountry = settings.Value.idCountry;
         }
 
-        [Route("/{countryId?}")]
-        public async Task<IActionResult> Index(string countryId)
+        [Route("/")]
+        public async Task<IActionResult> Index()
         {
             try
             {
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
-                countryId = idCountry;
                 // Setting data
                 SetWS();
 
@@ -44,13 +39,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             }
             catch (Exception ex)
             {
-                //System.IO.File.AppendAllText(path + DateTime.Now.ToString("yyyyMMdd"), "3... " + ex.Message.ToString() + "\n" + ex.InnerException.ToString() + "\n" + ex.StackTrace.ToString() + "\n");
                 return View("Error");
             }
         }
 
-        [Route("[controller]/[action]/{countryId?}")]
-        public IActionResult Glosario(string countryId)
+        [Route("[controller]/[action]")]
+        public IActionResult Glosario()
         {
 
             ViewBag.Section = SectionSite.Glossary;
@@ -64,8 +58,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             return View();
         }
 
-        [Route("/[controller]/[action]/{countryId?}")]
-        public IActionResult AcercaDe(string countryId)
+        [Route("/[controller]/[action]")]
+        public IActionResult AcercaDe()
         {
             ViewBag.Section = SectionSite.About;
             ViewBag.words = new string[] {

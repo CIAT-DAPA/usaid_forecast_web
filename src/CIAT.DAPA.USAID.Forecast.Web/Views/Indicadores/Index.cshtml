@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Meta_Description"] = "Indicadores de riesgo agroclimático";
+    ViewData["Meta_Keywords"] = "indicadores,indicadores de riesgo climático";
+}
+
+<div id="containerBlock">
+    <section class="col-md-12 sections">
+        <div class="row section-content">
+            <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
+            <p class="text-justify">
+                @Localizer["Description"]
+            </p>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" for="cbo_crop">
+                        @Localizer["Crop"]
+                    </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("cbo_crop", new SelectList(ViewBag.indicators_crops, "CropID", "Crop"), new { @class = "form-control", onchange = "update_maps()" })
+                    </div>
+                    <label class="col-lg-2 control-label" for="cbo_group">
+                        @Localizer["Group"]
+                    </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("cbo_group", new SelectList(ViewBag.indicators_group, "GroupID", "Group"), new { @class = "form-control", onchange = "update_maps()" })
+                    </div>
+                    <label class="col-lg-2 control-label" for="cbo_time">
+                        @Localizer["Time"]
+                    </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("cbo_time", new SelectList(ViewBag.period, "Value", "Text"), new { @class = "form-control", onchange = "update_time()" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div id="maps_section">
+                
+            </div>
+        </div>
+</section>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/map/maps_indicators.js"></script>
+    <script type="text/javascript">
+
+        var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
+        geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
+        geoserver_workspace = "@Html.Raw(ViewBag.geoserver_workspace)";
+        conf = { latitude: ws[0].latitude, longitude: ws[0].longitude, zoom: 6 };
+        layers_all = @Html.Raw(Json.Serialize(ViewBag.indicators_list));
+        update_maps();
+        window.loading_screen.finish();
+    </script>
+}

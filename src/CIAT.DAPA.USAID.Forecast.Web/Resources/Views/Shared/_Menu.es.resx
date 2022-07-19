@@ -129,6 +129,9 @@
   <data name="Help" xml:space="preserve">
     <value>Ayuda</value>
   </data>
+  <data name="Indicators" xml:space="preserve">
+    <value>Indicadores</value>
+  </data>
   <data name="OtherAbout" xml:space="preserve">
     <value>Acerca De</value>
   </data>

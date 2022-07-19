@@ -129,6 +129,9 @@
   <data name="Help" xml:space="preserve">
     <value>እገዛ</value>
   </data>
+  <data name="Indicators" xml:space="preserve">
+    <value>አመላካቾች</value>
+  </data>
   <data name="OtherAbout" xml:space="preserve">
     <value>ስለ እኛ</value>
   </data>

@@ -24,8 +24,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         }
 
         // GET: /Experto/Index/
-        [Route("[controller]/{countryId?}")]
-        public async Task<IActionResult> Index(string countryId)
+        [Route("[controller]/")]
+        public async Task<IActionResult> Index()
         {
             try
             {
