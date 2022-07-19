@@ -55,7 +55,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             {
                 ViewBag.indicators_crops = IndicatorRepository.GetInstance().Indicators.Select(p => new { CropID = p.CropID, Crop = p.Crop }).Distinct();
                 ViewBag.indicators_group = IndicatorRepository.GetInstance().Indicators.Select(p => new { GroupID = p.GroupID, Group = p.Group }).Distinct();
-                ViewBag.indicators_list = IndicatorRepository.GetInstance().Indicators.Select(p => new { CropID = p.CropID, GroupID = p.GroupID, IndicatorID = p.IndicatorNameID, Indicator = p.IndicatorName, Description= p.Description }).Distinct();
+                ViewBag.indicators_list = IndicatorRepository.GetInstance().Indicators.Select(p => new { CropID = p.CropID, GroupID = p.GroupID, IndicatorID = p.IndicatorNameID, Indicator = p.IndicatorName, Description= p.Description, Units = p.Units }).Distinct();
             }
             return true;
         }

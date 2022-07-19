@@ -31,7 +31,7 @@ function onMapClick(e) {
     layers_selected.forEach((value, idx) => {
 
         var marker = L.marker(e.latlng).addTo(maps[idx]);
-        searchPointData(geoserver_workspace + ":" + value.cropID + "_" + value.indicatorID, lat, lon, marker)
+        searchPointData(geoserver_workspace + ":" + value.cropID + "_" + value.indicatorID, lat, lon, marker, value.units)
     });
 }
 
@@ -42,7 +42,7 @@ function onMapClick(e) {
  * @param {any} lon Longitud
  * @param {any} marker Marker in which should display the message
  */
-function searchPointData(layer, lat, lon, marker) {
+function searchPointData(layer, lat, lon, marker,units) {
     const parameters = {
         service: 'WMS',
         version: '1.1.1',
@@ -63,7 +63,10 @@ function searchPointData(layer, lat, lon, marker) {
     axios
         .get(url)
         .then(response => {
-            marker.bindPopup("Value: " + response.data.features[0].properties.GRAY_INDEX.toFixed(2)).openPopup();
+            marker.bindPopup("Value: " +
+                response.data.features[0].properties.GRAY_INDEX.toFixed(2) +
+                " (" + units + ")"
+            ).openPopup();
             return response.data;
         });
 }

@@ -35,6 +35,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
         /// Get or set the indicators' description
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Get or set the indicators' units
+        /// </summary>
+        public string Units { get; set; }
 
         /// <summary>
         /// Method constructor
@@ -50,6 +54,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
             IndicatorName = fields[4];
             IndicatorNameID = fields[5];
             Description = fields[6];
+            Units = fields[7];
         }
     }
 }
