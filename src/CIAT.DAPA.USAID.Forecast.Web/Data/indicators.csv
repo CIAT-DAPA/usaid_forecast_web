@@ -1,49 +1,49 @@
-﻿crop,crop_id,group,group_id,indicator,indicator_id,description,units
-Milho,maize,Períodos Secos,dry_spells,Duração dos Períodos de Seca,dry_spells_duration,,
-Milho,maize,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,,
-Milho,maize,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,,
-Milho,maize,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,,
-Milho,maize,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,,
-Milho,maize,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,,
-Milho,maize,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,,
-Milho,maize,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,,
-Milho,maize,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,,
-Milho,maize,Períodos Chuvosos,heavy_rainfall,Duração dos Períodos Chuvosos,wet_spells_duration,,
-Milho,maize,Secas,drought,Evapotranspiração Potencial,pet,,
-Milho,maize,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,,
-Feijão,dry_bean,Períodos Secos,dry_spells,Duração dos Períodos de Seca,dry_spells_duration,,
-Feijão,dry_bean,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,,
-Feijão,dry_bean,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,,
-Feijão,dry_bean,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,,
-Feijão,dry_bean,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,,
-Feijão,dry_bean,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,,
-Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,,
-Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,,
-Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,,
-Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Duração dos Períodos Chuvosos,wet_spells_duration,,
-Feijão,dry_bean,Secas,drought,Evapotranspiração Potencial,pet,,
-Feijão,dry_bean,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,,
-Soja,soybean,Períodos Secos,dry_spells,Duração dos Períodos de Seca,dry_spells_duration,,
-Soja,soybean,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,,
-Soja,soybean,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,,
-Soja,soybean,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,,
-Soja,soybean,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,,
-Soja,soybean,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,,
-Soja,soybean,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,,
-Soja,soybean,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,,
-Soja,soybean,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,,
-Soja,soybean,Períodos Chuvosos,heavy_rainfall,Duração dos Períodos Chuvosos,wet_spells_duration,,
-Soja,soybean,Secas,drought,Evapotranspiração Potencial,pet,,
-Soja,soybean,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,,
-Café,coffee,Períodos Secos,dry_spells,Duração dos Períodos de Seca,dry_spells_duration,,
-Café,coffee,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,,
-Café,coffee,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,,
-Café,coffee,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,,
-Café,coffee,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,,
-Café,coffee,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,,
-Café,coffee,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,,
-Café,coffee,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,,
-Café,coffee,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,,
-Café,coffee,Períodos Chuvosos,heavy_rainfall,Duração dos Períodos Chuvosos,wet_spells_duration,,
-Café,coffee,Secas,drought,Evapotranspiração Potencial,pet,,
-Café,coffee,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,,
+﻿crop,crop_id,group,group_id,indicator,indicator_id,description,units,start,end
+Milho,maize,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,Número total de dias secos durante a estação de cultivo do milho (Setembro a Abril). Um dia seco ocorre quando a quantidade de precipitação diária cai abaixo de 1 mm.,Dias,69,229
+Milho,maize,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,Número total de dos períodos de seca durante a estação de cultivo do milho (Setembro a Abril). Um período de seca é definido como um período de cinco ou mais dias secos consecutivos imediatamente seguidos por um dia chuvoso.,Periodos secos,1,20
+Milho,maize,Períodos Secos,dry_spells,Duração média dos Períodos de Secos,dry_spells_duration,Duração média dos períodos secos durante a estação de crescimento do milho (Setembro a Abril). Este índice descreve a duração em dias dos períodos de seca.,Dias,5,31
+Milho,maize,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,Número total de dias de calor durante a estação de cultivo do milho (Setembro a Abril). Este índice é descrito como dias com temperaturas máximas superiores a 33°C (temperaturas críticas que afetam o crescimento e desenvolvimento do milho).,Dias,0,215
+Milho,maize,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,Número total de ondas de calor durante a estação de cultivo do milho (Setembro a Abril). Este índice consiste em três ou mais dias de calor consecutivos e cada onda de calor deve ser separada uma da outra por pelo menos um dia sem calor.,Ondas de Calor,0,23
+Milho,maize,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,Duração máxima das ondas de calor durante a estação de crescimento do milho (Setembro a Abril).,Dias,3,77
+Milho,maize,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,Número total de dias chuvosos durante a estação de cultivo do milho (Setembro a Abril). Um dia chuvoso ocorre quando a quantidade de precipitação diária cai acima de 1 mm.,Dias,14,173
+Milho,maize,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,Número total de períodos chuvosos durante a estação de crescimento do milho (Setembro a Abril). Um período chuvoso é definido como um período de cinco ou mais dias consecutivos de chuva seguidos imediatamente por um dia seco.,Períodos Chuvosos,0,17
+Milho,maize,Períodos Chuvosos,heavy_rainfall,Duração média dos Períodos Chuvosos,wet_spells_duration,Duração média dos períodos chuvosos durante a estação de crescimento do milho (Setembro a Abril). Este índice descreve a duração em dias dos períodos chuvosos.,Dias,5,40
+Milho,maize,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,Precipitação total acumulada durante a estação de crescimento do milho (Setembro a Abril).,mm,120.44,1885.73
+Milho,maize,Secas,drought,Evapotranspiração Potencial,pet,Evapotranspiração potencial durante a estação de crescimento do milho (Setembro a Abril).,mm,1596.38,2401.61
+Milho,maize,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,Índice Padronizado de Precipitação e Evapotranspiração (SPEI-8) no mês de colheita (Abril) para milho.,,-2.74,3.81
+Feijão,dry_bean,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,Número total de dias secos durante a estação de cultivo do feijão (Novembro a Março). Um dia seco ocorre quando a quantidade de precipitação diária cai abaixo de 1 mm.,Dias,17,142
+Feijão,dry_bean,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,Número total de dos períodos de seca durante a estação de cultivo do feijão (Novembro a Março). Um período de seca é definido como um período de cinco ou mais dias secos consecutivos imediatamente seguidos por um dia chuvoso.,Periodos secos,0,16
+Feijão,dry_bean,Períodos Secos,dry_spells,Duração média dos Períodos de Secos,dry_spells_duration,Duração média dos períodos secos durante a estação de crescimento do feijão (Novembro a Março). Este índice descreve a duração em dias dos períodos de seca.,Dias,5,37
+Feijão,dry_bean,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,Número total de dias de calor durante a estação de cultivo do feijão (Novembro a Março). Este índice é descrito como dias com temperaturas máximas superiores a 32°C (temperaturas críticas que afetam o crescimento e desenvolvimento do feijão).,Dias,0,148
+Feijão,dry_bean,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,Número total de ondas de calor durante a estação de cultivo do feijão (Novembro a Março). Este índice consiste em três ou mais dias de calor consecutivos e cada onda de calor deve ser separada uma da outra por pelo menos um dia sem calor.,Ondas de Calor,0,19
+Feijão,dry_bean,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,Duração máxima das ondas de calor durante a estação de crescimento do feijão (Novembro a Março).,Dias,3,96
+Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,Número total de dias chuvosos durante a estação de cultivo do feijão (Novembro a Março). Um dia chuvoso ocorre quando a quantidade de precipitação diária cai acima de 1 mm.,Dias,8,134
+Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,Número total de períodos chuvosos durante a estação de crescimento do feijão (Novembro a Março). Um período chuvoso é definido como um período de cinco ou mais dias consecutivos de chuva seguidos imediatamente por um dia seco.,Períodos Chuvosos,0,17
+Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Duração média dos Períodos Chuvosos,wet_spells_duration,Duração média dos períodos chuvosos durante a estação de crescimento do feijão (Novembro a Março). Este índice descreve a duração em dias dos períodos chuvosos.,Dias,5,38
+Feijão,dry_bean,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,Precipitação total acumulada durante a estação de crescimento do feijão (Novembro a Março).,mm,98.06,1520.27
+Feijão,dry_bean,Secas,drought,Evapotranspiração Potencial,pet,Evapotranspiração potencial durante a estação de crescimento do feijão (Novembro a Março).,mm,898.47,1531.31
+Feijão,dry_bean,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,Índice Padronizado de Precipitação e Evapotranspiração (SPEI-5) no mês de colheita (Março) para feijão.,,-2.92,3.8
+Soja,soybean,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,Número total de dias secos durante a estação de cultivo do soja (Outubro a Abril). Um dia seco ocorre quando a quantidade de precipitação diária cai abaixo de 1 mm.,Dias,40,199
+Soja,soybean,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,Número total de dos períodos de seca durante a estação de cultivo do soja (Outubro a Abril). Um período de seca é definido como um período de cinco ou mais dias secos consecutivos imediatamente seguidos por um dia chuvoso.,Periodos secos,0,20
+Soja,soybean,Períodos Secos,dry_spells,Duração média dos Períodos de Secos,dry_spells_duration,Duração média dos períodos secos durante a estação de crescimento do soja (Outubro a Abril). Este índice descreve a duração em dias dos períodos de seca.,Dias,5,30
+Soja,soybean,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,Número total de dias de calor durante a estação de cultivo do soja (Outubro a Abril). Este índice é descrito como dias com temperaturas máximas superiores a 28°C (temperaturas críticas que afetam o crescimento e desenvolvimento do soja).,Dias,0,213
+Soja,soybean,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,Número total de ondas de calor durante a estação de cultivo do soja (Outubro a Abril). Este índice consiste em três ou mais dias de calor consecutivos e cada onda de calor deve ser separada uma da outra por pelo menos um dia sem calor.,Ondas de Calor,0,28
+Soja,soybean,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,Duração máxima das ondas de calor durante a estação de crescimento do soja (Outubro a Abril).,Dias,3,213
+Soja,soybean,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,Número total de dias chuvosos durante a estação de cultivo do soja (Outubro a Abril). Um dia chuvoso ocorre quando a quantidade de precipitação diária cai acima de 1 mm.,Dias,13,172
+Soja,soybean,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,Número total de períodos chuvosos durante a estação de crescimento do soja (Outubro a Abril). Um período chuvoso é definido como um período de cinco ou mais dias consecutivos de chuva seguidos imediatamente por um dia seco.,Períodos Chuvosos,0,19
+Soja,soybean,Períodos Chuvosos,heavy_rainfall,Duração média dos Períodos Chuvosos,wet_spells_duration,Duração média dos períodos chuvosos durante a estação de crescimento do soja (Outubro a Abril). Este índice descreve a duração em dias dos períodos chuvosos.,Dias,5,35
+Soja,soybean,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,Precipitação total acumulada durante a estação de crescimento do soja (Outubro a Abril).,mm,120.44,1864.25
+Soja,soybean,Secas,drought,Evapotranspiração Potencial,pet,Evapotranspiração potencial durante a estação de crescimento do soja (Outubro a Abril).,mm,1250.8,2017.54
+Soja,soybean,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,Índice Padronizado de Precipitação e Evapotranspiração (SPEI-7) no mês de colheita (Abril) para soja.,,-2.7,4.55
+Café,coffee,Períodos Secos,dry_spells,Número de Dias Secos,number_dry_days,Número total de dias secos durante a estação de cultivo do café (Setembro a Agosto). Um dia seco ocorre quando a quantidade de precipitação diária cai abaixo de 1 mm.,Dias,176,333
+Café,coffee,Períodos Secos,dry_spells,Número de Períodos Secos,number_dry_spells,Número total de dos períodos de seca durante a estação de cultivo do café (Setembro a Agosto). Um período de seca é definido como um período de cinco ou mais dias secos consecutivos imediatamente seguidos por um dia chuvoso.,Periodos secos,2,22
+Café,coffee,Períodos Secos,dry_spells,Duração média dos Períodos de Secos,dry_spells_duration,Duração média dos períodos secos durante a estação de crescimento do café (Setembro a Agosto). Este índice descreve a duração em dias dos períodos de seca.,Dias,9,82
+Café,coffee,Holas de Calor,heat_waves,Número de Dias Quentes,number_heat_days,Número total de dias de calor durante a estação de cultivo do café (Setembro a Agosto). Este índice é descrito como dias com temperaturas máximas superiores a 30°C (temperaturas críticas que afetam o crescimento e desenvolvimento do café).,Dias,0,365
+Café,coffee,Holas de Calor,heat_waves,Número de Ondas de Calor,number_heat_waves,Número total de ondas de calor durante a estação de cultivo do café (Setembro a Agosto). Este índice consiste em três ou mais dias de calor consecutivos e cada onda de calor deve ser separada uma da outra por pelo menos um dia sem calor.,Ondas de Calor,0,39
+Café,coffee,Holas de Calor,heat_waves,Duração Máxima das Ondas de Calor,max_heat_wave_duration,Duração máxima das ondas de calor durante a estação de crescimento do café (Setembro a Agosto).,Dias,3,365
+Café,coffee,Períodos Chuvosos,heavy_rainfall,Número de Dias com Chuva,number_wet_days,Número total de dias chuvosos durante a estação de cultivo do café (Setembro a Agosto). Um dia chuvoso ocorre quando a quantidade de precipitação diária cai acima de 1 mm.,Dias,33,189
+Café,coffee,Períodos Chuvosos,heavy_rainfall,Número de Períodos Chuvosos,number_wet_spells,Número total de períodos chuvosos durante a estação de crescimento do café (Setembro a Agosto). Um período chuvoso é definido como um período de cinco ou mais dias consecutivos de chuva seguidos imediatamente por um dia seco.,Períodos Chuvosos,0,20
+Café,coffee,Períodos Chuvosos,heavy_rainfall,Duração média dos Períodos Chuvosos,wet_spells_duration,Duração média dos períodos chuvosos durante a estação de crescimento do café (Setembro a Agosto). Este índice descreve a duração em dias dos períodos chuvosos.,Dias,5,23
+Café,coffee,Períodos Chuvosos,heavy_rainfall,Precipitação Acumulada,total_precipitation,Precipitação total acumulada durante a estação de crescimento do café (Setembro a Agosto).,mm,267.06,2036.5
+Café,coffee,Secas,drought,Evapotranspiração Potencial,pet,Evapotranspiração potencial durante a estação de crescimento do café (Setembro a Agosto).,mm,1808.99,3138.45
+Café,coffee,Secas,drought,Índice Padronizado de Precipitação e Evapotranspiração,spei,Índice Padronizado de Precipitação e Evapotranspiração (SPEI-12) no mês de colheita (Agosto) para café.,,-2.98,4.96
