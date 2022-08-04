@@ -51,12 +51,20 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         private async Task<bool> listIndicatorsAsync()
         {
-            if(await IndicatorRepository.GetInstance().LoadAsync(hostingEnvironment.ContentRootPath + "\\Data\\indicators.csv"))
-            {
-                ViewBag.indicators_crops = IndicatorRepository.GetInstance().Indicators.Select(p => new { CropID = p.CropID, Crop = p.Crop }).Distinct();
-                ViewBag.indicators_group = IndicatorRepository.GetInstance().Indicators.Select(p => new { GroupID = p.GroupID, Group = p.Group }).Distinct();
-                ViewBag.indicators_list = IndicatorRepository.GetInstance().Indicators.Select(p => new { CropID = p.CropID, GroupID = p.GroupID, IndicatorID = p.IndicatorNameID, Indicator = p.IndicatorName, Description= p.Description, Units = p.Units, Min = p.Min, Max=p.Max }).Distinct();
-            }
+            if (IndicatorRepository.GetInstance().Indicators.Count() == 0)
+                await IndicatorRepository.GetInstance().LoadAsync(hostingEnvironment.ContentRootPath + "\\Data\\indicators.csv");
+            
+            ViewBag.indicators_crops = IndicatorRepository.GetInstance()
+                                    .Indicators.Select(p => new { CropID = p.CropID, Crop = p.Crop }).Distinct();
+            ViewBag.indicators_group = IndicatorRepository.GetInstance()
+                                    .Indicators.Select(p => new { GroupID = p.GroupID, Group = p.Group }).Distinct();
+            ViewBag.indicators_list = IndicatorRepository.GetInstance()
+                                    .Indicators.Select(p => new { CropID = p.CropID, GroupID = p.GroupID, 
+                                                                IndicatorID = p.IndicatorNameID, Indicator = p.IndicatorName, 
+                                                                Description= p.Description, 
+                                                                Units = p.Units, Min = p.Min, Max=p.Max,
+                                                                Type = p.Type, Categories= p.Categories}).Distinct();
+            
             return true;
         }
 

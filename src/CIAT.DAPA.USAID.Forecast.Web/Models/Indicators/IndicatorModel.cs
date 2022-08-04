@@ -48,6 +48,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
         /// Get or set the max value of the indicator
         /// </summary>
         public double Max { get; set; }
+        /// <summary>
+        /// Get or set the type of variable which represents
+        /// </summary>
+        public char Type { get; set; }
+        /// <summary>
+        /// Get or set the list of categories
+        /// </summary>
+        public List<IndicatorCategory> Categories { get; set; }
+
 
         /// <summary>
         /// Method constructor
@@ -68,11 +77,22 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
                 Units = fields[7];
                 Min = double.Parse(fields[8], CultureInfo.InvariantCulture);
                 Max = double.Parse(fields[9], CultureInfo.InvariantCulture);
+                Type = char.Parse(fields[10]);
+                Categories = new List<IndicatorCategory>();
+                if (Type == 'c')
+                {
+                    foreach (var c in fields[11].Split(";"))
+                    {
+                        string[] ca = c.Split("-");
+                        Categories.Add(new IndicatorCategory() { Id = ca[0].Trim(), Description = ca[1].Trim() });
+                    }
+                }
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+                
         }
     }
 }

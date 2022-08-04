@@ -5,13 +5,15 @@ var layers_selected;
 var maps;
 var geoserver_url;
 var geoserver_workspace;
+var scales;
+var categories_title;
 
 /**
   * Method that plots a map
   * @param {any} id id div
   * @param {any} idx position of the map list
   */
-function plot_map(id, idx, min, max, group) {
+function plot_map(id, idx, min, max, group, type, categories_q = []) {
     maps[idx] = L.map(id).setView([conf.latitude, conf.longitude], conf.zoom);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -26,16 +28,17 @@ function plot_map(id, idx, min, max, group) {
 
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<strong>Categories</strong><br />';
-        categories = generatePoints(min, max, 10);
+        div.innerHTML = '<strong>' + categories_title + '</strong><br />';
+        var categories = type == 'q' ? generatePoints(min, max, 10) : categories_q;
+
+        
         for (var i = 0; i < categories.length; i++) {
             div.innerHTML += '<i class="circle" style="background:' + getColor(i, group) + '"></i> ' +
-                (i == 0 ? '< ' + parseInt(categories[i]) :
-                    (i == (categories.length - 1) ? '> ' + parseInt(categories[i] + 1) :
-                    parseInt(categories[i] + 1) + ' - ' + parseInt(categories[i + 1]))) +
-                "<br />";
+                (type == 'q' ?
+                    parseInt(categories[i]) + ' - ' + (i < categories.length - 1 ? parseInt(categories[i + 1] - 1) : max) :
+                    categories[i].id + '- ' + categories[i].description)
+                + "<br />";
         }
-        //div.innerHTML = labels.join('<br />');
         return div;
     };
     legend.addTo(maps[idx]);
@@ -52,12 +55,7 @@ const generatePoints = (startingNumber, endingNumber, maxPoints) => Array.from(
  * @param {any} type
  */
 function getColor(index, type) {
-    var scales = {
-        heavy_rainfall: ['#f7fcf0', '#e0f3db', '#ccebc5', '#a8ddb5', '#7bccc4', '#4eb3d3', '#2b8cbe', '#0868ac', '#084081', '#08306b'],
-        drought: ['#a50026', '#d73027', '#f46d43', '#fdae61', '#fee090', '#e0f3f8', '#abd9e9', '#74add1', '#4575b4', '#313695'],
-        dry_spells: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404', '#7f2704', '#662506'],
-        heat_waves: ['#ffffcc', '#ffeda0', '#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c', '#bd0026', '#800026', '#67000d']
-    }
+    
     //console.log(index + ' ' + type + ' ' + scales[type][index]);
     return scales[type][index];
 }
@@ -135,7 +133,7 @@ function update_maps() {
     // Get the values selected in the controls
     var crop = $("#cbo_crop").val();    
     var group = $("#cbo_group").val();
-    // Filter dataset original
+    // Filter dataset original    
     layers_selected = layers_all.filter(function (it) {
         return it.cropID == crop &&
             it.groupID == group ;
@@ -153,7 +151,7 @@ function update_time() {
  * */
 function load_maps() {    
     var time = $("#cbo_time").val();
-    var maps_section = '';
+    var maps_section = '';    
     layers_selected.forEach((value, idx) => { 
         // Condition to validate if start the row 
         if (!(((idx + 1) % 2) == 0))
@@ -176,7 +174,7 @@ function load_maps() {
     // Loading maps
     layers_selected.forEach((value, idx) => {
         // ploting maps
-        plot_map('map_' + idx, idx, value.min, value.max, value.groupID);
+        plot_map('map_' + idx, idx, value.min, value.max, value.groupID, value.type, value.categories);
         // Adding layer
         plot_layer(idx, value.cropID + "_" + value.indicatorID, time);
     });

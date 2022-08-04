@@ -47,6 +47,14 @@
     <script type="text/javascript">
 
         var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
+        scales = {
+            heavy_rainfall: ['#f7fcf0', '#e0f3db', '#ccebc5', '#a8ddb5', '#7bccc4', '#4eb3d3', '#2b8cbe', '#0868ac', '#084081', '#08306b'],
+            water_demand: ['#a50026', '#d73027', '#f46d43', '#fdae61', '#fee090', '#e0f3f8', '#abd9e9', '#74add1', '#4575b4', '#313695'],
+            dry_spells: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404', '#7f2704', '#662506'],
+            heat_waves: ['#ffffcc', '#ffeda0', '#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c', '#bd0026', '#800026', '#67000d'],
+            spei: ['#b2182b', '#ef8a62', '#fddbc7', '#f7f7f7', '#d1e5f0', '#67a9cf','#2166ac']
+        };
+        categories_title = '@Html.Raw(Localizer["Categories"].Value.ToString())';
         geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
         geoserver_workspace = "@Html.Raw(ViewBag.geoserver_workspace)";
         conf = { latitude: ws[0].latitude, longitude: ws[0].longitude, zoom: 6 };
