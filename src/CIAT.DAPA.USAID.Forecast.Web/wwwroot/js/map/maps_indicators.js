@@ -7,28 +7,43 @@ var geoserver_url;
 var geoserver_workspace;
 var scales;
 var categories_title;
+var country;
 
 /**
   * Method that plots a map
   * @param {any} id id div
   * @param {any} idx position of the map list
   */
-function plot_map(id, idx, min, max, group, type, categories_q = []) {
+function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [], units) {
     maps[idx] = L.map(id).setView([conf.latitude, conf.longitude], conf.zoom);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(maps[idx]);
 
+    var myStyle = {
+        "color": "#666666",
+        "weight": 1,
+        //"opacity": 0.1
+        "fillOpacity": 0.1
+    };
+
+    //console.log(country);
+    //L.geoJson(country, { style: myStyle }).addTo(maps[idx]);
+    $.getJSON("/country.json", function (data) {
+        L.geoJson(data, { style: myStyle }).addTo(maps[idx]);
+    });
+    
+
     // Adding event click on map. It shows the value of each pixel
-    maps[idx].on('click', onMapClick);
+    //maps[idx].on('click', onMapClick);
 
     // 
     var legend = L.control({ position: 'bottomleft' });
 
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<strong>' + categories_title + '</strong><br />';
+        div.innerHTML = '<strong>' + categories_t + ' (' + units + ')</strong><br />';
         var categories = type == 'q' ? generatePoints(min, max, 10) : categories_q;
 
         
@@ -48,6 +63,15 @@ const generatePoints = (startingNumber, endingNumber, maxPoints) => Array.from(
     { length: maxPoints },
     (_, i) => startingNumber + i * parseInt((endingNumber - startingNumber) / (maxPoints - 1))
 ) 
+
+/**
+ * Method which loads country boundaries from geojson
+ * */
+function load_country() {
+    $.getJSON("/country.json", function (data) {
+        country = data;
+    });
+}
 
 /**
  * Method that returns the color regarding to index and type
@@ -115,15 +139,41 @@ function searchPointData(layer, lat, lon, marker,units) {
  * @param {any} idx position of the map
  * @param {any} layer layer to be loaded
  * @param {any} time period of time
+ * @param {any} compare period of time
  */
-function plot_layer(idx, layer, time) {
+function plot_layer(idx, layer, time, compare) {
     var wmsLayer = L.tileLayer.wms(geoserver_url, {
         layers: geoserver_workspace + ":" + layer,
         format: 'image/png',
         transparent: true
     }).addTo(maps[idx]);
 
-    wmsLayer.setParams({'time': time});
+    wmsLayer.setParams({ 'time': time });
+
+    // Add a new pane to compare
+    if (compare.toLowerCase() != 'none') {
+        var wmsLayerCompare = L.tileLayer.wms(geoserver_url, {
+            layers: geoserver_workspace + ":" + layer,
+            format: 'image/png',
+            transparent: true
+        }).addTo(maps[idx]);
+
+        wmsLayerCompare.setParams({ 'time': compare });
+
+        maps[idx].createPane("left");
+        maps[idx].createPane("right");
+        L.control.sideBySide(wmsLayer, wmsLayerCompare).addTo(maps[idx]);
+
+        // 
+        var legend2 = L.control({ position: 'topright' });
+
+        legend2.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = '<strong>' + $("#cbo_compare option:selected").text() + '</strong>';
+            return div;
+        };
+        legend2.addTo(maps[idx]);
+    }
 }
 
 /**
@@ -138,7 +188,7 @@ function update_maps() {
         return it.cropID == crop &&
             it.groupID == group ;
     });
-    // Realod maps
+    // Reload maps
     load_maps();
 }
 
@@ -151,6 +201,7 @@ function update_time() {
  * */
 function load_maps() {    
     var time = $("#cbo_time").val();
+    var compare = $("#cbo_compare").val();
     var maps_section = '';    
     layers_selected.forEach((value, idx) => { 
         // Condition to validate if start the row 
@@ -158,7 +209,7 @@ function load_maps() {
             maps_section += '<div class="row">';
         // adding a map
         maps_section += '<div class="col-md-6">' +
-                            '<h3>' + value.indicator + '</h3>' +
+                            '<h3>' + value.indicator + ' (' + value.acronym + ')</h3>' +
                             '<p class="text-justify">' + value.description + '</p>' +
                             '<div id="map_' + idx + '" class="map_indices"></div>' +
                         '</div>';
@@ -169,14 +220,15 @@ function load_maps() {
     });
     // Adding HTML
     $("#maps_section").html(maps_section);
+        
     // Clear all maps
     maps = [];
     // Loading maps
     layers_selected.forEach((value, idx) => {
         // ploting maps
-        plot_map('map_' + idx, idx, value.min, value.max, value.groupID, value.type, value.categories);
+        plot_map('map_' + idx, idx, value.min, value.max, value.groupID, value.type, value.acronym, value.categories, value.units);
         // Adding layer
-        plot_layer(idx, value.cropID + "_" + value.indicatorID, time);
+        plot_layer(idx, value.cropID + "_" + value.indicatorID, time, compare);
     });
     
 }

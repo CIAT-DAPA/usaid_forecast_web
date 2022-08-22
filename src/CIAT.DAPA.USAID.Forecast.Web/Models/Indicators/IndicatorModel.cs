@@ -56,6 +56,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
         /// Get or set the list of categories
         /// </summary>
         public List<IndicatorCategory> Categories { get; set; }
+        /// <summary>
+        /// Get or set the acronym for each indicator
+        /// </summary>
+        public string Acronym { get; set; }
 
 
         /// <summary>
@@ -65,34 +69,27 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
         public IndicatorModel(string line)
         {
             string[] fields = line.Split(",");
-            try
+            Crop = fields[0].Trim();
+            CropID = fields[1].Trim();
+            Group = fields[2].Trim();
+            GroupID = fields[3].Trim();
+            IndicatorName = fields[4].Trim();
+            IndicatorNameID = fields[5].Trim();
+            Description = fields[6].Trim();
+            Units = fields[7].Trim();
+            Min = double.Parse(fields[8].Trim(), CultureInfo.InvariantCulture);
+            Max = double.Parse(fields[9].Trim(), CultureInfo.InvariantCulture);
+            Type = char.Parse(fields[10].Trim());
+            Categories = new List<IndicatorCategory>();
+            if (Type == 'c')
             {
-                Crop = fields[0];
-                CropID = fields[1];
-                Group = fields[2];
-                GroupID = fields[3];
-                IndicatorName = fields[4];
-                IndicatorNameID = fields[5];
-                Description = fields[6];
-                Units = fields[7];
-                Min = double.Parse(fields[8], CultureInfo.InvariantCulture);
-                Max = double.Parse(fields[9], CultureInfo.InvariantCulture);
-                Type = char.Parse(fields[10]);
-                Categories = new List<IndicatorCategory>();
-                if (Type == 'c')
+                foreach (var c in fields[11].Trim().Split(";"))
                 {
-                    foreach (var c in fields[11].Split(";"))
-                    {
-                        string[] ca = c.Split("-");
-                        Categories.Add(new IndicatorCategory() { Id = ca[0].Trim(), Description = ca[1].Trim() });
-                    }
+                    string[] ca = c.Split("-");
+                    Categories.Add(new IndicatorCategory() { Id = ca[0].Trim(), Description = ca[1].Trim() });
                 }
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-                
+            Acronym = fields[12].Trim();
         }
     }
 }

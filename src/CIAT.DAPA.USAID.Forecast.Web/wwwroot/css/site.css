@@ -555,3 +555,13 @@ footer img {
 .carousel-control {
     width: 50px;
 }
+
+.border {    
+    margin: 0.25rem;
+    background-color: #f5f5f5;
+    border: 1px solid #dee2e6 !important;
+}
+
+.border-dark {
+    border-color: #343a40 !important;
+}

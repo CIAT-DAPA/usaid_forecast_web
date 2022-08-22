@@ -53,8 +53,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                     options.indicator_geoserver_url= Configuration.GetSection("Indicators:GeoserverUrl").Value;
                     options.indicator_geoserver_workspace = Configuration.GetSection("Indicators:GeoserverWorkspace").Value;
                     options.indicator_geoserver_average = int.Parse(Configuration.GetSection("Indicators:GeoserverAverage").Value);
+                    options.indicator_geoserver_cv = int.Parse(Configuration.GetSection("Indicators:GeoserverCV").Value);
                     string[] limit = Configuration.GetSection("Indicators:GeoserverTime").Value.ToString().Split("-");
                     options.indicator_geoserver_time = new int[] { int.Parse(limit[0]), int.Parse(limit[1]) };
+                    options.indicator_NINO = int.Parse(Configuration.GetSection("Indicators:GeoserverNINO").Value);
+                    options.indicator_NINA = int.Parse(Configuration.GetSection("Indicators:GeoserverNINA").Value);
                 }
             });
 

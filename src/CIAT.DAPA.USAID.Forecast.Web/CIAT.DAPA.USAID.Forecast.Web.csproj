@@ -133,4 +133,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\country.json" />
+  </ItemGroup>
+
 </Project>

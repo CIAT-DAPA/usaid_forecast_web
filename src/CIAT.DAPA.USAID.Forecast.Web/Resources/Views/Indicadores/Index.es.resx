@@ -120,6 +120,9 @@
   <data name="Categories" xml:space="preserve">
     <value>Categorias</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>Comparar</value>
+  </data>
   <data name="Crop" xml:space="preserve">
     <value>Cultivos</value>
   </data>

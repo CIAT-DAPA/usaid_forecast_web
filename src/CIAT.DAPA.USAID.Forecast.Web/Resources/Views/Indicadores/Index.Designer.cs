@@ -70,6 +70,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare.
+        /// </summary>
+        public static string Compare {
+            get {
+                return ResourceManager.GetString("Compare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crops.
         /// </summary>
         public static string Crop {

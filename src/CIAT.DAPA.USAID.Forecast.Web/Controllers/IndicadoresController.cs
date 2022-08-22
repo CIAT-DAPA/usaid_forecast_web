@@ -63,7 +63,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                                                                 IndicatorID = p.IndicatorNameID, Indicator = p.IndicatorName, 
                                                                 Description= p.Description, 
                                                                 Units = p.Units, Min = p.Min, Max=p.Max,
-                                                                Type = p.Type, Categories= p.Categories}).Distinct();
+                                                                Type = p.Type, Categories= p.Categories,
+                                                                Acronym = p.Acronym}).Distinct();
             
             return true;
         }
@@ -73,11 +74,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             ViewBag.geoserver_url = Configurations.indicator_geoserver_url;
             ViewBag.geoserver_workspace = Configurations.indicator_geoserver_workspace;
             var period= Enumerable.Range(Configurations.indicator_geoserver_time[0], 
-                                        Configurations.indicator_geoserver_time[1] - Configurations.indicator_geoserver_time[0])
+                                        (Configurations.indicator_geoserver_time[1] - Configurations.indicator_geoserver_time[0]) + 1)
                                     .Append(Configurations.indicator_geoserver_average)
-                                    .Select(p => new { Text = p != Configurations.indicator_geoserver_average ? p.ToString() : "Average", Value = p })
+                                    .Append(Configurations.indicator_geoserver_cv)
+                                    .Select(p => new { Text = (p == Configurations.indicator_geoserver_average ? "Average" : p == Configurations.indicator_geoserver_cv ? "CV" : p.ToString()), Value = p })
                                     .OrderBy(p=>p.Value);
             ViewBag.period = period;
+            ViewBag.compare = (new List<string>() { "None", Configurations.indicator_NINO.ToString(), Configurations.indicator_NINA.ToString() })
+                                .Select(p=>new { Text = (Configurations.indicator_NINO.ToString() == p ? "El Niño" : (Configurations.indicator_NINA.ToString() == p ? "La Niña":p)), Value = p });
         }
     }
 }

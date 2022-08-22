@@ -37,7 +37,8 @@
     "inputFiles": [
       "wwwroot/lib/please-wait/build/please-wait.js",
       "wwwroot/lib/nvd3/nv.d3.min.js",
-      "wwwroot/lib/select2/js/select2.full.min.js"
+      "wwwroot/lib/select2/js/select2.full.min.js",
+      "wwwroot/js/lib/leaflet-side-by-side.min.js"
     ],
     // Optionally specify minification options
     "minify": {
