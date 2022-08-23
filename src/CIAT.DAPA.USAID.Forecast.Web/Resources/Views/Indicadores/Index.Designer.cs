@@ -115,7 +115,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agroclimatic indices.
+        ///   Looks up a localized string similar to Agroclimatic indices viewer.
         /// </summary>
         public static string Title {
             get {

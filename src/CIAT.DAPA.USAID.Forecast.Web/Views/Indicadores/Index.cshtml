@@ -9,42 +9,54 @@
         <div class="row section-content">
             <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
             <p class="text-justify">
-                @Localizer["Description"]
+                Este visualizador de mapas agroclimáticos é uma plataforma interativa que permite aos usuários,
+                principalmente extensionistas, assistentes técnicos e entidades decisórias,
+                visualizar informações espaciais históricas sobre indicadores agroclimáticos (por exemplo,
+                demanda hídrica das culturas, períodos secos, períodos chuvosos, ondas de calor, condições de défice e excesso),
+                específicos para as zonas produtoras de milho, feijão, soja e café de Angola. Os mapas obtidos através
+                desta ferramenta podem ser utilizados para diversos fins, tais como:<br />
+                <ol>
+                    <li>
+                        Conhecer os padrões espaciais médios dos indicadores agroclimáticos mencionados acima.
+                    </li>
+                    <li>
+                        Explorar como fases específicas do fenômeno El Niño-Oscilação do Sul (ENSO) (ou seja, “El Niño”, “La Niña”)
+                        afetaram historicamente as condições de demanda de água em milho, feijão, regiões produtoras de soja e café.
+                    </li>
+                    <li>
+                        Identificar as regiões agrícolas com maior probabilidade de serem afetadas por secas, inundações e ondas de calor.
+                    </li>
+                </ol>
+                Todos os indicadores agroclimáticos foram calculados para as safras regulares de milho (setembro-abril),
+                feijão (novembro-março), soja (outubro-abril) e café (setembro-agosto);
+                usando informações climáticas históricas para o período 1981-2020.
             </p>
             <div class="row">
-                    <div class="row border border-dark">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label" for="cbo_crop">
+                    <div class="row form-group border border-dark">
+                                <label class="col-lg-1 control-label" for="cbo_crop">
                                     @Localizer["Crop"]
                                 </label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                     @Html.DropDownList("cbo_crop", new SelectList(ViewBag.indicators_crops, "CropID", "Crop"), new { @class = "form-control", onchange = "update_maps()" })
                                 </div>
                                 <label class="col-lg-2 control-label" for="cbo_group">
                                     @Localizer["Group"]
                                 </label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                     @Html.DropDownList("cbo_group", new SelectList(ViewBag.indicators_group, "GroupID", "Group"), new { @class = "form-control", onchange = "update_maps()" })
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-lg-2 control-label" for="cbo_time">
+                                <label class="col-lg-1 control-label" for="cbo_time">
                                     @Localizer["Time"]
                                 </label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                     @Html.DropDownList("cbo_time", new SelectList(ViewBag.period, "Value", "Text"), new { @class = "form-control", onchange = "update_time()" })
                                 </div>
-                                <label class="col-lg-2 control-label" for="cbo_compare">
+                                <label class="col-lg-1 control-label" for="cbo_compare">
                                     @Localizer["Compare"]
                                 </label>
-                                <div class="col-lg-4">
+                                <div class="col-lg-1">
                                     @Html.DropDownList("cbo_compare", new SelectList(ViewBag.compare, "Value", "Text"), new { @class = "form-control", onchange = "update_maps()" })
                                 </div>
-                            </div>
-                        </div>
                     </div>                
             </div>
             <br />

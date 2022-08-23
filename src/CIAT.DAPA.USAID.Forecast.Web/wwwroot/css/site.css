@@ -556,12 +556,14 @@ footer img {
     width: 50px;
 }
 
-.border {    
+.border {
     margin: 0.25rem;
     background-color: #f5f5f5;
     border: 1px solid #dee2e6 !important;
+    padding: 10px;
 }
 
 .border-dark {
     border-color: #343a40 !important;
+    
 }

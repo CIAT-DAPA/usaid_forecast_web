@@ -76,7 +76,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             var period= Enumerable.Range(Configurations.indicator_geoserver_time[0], 
                                         (Configurations.indicator_geoserver_time[1] - Configurations.indicator_geoserver_time[0]) + 1)
                                     .Append(Configurations.indicator_geoserver_average)
-                                    .Append(Configurations.indicator_geoserver_cv)
+                                    //.Append(Configurations.indicator_geoserver_cv)
                                     .Select(p => new { Text = (p == Configurations.indicator_geoserver_average ? "Average" : p == Configurations.indicator_geoserver_cv ? "CV" : p.ToString()), Value = p })
                                     .OrderBy(p=>p.Value);
             ViewBag.period = period;
