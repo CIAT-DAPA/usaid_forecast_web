@@ -22,14 +22,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ConfigurationPyCpt {
+    public class SubseasonalPyCPT {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ConfigurationPyCpt() {
+        internal SubseasonalPyCPT() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country.ConfigurationPyCpt", typeof(ConfigurationPyCpt).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country.SubseasonalPyCPT", typeof(SubseasonalPyCPT).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Setup PyCPT Country.
+        ///   Looks up a localized string similar to Subseasonal PyCPT Country.
         /// </summary>
         public static string Title {
             get {

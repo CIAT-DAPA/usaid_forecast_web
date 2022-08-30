@@ -22,9 +22,9 @@
     }
 }
 
-@{await Html.RenderPartialAsync("_PyCPTCreate", (Model.id.ToString(), "Country"));}
+@{await Html.RenderPartialAsync("_PyCPTCreate", (Model.id.ToString(), "Country", "SubseasonalPyCPT"));}
 
-@{await Html.RenderPartialAsync("_PyCPTList", (Model.id.ToString(), Model.conf_pycpt, (string[])ViewBag.months, "Country"));}
+@{await Html.RenderPartialAsync("_PyCPTList", (Model.id.ToString(), Model.subseasonal_pycpt, (string[])ViewBag.months, "Country", "SubseasonalPyCptDelete"));}
 
 <p>
     @Html.ActionLink(Localizer["Back"].Value, "Index")

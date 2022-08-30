@@ -364,11 +364,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         private string[] calculatePeriodsPyCPT(int m)
         {
             string[] r;
-            int i1 = ((m-1) % 12);
-            int i2 = ((m + 1) % 12);
-            int i3 = ((m + 2) % 12);
-            int i4 = ((m + 4) % 12);
-            r = new string[] { months[i1-1] + "-" + months[i2-1], months[i3-1] + "-" + months[i4-1] };
+            /*int i1 =  m == 1? 12 : ((m-1) % 13);
+            int i2 = ((m + 1) % 13);
+            int i3 = ((m + 2) % 13);
+            int i4 = ((m + 4) % 13);
+            r = new string[] { months[i1-1] + "-" + months[i2-1], months[i3-1] + "-" + months[i4-1] };*/
+            int i1 = m;
+            int i2 = ((m + 2) % 13) == 0 ? 1 : ((m + 2) % 13);
+            int i3 = ((m + 3) % 13) == 0 ? 1 : ((m + 3) % 13);
+            int i4 = ((m + 5) % 13) == 0 ? 1 : ((m + 5) % 13);
+            r = new string[] { months[i1 - 1] + "-" + months[i2 - 1], months[i3 - 1] + "-" + months[i4 - 1] };
             return r;
         }
 
@@ -397,8 +402,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     predictand = ConfigurationPyCPT.getNamePredictand(con.predictand),
                     predictors = ConfigurationPyCPT.getNamePredictors(con.predictors),
                     mons = new string[] { months[con.month - 1], months[con.month - 1] },
-                    tgtii = new string[] { "1.5", "4.5" },
-                    tgtff = new string[] { "3.5", "6.5" },
+                    //tgtii = new string[] { "1.5", "4.5" },
+                    //tgtff = new string[] { "3.5", "6.5" },
+                    tgtii = new string[] { "0.5", "3.5" },
+                    tgtff = new string[] { "4.5", "6.5" },
                     tgts = calculatePeriodsPyCPT(con.month),
                     tini = con.ranges_years.min.ToString(),
                     tend = con.ranges_years.max.ToString(),

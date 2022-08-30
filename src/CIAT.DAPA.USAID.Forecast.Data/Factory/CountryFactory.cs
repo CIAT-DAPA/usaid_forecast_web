@@ -49,21 +49,23 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return await collection.Find("{}").ToListAsync<Country>();
         }
 
-        public async Task<bool> addConfigurationPyCpt(Country country, ConfigurationPyCPT conf)
+        public async Task<bool> addConfigurationPyCpt(Country entity, ConfigurationPyCPT conf, TypePyCPT type)
         {
             conf.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
-            List<ConfigurationPyCPT> allConf = country.conf_pycpt.ToList();
+            var tmpConf = type == TypePyCPT.seasonal ? entity.conf_pycpt : entity.subseasonal_pycpt;
+            List<ConfigurationPyCPT> allConf = tmpConf == null ? new List<ConfigurationPyCPT>() : tmpConf.ToList();
             allConf.Add(conf);
-            country.conf_pycpt = allConf;
-            var result = await collection.UpdateOneAsync(Builders<Country>.Filter.Eq("_id", country.id),
-                Builders<Country>.Update.Set("conf_pycpt", country.conf_pycpt));
+            var result = await collection.UpdateOneAsync(Builders<Country>.Filter.Eq("_id", entity.id),
+                    Builders<Country>.Update.Set(type == TypePyCPT.seasonal ?
+                                                        "conf_pycpt" : "subseasonal_pycpt", allConf.AsEnumerable()));
             return result.ModifiedCount > 0;
         }
 
-        public async Task<bool> deleteConfigurationPyCPTAsync(Country entity, int month, long register)
+        public async Task<bool> deleteConfigurationPyCPTAsync(Country entity, int month, long register, TypePyCPT type)
         {
             List<ConfigurationPyCPT> allConf = new List<ConfigurationPyCPT>();
-            foreach (var c in entity.conf_pycpt)
+            var currentConf = type == TypePyCPT.seasonal ? entity.conf_pycpt : entity.subseasonal_pycpt;
+            foreach (var c in currentConf)
             {
                 if (c.month == month && c.track.register.Ticks == register)
                 {
@@ -72,9 +74,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 }
                 allConf.Add(c);
             }
-            entity.conf_pycpt = allConf;
             var result = await collection.UpdateOneAsync(Builders<Country>.Filter.Eq("_id", entity.id),
-                Builders<Country>.Update.Set("conf_pycpt", entity.conf_pycpt));
+                    Builders<Country>.Update.Set(type == TypePyCPT.seasonal ? 
+                                                        "conf_pycpt" : "subseasonal_pycpt", allConf.AsEnumerable()));
             return result.ModifiedCount > 0;
         }
     }

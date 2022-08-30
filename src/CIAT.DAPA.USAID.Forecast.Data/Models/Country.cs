@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public Track track { get; set; }
         /// <summary>
-        /// 
+        /// Get or set the configuration for seasonal forecast using pypct
         /// </summary>
         //[BsonRequired]
         public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
+        /// <summary>
+        /// Get or set the configuration for subseasonal forecast using pypct
+        /// </summary>
+        //[BsonRequired]
+        public IEnumerable<ConfigurationPyCPT> subseasonal_pycpt { get; set; }
+        /// <summary>
+        /// Get or set the mode in which the country executes seasonal climate forecast
+        /// </summary>
+        public ForecastMode seasonal_mode { get; set; }
+        /// <summary>
+        /// Get or set the mode in which the country executes subseasonal climate forecast
+        /// </summary>
+        public ForecastMode subseasonal_mode { get; set; }
     }
 }

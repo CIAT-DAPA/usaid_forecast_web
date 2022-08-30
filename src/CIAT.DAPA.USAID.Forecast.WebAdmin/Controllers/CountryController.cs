@@ -85,6 +85,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            generateItems(string.Empty, string.Empty);
             return View();
         }
         // POST: /Country/Create
@@ -101,11 +102,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
+                generateItems(string.Empty, string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
+                generateItems(string.Empty, string.Empty);
                 return View(entity);
             }
         }
@@ -127,13 +130,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
-
+                generateItems(entity.seasonal_mode.ToString(), entity.subseasonal_mode.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                return View();
+                return Redirect("Index");
             }
         }
         // POST: /Country/Edit/5
@@ -154,12 +157,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
-
+                generateItems(entity.seasonal_mode.ToString(), entity.subseasonal_mode.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
+                generateItems(entity.seasonal_mode.ToString(), entity.subseasonal_mode.ToString());
                 return View(entity);
             }
         }
@@ -225,9 +229,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // GET: /Country/ConfigurationPyCpt/5
-        [HttpGet]
-        public async Task<IActionResult> ConfigurationPyCpt(string id)
+        private async Task<IActionResult> LoadPyCptAsync(string id)
         {
             try
             {
@@ -253,45 +255,104 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        
-        
-        // POST: /Country/ConfigurationPyCpt/5
-        [HttpPost, ActionName("ConfigurationPyCpt")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfigurationPyCptAdd(string id) 
+        // GET: /Country/SeasonalPyCpt/5
+        [HttpGet]
+        public async Task<IActionResult> SeasonalPyCpt(string id)
+        {
+            return await LoadPyCptAsync(id);
+        }
+
+        // GET: /Country/SubseasonalPyCpt/5
+        [HttpGet]
+        public async Task<IActionResult> SubseasonalPyCpt(string id)
+        {
+            return await LoadPyCptAsync(id);
+        }
+
+        /// <summary>
+        /// Method that Add new configuration for PyCPT, it can be for seasonal or subseasonal
+        /// </summary>
+        /// <param name="id">Id country</param>
+        /// <param name="form">Form data</param>
+        /// <param name="action">action name for redirecting</param>
+        /// <param name="type">Type to add</param>
+        /// <returns></returns>
+        private async Task<IActionResult> PyCptAddAsync(string id, IFormCollection form, string action, TypePyCPT type)
         {
             try
             {
-                var form = HttpContext.Request.Form;
                 Country entity = await db.country.byIdAsync(id);
                 ConfigurationPyCPT confPyCpt = generatePyCPTConfAsync(form);
-                await db.country.addConfigurationPyCpt(entity, confPyCpt);
-                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+                await db.country.addConfigurationPyCpt(entity, confPyCpt, type);
+                return RedirectToAction(action, new { id = id });
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+                return RedirectToAction(action, new { id = id });
             }
         }
-        // POST: /Country/ConfigurationDelete/5
-        [HttpPost]
+
+        // POST: /Country/SeasonalPyCpt/5
+        [HttpPost, ActionName("SeasonalPyCpt")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfigurationPyCptDelete(string id, int month, long register)
+        public async Task<IActionResult> SeasonalPyCptAdd(string id) 
+        {
+            return await PyCptAddAsync(id, HttpContext.Request.Form, "SeasonalPyCPT", TypePyCPT.seasonal);
+        }
+
+        // POST: /Country/SeasonalPyCpt/5
+        [HttpPost, ActionName("SubseasonalPyCpt")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubseasonalPyCptAdd(string id)
+        {
+            return await PyCptAddAsync(id, HttpContext.Request.Form, "SubseasonalPyCPT", TypePyCPT.subseasonal);
+        }
+
+
+        public async Task<IActionResult> PyCptDeleteAsync(string id, int month, long register, string action, TypePyCPT type)
         {
             try
             {
-                // Get original crop data
+                // Get original country
                 Country entity_new = await db.country.byIdAsync(id);
                 // Delete the setup
-                await db.country.deleteConfigurationPyCPTAsync(entity_new, month, register);
-                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+                await db.country.deleteConfigurationPyCPTAsync(entity_new, month, register, type);
+                return RedirectToAction(action, new { id = id });
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+                return RedirectToAction(action, new { id = id });
             }
+        }
+
+        // POST: /Country/SeasonalPyCptDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SeasonalPyCptDelete(string id, int month, long register)
+        {
+            return await PyCptDeleteAsync(id, month, register, "SeasonalPyCPT", TypePyCPT.seasonal);
+        }
+
+        // POST: /Country/SubseasonalPyCptDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubseasonalPyCptDelete(string id, int month, long register)
+        {
+            return await PyCptDeleteAsync(id, month, register, "SubseasonalPyCPT", TypePyCPT.subseasonal);
+        }
+
+        private void generateItems(string seasonal,string subseasonal)
+        {
+            var forecast_mode = from ForecastMode d in Enum.GetValues(typeof(ForecastMode))
+                             select new { ID = (int)d, Name = d.ToString() };
+            ViewData["forecast_seasonal"] = string.IsNullOrEmpty(seasonal) ? 
+                                        new SelectList(forecast_mode, "ID", "Name") :
+                                        new SelectList(forecast_mode, "ID", "Name", seasonal);
+            ViewData["forecast_subseasonal"] = string.IsNullOrEmpty(subseasonal) ?
+                                        new SelectList(forecast_mode, "ID", "Name") :
+                                        new SelectList(forecast_mode, "ID", "Name", subseasonal);
         }
     }
 }

@@ -99,11 +99,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ResetPasswordConfirmation.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Views\Country\ConfigurationPyCpt.Designer.cs">
-      <DependentUpon>ConfigurationPyCpt.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Resources\Views\Country\Create.Designer.cs">
       <DependentUpon>Create.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -128,6 +123,16 @@
       <DependentUpon>Index.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\Views\Country\SeasonalPyCPT.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SeasonalPyCPT.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Country\SubseasonalPyCPT.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SubseasonalPyCPT.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Views\Crop\Create.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -452,10 +457,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ResetPasswordConfirmation.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Country\ConfigurationPyCpt.resx">
-      <LastGenOutput>ConfigurationPyCpt.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Country\Create.resx">
       <LastGenOutput>Create.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -475,6 +476,14 @@
     <EmbeddedResource Update="Resources\Views\Country\Index.resx">
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Country\SeasonalPyCPT.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SeasonalPyCPT.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Country\SubseasonalPyCPT.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubseasonalPyCPT.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Crop\Create.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

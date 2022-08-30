@@ -15,7 +15,8 @@ var country;
   * @param {any} idx position of the map list
   */
 function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [], units) {
-    maps[idx] = L.map(id).setView([conf.latitude, conf.longitude], conf.zoom);
+    maps[idx] = L.map(id, { zoomControl: false }).setView([conf.latitude, conf.longitude], conf.zoom);
+    L.control.zoom({ position: 'bottomright' }).addTo(maps[idx]);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
@@ -24,12 +25,9 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
     var myStyle = {
         "color": "#666666",
         "weight": 1,
-        //"opacity": 0.1
         "fillOpacity": 0.1
     };
 
-    //console.log(country);
-    //L.geoJson(country, { style: myStyle }).addTo(maps[idx]);
     $.getJSON("/country.json", function (data) {
         L.geoJson(data, { style: myStyle }).addTo(maps[idx]);
     });
@@ -164,7 +162,7 @@ function plot_layer(idx, layer, time, compare) {
         maps[idx].createPane("right");
         L.control.sideBySide(wmsLayer, wmsLayerCompare).addTo(maps[idx]);
 
-        // 
+        // Add legends
         var legend2 = L.control({ position: 'topright' });
 
         legend2.onAdd = function (map) {
@@ -173,6 +171,15 @@ function plot_layer(idx, layer, time, compare) {
             return div;
         };
         legend2.addTo(maps[idx]);
+
+        var legend3 = L.control({ position: 'topleft' });
+
+        legend3.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = '<strong>' + $("#cbo_time option:selected").text() + '</strong>';
+            return div;
+        };
+        legend3.addTo(maps[idx]);
     }
 }
 

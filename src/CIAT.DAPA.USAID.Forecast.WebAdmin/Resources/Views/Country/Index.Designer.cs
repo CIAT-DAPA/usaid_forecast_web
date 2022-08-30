@@ -133,11 +133,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Country {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PyCPT Configuration.
+        ///   Looks up a localized string similar to PyCPT Seasonal.
         /// </summary>
-        public static string Setup {
+        public static string Seasonal {
             get {
-                return ResourceManager.GetString("Setup", resourceCulture);
+                return ResourceManager.GetString("Seasonal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PyCPT Subseasonal.
+        /// </summary>
+        public static string Subseasonal {
+            get {
+                return ResourceManager.GetString("Subseasonal", resourceCulture);
             }
         }
         

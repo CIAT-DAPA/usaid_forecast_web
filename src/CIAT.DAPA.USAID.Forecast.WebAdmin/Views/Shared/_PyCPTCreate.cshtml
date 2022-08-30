@@ -1,6 +1,6 @@
-﻿@model (string id, string controller)
+﻿@model (string id, string controller, string action)
 
-@using (Html.BeginForm("ConfigurationPyCpt", @Model.controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm(@Model.action, @Model.controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 

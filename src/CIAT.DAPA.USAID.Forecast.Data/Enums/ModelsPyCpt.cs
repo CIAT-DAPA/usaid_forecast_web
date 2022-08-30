@@ -50,5 +50,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// 
         /// </summary>
         EU_C3S_CMCC_SPS3p5,
+        /// <summary>
+        /// 
+        /// </summary>
+        ECMWF,
+        /// <summary>
+        /// 
+        /// </summary>
+        CFSv2_SubX
     }
 }
