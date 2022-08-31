@@ -154,8 +154,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     {
                         int m = Program.searchParameter(args, "-m");
                         Program.validateParameter(m, "-m");
-                        Console.WriteLine("Exporting PYCPT configuration");
-                        await output.exportConfigurationPyCpt(args[path + 1], args[country + 1], args[m+1].Split(",").Select(int.Parse).ToList());
+                        Console.WriteLine("Exporting Seasonal PyCPT configuration");
+                        await output.exportConfigurationPyCpt(args[path + 1], args[country + 1], args[m+1].Split(",").Select(int.Parse).ToList(), TypePyCPT.seasonal);
                     }
                     // Export coords file, by country and state
                     // -out -pyco -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444" -st ""5555666677778888"
@@ -172,6 +172,16 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                             Console.WriteLine("Exporting coordinates by state");
                             await output.exportCoordsWsPycptAsync(args[path + 1], args[country + 1], args[state + 1]);
                         }
+                    }
+                    // Export json file for subseasonal configuration
+                    // -out -sub -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444" -m "4"
+                    int sub = Program.searchParameter(args, "-sub");
+                    if (sub >= 0)
+                    {
+                        int m = Program.searchParameter(args, "-m");
+                        Program.validateParameter(m, "-m");
+                        Console.WriteLine("Exporting Subseasonal PyCPT configuration");
+                        await output.exportConfigurationPyCpt(args[path + 1], args[country + 1], args[m + 1].Split(",").Select(int.Parse).ToList(), TypePyCPT.subseasonal);
                     }
                 }
                 else if (Program.searchParameter(args, "-in") == 0)

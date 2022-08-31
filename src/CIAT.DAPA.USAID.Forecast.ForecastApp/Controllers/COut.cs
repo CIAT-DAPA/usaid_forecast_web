@@ -383,12 +383,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// </summary>
         /// <param name="path"></param>
         /// <param name="id"></param>
-        /// <param name="months"></param>
+        /// <param name="month_list"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
-        public async Task<bool> exportConfigurationPyCpt(string path, string id, List<int> month_list)
+        public async Task<bool> exportConfigurationPyCpt(string path, string id, List<int> month_list,TypePyCPT type )
         {
             Country country = await db.country.byIdAsync(id);
-            var conf_pycpt = country.conf_pycpt.Where(p => p.track.enable == true).OrderByDescending(o => o.track.register);
+            var pycpt = type == TypePyCPT.seasonal ? country.conf_pycpt : country.subseasonal_pycpt;
+            var conf_pycpt = pycpt.Where(p => p.track.enable == true).OrderByDescending(o => o.track.register);
             List<object> confs = new List<object>();
             foreach (var con in conf_pycpt.Where(p=> month_list.Contains(p.month)))
                 confs.Add(new
@@ -422,9 +424,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     confidence_level = con.confidence_level.ToString()
                 });
             var jsn = JsonConvert.SerializeObject(confs);
-            if (File.Exists(path + "inputsPycpt.json"))
-                File.Delete(path + "inputsPycpt.json");
-            File.WriteAllText(path + "inputsPycpt.json", jsn);
+            string full_path = path + Enum.GetName(typeof(TypePyCPT), type) + "_pycpt.json";
+            if (File.Exists(full_path))
+                File.Delete(full_path);
+            File.WriteAllText(full_path, jsn);
             return true;
         }
 

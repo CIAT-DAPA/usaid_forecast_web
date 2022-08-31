@@ -37,6 +37,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
                 val = "EU-C3S-DWD-GCFS2p1";
             else if (m == ModelsPyCpt.EU_C3S_CMCC_SPS3p5)
                 val = "EU-C3S-CMCC-SPS3p5";
+            else if (m == ModelsPyCpt.ECMWF)
+                val = "ECMWF";
+            else if (m == ModelsPyCpt.CFSv2_SubX)
+                val = "CFSv2_SubX";
             return val;
         }
 

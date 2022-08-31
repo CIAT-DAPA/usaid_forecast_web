@@ -26,6 +26,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
+            newEntity.conf_pycpt = entity.conf_pycpt;
+            newEntity.subseasonal_pycpt = entity.subseasonal_pycpt;
             var result = await collection.ReplaceOneAsync(Builders<Country>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }
