@@ -55,10 +55,14 @@ Export Data
 -st	"value"		Optional parameter. It is the ObjectId of State
 				to export coordinates of weather stations by State.
 
--py				Export json file from pycpt configuration by country or by state depends of indicator.
+-py				Export json file from pycpt configuration for seasonal by country or 
+				by state depends of indicator.
 
 -pyco			Create a only file of weather station with their
 				coordinates by country or state.
+
+-sub			Export json file from pycpt configuration for subseasonal a country.
+
 
 -----------------------------------------------------------------
 Import Data
