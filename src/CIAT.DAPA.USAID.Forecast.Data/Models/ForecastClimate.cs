@@ -37,5 +37,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public IEnumerable<PerformanceMetric> performance { get; set; }
+        /// <summary>
+        /// List of probabilities of subseasonal
+        /// </summary>
+        public IEnumerable<ProbabilitySubseasonal> subseasonal { get; set; }
     }
 }

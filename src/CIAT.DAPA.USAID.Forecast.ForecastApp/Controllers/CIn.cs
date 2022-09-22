@@ -85,6 +85,45 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
             else
                 Console.WriteLine("Probabilities not found");
+            // Load subseasonal
+            Console.WriteLine("Getting subseasonal");
+            //Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
+            //var f_subseasonal = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
+            // Get the probabilities file
+            List<ImportSubseasonal> subseasonal = new List<ImportSubseasonal>();
+            string fsub = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_SUBSEASONAL));
+            if (!string.IsNullOrEmpty(fsub))
+            {
+                Console.WriteLine("Processing: subseasonal");
+                Console.WriteLine(fsub);
+                // Reading the file
+                using (file = File.OpenText(fsub))
+                {
+                    int count = 0;
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        // Omitted the file's header
+                        if (count != 0 && !string.IsNullOrEmpty(line))
+                        {
+                            // Get the probabilities from the file in a temp memmory
+                            var fields = line.Split(Program.settings.splitted);
+                            subseasonal.Add(new ImportSubseasonal()
+                            {
+                                year = int.Parse(fields[0]),
+                                week = int.Parse(fields[1]),
+                                month = int.Parse(fields[2]),
+                                ws = fields[3],
+                                below = double.Parse(fields[4]),
+                                normal = double.Parse(fields[5]),
+                                above = double.Parse(fields[6])
+                            });
+                        }
+                        count += 1;
+                    }
+                }
+            }
+            else
+                Console.WriteLine("Subseasonal not found");
             // Get the performance metrics file
             List<ImportPerformance> performances = new List<ImportPerformance>();
             string fpe = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
@@ -207,15 +246,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         }).ToList());
                 }
                 // Saving in the database
-                await db.forecastClimate.insertAsync(new ForecastClimate()
+                if (string.IsNullOrEmpty(fsub))
                 {
-                    forecast = forecast.id,
-                    weather_station = ForecastDB.parseId(ws),
-                    data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
+                    await db.forecastClimate.insertAsync(new ForecastClimate()
                     {
-                        year = p.year,
-                        month = p.month,
-                        probabilities = new List<Probability>()
+                        forecast = forecast.id,
+                        weather_station = ForecastDB.parseId(ws),
+                        data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            probabilities = new List<Probability>()
                         {
                             new Probability()
                             {
@@ -225,9 +266,49 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 upper = p.above
                             }
                         }
-                    }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
-                    performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList()
-                });
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList()
+                    });
+                }
+                else {
+                    await db.forecastClimate.insertAsync(new ForecastClimate()
+                    {
+                        forecast = forecast.id,
+                        weather_station = ForecastDB.parseId(ws),
+                        data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            probabilities = new List<Probability>()
+                            {
+                                new Probability()
+                                {
+                                    measure = MeasureClimatic.prec,
+                                    lower = p.below,
+                                    normal = p.normal,
+                                    upper = p.above
+                                }
+                            }
+                            }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        subseasonal = subseasonal.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilitySubseasonal()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            week = p.week,
+                            probabilities = new List<Probability>()
+                            {
+                                new Probability()
+                                {
+                                    measure = MeasureClimatic.prec,
+                                    lower = p.below,
+                                    normal = p.normal,
+                                    upper = p.above
+                                }
+                            }
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ThenBy(p=>p.week).ToList()
+                    });
+                }
             }
 
 
@@ -351,28 +432,39 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             {
                                 // Get the data from the file in a temp memmory
                                 var fields = line.Split(Program.settings.splitted);
-                                yields.Add(new ImportYield()
+                                try
                                 {
-                                    weather_station = fields[0],
-                                    soil = fields[1],
-                                    cultivar = fields[2],
-                                    start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
-                                    end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
-                                    measure = fields[5],
-                                    avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
-                                    median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),                                    
-                                    min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
-                                    max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
-                                    quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
-                                    quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
-                                    quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
-                                    conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
-                                    conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
-                                    sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
-                                    perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
-                                    perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
-                                    coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
-                                });
+                                    yields.Add(new ImportYield()
+                                    {
+                                        weather_station = fields[0],
+                                        soil = fields[1],
+                                        cultivar = fields[2],
+                                        start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
+                                        end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
+                                        measure = fields[5],
+                                        avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
+                                        median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),
+                                        min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
+                                        max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
+                                        quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
+                                        quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
+                                        quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
+                                        conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
+                                        conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
+                                        sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
+                                        perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
+                                        perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
+                                        coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
+                                    });
+                                }
+                                catch(Exception ex2)
+                                {
+                                    Console.WriteLine(ex2.Message);
+                                    Console.WriteLine(ex2.StackTrace);
+                                    Console.WriteLine(line);
+                                    throw new Exception();
+                                }
+                                
                             }
                             count += 1;
                         }
@@ -530,6 +622,71 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 }
 
             }
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
+        public async Task<bool> importCropConfigurationAsync(string path, string crop)
+        {
+            Console.WriteLine("Importing crop configuration from: " + path);
+            string[] folders = Directory.GetDirectories(path);
+            string tmp_folder = path + Path.VolumeSeparatorChar.ToString() + "tmp";
+            Directory.CreateDirectory(tmp_folder);
+            foreach(string folder in folders)
+            {
+                try
+                {
+                    Console.WriteLine("\tStarting: " + folder);
+                    string f = folder.Split(Path.VolumeSeparatorChar.ToString()).Last();
+                    // This array has the configuration
+                    // 0 = Weather station
+                    // 1 = Cultivar
+                    // 2 = Soil
+                    // 3 = Days
+                    string[] conf = f.Split("_");
+                    // Saving the data of the configuration files
+                    List<ConfigurationFile> files = new List<ConfigurationFile>();
+                    ConfigurationFile file_temp;
+                    int i = 0;
+                    // This cicle add all files upload to the setup entity
+                    foreach (var file in Directory.GetFiles(folder))
+                    {
+                        i += 1;
+                        string[] file_name = file.Split(Path.DirectorySeparatorChar);
+                        file_temp = new ConfigurationFile()
+                        {
+                            date = DateTime.Now,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + crop + "-" + file_name,
+                            name = Path.GetFileNameWithoutExtension(file)
+                        };
+                        File.Copy(file, file_temp.path);
+                        files.Add(file_temp);
+                    }
+                    DateTime now = DateTime.Now;
+                    Setup entity = new Setup()
+                    {
+                        conf_files = files,
+                        crop = ForecastDB.parseId(crop),
+                        weather_station = ForecastDB.parseId(conf[0]),
+                        cultivar = ForecastDB.parseId(conf[1]),
+                        soil = ForecastDB.parseId(conf[2]),
+                        days = int.Parse(conf[3]),
+                        track = new Track() { enable=true, register= now, updated = now }
+                    };
+                    await db.setup.insertAsync(entity);
+                    Directory.Move(folder, tmp_folder);
+                    Console.WriteLine("\tEnd");
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Error");
+                    Console.WriteLine(folder);
+                    Console.WriteLine(ex.Message);                    
+                    Console.WriteLine("\tEnd");
+                }
+                
+            }
+            // Read the file
             Console.WriteLine("Import process has finished");
             return true;
         }

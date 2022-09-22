@@ -61,6 +61,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string In_PATH_FS_FILE_PROBABILITY { get; set; }
         /// <summary>
+        /// File's name of the forecast probabilities for subseasonal
+        /// </summary>
+        public string In_PATH_FS_FILE_SUBSEASONAL { get; set; }
+        /// <summary>
         /// File's name of the performance probabilities
         /// </summary>
         public string In_PATH_FS_FILE_PERFORMANCE { get; set; }
@@ -104,5 +108,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Set or get if it should add one day for crop forecast
         /// </summary>
         public bool Add_Day { get; set; }
+        /// <summary>
+        /// Set or get the path where the configuration folder of webadmin is
+        /// </summary>
+        public bool In_PATH_D_WEBADMIN_CONFIGURATION { get; set; }
     }
 }

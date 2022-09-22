@@ -235,7 +235,7 @@
     <value>Radiação solar</value>
   </data>
   <data name="sol_rad_unit" xml:space="preserve">
-    <value>cal/cm²d</value>
+    <value>MJ/m²d</value>
   </data>
   <data name="t" xml:space="preserve">
     <value>Temperaturas máximas e mínimas</value>

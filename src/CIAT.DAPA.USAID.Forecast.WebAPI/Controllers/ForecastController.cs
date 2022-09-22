@@ -334,5 +334,73 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+        // GET: api/Forecast/SubseasonalWS/{weather_stations}/{format}
+        [HttpGet]
+        [Route("api/[controller]/SubseasonalWS/{weather_stations}/{format}")]
+        public async Task<IActionResult> GetSubseasonalWS(string weather_stations, string format)
+        {
+            try
+            {
+                // Transform the string id to object id
+                string[] ws_parameter = weather_stations.Split(',');
+                ObjectId[] ws = new ObjectId[ws_parameter.Length];
+                for (int i = 0; i < ws_parameter.Length; i++)
+                    ws[i] = getId(ws_parameter[i]);
+
+                var f = await db.forecast.getLatestAsync();
+                var fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+                var json = new
+                {
+                    forecast = f.id.ToString(),
+                    confidence = f.confidence,
+                    subseasonal = fc.Select(p => new
+                    {
+                        weather_station = p.weather_station.ToString(),                        
+                        data = p.subseasonal != null && p.subseasonal.Count() > 0 ? 
+                            p.subseasonal.Select(p2 => new SubseasonalDataEntity()
+                            {
+                                year = p2.year,
+                                month = p2.month,
+                                week = p2.week,
+                                probabilities = p2.probabilities.Select(p3 => new ProbabilityEntity()
+                                {
+                                    measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
+                                    lower = p3.lower,
+                                    normal = p3.normal,
+                                    upper = p3.upper
+                                })
+                            }) : new List<SubseasonalDataEntity>()
+                    }) 
+                };
+                // Write event log
+                writeEvent("Forecast lastes subseasonal climate " + f.id.ToString(), LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "year", "month", "week", "measure", "lower", "normal", "upper", "\n" }));
+
+                    foreach (var w in json.subseasonal)
+                        foreach (var m in w.data)
+                            foreach (var d in m.probabilities)
+                                builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, m.year.ToString(), m.month.ToString(), m.week.ToString(), d.measure, d.lower.ToString(), d.normal.ToString(), d.upper.ToString(), "\n" }));
+
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "forecast_subseasonal.csv");
+                }
+                else
+                    return Content("Format not supported");
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
+        }
     }
 }

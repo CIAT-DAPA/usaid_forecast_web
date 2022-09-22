@@ -412,7 +412,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cal/cm²d.
+        ///   Looks up a localized string similar to MJ/m²d.
         /// </summary>
         public static string sol_rad_unit {
             get {

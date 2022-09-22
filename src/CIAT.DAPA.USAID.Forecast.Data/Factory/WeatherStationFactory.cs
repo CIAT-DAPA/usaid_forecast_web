@@ -143,6 +143,21 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         /// <summary>
         /// Method that return all registers enable in the database
+        /// by the id list
+        /// </summary>
+        /// <param name="ids">Array of the ids</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableByIDsAsync(ObjectId[] ids)
+        {
+            // Filter all entities available.
+            var query = from ws in collection.AsQueryable()
+                        where ws.track.enable && ids.Contains(ws.id)
+                        select ws;
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// Method that return all registers enable in the database
         /// by the name
         /// </summary>
         /// <param name="names">Array of the weather stations names</param>

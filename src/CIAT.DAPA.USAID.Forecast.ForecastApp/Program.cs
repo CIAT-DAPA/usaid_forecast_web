@@ -44,6 +44,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_PATH_USERS = conf["Out_PATH_USERS"],
                     In_PATH_FS_PROBABILITIES = conf["In_PATH_FS_PROBABILITIES"],
                     In_PATH_FS_FILE_PROBABILITY = conf["In_PATH_FS_FILE_PROBABILITY"],
+                    In_PATH_FS_FILE_SUBSEASONAL = conf["In_PATH_FS_FILE_SUBSEASONAL"],
                     In_PATH_FS_RASTER_SOURCE = conf["In_PATH_FS_RASTER_SOURCE"],
                     In_PATH_FS_RASTER_DESTINATION = conf["In_PATH_FS_RASTER_DESTINATION"],
                     In_PATH_FS_FILE_PERFORMANCE = conf["In_PATH_FS_FILE_PERFORMANCE"],
@@ -209,6 +210,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Program.validateParameter(type, "-type");
                         Console.WriteLine("Importing historical data");
                         await cin.importHistoricalAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1]), int.Parse(args[type + 1]));
+                    }
+                    //-in -cc -p "C:\data.csv" 
+                    int cc = Program.searchParameter(args, "-cc");
+                    if (cc >= 0)
+                    {
+                        int cr = Program.searchParameter(args, "-cr");
+                        Program.validateParameter(cr, "-cr");
+                        Console.WriteLine("Importing crop configurations");
+                        await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1]);
                     }
                 }
                 else if (Program.searchParameter(args, "-help") == 0)
