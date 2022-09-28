@@ -34,6 +34,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             return result.ModifiedCount > 0;
         }
 
+        public async Task<bool> updateWeatherRangeAsync(WeatherStation entity, List<YieldRange> range)
+        {
+ 
+            if (range != null)
+            {
+                entity.ranges = range;
+            }
+            entity.track.updated = DateTime.Now;
+            entity.conf_files = entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
+            var result = await collection.ReplaceOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), entity);
+            return result.ModifiedCount > 0;
+        }
+
         /// <summary>
         /// Method that add a new setup to a crop
         /// </summary>
@@ -116,6 +129,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             // Filter all entities available.
             var municipalities = db.GetCollection<Municipality>(Enum.GetName(typeof(LogEntity), LogEntity.lc_municipality))
                                 .AsQueryable().Where(f => f.track.enable).ToList();
+
             var weatherstations = collection
                                 .AsQueryable().Where(f => f.track.enable).ToList();
             // Join all data and groups the data by the state
@@ -123,6 +137,20 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                         join w in weatherstations on m.id equals w.municipality
                         where m.state == state
                         select w;
+
+            return query.ToList();
+        }
+
+        public async virtual Task<List<WeatherStation>> listEnableByMunicipalityAsync(ObjectId municipality)
+        {
+
+            var weatherstations = collection
+                                .AsQueryable().Where(f => f.track.enable).ToList();
+            // Join all data and groups the data by the state
+            var query = from w in weatherstations
+                        where w.municipality == municipality
+                        select w;
+
             return query.ToList();
         }
 
