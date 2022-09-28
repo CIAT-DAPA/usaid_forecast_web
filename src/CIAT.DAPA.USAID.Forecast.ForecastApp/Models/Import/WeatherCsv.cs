@@ -47,11 +47,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
                 }
                 else
                 {
-                    if (tittle.Contains("_id"))
+                    if (tittle.Contains("_id") && weather_csv.GetType().GetProperty(tittle) != null)
                     {
                         weather_csv.GetType().GetProperty(tittle).SetValue(weather_csv, ForecastDB.parseId(values[position]), null);
                     }
-                    else
+                    else if (weather_csv.GetType().GetProperty(tittle) != null)
                     {
                         weather_csv.GetType().GetProperty(tittle).SetValue(weather_csv, values[position], null);
                     }

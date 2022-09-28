@@ -90,7 +90,7 @@ Import Data
 
 -wr				Imports the ranges in the weather stations of the selected csv file.
 
--sl				Imports the soil info in the db of the selected csv file.
+-sli			Imports the soil info in the db of the selected csv file.
 
 -----------------------------------------------------------------
 Examples
