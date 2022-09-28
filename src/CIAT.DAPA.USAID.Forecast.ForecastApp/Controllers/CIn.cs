@@ -270,7 +270,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList()
                     });
                 }
-                else {
+                else
+                {
                     await db.forecastClimate.insertAsync(new ForecastClimate()
                     {
                         forecast = forecast.id,
@@ -289,7 +290,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     upper = p.above
                                 }
                             }
-                            }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
                         performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
                         subseasonal = subseasonal.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilitySubseasonal()
                         {
@@ -306,7 +307,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     upper = p.above
                                 }
                             }
-                        }).OrderBy(p => p.year).ThenBy(p => p.month).ThenBy(p=>p.week).ToList()
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ThenBy(p => p.week).ToList()
                     });
                 }
             }
@@ -457,14 +458,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                         coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
                                     });
                                 }
-                                catch(Exception ex2)
+                                catch (Exception ex2)
                                 {
                                     Console.WriteLine(ex2.Message);
                                     Console.WriteLine(ex2.StackTrace);
                                     Console.WriteLine(line);
                                     throw new Exception();
                                 }
-                                
+
                             }
                             count += 1;
                         }
@@ -632,7 +633,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             string[] folders = Directory.GetDirectories(path);
             string tmp_folder = path + Path.VolumeSeparatorChar.ToString() + "tmp";
             Directory.CreateDirectory(tmp_folder);
-            foreach(string folder in folders)
+            foreach (string folder in folders)
             {
                 try
                 {
@@ -671,24 +672,85 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         cultivar = ForecastDB.parseId(conf[1]),
                         soil = ForecastDB.parseId(conf[2]),
                         days = int.Parse(conf[3]),
-                        track = new Track() { enable=true, register= now, updated = now }
+                        track = new Track() { enable = true, register = now, updated = now }
                     };
                     await db.setup.insertAsync(entity);
                     Directory.Move(folder, tmp_folder);
                     Console.WriteLine("\tEnd");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine("Error");
                     Console.WriteLine(folder);
-                    Console.WriteLine(ex.Message);                    
+                    Console.WriteLine(ex.Message);
                     Console.WriteLine("\tEnd");
                 }
-                
+
             }
             // Read the file
             Console.WriteLine("Import process has finished");
             return true;
         }
+
+        public async Task<bool> importRangesConfigurationAsync(string path)
+        {
+            Console.WriteLine("Importing range configuration from: " + path);
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
+                List<WeatherCsv> weather_list = lines.Skip(1).Select(line => WeatherCsv.FromCsv(line, lines[0])).ToList();
+
+                List<MunicipalityList> municipality_list = MunicipalityList.CreateList(weather_list);
+                       
+                foreach (MunicipalityList municipality in municipality_list)
+                {
+
+                    var weather_stations = await db.weatherStation.listEnableByMunicipalityAsync(municipality.municipality_id);
+                    foreach (var weather_station in weather_stations)
+                    {
+                        Console.WriteLine("Importing ranges in the weather station: " + weather_station.name);
+                        await db.weatherStation.updateWeatherRangeAsync(weather_station, municipality.ranges);
+                    }
+                    Console.WriteLine("\tEnd " + municipality.municipality_name);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\tEnd");
+            }
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
+        public async Task<bool> importSoilDataAsync(string path)
+        {
+            Console.WriteLine("Importing range configuration from: " + path);
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
+                List<Soil> soil_list = lines.Skip(1).Select(line => SoilCsv.FromCsv(line, lines[0])).ToList();
+
+
+                foreach (Soil soil in soil_list)
+                {
+                    Console.WriteLine("Importing soil: " + soil.name);
+                    await db.soil.insertAsync(soil);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\tEnd");
+            }
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
     }
 }

@@ -220,6 +220,22 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing crop configurations");
                         await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1]);
                     }
+
+                    int wr = Program.searchParameter(args, "-wr");
+                    if (wr >= 0)
+                    {
+                        Program.validateParameter(wr, "-wr");
+                        Console.WriteLine("Importing ranges configurations");
+                        await cin.importRangesConfigurationAsync(args[path + 1]);
+                    }
+
+                    int sli = Program.searchParameter(args, "-sli");
+                    if (sli >= 0)
+                    {
+                        Program.validateParameter(sli, "-sli");
+                        Console.WriteLine("Importing soil data");
+                        await cin.importSoilDataAsync(args[path + 1]);
+                    }
                 }
                 else if (Program.searchParameter(args, "-help") == 0)
                 {
