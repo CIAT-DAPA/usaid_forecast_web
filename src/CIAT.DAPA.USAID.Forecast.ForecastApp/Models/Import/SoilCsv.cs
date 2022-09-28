@@ -20,11 +20,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
             foreach (string tittle in tittles_values)
             {
 
-                if (tittle.Contains("crop"))
+                if (tittle.Contains("crop") && soil_csv.GetType().GetProperty(tittle) != null)
                 {
                     soil_csv.GetType().GetProperty(tittle).SetValue(soil_csv, ForecastDB.parseId(values[position]), null);
                 }
-                else
+                else if(soil_csv.GetType().GetProperty(tittle) != null)
                 {
                     soil_csv.GetType().GetProperty(tittle).SetValue(soil_csv, values[position], null);
                 }
