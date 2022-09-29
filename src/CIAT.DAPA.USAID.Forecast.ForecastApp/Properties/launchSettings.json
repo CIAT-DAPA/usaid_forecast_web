@@ -2,7 +2,7 @@
   "profiles": {
     "CIAT.DAPA.USAID.Forecast.ForecastApp": {
       "commandName": "Project",
-      "commandLineArgs": "-in -cc -p \"D:\\\\CIAT\\\\ToBackup\\\\OneDrive - CGIAR\\\\Desktop\\\\Aclimate\\\\\""
+      "commandLineArgs": "-in -sli -p \"D:\\\\CIAT\\\\ToBackup\\\\OneDrive - CGIAR\\\\Desktop\\\\Aclimate\\\\soils_wheat.csv\""
     }
   }
 }
