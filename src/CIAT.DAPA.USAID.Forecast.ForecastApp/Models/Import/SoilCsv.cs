@@ -11,22 +11,30 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
     internal class SoilCsv
     {
 
-        public static Soil FromCsv(string csv_line, string tittles)
+        /// <summary>
+        /// It dynamically takes the values of each row of the csv that are passed by parameters and transforms them into a data of type Soil
+        /// </summary>
+        /// <param name="csv_line"> Is a string that contains a row of the csv where each column is separated by "," 
+        /// the order of the columns does not matter, only the ranges must be the last column. </param>
+        /// <param name="titles"> string separared by "," where it contains the titles of the csv that is the first row in order to dynamically take the data
+        /// The titles must be named the same as the attributes of the WeatherCsv class </param>
+
+        public static Soil FromCsv(string csv_line, string titles)
         {
             string[] values = csv_line.Split(',');
-            string[] tittles_values = tittles.Split(',');
+            string[] titles_values = titles.Split(',');
             Soil soil_csv = new Soil();
             int position = 0;
-            foreach (string tittle in tittles_values)
+            foreach (string title in titles_values)
             {
 
-                if (tittle.Contains("crop") && soil_csv.GetType().GetProperty(tittle) != null)
+                if (title.Contains("crop") && soil_csv.GetType().GetProperty(title) != null)
                 {
-                    soil_csv.GetType().GetProperty(tittle).SetValue(soil_csv, ForecastDB.parseId(values[position]), null);
+                    soil_csv.GetType().GetProperty(title).SetValue(soil_csv, ForecastDB.parseId(values[position]), null);
                 }
-                else if(soil_csv.GetType().GetProperty(tittle) != null)
+                else if(soil_csv.GetType().GetProperty(title) != null)
                 {
-                    soil_csv.GetType().GetProperty(tittle).SetValue(soil_csv, values[position], null);
+                    soil_csv.GetType().GetProperty(title).SetValue(soil_csv, values[position], null);
                 }
                 position += 1;
 

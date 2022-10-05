@@ -92,6 +92,8 @@ Import Data
 
 -sli			Imports the soil info in the db of the selected csv file.
 
+-fcfg			Imports the configuration daily info in the db of the selected csv files.
+
 -----------------------------------------------------------------
 Examples
 

@@ -14,6 +14,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
         public List<YieldRange> ranges { get; set; }
         public string municipality_name { get; set; }
 
+        /// <summary>
+        /// It takes a list of WeatherCsv and transforms them into a list of municipalities (MunicipalityList) with all the ranges of the municipality and its different crops
+        /// </summary>
+        /// <param name="weather_list"> WeatherCsv list with the ranges to add to the municipalities </param>
+
         public static List<MunicipalityList> CreateList(List<WeatherCsv> weather_list)
         {
             List<MunicipalityList> municipality_list = new List<MunicipalityList>();
