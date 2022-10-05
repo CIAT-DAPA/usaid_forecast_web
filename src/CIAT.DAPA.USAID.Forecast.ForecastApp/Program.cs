@@ -220,7 +220,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing crop configurations");
                         await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1]);
                     }
-
+                    //-in -wr -p "C:\data.csv"
                     int wr = Program.searchParameter(args, "-wr");
                     if (wr >= 0)
                     {
@@ -228,7 +228,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing ranges configurations");
                         await cin.importRangesConfigurationAsync(args[path + 1]);
                     }
-
+                    //-in -sli -p "C:\data.csv"
                     int sli = Program.searchParameter(args, "-sli");
                     if (sli >= 0)
                     {
@@ -236,7 +236,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing soil data");
                         await cin.importSoilDataAsync(args[path + 1]);
                     }
-
+                    //-in -fcfg -p "C:\folder"
                     int fcfg = Program.searchParameter(args, "-fcfg");
                     if (fcfg >= 0)
                     {
