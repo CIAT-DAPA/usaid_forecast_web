@@ -52,6 +52,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],
                     In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"],
                     In_PATH_FS_CLIMATE = conf["In_PATH_FS_CLIMATE"],
+                    In_PATH_D_WEBADMIN_CONFIGURATION = conf["In_PATH_D_WEBADMIN_CONFIGURATION"],
                     Social_Network_Message = conf["Social_Network_Message"],
                     Social_Network_Twitter_AccessToken = conf["Social_Network_Twitter_AccessToken"],
                     Social_Network_Twitter_AccessTokenSecret = conf["Social_Network_Twitter_AccessTokenSecret"],
