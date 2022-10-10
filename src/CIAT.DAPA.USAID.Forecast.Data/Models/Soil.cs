@@ -38,6 +38,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public int order { get; set; }
         /// <summary>
+        /// Array of yield ranges of the crops for the station
+        /// </summary>    
+        public IEnumerable<Threshold> treshold { get; set; }
+        /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
         [BsonRequired]
