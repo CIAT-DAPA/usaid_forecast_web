@@ -8,7 +8,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<h4>@ViewBag.ws_name</h4>
+<h4>@ViewBag.soil_name</h4>
 
 @if (ViewBag.message != null)
 {
@@ -26,7 +26,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <input type="hidden" id="id" name="id" value="@ViewBag.ws_id" />
+    <input type="hidden" id="id" name="id" value="@ViewBag.soil_id" />
     <div class="form-horizontal">
         <fieldset>
             <legend>@Localizer["Title"]</legend>
@@ -45,13 +45,13 @@
         </fieldset>
         <div class="form-group">
             <div class="col-md-10">
-                <input type="submit" value="@Localizer[" Save"]" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 <div>
-    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.soil_id })
 </div>
 <h3>@Localizer["Threshold"]</h3>
 <table class="table">
@@ -71,10 +71,10 @@
                 @item.value
             </td>
             <td>
-                @using (Html.BeginForm("RangeDelete", "Soil", FormMethod.Post))
+                @using (Html.BeginForm("ThresholdDelete", "Soil", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="ws" name="ws" value="@ViewBag.ws_id" />
+                    <input type="hidden" id="soil_id" name="soil_id" value="@ViewBag.soil_id" />
                     <input type="hidden" id="label" name="label" value="@item.label" />
                     <input type="hidden" id="value" name="value" value="@item.value" />
                     <input class="btn btn-danger" type="submit" value="@Localizer[" Delete"]" />
@@ -84,7 +84,7 @@
     }
 </table>
 <div>
-    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.ws_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.soil_id })
 </div>
 
 @section Scripts {

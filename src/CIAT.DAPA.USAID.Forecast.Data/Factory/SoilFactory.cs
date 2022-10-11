@@ -50,5 +50,48 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var filter = builder.Eq("track.enable", true);
             return await collection.Find(filter).SortByDescending(p => p.order).ToListAsync<Soil>();
         }
+
+        /// <summary>
+        /// Method that add a new setup to a crop
+        /// </summary>
+        /// <param name="entity">Weather station with the new range</param>
+        /// <param name="range">New range to add to the weather station</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> addThresholdAsync(Soil entity, Threshold threshold)
+        {
+            List<Threshold> allThreshold = new List<Threshold>();
+            if(entity.threshold != null)
+            {
+                allThreshold = entity.threshold.ToList();
+            }
+            allThreshold.Add(threshold);
+            entity.threshold = allThreshold;
+            var result = await collection.UpdateOneAsync(Builders<Soil>.Filter.Eq("_id", entity.id), Builders<Soil>.Update.Set("threshold", entity.threshold));
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that delete a yield range entity from a weather station
+        /// </summary>
+        /// <param name="entity">Crop to delete the setup configuration</param>
+        /// <param name="crop">Id of the crop</param>
+        /// <param name="label">Name of level</param>
+        /// <param name="lower">Limit lower</param>
+        /// <param name="upper">Limit upper</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> deleteThresholdAsync(Soil entity, string label, double value)
+        {
+            List<Threshold> allThreshold = new List<Threshold>();
+            // This cicle search the range to delete
+            foreach (var t in entity.threshold)
+            {
+                // If the setup is found, it will update
+                if (!(t.label.Equals(label) && t.value == value))
+                    allThreshold.Add(t);
+            }
+            entity.threshold = allThreshold;
+            var result = await collection.UpdateOneAsync(Builders<Soil>.Filter.Eq("_id", entity.id), Builders<Soil>.Update.Set("threshold", entity.threshold));
+            return result.ModifiedCount > 0;
+        }
     }
 }

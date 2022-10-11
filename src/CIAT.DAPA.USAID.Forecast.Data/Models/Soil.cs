@@ -40,7 +40,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Array of yield ranges of the crops for the station
         /// </summary>    
-        public IEnumerable<Threshold> treshold { get; set; }
+        public IEnumerable<Threshold> threshold { get; set; }
         /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
