@@ -22,14 +22,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Index {
+    public class Threshold {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Index() {
+        internal Threshold() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil.Index", typeof(Index).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil.Threshold", typeof(Threshold).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Crop.
+        ///   Looks up a localized string similar to Back to soil list.
         /// </summary>
-        public static string Crop {
+        public static string Back {
             get {
-                return ResourceManager.GetString("Crop", resourceCulture);
+                return ResourceManager.GetString("Back", resourceCulture);
             }
         }
         
@@ -79,74 +79,47 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Details.
+        ///   Looks up a localized string similar to Label.
         /// </summary>
-        public static string Details {
+        public static string Label {
             get {
-                return ResourceManager.GetString("Details", resourceCulture);
+                return ResourceManager.GetString("Label", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
-        public static string Edit {
+        public static string Save {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ID.
+        ///   Looks up a localized string similar to Soil thresholds.
         /// </summary>
-        public static string ID {
+        public static string Thresholds {
             get {
-                return ResourceManager.GetString("ID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New record.
-        /// </summary>
-        public static string New {
-            get {
-                return ResourceManager.GetString("New", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search.
-        /// </summary>
-        public static string Search {
-            get {
-                return ResourceManager.GetString("Search", resourceCulture);
+                return ResourceManager.GetString("Thresholds", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Threshold.
         /// </summary>
-        public static string Threshold {
+        public static string Title {
             get {
-                return ResourceManager.GetString("Threshold", resourceCulture);
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Soils.
+        ///   Looks up a localized string similar to Value.
         /// </summary>
-        public static string Title {
+        public static string Value {
             get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }
