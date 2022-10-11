@@ -212,5 +212,92 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return RedirectToAction("Delete", new { id = id });
             }
         }
+
+        // GET: /WeatherStation/Range/5
+        [HttpGet]
+        public async Task<IActionResult> Threshold(string id)
+        {
+            Soil entity = null;
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                entity = await db.soil.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                // Set data for the view
+                ViewBag.soil_name = entity.name;
+                ViewBag.soil_id = entity.id;
+                // Get data 
+
+                List<Threshold> entities = new List<Threshold>();
+                if(entity.threshold != null)
+                {
+                    entities = (List<Threshold>)entity.threshold;
+                }
+                
+                // Fill the select list
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                return View(entities);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+
+        
+        [HttpPost, ActionName("Threshold")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThresholdAdd(string id)
+        {
+            try
+            {
+                // Get original weather station data
+                var form = HttpContext.Request.Form;
+                Soil entity_new = await db.soil.byIdAsync(id);
+                // Instance the new range entity
+                Threshold threshold = new Threshold()
+                {
+                    label = form["label"],
+                    value = double.Parse(form["value"]),
+                };
+                await db.soil.addThresholdAsync(entity_new, threshold);
+                await writeEventAsync(id + "Threshold add: " + entity_new.id.ToString() + "-" + threshold.label + "-" + threshold.value.ToString(), LogEvent.upd);
+                return RedirectToAction("Threshold", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Threshold", new { id = id });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThresholdDelete(string soil_id, string label, double value)
+        {
+            try
+            {
+                // Get original crop data
+                Soil entity_new = await db.soil.byIdAsync(soil_id);
+                // Delete the setup
+                await db.soil.deleteThresholdAsync(entity_new, label, value);
+                await writeEventAsync(soil_id + "Threshold del: " + label + "-" + value.ToString(), LogEvent.upd);
+                return RedirectToAction("Threshold", new { id = soil_id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Threshold", new { id = soil_id });
+            }
+        }
     }
 }

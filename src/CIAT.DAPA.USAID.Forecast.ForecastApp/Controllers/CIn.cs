@@ -3,6 +3,7 @@ using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -631,14 +632,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         {
             Console.WriteLine("Importing crop configuration from: " + path);
             string[] folders = Directory.GetDirectories(path);
-            string tmp_folder = path + Path.VolumeSeparatorChar.ToString() + "tmp";
-            Directory.CreateDirectory(tmp_folder);
+            string tmp_folder = path + Path.DirectorySeparatorChar.ToString() + "tmp";
+            if (!Directory.Exists(tmp_folder))
+            {
+                Directory.CreateDirectory(tmp_folder);
+            }
+            
             foreach (string folder in folders)
             {
                 try
                 {
                     Console.WriteLine("\tStarting: " + folder);
-                    string f = folder.Split(Path.VolumeSeparatorChar.ToString()).Last();
+                    string f = folder.Split(Path.DirectorySeparatorChar.ToString()).Last();
+                    if (f == "tmp") continue;
+                    string new_folder = tmp_folder + Path.DirectorySeparatorChar.ToString() + f;
+                    if (!Directory.Exists(new_folder))
+                    {
+                        Directory.CreateDirectory(new_folder);
+                    }
                     // This array has the configuration
                     // 0 = Weather station
                     // 1 = Cultivar
@@ -653,15 +664,19 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     foreach (var file in Directory.GetFiles(folder))
                     {
                         i += 1;
-                        string[] file_name = file.Split(Path.DirectorySeparatorChar);
+                        string file_name = file.Split(Path.DirectorySeparatorChar).Last();
                         file_temp = new ConfigurationFile()
                         {
                             date = DateTime.Now,
-                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + crop + "-" + file_name,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + crop +  "-" + file_name,
                             name = Path.GetFileNameWithoutExtension(file)
                         };
                         File.Copy(file, file_temp.path);
+                        
                         files.Add(file_temp);
+                        File.Copy(file, new_folder + Path.DirectorySeparatorChar.ToString() + file_name);
+                        File.Delete(file);
+                        System.Threading.Thread.Sleep(1000);
                     }
                     DateTime now = DateTime.Now;
                     Setup entity = new Setup()
@@ -675,7 +690,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         track = new Track() { enable = true, register = now, updated = now }
                     };
                     await db.setup.insertAsync(entity);
-                    Directory.Move(folder, tmp_folder);
+                    Directory.Delete(folder);
                     Console.WriteLine("\tEnd");
                 }
                 catch (Exception ex)
@@ -691,6 +706,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             Console.WriteLine("Import process has finished");
             return true;
         }
+
+        /// <summary>
+        /// Method to import the information of the ranges of the weather stations
+        /// </summary>
+        /// <param name="path">Path where is the csv located</param>
 
         public async Task<bool> importRangesConfigurationAsync(string path)
         {
@@ -726,12 +746,18 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             return true;
         }
 
+        /// <summary>
+        /// Method to import soil information from csv
+        /// </summary>
+        /// <param name="path">Path where is the csv located</param>
+
         public async Task<bool> importSoilDataAsync(string path)
         {
             Console.WriteLine("Importing range configuration from: " + path);
             try
             {
                 string[] lines = File.ReadAllLines(path);
+                //Iterate each line of the csv and build a list of soils
                 List<Soil> soil_list = lines.Skip(1).Select(line => SoilCsv.FromCsv(line, lines[0])).ToList();
 
 
@@ -752,5 +778,62 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             return true;
         }
 
+        /// <summary>
+        /// Method to import the configuration files by weather station
+        /// </summary>
+        /// <param name="path">Path where the folders will be located</param>
+
+        public async Task<bool> importDailyConfigurationAsync(string path)
+        {
+            Console.WriteLine("Importing daily configuration from: " + path);
+            try
+            {
+                string tmp_folder = path + Path.DirectorySeparatorChar.ToString() + "tmp";
+                if (!Directory.Exists(tmp_folder))
+                {
+                    Directory.CreateDirectory(tmp_folder);
+                }
+                string[] files = Directory.GetFiles(path);
+                foreach (string file in files)
+                {
+                    if (file.Contains("daily.csv"))
+                    {
+                        string file_name = file.Split(Path.DirectorySeparatorChar).Last();
+                        string weather_station_id = file_name.Split("_")[0];
+                        ConfigurationFile file_temp = new ConfigurationFile()
+                        {
+                            date = DateTime.Now,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + file_name,
+                            name = Path.GetFileNameWithoutExtension(file)
+                        };
+                        File.Copy(file, file_temp.path);
+                        File.Copy(file, tmp_folder + Path.DirectorySeparatorChar.ToString() + file_name);
+                        File.Delete(file);
+                        WeatherStation weather_station = await db.weatherStation.byIdAsync(weather_station_id);
+                        if (weather_station != null)
+                        {
+                            await db.weatherStation.addConfigurationFileAsync(weather_station, file_temp);
+
+                        }
+
+                        Console.WriteLine("\tEnd: " + file);
+
+                    }
+                }
+                 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\tEnd");
+            }
+
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
     }
 }
+

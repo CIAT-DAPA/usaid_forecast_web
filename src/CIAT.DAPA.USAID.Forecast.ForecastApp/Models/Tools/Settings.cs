@@ -111,6 +111,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// <summary>
         /// Set or get the path where the configuration folder of webadmin is
         /// </summary>
-        public bool In_PATH_D_WEBADMIN_CONFIGURATION { get; set; }
+        public string In_PATH_D_WEBADMIN_CONFIGURATION { get; set; }
     }
 }

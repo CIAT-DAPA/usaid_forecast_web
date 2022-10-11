@@ -52,6 +52,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     In_PATH_FS_D_SCENARIO = conf["In_PATH_FS_D_SCENARIO"],
                     In_PATH_FS_YIELD = conf["In_PATH_FS_YIELD"],
                     In_PATH_FS_CLIMATE = conf["In_PATH_FS_CLIMATE"],
+                    In_PATH_D_WEBADMIN_CONFIGURATION = conf["In_PATH_D_WEBADMIN_CONFIGURATION"],
                     Social_Network_Message = conf["Social_Network_Message"],
                     Social_Network_Twitter_AccessToken = conf["Social_Network_Twitter_AccessToken"],
                     Social_Network_Twitter_AccessTokenSecret = conf["Social_Network_Twitter_AccessTokenSecret"],
@@ -220,7 +221,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing crop configurations");
                         await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1]);
                     }
-
+                    //-in -wr -p "C:\data.csv"
                     int wr = Program.searchParameter(args, "-wr");
                     if (wr >= 0)
                     {
@@ -228,13 +229,21 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing ranges configurations");
                         await cin.importRangesConfigurationAsync(args[path + 1]);
                     }
-
+                    //-in -sli -p "C:\data.csv"
                     int sli = Program.searchParameter(args, "-sli");
                     if (sli >= 0)
                     {
                         Program.validateParameter(sli, "-sli");
                         Console.WriteLine("Importing soil data");
                         await cin.importSoilDataAsync(args[path + 1]);
+                    }
+                    //-in -fcfg -p "C:\folder"
+                    int fcfg = Program.searchParameter(args, "-fcfg");
+                    if (fcfg >= 0)
+                    {
+                        Program.validateParameter(fcfg, "-fcfg");
+                        Console.WriteLine("Importing config data");
+                        await cin.importDailyConfigurationAsync(args[path + 1]);
                     }
                 }
                 else if (Program.searchParameter(args, "-help") == 0)

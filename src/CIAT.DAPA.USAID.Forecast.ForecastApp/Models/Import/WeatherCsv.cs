@@ -17,22 +17,36 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
         public ObjectId crop_id { get; set; }
         public List<YieldRange> ranges { get; set; }
 
-        public static WeatherCsv FromCsv(string csv_line, string tittles)
+        /// <summary>
+        /// Method to transform a csv with the ranges of the climatic stations in a class to save in the db
+        /// </summary>
+        /// <param name="csv_line">Is a string that contains a row of the csv where each column is separated by "," 
+        /// the order of the columns does not matter, only the ranges must be the last column.</param>
+        /// <param name="titles">string separared by "," where it contains the titles of the csv that is the first row in order to dynamically take the data
+        /// The titles must be named the same as the attributes of the WeatherCsv class</param>
+
+        public static WeatherCsv FromCsv(string csv_line, string titles)
         {
             string[] values = csv_line.Split(',');
-            string[] tittles_values = tittles.Split(',');
+            string[] tittles_values = titles.Split(',');
             WeatherCsv weather = setWeatherProperties(values, tittles_values);
 
             return weather;
         }
 
-        private static WeatherCsv setWeatherProperties(string[] values, string[] tittles_values)
+        /// <summary>
+        /// Dynamically creates a data of the type WeatherCsv taking the values that are passed as parameters
+        /// </summary>
+        /// <param name="values"> An Array of strings with the values of the csv row, each position is a column </param>
+        /// <param name="titles_values">An Array of strings with the values of the csv titles, each position is a column</param>
+
+        private static WeatherCsv setWeatherProperties(string[] values, string[] titles_values)
         {
             WeatherCsv weather_csv = new WeatherCsv();
             int position = 0;
-            foreach (string tittle in tittles_values)
+            foreach (string title in titles_values)
             {
-                if (position == tittles_values.Length - 1)
+                if (position == titles_values.Length - 1)
                 {
                     List<string> string_list = new List<string>();
 
@@ -43,17 +57,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
 
                     ObjectId crop_id = (ObjectId)weather_csv.GetType().GetProperty("crop_id").GetValue(weather_csv, null);
                     List<YieldRange> ranges_list = arrayToListOfRanges(string_list.ToArray(), crop_id);
-                    weather_csv.GetType().GetProperty(tittle).SetValue(weather_csv, ranges_list, null);
+                    weather_csv.GetType().GetProperty(title).SetValue(weather_csv, ranges_list, null);
                 }
                 else
                 {
-                    if (tittle.Contains("_id"))
+                    if (title.Contains("_id") && weather_csv.GetType().GetProperty(title) != null)
                     {
-                        weather_csv.GetType().GetProperty(tittle).SetValue(weather_csv, ForecastDB.parseId(values[position]), null);
+                        weather_csv.GetType().GetProperty(title).SetValue(weather_csv, ForecastDB.parseId(values[position]), null);
                     }
-                    else
+                    else if (weather_csv.GetType().GetProperty(title) != null)
                     {
-                        weather_csv.GetType().GetProperty(tittle).SetValue(weather_csv, values[position], null);
+                        weather_csv.GetType().GetProperty(title).SetValue(weather_csv, values[position], null);
                     }
                 }
 
@@ -62,6 +76,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
             }
             return weather_csv;
         }
+
+        /// <summary>
+        /// Dynamically creates a ranges of the type YieldRange taking the values that are passed as parameters
+        /// </summary>
+        /// <param name="array_ranges"> An Array of strings with the values of the ranges of the weather stations</param>
+        /// <param name="crop_id">ObjectId of the crop to which the range belongs</param>
 
         private static List<YieldRange> arrayToListOfRanges(string[] array_ranges, ObjectId crop_id)
         {
