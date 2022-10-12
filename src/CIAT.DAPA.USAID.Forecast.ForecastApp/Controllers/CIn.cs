@@ -803,7 +803,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         ConfigurationFile file_temp = new ConfigurationFile()
                         {
                             date = DateTime.Now,
-                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + file_name,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-wsconfig-" + file_name,
                             name = Path.GetFileNameWithoutExtension(file)
                         };
                         File.Copy(file, file_temp.path);
