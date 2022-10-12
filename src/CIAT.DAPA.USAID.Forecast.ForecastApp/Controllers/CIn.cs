@@ -813,7 +813,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         if (weather_station != null)
                         {
                             await db.weatherStation.addConfigurationFileAsync(weather_station, file_temp);
-
                         }
 
                         Console.WriteLine("\tEnd: " + file);
