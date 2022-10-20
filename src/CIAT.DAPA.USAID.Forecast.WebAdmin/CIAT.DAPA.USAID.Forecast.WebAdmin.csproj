@@ -314,6 +314,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Index.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Views\Soil\Threshold.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Threshold.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Views\Source\Create.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -628,6 +633,10 @@
     <EmbeddedResource Update="Resources\Views\Soil\Index.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Soil\Threshold.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Threshold.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Source\Create.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
