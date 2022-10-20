@@ -88,6 +88,10 @@ Import Data
 -type value		Set the kind of search of the weather station.
 				Value can be either 1 for Extern Id or 2 for name
 
+-wr				Imports the ranges in the weather stations of the selected csv file.
+
+-sl				Imports the soil info in the db of the selected csv file.
+
 -----------------------------------------------------------------
 Examples
 

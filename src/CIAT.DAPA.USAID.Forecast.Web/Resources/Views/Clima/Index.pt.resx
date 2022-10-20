@@ -193,7 +193,7 @@
     <value>no município de</value>
   </data>
   <data name="ForecastTitle" xml:space="preserve">
-    <value>previsão do clima</value>
+    <value>Previsão do clima</value>
   </data>
   <data name="ForecastWS" xml:space="preserve">
     <value>A estação meteorológica de referência para fazer essas previsões foi</value>

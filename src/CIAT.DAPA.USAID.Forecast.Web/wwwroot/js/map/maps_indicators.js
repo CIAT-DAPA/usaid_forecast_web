@@ -46,9 +46,11 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
 
         
         for (var i = 0; i < categories.length; i++) {
+            let next = i < categories.length - 1 ? parseInt(categories[i + 1] - 1) : parseInt(max);
+            //console.log(categories_t + ' ' + parseInt(categories[i]) + ',' + next);
             div.innerHTML += '<i class="circle" style="background:' + getColor(i, group) + '"></i> ' +
                 (type == 'q' ?
-                    parseInt(categories[i]) + ' - ' + (i < categories.length - 1 ? parseInt(categories[i + 1] - 1) : max) :
+                    parseInt(categories[i]) + (parseInt(categories[i]) == next ? '' : ' - ' + next) :
                     categories[i].id + '- ' + categories[i].description)
                 + "<br />";
         }
