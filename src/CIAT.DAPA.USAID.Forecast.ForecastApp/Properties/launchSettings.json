@@ -2,7 +2,6 @@
   "profiles": {
     "CIAT.DAPA.USAID.Forecast.ForecastApp": {
       "commandName": "Project",
-      "commandLineArgs": "-out -sub -p \"D:\\\\CIAT\\\\ToBackup\\\\OneDrive - CGIAR\\\\Desktop\\\\Aclimate\\\\\" -m 10 -c \"61e59d829d5d2486e18d2ea9\""
-    }
+      "commandLineArgs": "-out -sub -p \"D:\\\\CIAT\\\\ToBackup\\\\OneDrive - CGIAR\\\\Desktop\\\\Aclimate\\\\\" -m 10 -c \"61e59d829d5d2486e18d2ea9\""    }
   }
 }

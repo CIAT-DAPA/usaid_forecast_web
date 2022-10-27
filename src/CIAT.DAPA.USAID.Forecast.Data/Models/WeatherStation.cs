@@ -86,10 +86,5 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
-
-        public static implicit operator WeatherStation(List<WeatherStation> v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
