@@ -260,10 +260,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                // Get original weather station data
+                // Get original soil data
                 var form = HttpContext.Request.Form;
                 Soil entity_new = await db.soil.byIdAsync(id);
-                // Instance the new range entity
+                // Instance the new threshold entity
                 Threshold threshold = new Threshold()
                 {
                     label = form["label"],
@@ -286,7 +286,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                // Get original crop data
+                // Get original soil data
                 Soil entity_new = await db.soil.byIdAsync(soil_id);
                 // Delete the setup
                 await db.soil.deleteThresholdAsync(entity_new, label, value);

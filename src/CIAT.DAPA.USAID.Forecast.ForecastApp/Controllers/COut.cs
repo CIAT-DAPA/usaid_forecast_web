@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Export;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 {
@@ -361,19 +362,43 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        private string[] calculatePeriodsPyCPT(int m)
+        private List<PeriodsTgts> calculatePeriodsPyCPT(int m)
         {
-            string[] r;
+            List<PeriodsTgts> r = new List<PeriodsTgts>();
             /*int i1 =  m == 1? 12 : ((m-1) % 13);
             int i2 = ((m + 1) % 13);
             int i3 = ((m + 2) % 13);
             int i4 = ((m + 4) % 13);
-            r = new string[] { months[i1-1] + "-" + months[i2-1], months[i3-1] + "-" + months[i4-1] };*/
+            r = new string[] { months[i1-1] + "-" + months[i2-1], months[i3-1] + "-" + months[i4-1] };
+            #
             int i1 = m;
             int i2 = ((m + 2) % 13) == 0 ? 1 : ((m + 2) % 13);
             int i3 = ((m + 3) % 13) == 0 ? 1 : ((m + 3) % 13);
-            int i4 = ((m + 5) % 13) == 0 ? 1 : ((m + 5) % 13);
-            r = new string[] { months[i1 - 1] + "-" + months[i2 - 1], months[i3 - 1] + "-" + months[i4 - 1] };
+            int i4 = ((m + 5) % 13) == 0 ? 1 : ((m + 5) % 13);*/
+
+            int i1 = m;
+            int i2 = ((m + 2) > 12) ? (m + 2) - 12 : m + 2;
+            int i3 = ((m + 3) > 12) ? (m + 3) - 12 : m + 3;
+            int i4 = ((m + 5) > 12) ? (m + 5) - 12 : m + 5;
+
+            string first_trismertes_year = ((m + 1) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
+            string second_trimester_year = ((m + 4) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
+
+
+            PeriodsTgts first_trimester = new PeriodsTgts()
+            {
+                months = months[i1 - 1] + "-" + months[i2 - 1],
+                year = first_trismertes_year
+            };
+
+            PeriodsTgts second_trimester = new PeriodsTgts()
+            {
+                months = months[i3 - 1] + "-" + months[i4 - 1],
+                year = second_trimester_year
+            };
+
+            r.Add(first_trimester);
+            r.Add(second_trimester);
             return r;
         }
 

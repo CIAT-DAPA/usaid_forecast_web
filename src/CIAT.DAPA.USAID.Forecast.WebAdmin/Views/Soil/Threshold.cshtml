@@ -50,10 +50,7 @@
         </div>
     </div>
 }
-<div>
-    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.soil_id })
-</div>
-<h3>@Localizer["Threshold"]</h3>
+<h3>@Localizer["Thresholds"]</h3>
 <table class="table">
     <tr>
         <th>@Localizer["Label"]</th>
@@ -77,14 +74,14 @@
                     <input type="hidden" id="soil_id" name="soil_id" value="@ViewBag.soil_id" />
                     <input type="hidden" id="label" name="label" value="@item.label" />
                     <input type="hidden" id="value" name="value" value="@item.value" />
-                    <input class="btn btn-danger" type="submit" value="@Localizer[" Delete"]" />
+                    <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
                 }
             </td>
         </tr>
     }
 </table>
 <div>
-    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.soil_id })
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
 </div>
 
 @section Scripts {

@@ -133,6 +133,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Soil {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Threshold.
+        /// </summary>
+        public static string Threshold {
+            get {
+                return ResourceManager.GetString("Threshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Soils.
         /// </summary>
         public static string Title {
