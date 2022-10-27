@@ -42,6 +42,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Cumulative Evapotranspiration
         /// </summary>
-        et_acu
+        et_acu,
+        /// <summary>
+        /// Cumulative Evapotranspiration
+        /// </summary>
+        land_pre_day
     }
 }

@@ -381,14 +381,14 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             int i3 = ((m + 3) > 12) ? (m + 3) - 12 : m + 3;
             int i4 = ((m + 5) > 12) ? (m + 5) - 12 : m + 5;
 
-            string first_trismertes_year = ((m + 1) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
+            string first_trimester_year = ((m + 1) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
             string second_trimester_year = ((m + 4) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
 
 
             PeriodsTgts first_trimester = new PeriodsTgts()
             {
                 months = months[i1 - 1] + "-" + months[i2 - 1],
-                year = first_trismertes_year
+                year = first_trimester_year
             };
 
             PeriodsTgts second_trimester = new PeriodsTgts()
