@@ -49,5 +49,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public ObjectId crop { get; set; }
+
+        /// <summary>
+        /// ID's crop
+        /// </summary>
+        public bool window { get; set; }
+
+        /// <summary>
+        /// ID's crop
+        /// </summary>
+        public Season season { get; set; }
     }
 }

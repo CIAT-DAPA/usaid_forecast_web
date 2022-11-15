@@ -77,7 +77,7 @@
                         @foreach (var f in item.conf_files)
                         {
                             <li>
-                                @Html.ActionLink(f.name, "Download", "Home", new { file = @f.path.Split('\\').Last(), type = 1 }, new { target = "_blank" })
+                                @Html.ActionLink(f.name, "Download", "Home", new { file = @f.path.Split('/').Last(), type = 1 }, new { target = "_blank" })
                             </li>
                         }
                     </ul>

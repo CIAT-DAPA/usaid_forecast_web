@@ -361,6 +361,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
             catch (Exception ex)
             {
+
                 await writeExceptionAsync(ex);
                 msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }

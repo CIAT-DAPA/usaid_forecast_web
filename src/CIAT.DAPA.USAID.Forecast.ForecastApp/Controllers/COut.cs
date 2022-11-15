@@ -131,14 +131,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
                     if (f != null)
                     {
-                        if (country.name == "Colombia")
-                        {
-                            File.Copy(dir_def + f.path.Substring(40), path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
-                        }
-                        else
-                        {
-                            File.Copy(dir_def + f.path.Substring(48), path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
-                        }
+                            File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
                     }
                     else
                     {
@@ -192,7 +185,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 string dir_crop = path + Program.settings.Out_PATH_FS_FILES + Path.DirectorySeparatorChar + Tools.folderCropName(cp.name);
                 Directory.CreateDirectory(dir_crop);
                 var setups = await db.setup.listEnableAsync();
-                var dir_def = "data_configuration/";
+                //var dir_def = "data_configuration/";
                 foreach (var st in setups.Where(p => p.crop == cp.id))
                 {
                     var weather_station = await db.weatherStation.byIdAsync(st.weather_station.ToString());
@@ -205,14 +198,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         Directory.CreateDirectory(dir_setup);
                         foreach (var f in st.conf_files)
                         {
-                            if (country.name == "Colombia")
-                            {
-                                File.Copy(dir_def + f.path.Substring(40), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
-                            }
-                            else
-                            {
-                                File.Copy(dir_def + f.path.Substring(48), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
-                            }
+                            //File.Copy(dir_def + f.path.Substring(42), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                            File.Copy(f.path, dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
                         }
                         // Add csv file with geolocation for rice crop only
                         if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
@@ -224,6 +211,18 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             coords.Append("long," + ws.longitude.ToString() + "\n");
                             coords.Append("elev," + ws.elevation.ToString() + "\n");
                             File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
+                        }
+
+                        if (st.window)
+                        {
+                            
+                            StringBuilder planting_window = new StringBuilder();
+                            planting_window.Append("name,value\n");
+                            planting_window.Append("window," + st.window.ToString() + "\n");
+                            planting_window.Append("start_season," + st.season.start.ToString() + "\n");
+                            planting_window.Append("end_season," + st.season.end.ToString() + "\n");
+                            planting_window.Append("sowing_days," + st.season.sowing_days.ToString() + "\n");
+                            File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_WINDOW_CONFIG, planting_window.ToString());
                         }
                     }
                 }
