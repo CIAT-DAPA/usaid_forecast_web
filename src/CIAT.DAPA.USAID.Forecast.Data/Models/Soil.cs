@@ -38,7 +38,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public int order { get; set; }
         /// <summary>
-        /// Array of yield ranges of the crops for the station
+        /// List of soil thresholds
         /// </summary>    
         public IEnumerable<Threshold> threshold { get; set; }
         /// <summary>

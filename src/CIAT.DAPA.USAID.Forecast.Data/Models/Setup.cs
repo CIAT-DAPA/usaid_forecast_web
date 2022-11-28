@@ -51,12 +51,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         public ObjectId crop { get; set; }
 
         /// <summary>
-        /// ID's crop
+        /// Bool to decide if that setup use planting window
         /// </summary>
         public bool window { get; set; }
 
         /// <summary>
-        /// ID's crop
+        /// Containt all information about the range of the planting window
         /// </summary>
         public Season season { get; set; }
     }

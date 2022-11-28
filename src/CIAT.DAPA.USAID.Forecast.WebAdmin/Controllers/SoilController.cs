@@ -213,7 +213,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        // GET: /WeatherStation/Range/5
+        // GET: /Soil/Threshold/5
         [HttpGet]
         public async Task<IActionResult> Threshold(string id)
         {
@@ -253,7 +253,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        
+        // POST: /Soil/Threshold/5
         [HttpPost, ActionName("Threshold")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ThresholdAdd(string id)
@@ -280,6 +280,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
+        // POST: /Soil/ThresholdDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ThresholdDelete(string soil_id, string label, double value)

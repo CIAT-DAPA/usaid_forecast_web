@@ -4,7 +4,7 @@ using System;
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
     /// <summary>
-    /// This entity represents the yield ranges of the crops in the weather station
+    /// This entity represents the threshold of the soil
     /// </summary>
     public class Threshold
     {      

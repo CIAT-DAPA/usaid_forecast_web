@@ -212,5 +212,93 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return RedirectToAction("Delete", new { id = id });
             }
         }
+
+        // GET: /Cultivar/Threshold/5
+        [HttpGet]
+        public async Task<IActionResult> Threshold(string id)
+        {
+            Cultivar entity = null;
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                entity = await db.cultivar.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                // Set data for the view
+                ViewBag.cultivar_name = entity.name;
+                ViewBag.cultivar_id = entity.id;
+                // Get data 
+
+                List<Threshold> entities = new List<Threshold>();
+                if (entity.threshold != null)
+                {
+                    entities = (List<Threshold>)entity.threshold;
+                }
+
+                // Fill the select list
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                return View(entities);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+
+        // POST: /Cultivar/Threshold/5
+        [HttpPost, ActionName("Threshold")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThresholdAdd(string id)
+        {
+            try
+            {
+                // Get original soil data
+                var form = HttpContext.Request.Form;
+                Cultivar entity_new = await db.cultivar.byIdAsync(id);
+                // Instance the new threshold entity
+                Threshold threshold = new Threshold()
+                {
+                    label = form["label"],
+                    value = double.Parse(form["value"]),
+                };
+                await db.cultivar.addThresholdAsync(entity_new, threshold);
+                await writeEventAsync(id + "Threshold add: " + entity_new.id.ToString() + "-" + threshold.label + "-" + threshold.value.ToString(), LogEvent.upd);
+                return RedirectToAction("Threshold", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Threshold", new { id = id });
+            }
+        }
+
+        // POST: /Cultivar/ThresholdDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThresholdDelete(string cultivar_id, string label, double value)
+        {
+            try
+            {
+                // Get original cultivar data
+                Cultivar entity_new = await db.cultivar.byIdAsync(cultivar_id);
+                // Delete the setup
+                await db.cultivar.deleteThresholdAsync(entity_new, label, value);
+                await writeEventAsync(cultivar_id + "Threshold del: " + label + "-" + value.ToString(), LogEvent.upd);
+                return RedirectToAction("Threshold", new { id = cultivar_id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Threshold", new { id = cultivar_id });
+            }
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
+            newEntity.threshold = entity.threshold.Count() == 0 ? new List<Threshold>() : entity.threshold;
             var result = await collection.ReplaceOneAsync(Builders<Cultivar>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }
@@ -66,6 +67,48 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var builder = Builders<Cultivar>.Filter;
             var filter = builder.Eq("track.enable", true) & builder.Eq("crop", crop); ;
             return await collection.Find(filter).SortByDescending(p => p.order).ToListAsync<Cultivar>();
+        }
+
+
+        /// <summary>
+        /// Method that add a new threshold to a cultivar
+        /// </summary>
+        /// <param name="entity">Cultivar to add new threshold</param>
+        /// <param name="threshold">New threshold to add to the cultivar</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> addThresholdAsync(Cultivar entity, Threshold threshold)
+        {
+            List<Threshold> allThreshold = new List<Threshold>();
+            if (entity.threshold != null)
+            {
+                allThreshold = entity.threshold.ToList();
+            }
+            allThreshold.Add(threshold);
+            entity.threshold = allThreshold;
+            var result = await collection.UpdateOneAsync(Builders<Cultivar>.Filter.Eq("_id", entity.id), Builders<Cultivar>.Update.Set("threshold", entity.threshold));
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that delete a threshold entity from a cultivar
+        /// </summary>
+        /// <param name="entity">Cultivar to delete threshold</param>
+        /// <param name="label">Name of threshold of the cultivar</param>
+        /// <param name="value">Value of the thresholdr</param>
+        /// <returns>True if the entity is updated and threshold deleted, false otherwise</returns>
+        public async Task<bool> deleteThresholdAsync(Cultivar entity, string label, double value)
+        {
+            List<Threshold> allThreshold = new List<Threshold>();
+            // This cicle search the threshold to delete
+            foreach (var t in entity.threshold)
+            {
+                // If the setup is found, it will update
+                if (!(t.label.Equals(label) && t.value == value))
+                    allThreshold.Add(t);
+            }
+            entity.threshold = allThreshold;
+            var result = await collection.UpdateOneAsync(Builders<Cultivar>.Filter.Eq("_id", entity.id), Builders<Cultivar>.Update.Set("threshold", entity.threshold));
+            return result.ModifiedCount > 0;
         }
     }
 }

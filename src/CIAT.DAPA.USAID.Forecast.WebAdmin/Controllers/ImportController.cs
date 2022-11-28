@@ -224,7 +224,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             // Reading the headers
                             if (lines == 1)
                             {
-                                patterns = line.Split(',').Skip(2).ToArray();
+                                patterns = line.Replace("\"", "").Split(',').Skip(2).ToArray();
                                 // Searching the weather stations according of the parameter to seek
                                 if (search == 1)
                                     ws = await db.weatherStation.listEnableByExtIDsAsync(patterns);
@@ -235,7 +235,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             {
                                 // Fixed the values to view import historical climate
                                 // The first two columns are the year and month
-                                values = line.Split(',');
+                                values = line.Replace("\"", "").Split(',');
                                 for (int i = 2; i < values.Length; i++)
                                     raw.Add(new ClimatologyViewImport()
                                     {

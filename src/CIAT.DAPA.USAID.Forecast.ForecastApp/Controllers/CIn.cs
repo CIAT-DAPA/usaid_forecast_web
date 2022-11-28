@@ -554,7 +554,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         // Reading the headers
                         if (lines == 1)
                         {
-                            patterns = line.Split(',').Skip(2).ToArray();
+                            patterns = line.Replace("\"", "").Split(',').Skip(2).ToArray();
                             // Searching the weather stations according of the parameter to seek
                             if (search == 1)
                                 ws = await db.weatherStation.listEnableByExtIDsAsync(patterns);

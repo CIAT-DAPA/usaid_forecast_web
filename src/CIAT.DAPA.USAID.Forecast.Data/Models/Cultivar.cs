@@ -57,5 +57,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
+        /// <summary>
+        /// List of Cultivar threshold
+        /// </summary>
+        public IEnumerable<Threshold> threshold { get; set; }
     }
 }

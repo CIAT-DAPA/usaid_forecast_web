@@ -55,7 +55,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <summary>
         /// Method that add a new threshold to a soil
         /// </summary>
-        /// <param name="entity">Weather station with the new range</param>
+        /// <param name="entity">Soil to add new threshold</param>
         /// <param name="threshold">New threshold to add to the soil</param>
         /// <returns>True if the entity is updated, false otherwise</returns>
         public async Task<bool> addThresholdAsync(Soil entity, Threshold threshold)
@@ -74,10 +74,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <summary>
         /// Method that delete a threshold entity from a soil
         /// </summary>
-        /// <param name="entity">Soil to delete the setup configuration</param>
-        /// <param name="label">Name of soil</param>
+        /// <param name="entity">Soil to delete threshold</param>
+        /// <param name="label">Name of threshold of the soil</param>
         /// <param name="value">Value of the thresholdr</param>
-        /// <returns>True if the entity is updated, false otherwise</returns>
+        /// <returns>True if the entity is updated and threshold deleted, false otherwise</returns>
         public async Task<bool> deleteThresholdAsync(Soil entity, string label, double value)
         {
             List<Threshold> allThreshold = new List<Threshold>();

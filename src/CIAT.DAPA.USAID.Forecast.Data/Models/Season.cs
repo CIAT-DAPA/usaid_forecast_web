@@ -4,20 +4,20 @@ using System;
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
     /// <summary>
-    /// This entity represents the yield ranges of the crops in the weather station
+    /// This entity represents the ranges of the planting window is active
     /// </summary>
     public class Season
     {
         /// <summary>
-        /// Label for the range
+        /// Month when planting window start
         /// </summary>
-        public DateTime start { get; set; }
+        public int start { get; set; }
         /// <summary>
-        /// Lower limit
+        /// Month when planting window finish
         /// </summary>
-        public DateTime end { get; set; }
+        public int end { get; set; }
         /// <summary>
-        /// Upper limit
+        /// Sowing days it's a env equal to 45
         /// </summary>
         public int sowing_days { get; set; }
     }
