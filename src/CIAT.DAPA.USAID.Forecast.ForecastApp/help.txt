@@ -94,6 +94,14 @@ Import Data
 
 -fcfg			Imports the configuration daily info in the db of the selected csv files.
 
+-wd "value"		This parameter indicates if the config has planting window or not
+
+-stm "value"	This parameter indicates the month in which the planting window starts
+
+-edm "value"	This parameter indicatesthe month in which the planting window ends
+
+-sd "value"		This parameter indicates the sowing days
+
 -----------------------------------------------------------------
 Examples
 

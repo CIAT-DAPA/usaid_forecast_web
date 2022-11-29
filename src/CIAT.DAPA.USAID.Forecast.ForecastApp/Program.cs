@@ -214,14 +214,40 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing historical data");
                         await cin.importHistoricalAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1]), int.Parse(args[type + 1]));
                     }
-                    //-in -cc -p "C:\data.csv" 
+                    //-in -cc -p "C:\data.csv -wd 1 -stm 4 -edm 10 -sd 45" 
                     int cc = Program.searchParameter(args, "-cc");
                     if (cc >= 0)
                     {
                         int cr = Program.searchParameter(args, "-cr");
                         Program.validateParameter(cr, "-cr");
+                        int window = Program.searchParameter(args, "-wd");
+                        Program.validateParameter(window, "-wd");
                         Console.WriteLine("Importing crop configurations");
-                        await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1]);
+                        if (args[window + 1] == "1")
+                        {
+                            int start_month = Program.searchParameter(args, "-stm");
+                            Program.validateParameter(start_month, "-stm");
+                            int end_month = Program.searchParameter(args, "-edm");
+                            Program.validateParameter(end_month, "-edm");
+                            int sowingsowing_days = Program.searchParameter(args, "-sd");
+                            Console.WriteLine("With planting window");
+                            if (sowingsowing_days >= 0)
+                            {
+                                await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1], args[window + 1], args[start_month + 1], args[end_month + 1], args[sowingsowing_days + 1]);
+                            }
+                            else
+                            {
+                                await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1], args[window + 1], args[start_month + 1], args[end_month + 1]);
+                            }
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("Without planting window");
+                            await cin.importCropConfigurationAsync(args[path + 1], args[cr + 1], args[window + 1]);
+                        }
+                        
+                        
                     }
                     //-in -wr -p "C:\data.csv"
                     int wr = Program.searchParameter(args, "-wr");

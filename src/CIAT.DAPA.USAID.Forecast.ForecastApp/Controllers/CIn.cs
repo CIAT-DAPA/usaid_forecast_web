@@ -628,7 +628,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             return true;
         }
 
-        public async Task<bool> importCropConfigurationAsync(string path, string crop)
+        public async Task<bool> importCropConfigurationAsync(string path, string crop, string window = "0", string start_month = "0", string end_month = "0", string sowing_days = "0")
         {
             Console.WriteLine("Importing crop configuration from: " + path);
             string[] folders = Directory.GetDirectories(path);
@@ -668,17 +668,28 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         file_temp = new ConfigurationFile()
                         {
                             date = DateTime.Now,
-                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + crop +  "-" + file_name,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + crop + "-" + file_name,
                             name = Path.GetFileNameWithoutExtension(file)
                         };
                         File.Copy(file, file_temp.path);
-                        
+
                         files.Add(file_temp);
                         File.Copy(file, new_folder + Path.DirectorySeparatorChar.ToString() + file_name);
                         File.Delete(file);
                         System.Threading.Thread.Sleep(1000);
                     }
                     DateTime now = DateTime.Now;
+                    Season season = null;
+                    if (window == "1")
+                    {
+                        season = new Season()
+                        {
+                            start = int.Parse(start_month),
+                            end = int.Parse(end_month),
+                            sowing_days = sowing_days != "0" ? int.Parse(sowing_days) : Program.settings.SOWING_DAYS
+                        };
+                    }
+                    
                     Setup entity = new Setup()
                     {
                         conf_files = files,
@@ -687,7 +698,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         cultivar = ForecastDB.parseId(conf[1]),
                         soil = ForecastDB.parseId(conf[2]),
                         days = int.Parse(conf[3]),
-                        track = new Track() { enable = true, register = now, updated = now }
+                        track = new Track() { enable = true, register = now, updated = now },
+                        window = window == "1" ? true:false,
+                        season = window == "1" ? season : null,
                     };
                     await db.setup.insertAsync(entity);
                     Directory.Delete(folder);
