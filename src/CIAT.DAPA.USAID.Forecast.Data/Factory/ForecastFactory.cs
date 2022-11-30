@@ -66,5 +66,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var filter = builder.Eq("track.enable", true);
             return await collection.Find(filter).SortByDescending(p => p.id).Limit(6).ToListAsync<Models.Forecast>();
         }
+
+        /// <summary>
+        /// Method that return all forecast inserted for years
+        /// </summary>
+        /// <returns>List of Forecast</returns>
+        public async Task<List<Models.Forecast>> getByYearstAsync(int year)
+        {
+            DateTime init = new DateTime(year, 1, 1);
+            DateTime end = new DateTime(year, 12, 31);
+            var query = from fs in collection.AsQueryable()
+                        where fs.track.enable &&  fs.start >= init && fs.start <= end
+                        select fs;
+            return query.ToList();
+        }
     }
 }

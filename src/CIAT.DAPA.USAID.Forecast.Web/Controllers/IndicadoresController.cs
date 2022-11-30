@@ -74,14 +74,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             ViewBag.geoserver_url = Configurations.indicator_geoserver_url;
             ViewBag.geoserver_workspace = Configurations.indicator_geoserver_workspace;
             var period= Enumerable.Range(Configurations.indicator_geoserver_time[0], 
-                                        (Configurations.indicator_geoserver_time[1] - Configurations.indicator_geoserver_time[0]) + 1)
+                                        (Configurations.indicator_geoserver_time[1] - Configurations.indicator_geoserver_time[0]) + 2)
                                     .Append(Configurations.indicator_geoserver_average)
-                                    //.Append(Configurations.indicator_geoserver_cv)
                                     .Select(p => new { Text = (p == Configurations.indicator_geoserver_average ? "Average" : p == Configurations.indicator_geoserver_cv ? "CV" : p.ToString()), Value = p })
                                     .OrderBy(p=>p.Value);
             ViewBag.period = period;
-            ViewBag.compare = (new List<string>() { "None", Configurations.indicator_NINO.ToString(), Configurations.indicator_NINA.ToString() })
-                                .Select(p=>new { Text = (Configurations.indicator_NINO.ToString() == p ? "El Niño" : (Configurations.indicator_NINA.ToString() == p ? "La Niña":p)), Value = p });
+            ViewBag.compare = (new List<string>() { "None", Configurations.indicator_NINO.ToString(), Configurations.indicator_NINA.ToString(), Configurations.indicator_geoserver_average.ToString() })
+                                .Select(p=>new { Text = (Configurations.indicator_NINO.ToString() == p ? "El Niño" : (Configurations.indicator_NINA.ToString() == p ? "La Niña": (Configurations.indicator_geoserver_average.ToString() == p ? "Average" : p))), Value = p });
         }
     }
 }

@@ -29,7 +29,18 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
     };
 
     $.getJSON("/country.json", function (data) {
-        L.geoJson(data, { style: myStyle }).addTo(maps[idx]);
+        L.geoJson(data, {
+            style: myStyle,
+            onEachFeature: function (feature, layer) {
+                var label = L.marker(layer.getBounds().getCenter(), {
+                    icon: L.divIcon({
+                        className: 'label',
+                        html: feature.properties.NAME_1,
+                        iconSize: [100, 40]
+                    })
+                }).addTo(maps[idx]);
+            }
+        }).addTo(maps[idx]);
     });
     
 
