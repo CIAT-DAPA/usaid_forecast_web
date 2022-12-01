@@ -224,6 +224,21 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             planting_window.Append("sowing_days," + st.season.sowing_days.ToString() + "\n");
                             File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_WINDOW_CONFIG, planting_window.ToString());
                         }
+
+                        if (cp.crop_config != null && cp.crop_config.Count() > 0)
+                        {
+
+                            StringBuilder crop_config = new StringBuilder();
+                            crop_config.Append("name,min,max\n");
+                            foreach (CropConfig c_config in cp.crop_config)
+                            {
+                                crop_config.Append(c_config.label.ToString() + ",");
+                                crop_config.Append(c_config.min.ToString() + ",");
+                                crop_config.Append(c_config.max.ToString() + ",\n");
+                            }
+                                
+                            File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_CROP_CONFIG, crop_config.ToString());
+                        }
                     }
                 }
             }

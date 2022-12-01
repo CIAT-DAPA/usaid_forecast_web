@@ -90,5 +90,47 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             await collection.InsertOneAsync(entity);
             return entity;
         }
+
+        /// <summary>
+        /// Method that add a new config to crop
+        /// </summary>
+        /// <param name="entity">Crop to add new crop config</param>
+        /// <param name="crop_config">New crop config to add to the crop</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> addCropConfigAsync(Crop entity, CropConfig crop_config)
+        {
+            List<CropConfig> allCropConfigs = new List<CropConfig>();
+            if (entity.crop_config != null)
+            {
+                allCropConfigs = entity.crop_config.ToList();
+            }
+            allCropConfigs.Add(crop_config);
+            entity.crop_config = allCropConfigs;
+            var result = await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("crop_config", entity.crop_config));
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that delete a crop config entity from a crop
+        /// </summary>
+        /// <param name="entity">Crop to delete the crop config</param>
+        /// <param name="label">Name of level</param>
+        /// <param name="min">Minimum</param>
+        /// <param name="max">Maximum</param>
+        /// <returns>True if the entity is updated, false otherwise</returns>
+        public async Task<bool> deleteCropConfigAsync(Crop entity, string label, double min, double max)
+        {
+            List<CropConfig> allCropConfigs = new List<CropConfig>();
+            // This cicle search the range to delete
+            foreach (var r in entity.crop_config)
+            {
+                // If the setup is found, it will update
+                if (!( r.label.Equals(label) && r.min == min && r.max == max))
+                    allCropConfigs.Add(r);
+            }
+            entity.crop_config = allCropConfigs;
+            var result = await collection.UpdateOneAsync(Builders<Crop>.Filter.Eq("_id", entity.id), Builders<Crop>.Update.Set("crop_config", entity.crop_config));
+            return result.ModifiedCount > 0;
+        }
     }
 }

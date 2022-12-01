@@ -54,8 +54,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="range">New range to add to the weather station</param>
         /// <returns>True if the entity is updated, false otherwise</returns>
         public async Task<bool> addRangeAsync(WeatherStation entity, YieldRange range)
-        {            
-            List<YieldRange> allRanges = entity.ranges.ToList();
+        {
+            List<YieldRange> allRanges = new List<YieldRange>();
+            if (entity.ranges != null)
+            {
+                allRanges = entity.ranges.ToList();
+            }
             allRanges.Add(range);
             entity.ranges = allRanges;
             var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("ranges", entity.ranges));

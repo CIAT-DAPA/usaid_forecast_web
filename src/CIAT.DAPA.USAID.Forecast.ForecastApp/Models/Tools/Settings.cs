@@ -113,12 +113,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// </summary>
         public string In_PATH_D_WEBADMIN_CONFIGURATION { get; set; }
         /// <summary>
-        /// Set or get the path where the configuration folder of webadmin is
+        /// Set or get the default value of sowing days
         /// </summary>
         public int SOWING_DAYS { get; set; }
         /// <summary>
-        /// Set or get the path where the configuration folder of webadmin is
+        /// Set or get the name of the window config file
         /// </summary>
         public string Out_WINDOW_CONFIG { get; set; }
+        /// <summary>
+        /// Set or get the name of the crop config file
+        /// </summary>
+        public string Out_CROP_CONFIG { get; set; }
+        
     }
 }

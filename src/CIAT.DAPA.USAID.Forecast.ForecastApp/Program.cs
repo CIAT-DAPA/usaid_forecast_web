@@ -60,7 +60,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Social_Network_Twitter_ConsumerKeySecret = conf["Social_Network_Twitter_ConsumerKeySecret"],
                     Add_Day = bool.Parse(conf["Add_Day"]),
                     SOWING_DAYS = int.Parse(conf["SOWING_DAYS"]),
-                    Out_WINDOW_CONFIG = conf["Out_WINDOW_CONFIG.csv"]
+                    Out_WINDOW_CONFIG = conf["Out_WINDOW_CONFIG.csv"],
+                    Out_CROP_CONFIG = conf["Out_CROP_CONFIG.csv"],
                 };
             }
             catch (Exception ex)

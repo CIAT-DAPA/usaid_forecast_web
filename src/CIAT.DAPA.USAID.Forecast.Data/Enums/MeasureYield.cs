@@ -46,6 +46,30 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Cumulative Evapotranspiration
         /// </summary>
-        land_pre_day
+        land_pre_day,
+        /// <summary>
+        /// nitrogen stress germination to booting
+        /// </summary>
+        st_n_ger_boo,
+        /// <summary>
+        /// nitrogen stress booting to anthesis
+        /// </summary>
+        st_n_boo_ant,
+        /// <summary>
+        /// nitrogen stress beginning to end of grain filling
+        /// </summary>
+        st_n_beg_fil,
+        /// <summary>
+        /// water stress germination to booting
+        /// </summary>
+        st_w_ger_boo,
+        /// <summary>
+        /// water stress booting to anthesis
+        /// </summary>
+        st_w_boo_ant,
+        /// <summary>
+        /// water stress beginning to end of grain filling
+        /// </summary>
+        st_w_beg_fil,
     }
 }
