@@ -12,5 +12,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         public List<State> states { get; set; }
         public List<Municipality> municipalities { get; set; }
         public List<WeatherStation> weather_stations { get; set; }
+        public List<Setup> setups { get; set; }
     }
 }

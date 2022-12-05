@@ -35,6 +35,27 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
+        private async Task<PermissionList> LoadEnableByPermission()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            var countries = await db.country.listEnableAsync();
+            val.countries = countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listEnableAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            var states_ids = val.states.Select(p => p.id).ToList();
+            val.municipalities = await db.municipality.listEnableAsync();
+            val.municipalities = val.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
+            var municipalities_ids = val.municipalities.Select(p => p.id).ToList();
+            val.weather_stations = await db.weatherStation.listEnableAsync();
+            val.weather_stations = val.weather_stations.Where(p => municipalities_ids.Contains(p.municipality)).ToList();
+
+            var weather_station_ids = val.weather_stations.Select(p => p.id).ToList();
+            val.setups = await db.setup.listEnableAsync();
+            val.setups = val.setups.Where(p => weather_station_ids.Contains(p.weather_station)).ToList();
+            return val;
+        }
+
         // GET: SetupController
         [HttpGet]
         public async Task<IActionResult> Index(string sortOrder, int?page)
@@ -48,7 +69,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewBag.CultivarsortParam = sortOrder == "Cultivar" ? "cultivar_desc" : "Cultivar";
                 ViewBag.SoilsortParam = sortOrder == "Soil" ? "soil_desc" : "Soil";
                 ViewBag.DayssortParam = sortOrder == "Days" ? "days_desc" : "Days";
-                var setups = await db.setup.listEnableDescAsync();
+                //var setups = await db.setup.listEnableDescAsync();
+                var data_with_permissions = await LoadEnableByPermission();
+                var setups = data_with_permissions.setups;
                 // Get the data
                 var crp = await db.crop.listEnableAsync();
                 var ws = await db.weatherStation.listEnableVisibleAsync();

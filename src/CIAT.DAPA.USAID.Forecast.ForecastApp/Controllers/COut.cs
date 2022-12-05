@@ -213,6 +213,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
                         }
 
+                        //  Export csv with season info to use in planting window
                         if (st.window)
                         {
                             
@@ -225,6 +226,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_WINDOW_CONFIG, planting_window.ToString());
                         }
 
+                        // Export csv with crop configuration
                         if (cp.crop_config != null && cp.crop_config.Count() > 0)
                         {
 
