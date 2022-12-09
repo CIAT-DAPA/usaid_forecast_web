@@ -26,7 +26,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
-            newEntity.threshold = entity.threshold.Count() == 0 ? new List<Threshold>() : entity.threshold;
+            newEntity.threshold = entity.threshold == null || entity.threshold.Count() == 0 ? new List<Threshold>() : entity.threshold;
             var result = await collection.ReplaceOneAsync(Builders<Soil>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }

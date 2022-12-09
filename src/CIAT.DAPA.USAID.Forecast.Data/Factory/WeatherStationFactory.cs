@@ -28,8 +28,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         {
             newEntity.track = entity.track;
             newEntity.track.updated = DateTime.Now;
-            newEntity.conf_files = entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
-            newEntity.ranges = entity.ranges.Count() == 0 ? new List<YieldRange>() : entity.ranges;
+            newEntity.conf_files = entity.conf_files == null || entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
+            newEntity.ranges = entity.ranges == null || entity.ranges.Count() == 0 ? new List<YieldRange>() : entity.ranges;
             var result = await collection.ReplaceOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), newEntity);
             return result.ModifiedCount > 0;
         }
@@ -42,7 +42,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                 entity.ranges = range;
             }
             entity.track.updated = DateTime.Now;
-            entity.conf_files = entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
+            entity.conf_files = entity.conf_files == null || entity.conf_files.Count() == 0 ? new List<ConfigurationFile>() : entity.conf_files;
             var result = await collection.ReplaceOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), entity);
             return result.ModifiedCount > 0;
         }
@@ -98,7 +98,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <returns>True if the entity is updated, false otherwise</returns>
         public async Task<bool> addConfigurationFileAsync(WeatherStation entity, ConfigurationFile file)
         {
-            List<ConfigurationFile> allFiles = entity.conf_files.ToList();
+            List<ConfigurationFile> allFiles = entity.conf_files == null ? new List<ConfigurationFile>() :  entity.conf_files.ToList();
             allFiles.Add(file);
             entity.conf_files = allFiles;
             var result = await collection.UpdateOneAsync(Builders<WeatherStation>.Filter.Eq("_id", entity.id), Builders<WeatherStation>.Update.Set("conf_files", entity.conf_files));

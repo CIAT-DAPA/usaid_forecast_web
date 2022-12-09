@@ -50,26 +50,26 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// nitrogen stress germination to booting
         /// </summary>
-        st_n_ger_boo,
+        st_ger_boo_n,
         /// <summary>
         /// nitrogen stress booting to anthesis
         /// </summary>
-        st_n_boo_ant,
+        st_boo_ant_n,
         /// <summary>
         /// nitrogen stress beginning to end of grain filling
         /// </summary>
-        st_n_beg_fil,
+        st_beg_end_gf_n,
         /// <summary>
         /// water stress germination to booting
         /// </summary>
-        st_w_ger_boo,
+        st_ger_boo_w,
         /// <summary>
         /// water stress booting to anthesis
         /// </summary>
-        st_w_boo_ant,
+        st_boo_ant_w,
         /// <summary>
         /// water stress beginning to end of grain filling
         /// </summary>
-        st_w_beg_fil,
+        st_beg_end_gf_w,
     }
 }

@@ -120,6 +120,9 @@
   <data name="Back" xml:space="preserve">
     <value>Volver a la lista</value>
   </data>
+  <data name="country" xml:space="preserve">
+    <value>País</value>
+  </data>
   <data name="Cultivar" xml:space="preserve">
     <value>Cultivar</value>
   </data>

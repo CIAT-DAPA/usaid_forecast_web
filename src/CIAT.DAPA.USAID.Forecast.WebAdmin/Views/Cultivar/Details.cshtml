@@ -12,6 +12,13 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.country)
+        </dt>
+
+        <dd>
+            @ViewBag.country.name
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.crop)
         </dt>
 
@@ -34,7 +41,7 @@
         <dd>
             @Html.DisplayFor(model => model.name)
         </dd>
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.order)
         </dt>

@@ -31,6 +31,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
+        private async Task<PermissionList> LoadEnableByPermissionAsync()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listEnableAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.cultivars = await db.cultivar.listEnableAsync();
+            val.cultivars = val.cultivars.Where(p => permission.countries.Contains(p.country)).ToList();
+            return val;
+        }
+
         // GET: /Cultivar/
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -38,7 +49,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 ViewBag.crops = await db.crop.listEnableAsync();
-                var list = await db.cultivar.listEnableAsync();
+                var obj = await LoadEnableByPermissionAsync();
+                var list = obj.cultivars;
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -63,6 +75,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }
                 Cultivar entity = await db.cultivar.byIdAsync(id);
                 ViewBag.crop = await db.crop.byIdAsync(entity.crop.ToString());
+                ViewBag.country = await db.country.byIdAsync(entity.country.ToString());
                 if (entity == null)
                 {
                     await writeEventAsync("Not found id: " + id, LogEvent.err);
@@ -84,6 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             var crops = await db.crop.listEnableAsync();
             ViewBag.crop = new SelectList(crops, "id", "name");
+            await generateListCountriesAsync(string.Empty);
             return View();
         }
 
@@ -95,6 +109,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 entity.crop = getId(HttpContext.Request.Form["crop"].ToString());
+                entity.country = getId(HttpContext.Request.Form["country"].ToString());
                 if (ModelState.IsValid)
                 {
                     await db.cultivar.insertAsync(entity);
@@ -130,6 +145,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }
                 var crops = await db.crop.listEnableAsync();
                 ViewBag.crop = new SelectList(crops, "id", "name", entity.crop);
+                await generateListCountriesAsync(entity.country.ToString());
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
@@ -147,14 +163,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                var crops = await db.crop.listEnableAsync();
+                ViewBag.crop = new SelectList(crops, "id", "name", entity.crop);
+                await generateListCountriesAsync(entity.country.ToString());
                 if (ModelState.IsValid)
                 {
                     Cultivar current_entity = await db.cultivar.byIdAsync(id);
-
+                    
+                    
                     entity.id = getId(id);
                     entity.crop = getId(HttpContext.Request.Form["crop"].ToString());
+                    entity.country = getId(HttpContext.Request.Form["country"].ToString());
                     await db.cultivar.updateAsync(current_entity, entity);
                     await writeEventAsync(entity.ToString(), LogEvent.upd);
+
                     return RedirectToAction("Index");
                 }
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
@@ -162,6 +184,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
             catch (Exception ex)
             {
+                var crops = await db.crop.listEnableAsync();
+                ViewBag.crop = new SelectList(crops, "id", "name", entity.crop);
+                await generateListCountriesAsync(entity.country.ToString());
                 await writeExceptionAsync(ex);
                 return View(entity);
             }
@@ -299,6 +324,22 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await writeExceptionAsync(ex);
                 return RedirectToAction("Threshold", new { id = cultivar_id });
             }
+        }
+
+        /// <summary>
+        /// Method that create a select list with the countries available
+        /// </summary>
+        /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
+        private async Task<bool> generateListCountriesAsync(string selected)
+        {
+            var obj = await LoadEnableByPermissionAsync();
+            // Filter states by permission by countries            
+            var countries = obj.countries.Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
+                ViewData["country"] = new SelectList(countries, "id", "name");
+            else
+                ViewData["country"] = new SelectList(countries, "id", "name", selected);
+            return countries.Count() > 0;
         }
     }
 }
