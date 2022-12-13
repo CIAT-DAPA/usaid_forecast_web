@@ -328,6 +328,10 @@
 }
 */
 
+.header-logo img{
+    height: 120px;
+    width:auto;
+}
 /* Footer */
 .footer {
     background: #222222;
@@ -341,6 +345,17 @@ footer a {
 
 footer img {
     background-color: white;
+    object-fit: contain;
+    height: 140px;
+    width: 220px;
+    padding: 0.4em;
+}
+
+.partners-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-gap: 12px;
+    place-items: center;
 }
 
 /*Custom carousel*/
