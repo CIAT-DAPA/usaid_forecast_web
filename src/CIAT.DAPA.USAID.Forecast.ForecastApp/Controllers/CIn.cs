@@ -127,6 +127,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Subseasonal not found");
             // Get the performance metrics file
             List<ImportPerformance> performances = new List<ImportPerformance>();
+            List<string> tittles = new List<string>();
             string fpe = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
             if (!string.IsNullOrEmpty(fpe))
             {
@@ -136,6 +137,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 using (file = File.OpenText(fpe))
                 {
                     int count = 0;
+                    
                     while ((line = file.ReadLine()) != null)
                     {
                         // Omitted the file's header
@@ -143,21 +145,38 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             // Get the probabilities from the file in a temp memmory
                             var fields = line.Split(Program.settings.splitted);
-                            performances.Add(new ImportPerformance()
+                            ImportPerformance import_performance = new ImportPerformance();
+                            int count_tittle = 0;
+                            // Create ImportPerformance dynamically depending on the measures in the metrics csv columns
+                            foreach (var data in fields)
                             {
-                                year = int.Parse(fields[0]),
-                                month = int.Parse(fields[1]),
-                                ws = fields[2],
-                                pearson = double.Parse(fields[3]),
-                                kendall = double.Parse(fields[4]),
-                                goodness = double.Parse(fields[5]),
-                                canonica = double.Parse(fields[6]),
-                                afc2 = double.Parse(fields[7]),
-                                groc = double.Parse(fields[8]),
-                                ignorance = double.Parse(fields[9]),
-                                rpss = double.Parse(fields[10]),
-                                spearman = double.Parse(fields[11])
-                            });
+                                if (tittles[count_tittle] != "id")
+                                {
+                                    if (tittles[count_tittle] == "year" || tittles[count_tittle] == "month")
+                                    {
+                                        import_performance.GetType().GetProperty(tittles[count_tittle]).SetValue(import_performance, int.Parse(data), null);
+                                    }
+                                    else
+                                    {
+                                        import_performance.GetType().GetProperty(tittles[count_tittle]).SetValue(import_performance, double.Parse(data), null);
+                                    }
+
+                                }
+                                else
+                                {
+                                    import_performance.GetType().GetProperty("ws").SetValue(import_performance, data, null);
+                                }
+
+                                count_tittle += 1;
+                            }
+                            performances.Add(import_performance);
+                        }
+                        else if (count == 0 && !string.IsNullOrEmpty(line))
+                        {
+                            foreach (string tittle in line.Split(Program.settings.splitted))
+                            {
+                                tittles.Add(tittle);
+                            }
                         }
                         count += 1;
                     }
@@ -171,9 +190,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             {
                 // Casting the metrics
                 List<PerformanceMetric> metrics = new List<PerformanceMetric>();
+                // Import performances only if the mesuare is contained in the names of the csv columns
                 foreach (var m in Enum.GetValues(typeof(MeasurePerformance)).Cast<MeasurePerformance>())
                 {
-                    if (m == MeasurePerformance.goodness)
+                    if (m == MeasurePerformance.goodness && tittles.Contains("goodness"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -181,7 +201,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.goodness
                         }).ToList());
-                    else if (m == MeasurePerformance.kendall)
+                    else if (m == MeasurePerformance.kendall && tittles.Contains("kendall"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -189,7 +209,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.kendall
                         }).ToList());
-                    else if (m == MeasurePerformance.pearson)
+                    else if (m == MeasurePerformance.pearson && tittles.Contains("pearson"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -197,7 +217,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.pearson
                         }).ToList());
-                    else if (m == MeasurePerformance.canonica)
+                    else if (m == MeasurePerformance.canonica && tittles.Contains("canonica"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -205,7 +225,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.canonica
                         }).ToList());
-                    else if (m == MeasurePerformance.afc2)
+                    else if (m == MeasurePerformance.afc2 && tittles.Contains("afc2"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -213,7 +233,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.afc2
                         }).ToList());
-                    else if (m == MeasurePerformance.groc)
+                    else if (m == MeasurePerformance.groc && tittles.Contains("groc"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -221,7 +241,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.groc
                         }).ToList());
-                    else if (m == MeasurePerformance.ignorance)
+                    else if (m == MeasurePerformance.ignorance && tittles.Contains("ignorance"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -229,7 +249,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.ignorance
                         }).ToList());
-                    else if (m == MeasurePerformance.rpss)
+                    else if (m == MeasurePerformance.rpss && tittles.Contains("rpss"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -237,7 +257,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.rpss
                         }).ToList());
-                    else if (m == MeasurePerformance.spearman)
+                    else if (m == MeasurePerformance.spearman && tittles.Contains("spearman"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
