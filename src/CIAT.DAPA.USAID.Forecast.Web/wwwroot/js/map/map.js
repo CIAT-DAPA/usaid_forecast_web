@@ -6,10 +6,26 @@
   */
 async function plot_map(id, ws, crops) {
     var map = L.map(id).setView([ws[0].latitude, ws[0].longitude], 6);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    var basemap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
+
+    var layers = {
+       'Administrative-1' : L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
+            layers: 'administrative:ao_adm1',
+            format: 'image/png',
+            transparent: true
+        }),
+        'Administrative-2': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
+            layers: 'administrative:ao_adm2',
+            format: 'image/png',
+            transparent: true
+        }),
+    };
+    L.control.layers(basemap, layers).addTo(map);
+
+
     for (var i = 0; i < ws.length; ++i) {
         // Search crops with data
         var crops_ws = search_ws_crop(crops, ws[i].id);
