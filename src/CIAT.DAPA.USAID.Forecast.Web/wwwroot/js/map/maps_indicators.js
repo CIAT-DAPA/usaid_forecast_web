@@ -15,6 +15,8 @@ var country;
   * @param {any} idx position of the map list
   */
 function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [], units) {
+
+    console.log('plot map',idx)
     maps[idx] = L.map(id, { zoomControl: false }).setView([conf.latitude, conf.longitude], conf.zoom);
     L.control.zoom({ position: 'bottomright' }).addTo(maps[idx]);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -22,12 +24,35 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
         subdomains: ['a', 'b', 'c']
     }).addTo(maps[idx]);
 
+
+
+    //add optional layers
+    var layers = {
+        'Administrative-1': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
+            layers: 'administrative:ao_adm1',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.3,
+          //  zIndex:10
+        }),
+        'Administrative-2': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
+            layers: 'administrative:ao_adm2',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.3,
+         //   zIndex: 11,
+        }),
+    };
+
+    L.control.layers(null, layers).addTo(maps[idx]);
+
+ /*
     var myStyle = {
         "color": "#666666",
         "weight": 1,
         "fillOpacity": 0.1
     };
-
+   
     $.getJSON("/country.json", function (data) {
         L.geoJson(data, {
             style: myStyle,
@@ -42,12 +67,13 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
             }
         }).addTo(maps[idx]);
     });
-    
+    */
 
     // Adding event click on map. It shows the value of each pixel
     //maps[idx].on('click', onMapClick);
 
     // 
+    
     var legend = L.control({ position: 'bottomleft' });
 
     legend.onAdd = function (map) {
@@ -68,6 +94,11 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
         return div;
     };
     legend.addTo(maps[idx]);
+
+    
+    
+
+
 }
 
 const generatePoints = (startingNumber, endingNumber, maxPoints) => Array.from(
@@ -77,13 +108,13 @@ const generatePoints = (startingNumber, endingNumber, maxPoints) => Array.from(
 
 /**
  * Method which loads country boundaries from geojson
- * */
+ * 
 function load_country() {
     $.getJSON("/country.json", function (data) {
         country = data;
     });
 }
-
+*/
 /**
  * Method that returns the color regarding to index and type
  * @param {any} index
@@ -156,7 +187,8 @@ function plot_layer(idx, layer, time, compare) {
     var wmsLayer = L.tileLayer.wms(geoserver_url, {
         layers: geoserver_workspace + ":" + layer,
         format: 'image/png',
-        transparent: true
+        transparent: true,
+       // zIndex: 3
     }).addTo(maps[idx]);
 
     wmsLayer.setParams({ 'time': time });
@@ -166,7 +198,8 @@ function plot_layer(idx, layer, time, compare) {
         var wmsLayerCompare = L.tileLayer.wms(geoserver_url, {
             layers: geoserver_workspace + ":" + layer,
             format: 'image/png',
-            transparent: true
+            transparent: true,
+         //   zIndex:3
         }).addTo(maps[idx]);
 
         wmsLayerCompare.setParams({ 'time': compare });

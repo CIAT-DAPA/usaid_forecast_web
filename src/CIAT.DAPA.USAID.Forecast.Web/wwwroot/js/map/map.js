@@ -15,12 +15,14 @@ async function plot_map(id, ws, crops) {
        'Administrative-1' : L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
             layers: 'administrative:ao_adm1',
             format: 'image/png',
-            transparent: true
+            transparent: true,
+            opacity: 0.3,
         }),
         'Administrative-2': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
             layers: 'administrative:ao_adm2',
             format: 'image/png',
-            transparent: true
+            transparent: true,
+            opacity: 0.3,
         }),
     };
  
