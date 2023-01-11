@@ -332,6 +332,10 @@
     height: 120px;
     width:auto;
 }
+.pg-loading-logo {
+    height: 120px !important;
+    width: auto !important;
+}
 /* Footer */
 .footer {
     background: #222222;
