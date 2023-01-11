@@ -16,7 +16,6 @@ var country;
   */
 function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [], units) {
 
-    console.log('plot map',idx)
     maps[idx] = L.map(id, { zoomControl: false }).setView([conf.latitude, conf.longitude], conf.zoom);
     L.control.zoom({ position: 'bottomright' }).addTo(maps[idx]);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
