@@ -816,7 +816,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// </summary>
         /// <param name="path">Path where the folders will be located</param>
 
-        public async Task<bool> importDailyConfigurationAsync(string path)
+        public async Task<bool> importDailyConfigurationAsync(string path, int type)
         {
             Console.WriteLine("Importing daily configuration from: " + path);
             try
@@ -832,17 +832,25 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     if (file.Contains("daily.csv"))
                     {
                         string file_name = file.Split(Path.DirectorySeparatorChar).Last();
-                        string weather_station_id = file_name.Split("_")[0];
+                        string weather_station_id = file_name.Split("_daily")[0];
                         ConfigurationFile file_temp = new ConfigurationFile()
                         {
                             date = DateTime.Now,
                             path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-wsconfig-" + file_name,
-                            name = Path.GetFileNameWithoutExtension(file)
+                            name = "daily"
                         };
                         File.Copy(file, file_temp.path);
                         File.Copy(file, tmp_folder + Path.DirectorySeparatorChar.ToString() + file_name);
                         File.Delete(file);
-                        WeatherStation weather_station = await db.weatherStation.byIdAsync(weather_station_id);
+                        WeatherStation weather_station = null;
+                        if(type == 1)
+                        {
+                            weather_station = await db.weatherStation.byIdAsync(weather_station_id);
+                        }
+                        else
+                        {
+                            weather_station = await db.weatherStation.searchWeatherStationForExtId(weather_station_id);
+                        }
                         if (weather_station != null)
                         {
                             await db.weatherStation.addConfigurationFileAsync(weather_station, file_temp);

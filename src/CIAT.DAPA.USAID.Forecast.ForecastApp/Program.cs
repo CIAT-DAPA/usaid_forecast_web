@@ -266,13 +266,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing soil data");
                         await cin.importSoilDataAsync(args[path + 1]);
                     }
-                    //-in -fcfg -p "C:\folder"
+                    //-in -fcfg -p "C:\folder" -tyd 1
                     int fcfg = Program.searchParameter(args, "-fcfg");
                     if (fcfg >= 0)
                     {
+                        int tyd = Program.searchParameter(args, "-tyd");
+                        Program.validateParameter(tyd, "-tyd");
                         Program.validateParameter(fcfg, "-fcfg");
                         Console.WriteLine("Importing config data");
-                        await cin.importDailyConfigurationAsync(args[path + 1]);
+                        await cin.importDailyConfigurationAsync(args[path + 1], int.Parse(args[tyd + 1]));
                     }
                 }
                 else if (Program.searchParameter(args, "-help") == 0)

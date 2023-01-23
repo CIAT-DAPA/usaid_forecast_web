@@ -213,5 +213,20 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var filter = builder.Eq("track.enable", true) & builder.Eq("visible", true);
             return await collection.Find(filter).ToListAsync<WeatherStation>();
         }
+
+
+        /// <summary>
+        /// Method that return weather station for the extId
+        /// </summary>
+        /// <param extId="ext_id">ext_id to search weather station</param>
+        /// <returns>weather station</returns>
+        public async virtual Task<WeatherStation> searchWeatherStationForExtId(string ext_id)
+        {
+            // Filter all entities available.
+            var builder = Builders<WeatherStation>.Filter;
+            var filter = builder.Eq("track.enable", true) & builder.Eq("ext_id", ext_id);
+            var results = await collection.Find(filter).ToListAsync<WeatherStation>();
+            return results.FirstOrDefault();
+        }
     }
 }

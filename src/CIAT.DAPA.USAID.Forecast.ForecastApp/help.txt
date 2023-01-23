@@ -94,6 +94,9 @@ Import Data
 
 -fcfg			Imports the configuration daily info in the db of the selected csv files.
 
+-typd value		Set the kind of search of the weather station.
+				Value can be either 1 for Id or 2 for Extern Id  
+
 -wd "value"		This parameter indicates if the config has planting window or not
 
 -stm "value"	This parameter indicates the month in which the planting window starts

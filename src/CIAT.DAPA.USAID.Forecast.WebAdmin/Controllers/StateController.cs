@@ -66,7 +66,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                var obj = await LoadAllByPermissionAsync();
+                var obj = await LoadEnableByPermissionAsync();
                 var list = obj.states;                
                 ViewBag.countries = obj.countries;
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
@@ -366,7 +366,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             ViewBag.message = msg;
-            return View("Import", new { id = entity.id.ToString() });
+            ViewBag.countries = await db.country.listAllAsync();
+            return View("Import", entity );
         }
 
         // GET: /State/Configuration/5
