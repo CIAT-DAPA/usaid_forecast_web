@@ -1,4 +1,6 @@
-﻿/**
+﻿var layerNames;
+
+/**
   * Method that plots a map with the weather stations
   * @param {any} id id div
   * @param {any} ws list of weather stations
@@ -12,23 +14,15 @@ async function plot_map(id, ws, crops) {
     }).addTo(map);
 
 
-    var layers = {
-       'Administrative-1' : L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
-            layers: 'administrative:ao_adm1',
-            format: 'image/png',
-            transparent: true,
-            opacity: 0.3,
-        }),
-        'Administrative-2': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
-            layers: 'administrative:ao_adm2',
-            format: 'image/png',
-            transparent: true,
-            opacity: 0.3,
-        }),
-    };
- 
-    L.control.layers(null, layers).addTo(map);
+    add_map_overlays(map, [
+        { "layerName": "ao_adm1", "label": layerNames[0] },
+        { "layerName": "ao_adm2", "label": layerNames[1] }
+    ]);
+
     
+
+
+
 
     for (var i = 0; i < ws.length; ++i) {
         // Search crops with data

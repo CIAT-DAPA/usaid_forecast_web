@@ -75,6 +75,7 @@
 
 @section Scripts {    
     <script type="text/javascript" src="~/js/map/maps_indicators.js"></script>
+    <script type="text/javascript" src="~/js/map/map_overlays.js"></script>
     <script type="text/javascript">
 
     var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
@@ -88,8 +89,13 @@
     categories_title = '@Html.Raw(Localizer["Categories"].Value.ToString())';
     geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
     geoserver_workspace = "@Html.Raw(ViewBag.geoserver_workspace)";
+
+
     conf = { latitude: ws[0].latitude, longitude: ws[0].longitude, zoom: 5 };    
     layers_all = @Html.Raw(Json.Serialize(ViewBag.indicators_list));
+
+    layerNames =    ['@Localizer["LayerAdmin1"]','@Localizer["LayerAdmin2"]'];
+    
     update_maps();
     window.loading_screen.finish();
     </script>

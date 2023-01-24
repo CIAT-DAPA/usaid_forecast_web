@@ -132,6 +132,12 @@
   <data name="Group" xml:space="preserve">
     <value>Agroclimatic indicators</value>
   </data>
+  <data name="LayerAdmin1" xml:space="preserve">
+    <value>Administrative 1</value>
+  </data>
+  <data name="LayerAdmin2" xml:space="preserve">
+    <value>Administrative 2</value>
+  </data>
   <data name="Time" xml:space="preserve">
     <value>Period</value>
   </data>

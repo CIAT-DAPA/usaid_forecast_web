@@ -120,6 +120,12 @@
   <data name="Description" xml:space="preserve">
     <value>Nesta seção você poderá ver quais são as áreas em que estamos gerando previsões agroclimáticas</value>
   </data>
+  <data name="LayerAdmin1" xml:space="preserve">
+    <value>Administrativo 1</value>
+  </data>
+  <data name="LayerAdmin2" xml:space="preserve">
+    <value>Administrativo 2</value>
+  </data>
   <data name="ModalTitle" xml:space="preserve">
     <value>Selecione um país para continuar</value>
   </data>

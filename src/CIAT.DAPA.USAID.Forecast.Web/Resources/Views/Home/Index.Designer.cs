@@ -70,6 +70,24 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrative 1.
+        /// </summary>
+        public static string LayerAdmin1 {
+            get {
+                return ResourceManager.GetString("LayerAdmin1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administrative 2.
+        /// </summary>
+        public static string LayerAdmin2 {
+            get {
+                return ResourceManager.GetString("LayerAdmin2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a country to continue.
         /// </summary>
         public static string ModalTitle {

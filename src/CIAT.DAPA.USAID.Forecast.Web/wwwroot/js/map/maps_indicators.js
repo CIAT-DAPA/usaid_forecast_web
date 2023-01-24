@@ -8,6 +8,7 @@ var geoserver_workspace;
 var scales;
 var categories_title;
 var country;
+var layerNames;
 
 /**
   * Method that plots a map
@@ -26,24 +27,12 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
 
 
     //add optional layers
-    var layers = {
-        'Administrative-1': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
-            layers: 'administrative:ao_adm1',
-            format: 'image/png',
-            transparent: true,
-            opacity: 0.3,
-          //  zIndex:10
-        }),
-        'Administrative-2': L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
-            layers: 'administrative:ao_adm2',
-            format: 'image/png',
-            transparent: true,
-            opacity: 0.3,
-         //   zIndex: 11,
-        }),
-    };
+    add_map_overlays(maps[idx], [
+        { "layerName": "ao_adm1", "label": layerNames[0] },
+        { "layerName": "ao_adm2", "label": layerNames[1] }
+    ]);
 
-    L.control.layers(null, layers).addTo(maps[idx]);
+
 
  /*
     var myStyle = {

@@ -21,9 +21,16 @@
 
 @section Scripts {
     <script src="~/js/map/map.js"></script>
-    <script type="text/javascript">        
+    <script type="text/javascript" src="~/js/map/map_overlays.js"></script>
+    <script type="text/javascript">
+
         var models = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
         var crops = @Html.Raw(Json.Serialize(ViewBag.WeatherStationsCrops));
+
+
+        layerNames =    ['@Localizer["LayerAdmin1"]','@Localizer["LayerAdmin2"]'];
+
+
         plot_map('map', models, crops);
         window.loading_screen.finish();
     </script>
