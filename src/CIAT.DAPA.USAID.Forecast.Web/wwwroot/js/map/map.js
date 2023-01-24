@@ -10,7 +10,8 @@ async function plot_map(id, ws, crops) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
-    
+
+
     var layers = {
        'Administrative-1' : L.tileLayer.wms('https://geo.aclimate.org/geoserver/administrative/wms?', {
             layers: 'administrative:ao_adm1',
