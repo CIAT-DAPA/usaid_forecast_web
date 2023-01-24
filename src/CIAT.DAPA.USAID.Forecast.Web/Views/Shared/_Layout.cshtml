@@ -12,6 +12,16 @@
     <script src="~/js/seo/analytics.js"></script>
     <!-- End SEO -->
 
+    <!-- Google analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R1QFE5DXSD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-R1QFE5DXSD');
+    </script>
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/nvd3/nv.d3.min.css">
