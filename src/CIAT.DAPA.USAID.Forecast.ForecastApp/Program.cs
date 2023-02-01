@@ -188,6 +188,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Exporting Subseasonal PyCPT configuration");
                         await output.exportConfigurationPyCpt(args[path + 1], args[country + 1], args[m + 1].Split(",").Select(int.Parse).ToList(), TypePyCPT.subseasonal);
                     }
+
                 }
                 else if (Program.searchParameter(args, "-in") == 0)
                 {
@@ -195,14 +196,25 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Program.validateParameter(path, "-p");
                     CIn cin = new CIn();
                     // Import forecast
-                    // -in -fs -p "C:\Users\hsotelo\Desktop\test export\\" -cf 0.5
+                    // -in -fs -p "C:\Users\hsotelo\Desktop\test export\\" -cf 0.5 -frid "asdzxasd1231"
                     int fs = Program.searchParameter(args, "-fs");
                     if (fs >= 0)
                     {
                         int cf = Program.searchParameter(args, "-cf");
                         Program.validateParameter(cf, "-cf");
                         Console.WriteLine("Importing forecast");
-                        await cin.importForecastAsync(args[path + 1], double.Parse(args[cf + 1]));
+                        int forecast_id = Program.searchParameter(args, "-frid");
+                        
+                        if (forecast_id >= 0)
+                        {
+                            Console.WriteLine("With forecast Id");
+                            await cin.importForecastAsync(args[path + 1], double.Parse(args[cf + 1]), args[forecast_id + 1]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Without forecast Id");
+                            await cin.importForecastAsync(args[path + 1], double.Parse(args[cf + 1]));
+                        }
                     }
                     //-in -hs -s "prec" -type 1 -p "C:\data.csv" 
                     int hs = Program.searchParameter(args, "-hs");

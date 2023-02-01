@@ -27,7 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             db = new ForecastDB(Program.settings.ConnectionString, Program.settings.Database);
         }
 
-        public async Task<bool> importForecastAsync(string path, double cf)
+        public async Task<bool> importForecastAsync(string path, double cf, string forecast_id = "")
         {
             StreamReader file;
             string line;
@@ -36,14 +36,32 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             var states = await db.state.listEnableAsync();
             foreach (var s in states)
                 climate_conf.Add(new ClimateConfiguration() { state = s.id, conf = s.conf.ToList().Where(p => p.track.enable) });
-            // Create a forecast            
-            var forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
+            // Create a forecast or search forecast depends of the parameter forecast_id
+            Data.Models.Forecast forecast = new Data.Models.Forecast();
+            
+            if(forecast_id != "")
             {
-                start = DateTime.Now,
-                end = DateTime.Now,
-                confidence = cf,
-                climate_conf = climate_conf
-            });
+                Console.WriteLine("Search forecast ");
+                forecast = await db.forecast.byIdAsync(forecast_id);
+                if(forecast == null)
+                {
+                    Console.WriteLine("Forecast not Found");
+                    Console.WriteLine("Check forecast Id");
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Created forecast ");
+                forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
+                {
+                    start = DateTime.Now,
+                    end = DateTime.Now,
+                    confidence = cf,
+                    climate_conf = climate_conf
+                });
+            }
+            
             Console.WriteLine("Created forecast " + forecast.id.ToString());
             if (File.Exists(path + "forecast.csv"))
                 File.Delete(path + "forecast.csv");
