@@ -28,9 +28,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
             foreach (string title in titles_values)
             {
 
-                if (title.Contains("crop") && soil_csv.GetType().GetProperty(title) != null)
+                if ((title.Contains("crop") || title.Contains("country")) && soil_csv.GetType().GetProperty(title) != null)
                 {
                     soil_csv.GetType().GetProperty(title).SetValue(soil_csv, ForecastDB.parseId(values[position]), null);
+                }
+                else if (title.Contains("order") && soil_csv.GetType().GetProperty(title) != null)
+                {
+                    soil_csv.GetType().GetProperty(title).SetValue(soil_csv, int.Parse(values[position]), null);
                 }
                 else if(soil_csv.GetType().GetProperty(title) != null)
                 {
@@ -39,7 +43,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
                 position += 1;
 
             }
-            soil_csv.order = 0;
 
             return soil_csv;
         }

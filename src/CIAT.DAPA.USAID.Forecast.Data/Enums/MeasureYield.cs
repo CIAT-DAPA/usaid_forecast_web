@@ -71,5 +71,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// water stress beginning to end of grain filling
         /// </summary>
         st_beg_end_gf_w,
+        /// <summary>
+        /// nitrogen stress germination to anthesis
+        /// </summary>
+        st_ger_ant_n,
+        /// <summary>
+        /// water stress germination to anthesis
+        /// </summary>
+        st_ger_ant_w,
     }
 }

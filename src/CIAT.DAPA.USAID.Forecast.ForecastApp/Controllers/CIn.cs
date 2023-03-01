@@ -92,7 +92,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             {
                                 year = int.Parse(fields[0]),
                                 month = int.Parse(fields[1]),
-                                ws = fields[2],
+                                ws = fields[2].Replace("\"", ""),
                                 below = double.Parse(fields[3]),
                                 normal = double.Parse(fields[4]),
                                 above = double.Parse(fields[5])
@@ -126,6 +126,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             // Get the probabilities from the file in a temp memmory
                             var fields = line.Split(Program.settings.splitted);
+                            
                             subseasonal.Add(new ImportSubseasonal()
                             {
                                 year = int.Parse(fields[0]),
@@ -147,6 +148,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             List<ImportPerformance> performances = new List<ImportPerformance>();
             List<string> tittles = new List<string>();
             string fpe = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
+            Console.WriteLine("Search forecast ");
             if (!string.IsNullOrEmpty(fpe))
             {
                 Console.WriteLine("Processing: performance");
@@ -182,7 +184,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 }
                                 else
                                 {
-                                    import_performance.GetType().GetProperty("ws").SetValue(import_performance, data, null);
+                                    string replace = data.Replace("\"", "");
+                                    import_performance.GetType().GetProperty("ws").SetValue(import_performance, replace.Replace("\'", ""), null);
                                 }
 
                                 count_tittle += 1;
@@ -193,7 +196,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             foreach (string tittle in line.Split(Program.settings.splitted))
                             {
-                                tittles.Add(tittle);
+                                tittles.Add(tittle.Replace("\"", ""));
                             }
                         }
                         count += 1;
@@ -647,7 +650,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 var monthlyData = hc_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
                                 var restMonthlyData = hc_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
                                 data = monthlyData.data.ToList();
-                                data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault());
+                                ClimaticData new_data = ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault();
+                                if (data.Where(p=> p.measure == new_data.measure).FirstOrDefault() != null)
+                                {
+                                    int count = 0;
+                                    foreach(ClimaticData  clim_data in data)
+                                    {
+                                        if(clim_data.measure == new_data.measure)
+                                        {
+                                            data[count].value = new_data.value;
+                                        }
+                                        count++;
+                                    }
+                                }
+                                else
+                                {
+                                    data.Add(new_data);
+                                }
+                                
                                 monthlyData.data = data;
                                 restMonthlyData.Add(monthlyData);
                                 hc_new.monthly_data = restMonthlyData;
@@ -804,7 +824,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
         public async Task<bool> importSoilDataAsync(string path)
         {
-            Console.WriteLine("Importing range configuration from: " + path);
+            Console.WriteLine("Importing soil data from: " + path);
             try
             {
                 string[] lines = File.ReadAllLines(path);

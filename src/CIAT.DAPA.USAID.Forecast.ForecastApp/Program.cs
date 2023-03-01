@@ -227,7 +227,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         Console.WriteLine("Importing historical data");
                         await cin.importHistoricalAsync(args[path + 1], (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), args[s + 1]), int.Parse(args[type + 1]));
                     }
-                    //-in -cc -p "C:\data.csv -wd 1 -stm 4 -edm 10 -sd 45" 
+                    //-in -cc -p "C:\data.csv" -wd 1 -stm 4 -edm 10 -sd 45
                     int cc = Program.searchParameter(args, "-cc");
                     if (cc >= 0)
                     {
