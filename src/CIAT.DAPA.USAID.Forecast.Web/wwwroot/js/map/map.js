@@ -14,10 +14,12 @@ async function plot_map(id, ws, crops) {
     }).addTo(map);
 
 
-    add_map_overlays(map, [
-        { "layerName": "ao_adm1", "label": layerNames[0] },
-        { "layerName": "ao_adm2", "label": layerNames[1] }
-    ]);
+
+    var layerConfigs = {};
+    layerConfigs[layerNames[0]] = "ao_adm1";
+    layerConfigs[layerNames[1]] = "ao_adm2";
+
+    add_map_overlays(map, layerConfigs);
 
     
 
