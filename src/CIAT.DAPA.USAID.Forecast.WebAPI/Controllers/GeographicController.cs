@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Cors;
 using System.Text;
 using MongoDB.Bson;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
-using CIAT.DAPA.USAID.Forecast.Data.Database;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -148,74 +147,114 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             try
             {
                 // Get data
-                var countries = await db.country.listEnableAsync();
-                var states = await db.state.listEnableAsync();
-                var municipalities = await db.municipality.listEnableVisibleAsync();
-                var weatherstations = await db.weatherStation.listEnableVisibleAsync();
-                var crops = await db.crop.listEnableAsync();
 
+                List<Country> countries = await db.country.listEnableAsync();
+                List<Crop> crops = await db.crop.listEnableAsync();
                 // This cicle is to get all geographic information by crop
                 List<CropGeographicEntity> json = new List<CropGeographicEntity>();
-                foreach (var crop in crops)
+                foreach (Crop crop in crops)
                 {
-                    var crops_cultivar = await db.cultivar.listByCropEnableAsync(crop.id);
-                    var cultivars = crops_cultivar.Select(p => p.id);
+                    List<Cultivar> crops_cultivar = await db.cultivar.listByCropEnableAsync(crop.id);
+                    IEnumerable<ObjectId> cultivars = crops_cultivar.Select(p => p.id);
                     var forecast = await db.forecast.getLatestAsync();
 
                     if (forecast != null)
                     {
-                        var yield_forecast = await db.forecastYield.byForecastAsync(forecast.id);
+                        //Get forecast yield by last forecast and cultivars
+                        IEnumerable<ForecastYield> yield_forecast = await db.forecastYield.byForecastCul(forecast.id, cultivars);
 
                         // filter
                         List<ObjectId> ws_forecast = new List<ObjectId>();
                         // Get the weather station with data in the forecast for the crop
-                        foreach (var y in yield_forecast)
+                        foreach (ForecastYield y in yield_forecast)
                         {
-                            if (cultivars.Contains(y.cultivar) && !ws_forecast.Contains(y.weather_station))
+                            if (!ws_forecast.Contains(y.weather_station))
                                 ws_forecast.Add(y.weather_station);
-                            /*
-                            foreach (var c in y.yield)
-                            {
-                                if (cultivars.Contains(c.cultivar) && !ws_forecast.Contains(y.weather_station))
-                                    ws_forecast.Add(y.weather_station);
-                            }*/
+
                         }
-
-                        var ws_result = weatherstations.Where(p => ws_forecast.Contains(p.id));
-                        var mn_result = municipalities.Where(p => ws_result.Select(p2 => p2.municipality).Contains(p.id));
-                        var st_result = states.Where(p => mn_result.Select(p2 => p2.state).Contains(p.id));
-
+                        // Get Weather stations with municipality and state
+                        List<WeatherStationAllData> ws_result = await db.weatherStation.listEnableByIDsCompleteData(ws_forecast.ToArray(), crop);
+                        List<StateEntity> json_state = new List<StateEntity>();
                         StateEntity geo_s;
                         MunicipalityEntity geo_m;
-                        List<StateEntity> json_state = new List<StateEntity>();
-                        // This cicle is to get all states where is located the crop
-                        foreach (var s in st_result)
+                        
+                        foreach (WeatherStationAllData ws_data in ws_result)
                         {
-                            var countryinstate = countries.Where(p => p.id == s.country);
-                            var countryinstatelist = countryinstate.ToList();
-                            geo_s = new StateEntity() { id = s.id.ToString(), name = s.name, country = new CountryEntity() { id = countryinstatelist[0].id.ToString(), iso2 = countryinstatelist[0].iso2, name = countryinstatelist[0].name }, municipalities = new List<MunicipalityEntity>() };
-                            foreach (var m in mn_result.Where(p => p.state == s.id))
+
+                            IEnumerable<Country> countryinstate = countries.Where(p => p.id == ws_data.std.First().depends);
+                            List<Country> countryinstatelist = countryinstate.ToList();
+
+                            // Check if state it's in json, if in get but if not in create
+                            bool is_in_json = json_state.Any(p => p.id == ws_data.std.First().id.ToString());
+                            if (is_in_json)
                             {
-                                geo_m = new MunicipalityEntity() { id = m.id.ToString(), name = m.name, weather_stations = new List<WeatherStationEntity>() };
-                                foreach (var w in ws_result.Where(p => p.municipality == m.id))
-                                    geo_m.weather_stations.Add(new WeatherStationEntity()
-                                    {
-                                        id = w.id.ToString(),
-                                        ext_id = w.ext_id,
-                                        name = w.name,
-                                        origin = w.origin,
-                                        ranges = w.ranges.Select(p => new YieldRangeEntity()
-                                        {
-                                            crop_id = p.crop.ToString(),
-                                            label = p.label,
-                                            lower = p.lower,
-                                            upper = p.upper,
-                                            crop_name = crop.name
-                                        })
-                                    });
-                                geo_s.municipalities.Add(geo_m);
+                                geo_s = json_state.Find(p => p.id == ws_data.std.First().id.ToString());
                             }
-                            json_state.Add(geo_s);
+                            else
+                            {
+                                geo_s = new StateEntity() { id = ws_data.std.First().id.ToString(), name = ws_data.std.First().name, country = new CountryEntity() { id = countryinstatelist[0].id.ToString(), iso2 = countryinstatelist[0].iso2, name = countryinstatelist[0].name }, municipalities = new List<MunicipalityEntity>() };
+
+                            }
+                            // Check if municipality it's in state, if in get but if not in create
+                            bool is_in_geo_s = geo_s.municipalities.Any(p => p.id == ws_data.munc.First().id.ToString());
+                            if (is_in_geo_s)
+                            {
+                                geo_m = geo_s.municipalities.Find(p => p.id == ws_data.munc.First().id.ToString());
+                                geo_m.weather_stations.Add(new WeatherStationEntity()
+                                {
+                                    id = ws_data.id.ToString(),
+                                    ext_id = ws_data.ext_id,
+                                    name = ws_data.name,
+                                    origin = ws_data.origin,
+                                    ranges = ws_data.ranges.Select(p => new YieldRangeEntity
+                                    {
+                                        crop_id = p.crop.ToString(),
+                                        lower = p.lower,
+                                        upper = p.upper,
+                                        label = p.label
+                                    }),
+                                });
+                                int index = geo_s.municipalities.FindIndex(p => p.id == ws_data.munc.First().id.ToString());
+                                if (index >= 0)
+                                {
+                                    geo_s.municipalities[index] = geo_m;
+                                }
+                            }
+                            else
+                            {
+                                geo_m = geo_m = new MunicipalityEntity() { id = ws_data.munc.First().id.ToString(), name = ws_data.munc.First().name, weather_stations = new List<WeatherStationEntity>() };
+                                geo_m.weather_stations.Add(new WeatherStationEntity()
+                                {
+                                    id = ws_data.id.ToString(),
+                                    ext_id = ws_data.ext_id,
+                                    name = ws_data.name,
+                                    origin = ws_data.origin,
+                                    ranges = ws_data.ranges.Select(p => new YieldRangeEntity
+                                    {
+                                        crop_id = p.crop.ToString(),
+                                        lower = p.lower,
+                                        upper = p.upper,
+                                        label = p.label,
+                                        crop_name = crop.name
+                                    }),
+                                });
+                                geo_s.municipalities.Add(geo_m);
+
+                            }
+                            //Add state into json if exist replace.
+                            if (is_in_json)
+                            {
+                                int index = json_state.FindIndex(p => p.id == ws_data.std.First().id.ToString());
+                                if (index >= 0)
+                                {
+                                    json_state[index] = geo_s;
+                                }
+                            }
+                            else
+                            {
+                                json_state.Add(geo_s);
+                            }
+
                         }
                         if (string.IsNullOrEmpty(idCountry))
                         {
@@ -236,7 +275,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         }
                     }
                 }
-
 
                 // Write event log
                 writeEvent("Geographic forecast yield count [" + json.Count().ToString() + "]", LogEvent.lis);

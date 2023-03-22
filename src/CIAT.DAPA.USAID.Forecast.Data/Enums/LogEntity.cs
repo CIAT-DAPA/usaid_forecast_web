@@ -76,6 +76,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         fs_forecast_climate,
         /// <summary>
+        /// Phenological phase forecast table
+        /// </summary>
+        fs_forecast_phen_phase,
+        /// <summary>
         /// Users table
         /// </summary>
         users,

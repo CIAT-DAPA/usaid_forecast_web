@@ -132,7 +132,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 year = int.Parse(fields[0]),
                                 week = int.Parse(fields[1]),
                                 month = int.Parse(fields[2]),
-                                ws = fields[3],
+                                ws = fields[3].Replace("\"", ""),
                                 below = double.Parse(fields[4]),
                                 normal = double.Parse(fields[5]),
                                 above = double.Parse(fields[6])
@@ -458,12 +458,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             // Get folder of the scenarios
             var d_crops = Directory.EnumerateDirectories(path + Program.settings.In_PATH_FS_YIELD);
             List<ImportYield> yields = new List<ImportYield>();
+            List<ImportPhenoPhase> phases = new List<ImportPhenoPhase>();
             foreach (var dc in d_crops)
             {
                 Console.WriteLine("Crop " + dc);
                 var d_f_yield = Directory.EnumerateFiles(dc);
-                foreach (var f_yield in d_f_yield.Where(p => p.EndsWith(".csv")))
+                foreach (var f_yield in d_f_yield.Where(p => p.EndsWith(".csv") && !p.EndsWith(Program.settings.In_PATH_FS_FILE_PHENO_PHASES)))
                 {
+                    // Split yield file path to get id
+                    string file_id = f_yield.Split(Path.DirectorySeparatorChar)[f_yield.Split(Path.DirectorySeparatorChar).Length - 1].Split(".csv")[0];
                     Console.WriteLine("Working in " + f_yield);
                     using (file = File.OpenText(f_yield))
                     {
@@ -512,7 +515,53 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             count += 1;
                         }
                     }
+                    /*
+                    string phese_path = dc + Path.DirectorySeparatorChar + file_id + Program.settings.In_PATH_FS_FILE_PHENO_PHASES;
+                    if (File.Exists(phese_path))
+                    {
+                        Console.WriteLine("Working in " + phese_path);
+                        using (file = File.OpenText(phese_path))
+                        {
+                            int count = 0;
+                            while ((line = file.ReadLine()) != null)
+                            {
+                                // Omitted the file's header
+                                if (count != 0 && !string.IsNullOrEmpty(line))
+                                {
+                                    // Get the data from the file in a temp memmory
+                                    var fields = line.Split(Program.settings.splitted);
+                                    try
+                                    {
+                                        phases.Add(new ImportPhenoPhase()
+                                        {
+                                            weather_station = fields[6],
+                                            soil = fields[8],
+                                            cultivar = fields[7],
+                                            forecast = forecast.id.ToString(),
+                                            name = fields[0],
+                                            start_phase_date = DateTime.Parse(fields[1]),
+                                            end_phase_date = DateTime.Parse(fields[2]),
+                                            start_date = DateTime.Parse(fields[4]),
+                                            end_date = DateTime.Parse(fields[5]),
+                                            diff = int.Parse(fields[3])
+                                        });
+                                    }
+                                    catch (Exception ex3)
+                                    {
+                                        Console.WriteLine(ex3.Message);
+                                        Console.WriteLine(ex3.StackTrace);
+                                        Console.WriteLine(line);
+                                        throw new Exception();
+                                    }
+
+                                }
+                                count += 1;
+                            }
+                        }
+                    }
+                    */
                 }
+
             }
             // Create the records of the yield in the database
             Console.WriteLine("Saving the yield in the database");
@@ -566,6 +615,49 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 fy_new.yield = yc_entities;
                 await db.forecastYield.insertAsync(fy_new);
             }
+
+
+            // Create the records of the phenological phase in the database
+            /*
+            Console.WriteLine("Saving the phenological phase in the database");
+            ForecastPhenPhase ph_new;
+            PhaseCrop phc_entity;
+            List<PhaseCrop> phc_entities;
+            List<PhaseData> phd_entities;
+            var ws_list_ph = phases.Select(p => new { p.weather_station, p.cultivar, p.soil }).Distinct();
+            foreach (var ws in ws_list_ph)
+            {
+                Console.WriteLine("Working in ws: " + ws.weather_station + " soil: " + ws.soil + " cultivar: " + ws.cultivar);
+                ph_new = new ForecastPhenPhase()
+                {
+                    forecast = forecast.id,
+                    ws = ForecastDB.parseId(ws.weather_station),
+                    cultivar = ForecastDB.parseId(ws.cultivar),
+                    soil = ForecastDB.parseId(ws.soil)
+
+                };
+                IEnumerable<ImportPhenoPhase> phase_crop = phases.Where(p => p.weather_station == ws.weather_station && p.soil == ws.soil && p.cultivar == ws.cultivar);
+                phc_entities = new List<PhaseCrop>();
+                var dates_list = phase_crop.Select(p => new { start = p.start_date, end = p.end_date }).Distinct();
+                foreach (var dc in dates_list)
+                {
+                    phc_entity = new PhaseCrop() { start = dc.start, end = dc.end };
+                    IEnumerable<ImportPhenoPhase> ph_data = phase_crop.Where(p => p.start_date == dc.start && p.end_date == dc.end);
+                    phd_entities = new List<PhaseData>();
+                    foreach (ImportPhenoPhase pd in ph_data)
+                        phd_entities.Add(new PhaseData()
+                        {
+                            name = pd.name,
+                            start = pd.start_phase_date,
+                            end = pd.end_phase_date,
+                        });
+                    phc_entity.data = phd_entities;
+                    phc_entities.Add(phc_entity);
+                }
+                ph_new.phases_crop = phc_entities;
+                await db.forecastPhenPhase.insertAsync(ph_new);
+            }
+            */
 
             Console.WriteLine("Forecast imported");
             return true;

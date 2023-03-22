@@ -228,5 +228,62 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var results = await collection.Find(filter).ToListAsync<WeatherStation>();
             return results.FirstOrDefault();
         }
+
+        public async virtual Task<List<WeatherStationAllData>> listEnableByIDsCompleteData(ObjectId[] ws_ids, Crop crop)
+        {
+            try
+            {
+                // Aggregation between weather station, municipality and state collections and filter by visible track enable and ids. 
+                List<WeatherStationAllData> result = await collection.Aggregate()
+                    .Match(x => x.visible == true
+                             && x.track.enable == true
+                             && ws_ids.Contains(x.id))
+                    .Lookup("lc_municipality", "municipality", "_id", "munc")
+                    .Lookup("lc_state", "munc.0.state", "_id", "stat")
+                    .Project(x => new WeatherStationAllData
+                    {
+                        id = (ObjectId)x["_id"],
+                        name = (string)x["name"],
+                        ext_id = (string)x["ext_id"],
+                        origin = (string)x["origin"],
+                        latitude = (double)x["latitude"],
+                        longitude = (double)x["longitude"],
+                        ranges = ((BsonArray)x["ranges"]).Select(y =>
+                            new YieldRange
+                            {
+                                crop = (ObjectId)y["crop"],
+                                lower = (double)y["lower"],
+                                upper = (double)y["upper"],
+                                label = (string)y["label"],
+                            }),
+                        munc = ((BsonArray)x["munc"]).Select(m =>
+                            new WeatherStationData
+                            {
+                                id = (ObjectId)m["_id"],
+                                name = (string)m["name"],
+                                depends = (ObjectId)m["state"],
+                            }),
+                        std = ((BsonArray)x["stat"]).Select(s =>
+                            new WeatherStationData
+                            {
+                                id = (ObjectId)s["_id"],
+                                name = (string)s["name"],
+                                depends = (ObjectId)s["country"],
+                            }),
+                    })
+                    .ToListAsync();
+
+
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+
+
+        }
     }
 }

@@ -81,6 +81,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// Get or set the forecast climate scenario entity in the database
         /// </summary>
         public ForecastScenarioFactory forecastScenario { get; set; }
+        // <summary>
+        /// Get or set the forecast climate scenario entity in the database
+        /// </summary>
+        public ForecastPhenPhaseFactory forecastPhenPhase { get; set; }
         /// <summary>
         /// Get or set the log administrative entity in the database
         /// </summary>
@@ -158,6 +162,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             forecastClimate = new ForecastClimateFactory(db);
             forecastYield = new ForecastYieldFactory(db);
             forecastScenario = new ForecastScenarioFactory(db);
+            forecastPhenPhase = new ForecastPhenPhaseFactory(db);
             user = new UserFactory(db);
             role = new RoleFactory(db);
             source = new SourceFactory(db);

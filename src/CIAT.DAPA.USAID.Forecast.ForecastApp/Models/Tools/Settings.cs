@@ -124,6 +124,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Set or get the name of the crop config file
         /// </summary>
         public string Out_CROP_CONFIG { get; set; }
-        
+        /// <summary>
+        /// Set or get the name of the phenological phase config file
+        /// </summary>
+        public string In_PATH_FS_FILE_PHENO_PHASES { get; set; }
+
     }
 }
