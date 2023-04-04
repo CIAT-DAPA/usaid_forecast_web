@@ -1,0 +1,18 @@
+[Unit]
+Description=Aclimate Angola
+ 
+[Service]
+WorkingDirectory=/var/www/docs/angola/
+ExecStart=/usr/bin/dotnet /var/www/docs/angola/CIAT.DAPA.USAID.Forecast.Web.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=aclimate-angola-identifier
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+Environment=ASPNETCORE_URLS=http://0.0.0.0:8000
+ 
+[Install]
+WantedBy=multi-user.target

@@ -17,6 +17,7 @@ using CIAT.DAPA.USAID.Forecast.Web.Models.Indicators;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
+  
     public class IndicadoresController : WebBaseController
     {
         /// <summary>
@@ -51,8 +52,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         private async Task<bool> listIndicatorsAsync()
         {
+      
             if (IndicatorRepository.GetInstance().Indicators.Count() == 0)
-                await IndicatorRepository.GetInstance().LoadAsync(hostingEnvironment.ContentRootPath + "\\Data\\indicators.csv");
+                await IndicatorRepository.GetInstance().LoadAsync(hostingEnvironment.ContentRootPath + $"{Path.DirectorySeparatorChar}Data{Path.DirectorySeparatorChar}indicators.csv");
             
             ViewBag.indicators_crops = IndicatorRepository.GetInstance()
                                     .Indicators.Select(p => new { CropID = p.CropID, Crop = p.Crop }).Distinct();

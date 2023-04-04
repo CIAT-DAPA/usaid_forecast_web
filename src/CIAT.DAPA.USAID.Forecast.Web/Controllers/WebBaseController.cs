@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
+    [ResponseCache(Duration = 60)]
     public abstract class WebBaseController : Controller
     {
         protected IHostingEnvironment hostingEnvironment { get; set; }

@@ -14,6 +14,7 @@ using System.IO;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
+    [ResponseCache(Duration = 60)]
     public class HomeController : WebBaseController
     {
         /// <summary>
@@ -26,6 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         }
 
         [Route("/")]
+        [ResponseCache(Duration = 60)]
         public async Task<IActionResult> Index()
         {
             try
