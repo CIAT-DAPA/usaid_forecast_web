@@ -14,6 +14,8 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Net;
+using Microsoft.Net.Http.Headers;
+
 
 namespace CIAT.DAPA.USAID.Forecast.Web
 {
@@ -62,7 +64,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             });
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-
+            services.AddResponseCaching();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 // Add support for finding localized views, based on file name suffix, e.g. Index.fr.cshtml
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.SubFolder);
@@ -108,7 +110,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseResponseCaching();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

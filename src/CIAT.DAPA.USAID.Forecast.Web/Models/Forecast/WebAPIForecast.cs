@@ -90,8 +90,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
             try
             {
                 WebRequest request = WebRequest.Create(path + Format);
+                //System.Diagnostics.Debug.WriteLine(request.RequestUri);
                 request.Method = "GET";
-                
+                request.Timeout = 100000;
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -107,8 +108,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
                                     DateTime.Now.ToString("ddMMyyyy HH:mm:ss") + " " + ServicePointManager.SecurityProtocol.ToString() +
                                     "1|" + ex.Message.ToString() +
                                     "2|" + ex.StackTrace.ToString() + "\n");*/
-                                    //"3|" + ex.InnerException.Message.ToString());
-                
+                //"3|" + ex.InnerException.Message.ToString());
+                //System.Diagnostics.Debug.WriteLine(ex);
                 return string.Empty;
             }
         }        
@@ -119,6 +120,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast
         /// <returns></returns>
         public async Task<IEnumerable<States>> GetGeographicAsync()
         {
+
+ 
+     
             //string json = await RequestDataAsync(Root + Geographic + Format);
             string json = await RequestDataAsync(Root + Geographic + IdCountry + "/");
             var answer = JsonConvert.DeserializeObject<IEnumerable<States>>(json);

@@ -35,7 +35,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                     "geographic", "agronomic", "climatology", "climate_historical", "climate_forecast", "yield_historical", "yield_forecast"
                 };
 
+                ViewBag.country = base.IdCountry;
                 ViewBag.Root = Root;
+
                 // Setting data
                 SetWS();
 
