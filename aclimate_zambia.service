@@ -1,14 +1,14 @@
 [Unit]
-Description=Aclimate Guatemala
+Description=Aclimate Zambia
 
 [Service]
-WorkingDirectory=/var/www/docs/guatemala/
-ExecStart=/usr/bin/dotnet /var/www/docs/guatemala/CIAT.DAPA.USAID.Forecast.Web.dll
+WorkingDirectory=/var/www/docs/zambia/
+ExecStart=/usr/bin/dotnet /var/www/docs/zambia/CIAT.DAPA.USAID.Forecast.Web.dll
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
 KillSignal=SIGINT
-SyslogIdentifier=aclimate-guatemala-identifier
+SyslogIdentifier=aclimate-zambia-identifier
 User=www-data
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
