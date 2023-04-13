@@ -451,7 +451,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
             else
                 Console.WriteLine("Folder to save the raster files doesn't exist: " + Program.settings.In_PATH_FS_RASTER_DESTINATION);
-
+            
             // Load yield data
             Console.WriteLine("Getting yield");
             Console.WriteLine(path + Program.settings.In_PATH_FS_YIELD);
@@ -515,8 +515,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             count += 1;
                         }
                     }
-                    /*
+                    
                     string phese_path = dc + Path.DirectorySeparatorChar + file_id + Program.settings.In_PATH_FS_FILE_PHENO_PHASES;
+                    Console.WriteLine("Getting Phenological phases");
+                    Console.WriteLine(phese_path);
+                    Console.WriteLine(File.Exists(phese_path));
                     if (File.Exists(phese_path))
                     {
                         Console.WriteLine("Working in " + phese_path);
@@ -534,16 +537,15 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     {
                                         phases.Add(new ImportPhenoPhase()
                                         {
-                                            weather_station = fields[6],
-                                            soil = fields[8],
-                                            cultivar = fields[7],
+                                            weather_station = fields[5],
+                                            soil = fields[7],
+                                            cultivar = fields[6],
                                             forecast = forecast.id.ToString(),
                                             name = fields[0],
                                             start_phase_date = DateTime.Parse(fields[1]),
                                             end_phase_date = DateTime.Parse(fields[2]),
-                                            start_date = DateTime.Parse(fields[4]),
-                                            end_date = DateTime.Parse(fields[5]),
-                                            diff = int.Parse(fields[3])
+                                            start_date = DateTime.Parse(fields[3]),
+                                            end_date = DateTime.Parse(fields[4]),
                                         });
                                     }
                                     catch (Exception ex3)
@@ -559,7 +561,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             }
                         }
                     }
-                    */
+                    
                 }
 
             }
@@ -618,7 +620,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
 
             // Create the records of the phenological phase in the database
-            /*
+            
             Console.WriteLine("Saving the phenological phase in the database");
             ForecastPhenPhase ph_new;
             PhaseCrop phc_entity;
@@ -657,7 +659,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 ph_new.phases_crop = phc_entities;
                 await db.forecastPhenPhase.insertAsync(ph_new);
             }
-            */
+            
 
             Console.WriteLine("Forecast imported");
             return true;

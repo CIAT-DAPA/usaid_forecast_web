@@ -88,5 +88,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                         select fy;
             return query;
         }
+
+        public async Task<IEnumerable<ForecastPhenPhase>> byIndexAsync(ObjectId forecast, ObjectId cultivar, ObjectId ws, ObjectId soil)
+        {
+            var builder = Builders<ForecastPhenPhase>.Filter;
+            var filter = builder.And(builder.Eq(x => x.forecast, forecast), builder.Eq(x => x.ws, ws), builder.Eq(x => x.soil, soil), builder.Eq(x => x.cultivar, cultivar));
+            var query = await collection.Find(filter).ToListAsync<ForecastPhenPhase>();
+            return query;
+        }
     }
 }

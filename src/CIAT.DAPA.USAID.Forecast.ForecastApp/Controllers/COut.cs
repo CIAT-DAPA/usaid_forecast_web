@@ -231,12 +231,13 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
 
                             StringBuilder crop_config = new StringBuilder();
-                            crop_config.Append("name,min,max\n");
+                            crop_config.Append("name,min,max,tag\n");
                             foreach (CropConfig c_config in cp.crop_config)
                             {
                                 crop_config.Append(c_config.label.ToString() + ",");
                                 crop_config.Append(c_config.min.ToString() + ",");
-                                crop_config.Append(c_config.max.ToString() + ",\n");
+                                crop_config.Append(c_config.max.ToString() + ",");
+                                crop_config.Append(c_config.tag.ToString() + ",\n");
                             }
                                 
                             File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_CROP_CONFIG, crop_config.ToString());
