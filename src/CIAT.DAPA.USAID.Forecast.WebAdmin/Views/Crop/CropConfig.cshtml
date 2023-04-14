@@ -49,9 +49,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="tag" class="control-label col-md-2">@Localizer["Tag"]:</label>
+                <label for="type" class="control-label col-md-2">@Localizer["Type"]:</label>
                 <div class="col-md-10">
-                    @Html.Editor("tag", null, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.Editor("type", null, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
         </fieldset>
@@ -71,7 +71,7 @@
         <th>@Localizer["Label"]</th>
         <th>@Localizer["Min"]</th>
         <th>@Localizer["Max"]</th>
-        <th>@Localizer["Tag"]</th>
+        <th>@Localizer["Type"]</th>
         <th></th>
     </tr>
 
@@ -88,7 +88,7 @@
         @item.max
     </td>
     <td>
-        @item.tag
+        @item.type
     </td>
     <td>
         @using (Html.BeginForm("CropConfigDelete", "Crop", FormMethod.Post))
@@ -98,7 +98,7 @@
             <input type="hidden" id="label" name="label" value="@item.label" />
             <input type="hidden" id="min" name="min" value="@item.min.ToString()" />
             <input type="hidden" id="max" name="max" value="@item.max.ToString()" />
-            <input type="hidden" id="tag" name="tag" value="@item.tag" />
+            <input type="hidden" id="type" name="type" value="@item.type" />
             <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
         }
     </td>

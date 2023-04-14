@@ -23,6 +23,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Upper limit
         /// </summary>
-        public string tag { get; set; }
+        public string type { get; set; }
     }
 }

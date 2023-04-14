@@ -237,7 +237,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 crop_config.Append(c_config.label.ToString() + ",");
                                 crop_config.Append(c_config.min.ToString() + ",");
                                 crop_config.Append(c_config.max.ToString() + ",");
-                                crop_config.Append(c_config.tag.ToString() + ",\n");
+                                crop_config.Append(c_config.type.ToString() + ",\n");
                             }
                                 
                             File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_CROP_CONFIG, crop_config.ToString());
@@ -286,21 +286,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 // This cicle is by every quarter of year
                 foreach (string q in Enum.GetNames(typeof(Quarter)))
                 {
-                    var conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
+                    ConfigurationCPT conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
+                    bool config_exit = conf != null;
                     // the cpt configuration 
                     header_cpt.Append(q + ",");
-                    x_m.Append((conf.x_mode.ToString() ?? string.Empty) + ",");
-                    y_m.Append(conf.y_mode.ToString() + ",");
-                    cca.Append(conf.cca_mode.ToString() + ",");
-                    gamma.Append(conf.gamma.ToString() + ",");
+                    x_m.Append(config_exit ? (conf.x_mode.ToString() ?? string.Empty) + "," : "NA,");
+                    y_m.Append(config_exit ? conf.y_mode.ToString() + "," : "NA,");
+                    cca.Append(config_exit ? conf.cca_mode.ToString() + "," : "NA,");
+                    gamma.Append(config_exit ? conf.gamma.ToString() + "," : "NA,");
                     // the regions configurations
                     header_areas.Append(q + ",");
-                    x1[0].Append(conf.regions.ElementAt(0).left_lower.lon.ToString() + ",");
-                    x2[0].Append(conf.regions.ElementAt(0).rigth_upper.lon.ToString() + ",");
-                    y1[0].Append(conf.regions.ElementAt(0).left_lower.lat.ToString() + ",");
-                    y2[0].Append(conf.regions.ElementAt(0).rigth_upper.lat.ToString() + ",");
+                    x1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lon.ToString() + "," : "NA,");
+                    x2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lon.ToString() + "," : "NA,");
+                    y1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lat.ToString() + "," : "NA,");
+                    y2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lat.ToString() + "," : "NA,");
+
+                    
                     // Second region
-                    if (conf.regions.Count() > 1)
+                    if (config_exit && conf.regions.Count() > 1)
                     {
                         x1[1].Append(conf.regions.ElementAt(1).left_lower.lon.ToString() + ",");
                         x2[1].Append(conf.regions.ElementAt(1).rigth_upper.lon.ToString() + ",");

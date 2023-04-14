@@ -377,10 +377,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 {
                     label = form["label"],
                     min = double.Parse(form["min"]),
-                    max = double.Parse(form["max"])
+                    max = double.Parse(form["max"]),
+                    type = form["type"]
                 };
                 await db.crop.addCropConfigAsync(entity_new, crop_config);
-                await writeEventAsync(id + "Crop Configuration add: " + crop_config.label + "-" + crop_config.min.ToString() + "-" + crop_config.max.ToString(), LogEvent.upd);
+                await writeEventAsync(id + "Crop Configuration add: " + crop_config.label + "-" + crop_config.min.ToString() + "-" + crop_config.max.ToString() + "-" + crop_config.type.ToString(), LogEvent.upd);
                 return RedirectToAction("CropConfig", new { id = id });
             }
             catch (Exception ex)
