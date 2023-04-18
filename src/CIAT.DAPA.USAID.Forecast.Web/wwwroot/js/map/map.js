@@ -1,4 +1,6 @@
-﻿/**
+﻿var mapOverlays;
+
+/**
   * Method that plots a map with the weather stations
   * @param {any} id id div
   * @param {any} ws list of weather stations
@@ -10,6 +12,13 @@ async function plot_map(id, ws, crops) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
+
+    //add optional layers
+    if (mapOverlays && mapOverlays.length > 0) {
+        add_map_overlays(map, mapOverlays);
+    }
+
+
     for (var i = 0; i < ws.length; ++i) {
         // Search crops with data
         var crops_ws = search_ws_crop(crops, ws[i].id);

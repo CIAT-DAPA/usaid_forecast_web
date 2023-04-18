@@ -42,14 +42,60 @@ namespace CIAT.DAPA.USAID.Forecast.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
+
+
+            var partnersSection = Configuration.GetSection("Partners");
+            var partners = new List<Dictionary<string, string>>();
+            foreach (var partnerSection in partnersSection.GetChildren())
+            {
+                var partner = new Dictionary<string, string>
+                {
+                    ["name"] = partnerSection["name"],
+                    ["link"] = partnerSection["link"],
+                    ["src"] = partnerSection["src"]
+                };
+                partners.Add(partner);
+            }
+            var mapOverlaysSection = Configuration.GetSection("MapOverLays");
+            var mapOverlays = new List<Dictionary<string, string>>();
+            foreach (var mapOverlaySection in mapOverlaysSection.GetChildren())
+            {
+                var mapOverlay = new Dictionary<string, string>
+                {
+                    ["name"] = mapOverlaySection["name"],
+                    ["src"] = mapOverlaySection["src"]
+                };
+                mapOverlays.Add(mapOverlay);
+            }
+
+
+
+
+
+
+            
+
+
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
                 options.api_fs = Configuration.GetSection("API_Forecast:api_fs").Value;
                 options.idCountry = Configuration.GetSection("API_Forecast:idCountry").Value;
+
+                options.gTag = Configuration.GetSection("SiteConfig:g-tag").Value;
+                options.countryName = Configuration.GetSection("SiteConfig:countryName").Value;
+
+                options.modules_climate = bool.Parse(Configuration.GetSection("Modules:Climate").Value);
                 options.modules_indicators = bool.Parse(Configuration.GetSection("Modules:Indicators").Value);
                 options.modules_rice = bool.Parse(Configuration.GetSection("Modules:Rice").Value);
                 options.modules_maize = bool.Parse(Configuration.GetSection("Modules:Maize").Value);
+                options.modules_expert = bool.Parse(Configuration.GetSection("Modules:Expert").Value);
+                options.modules_glossary = bool.Parse(Configuration.GetSection("Modules:Glossary").Value);
+                options.modules_about = bool.Parse(Configuration.GetSection("Modules:About").Value);
+
+                options.partners = partners;
+                options.mapOverlays = mapOverlays;
+
                 if (options.modules_indicators)
                 {
                     options.indicator_geoserver_url= Configuration.GetSection("Indicators:GeoserverUrl").Value;

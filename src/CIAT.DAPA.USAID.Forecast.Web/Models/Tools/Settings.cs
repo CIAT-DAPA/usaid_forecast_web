@@ -18,10 +18,26 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         /// Country id
         /// </summary>
         public string idCountry { get; set; }
+
+        /// <summary>
+        /// Google Analytics Tag
+        /// </summary>
+        public string gTag { get; set; }
+
+        /// <summary>
+        ///Country Folder Name for resources like images etc
+        /// </summary>
+        public string countryName { get; set; }
+
         /// <summary>
         /// Get or set if indicators module is enable
         /// </summary>
         public bool modules_indicators { get; set; }
+
+        /// <summary>
+        /// Get or set climate module is enable
+        /// </summary>
+        public bool modules_climate { get; set; }
         /// <summary>
         /// Get or set if rice module is enable
         /// </summary>
@@ -30,6 +46,31 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         /// Get or set if rice module is enable
         /// </summary>
         public bool modules_maize { get; set; }
+
+        /// <summary>
+        /// Get or set if expert module is enable
+        /// </summary>
+        public bool modules_expert { get; set; }
+        /// <summary>
+        /// Get or set if glossary module is enable
+        /// </summary>
+        public bool modules_glossary { get; set; }
+        /// <summary>
+        /// Get or set if about module is enable
+        /// </summary>
+        public bool modules_about { get; set; }
+
+        /// <summary>
+        /// Get or set partners
+        /// </summary>
+        public List<Dictionary<string, string>> partners { get; set; }
+
+
+        /// <summary>
+        /// Map overlays
+        /// </summary>
+        public List<Dictionary<string, string>> mapOverlays { get; set; }
+
         /// <summary>
         /// Get or set the geoser url
         /// </summary>

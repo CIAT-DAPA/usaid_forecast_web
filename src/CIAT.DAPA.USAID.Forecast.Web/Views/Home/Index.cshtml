@@ -1,4 +1,10 @@
-﻿@{
+﻿
+@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+@inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
+
+
+
+@{
     ViewData["Title"] = @Localizer["Title"];
     ViewData["Meta_Description"] = "Predicción y datos históricos del clima en ";
     ViewData["Meta_Keywords"] = "pronóstico,predicción,clima,precipitación,radiación solar,temperatura,temperatura máxima,temperatura mínima,histórico climático,climatología," + ViewBag.s + "," + ViewBag.m + "," + ViewBag.w;
@@ -11,7 +17,7 @@
             <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
             <p class="text-justify">
                 @Localizer["Description"]
-            </p>            
+            </p>
             <div id="map">
             </div>
         </div>
@@ -21,9 +27,14 @@
 
 @section Scripts {
     <script src="~/js/map/map.js"></script>
-    <script type="text/javascript">        
+    <script type="text/javascript" src="~/js/map/map_overlays.js"></script>
+    <script type="text/javascript">
+
         var models = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
         var crops = @Html.Raw(Json.Serialize(ViewBag.WeatherStationsCrops));
+
+        mapOverlays =  @Html.Raw(Json.Serialize( @AppSettings.Value.mapOverlays));
+
         plot_map('map', models, crops);
         window.loading_screen.finish();
     </script>

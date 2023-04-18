@@ -8,6 +8,7 @@ var geoserver_workspace;
 var scales;
 var categories_title;
 var country;
+var mapOverlays;
 
 /**
   * Method that plots a map
@@ -15,6 +16,7 @@ var country;
   * @param {any} idx position of the map list
   */
 function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [], units) {
+
     maps[idx] = L.map(id, { zoomControl: false }).setView([conf.latitude, conf.longitude], conf.zoom);
     L.control.zoom({ position: 'bottomright' }).addTo(maps[idx]);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -22,32 +24,15 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
         subdomains: ['a', 'b', 'c']
     }).addTo(maps[idx]);
 
-    var myStyle = {
-        "color": "#666666",
-        "weight": 1,
-        "fillOpacity": 0.1
-    };
 
-    $.getJSON("/country.json", function (data) {
-        L.geoJson(data, {
-            style: myStyle,
-            onEachFeature: function (feature, layer) {
-                var label = L.marker(layer.getBounds().getCenter(), {
-                    icon: L.divIcon({
-                        className: 'label',
-                        html: feature.properties.NAME_1,
-                        iconSize: [100, 40]
-                    })
-                }).addTo(maps[idx]);
-            }
-        }).addTo(maps[idx]);
-    });
-    
+    //add optional layers
+   if (mapOverlays && mapOverlays.length > 0) {
+       add_map_overlays(maps[idx], mapOverlays);
+    }
 
-    // Adding event click on map. It shows the value of each pixel
-    //maps[idx].on('click', onMapClick);
 
-    // 
+   
+
     var legend = L.control({ position: 'bottomleft' });
 
     legend.onAdd = function (map) {
@@ -55,7 +40,7 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
         div.innerHTML = '<strong>' + categories_t + ' (' + units + ')</strong><br />';
         var categories = type == 'q' ? generatePoints(min, max, 10) : categories_q;
 
-        
+
         for (var i = 0; i < categories.length; i++) {
             let next = i < categories.length - 1 ? parseInt(categories[i + 1] - 1) : parseInt(max);
             //console.log(categories_t + ' ' + parseInt(categories[i]) + ',' + next);
@@ -68,29 +53,34 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
         return div;
     };
     legend.addTo(maps[idx]);
+
+
+
+
+
 }
 
 const generatePoints = (startingNumber, endingNumber, maxPoints) => Array.from(
     { length: maxPoints },
     (_, i) => startingNumber + i * parseInt((endingNumber - startingNumber) / (maxPoints - 1))
-) 
+)
 
 /**
  * Method which loads country boundaries from geojson
- * */
+ * 
 function load_country() {
     $.getJSON("/country.json", function (data) {
         country = data;
     });
 }
-
+*/
 /**
  * Method that returns the color regarding to index and type
  * @param {any} index
  * @param {any} type
  */
 function getColor(index, type) {
-    
+
     //console.log(index + ' ' + type + ' ' + scales[type][index]);
     return scales[type][index];
 }
@@ -116,7 +106,7 @@ function onMapClick(e) {
  * @param {any} lon Longitud
  * @param {any} marker Marker in which should display the message
  */
-function searchPointData(layer, lat, lon, marker,units) {
+function searchPointData(layer, lat, lon, marker, units) {
     const parameters = {
         service: 'WMS',
         version: '1.1.1',
@@ -156,7 +146,8 @@ function plot_layer(idx, layer, time, compare) {
     var wmsLayer = L.tileLayer.wms(geoserver_url, {
         layers: geoserver_workspace + ":" + layer,
         format: 'image/png',
-        transparent: true
+        transparent: true,
+        // zIndex: 3
     }).addTo(maps[idx]);
 
     wmsLayer.setParams({ 'time': time });
@@ -166,7 +157,8 @@ function plot_layer(idx, layer, time, compare) {
         var wmsLayerCompare = L.tileLayer.wms(geoserver_url, {
             layers: geoserver_workspace + ":" + layer,
             format: 'image/png',
-            transparent: true
+            transparent: true,
+            //   zIndex:3
         }).addTo(maps[idx]);
 
         wmsLayerCompare.setParams({ 'time': compare });
@@ -201,12 +193,12 @@ function plot_layer(idx, layer, time, compare) {
  * */
 function update_maps() {
     // Get the values selected in the controls
-    var crop = $("#cbo_crop").val();    
+    var crop = $("#cbo_crop").val();
     var group = $("#cbo_group").val();
     // Filter dataset original    
     layers_selected = layers_all.filter(function (it) {
         return it.cropID == crop &&
-            it.groupID == group ;
+            it.groupID == group;
     });
     // Reload maps
     load_maps();
@@ -219,28 +211,28 @@ function update_time() {
 /**
  * Method that loads all maps from scratch
  * */
-function load_maps() {    
+function load_maps() {
     var time = $("#cbo_time").val();
     var compare = $("#cbo_compare").val();
-    var maps_section = '';    
-    layers_selected.forEach((value, idx) => { 
+    var maps_section = '';
+    layers_selected.forEach((value, idx) => {
         // Condition to validate if start the row 
         if (!(((idx + 1) % 2) == 0))
             maps_section += '<div class="row">';
         // adding a map
         maps_section += '<div class="col-md-6">' +
-                            '<h3>' + value.indicator + ' (' + value.acronym + ')</h3>' +
-                            '<p class="text-justify">' + value.description + '</p>' +
-                            '<div id="map_' + idx + '" class="map_indices"></div>' +
-                        '</div>';
+            '<h3>' + value.indicator + ' (' + value.acronym + ')</h3>' +
+            '<p class="text-justify">' + value.description + '</p>' +
+            '<div id="map_' + idx + '" class="map_indices"></div>' +
+            '</div>';
         // Condition to validate if end the row 
-        if (((idx + 1) % 2) == 0 || (idx == (layers_selected.lenght-1)))
-            maps_section +=  '</div>';
+        if (((idx + 1) % 2) == 0 || (idx == (layers_selected.lenght - 1)))
+            maps_section += '</div>';
 
     });
     // Adding HTML
     $("#maps_section").html(maps_section);
-        
+
     // Clear all maps
     maps = [];
     // Loading maps
@@ -250,7 +242,5 @@ function load_maps() {
         // Adding layer
         plot_layer(idx, value.cropID + "_" + value.indicatorID, time, compare);
     });
-    
+
 }
-
-

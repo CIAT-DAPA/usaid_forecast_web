@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿
+
+@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+@inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,13 +19,20 @@
     <!-- End SEO -->
 
     <!-- Google analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JWV52TG94E"></script>
     <script>
+
+        var gTag = '@AppSettings.Value.gTag';
+        var gScript = document.createElement('script');
+        gScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + gTag;
+        gScript.async = true;
+        document.head.appendChild(gScript);
+
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
+        gtag('config', gTag);
 
-        gtag('config', 'G-JWV52TG94E');
+
     </script>
 
     <environment include="Development">
@@ -35,7 +48,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css"
-              asp-fallback-href="~/lib/leaflet/leaflet.css"/>
+              asp-fallback-href="~/lib/leaflet/leaflet.css" />
         <link rel="stylesheet" href="~/css/vendor.min.css" asp-append-version="true">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
@@ -43,9 +56,11 @@
 
 </head>
 <body>
+
+
     <header class="header-logo">
         <h1 class="text-center">
-            <a href=""><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
+            <a href=""><img alt="logo" src="~/Environment/@AppSettings.Value.countryName/logo.png" class="text-center" /></a>
         </h1>
     </header>
     <nav class="navbar navbar-default" id="mainMenu">
@@ -71,47 +86,26 @@
         </div>
     </div>
     <footer class="footer clearfix">
-
         <div class="form-group">
-            <!--div class="col-lg-12 form-group">
-                <div  style="color:white;">
-                    <h4>@Localizer["FooterPartnersTitle"]</h4>
-                    <hr />
-                </div>
-                <section class="partners-container">
-                    <a href="https://www.cgiar.org/" target="_blank">
-                        <img class="img-rounded" src="~/images/partners/guatemala/cgiar.png" alt="CGIAR">
-                    </a>
-                   
-                    <a href="https://www.cgiar.org/news-events/news/agrilac-resiliente-una-iniciativa-del-cgiar-para-aumentar-resiliencia-sostenibilidad-y-competitividad-en-america-latina-y-el-caribe/" target="_blank">
-                        <img class="img-rounded" src="~/images/partners/guatemala/cgiar_agriLAC.png" alt="CGIAR_AGRILAC">
-                    </a>
-                   
-                    <a href="https://www.cimmyt.org/" target="_blank">
-                        <img class="img-rounded" src="~/images/partners/guatemala/cimmyt.png" alt="CIMMYT">
-                    </a>
-                    
-                    <a href="https://www.climate.columbia.edu/" target="_blank">
-                        <img class="img-rounded" src="~/images/partners/guatemala/col_climate_school.png" alt="Columbia Climate School">
-                    </a>
-                    
-                    <a href="https://insivumeh.gob.gt/" target="_blank">
-                        <img class="img-rounded" src="~/images/partners/guatemala/insivumeh.png" alt="Insivumeh">
-                    </a>
-                </section>
 
-            </div-->
-            <!--div class="col-lg-6">
-                <div class="col-lg-12" style="color:white;">
-                    <h4>@Localizer["FooterSponsorsTitle"]</h4>
-                    <hr />
+            @if (@AppSettings.Value.partners.Count > 0)
+            {
+                <div class="col-lg-12 form-group">
+                    <div  style="color:white;">
+                        <h4>@Localizer["FooterPartnersTitle"]</h4>
+                        <hr />
+                    </div>
+                    <section class="partners-container">
+                        @foreach (var partner in @AppSettings.Value.partners)
+                        {
+                            <a href="@partner["link"]" target="_blank">
+                                <img class="img-rounded" src="~/Environment/@AppSettings.Value.countryName/Partners/@partner["src"]" alt="@partner["name"]" title="@partner["name"]" />
+                            </a>
+                        }
+                    </section>
                 </div>
-                <div class="col-lg-3 col-xs-6">
-                    <center>
-                        <a href="https://www.usaid.gov/" target="_blank"><img class="img-rounded" src="~/images/partners/usaid.svg" alt="USAID" ></a>
-                    </center>
-                </div>
-            </div-->
+            }
+           
             <div class="clearfix"></div>
         </div>
         <div class="col-lg-12">
@@ -179,7 +173,7 @@
     <!-- Start Loader -->
     <script type="text/javascript">
         window.loading_screen = window.pleaseWait({
-            logo: "/images/logo.png",
+            logo: "/Environment/@AppSettings.Value.countryName/logo.png",
             backgroundColor: '#ffffff',
             loadingHtml: '<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>'
         });

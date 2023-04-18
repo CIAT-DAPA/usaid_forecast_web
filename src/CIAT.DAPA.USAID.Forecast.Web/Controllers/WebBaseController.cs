@@ -52,9 +52,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         /// </summary>
         protected void loadModules()
         {
+            ViewBag.modules_climate = Configurations.modules_climate;
             ViewBag.modules_indicators = Configurations.modules_indicators;
             ViewBag.modules_maize = Configurations.modules_maize;
             ViewBag.modules_rice = Configurations.modules_rice;
+
+            ViewBag.modules_expert = Configurations.modules_expert;
+            ViewBag.modules_glossary = Configurations.modules_glossary;
+            ViewBag.modules_about = Configurations.modules_about;
         }
 
         /// <summary>

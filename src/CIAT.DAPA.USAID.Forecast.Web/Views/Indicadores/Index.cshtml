@@ -1,4 +1,8 @@
-﻿@{
+﻿@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+@inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
+
+
+@{
     ViewData["Title"] = @Localizer["Title"];
     ViewData["Meta_Description"] = "Indicadores de riesgo agroclimático";
     ViewData["Meta_Keywords"] = "indicadores,indicadores de riesgo climático";
@@ -30,39 +34,39 @@
                 </ol>
                 Todos os indicadores agroclimáticos foram calculados para as campanhas regulares de milho
                 (setembro-abril), feijão (novembro-março), soja (outubro-abril) e café (setembro-agosto);
-                usando informações climáticas históricas para o período 1981-2020. Adicionalmente, foram 
-                considerados seis eventos El Niño (1982-1983, 1987-1988, 1991-1992, 1997-1998, 2009-2010, 
-                2015-2016) e seis eventos La Niña (1984-1985, 1988-1989, 1998-1999, 1999-2000, 2007-2008, 
-                2010-2011), a fim de caracterizar o comportamento dos diferentes indicadores nessas fases 
+                usando informações climáticas históricas para o período 1981-2020. Adicionalmente, foram
+                considerados seis eventos El Niño (1982-1983, 1987-1988, 1991-1992, 1997-1998, 2009-2010,
+                2015-2016) e seis eventos La Niña (1984-1985, 1988-1989, 1998-1999, 1999-2000, 2007-2008,
+                2010-2011), a fim de caracterizar o comportamento dos diferentes indicadores nessas fases
                 do fenômeno ENSO.
             </p>
             <div class="row">
-                    <div class="row form-group border border-dark">
-                                <label class="col-lg-1 control-label" for="cbo_crop">
-                                    @Localizer["Crop"]
-                                </label>
-                                <div class="col-lg-2">
-                                    @Html.DropDownList("cbo_crop", new SelectList(ViewBag.indicators_crops, "CropID", "Crop"), new { @class = "form-control", onchange = "update_maps()" })
-                                </div>
-                                <label class="col-lg-2 control-label" for="cbo_group">
-                                    @Localizer["Group"]
-                                </label>
-                                <div class="col-lg-2">
-                                    @Html.DropDownList("cbo_group", new SelectList(ViewBag.indicators_group, "GroupID", "Group"), new { @class = "form-control", onchange = "update_maps()" })
-                                </div>
-                                <label class="col-lg-1 control-label" for="cbo_time">
-                                    @Localizer["Time"]
-                                </label>
-                                <div class="col-lg-2">
-                                    @Html.DropDownList("cbo_time", new SelectList(ViewBag.period, "Value", "Text"), new { @class = "form-control", onchange = "update_time()" })
-                                </div>
-                                <label class="col-lg-1 control-label" for="cbo_compare">
-                                    @Localizer["Compare"]
-                                </label>
-                                <div class="col-lg-1">
-                                    @Html.DropDownList("cbo_compare", new SelectList(ViewBag.compare, "Value", "Text"), new { @class = "form-control", onchange = "update_maps()" })
-                                </div>
-                    </div>                
+                <div class="row form-group border border-dark">
+                    <label class="col-lg-1 control-label" for="cbo_crop">
+                        @Localizer["Crop"]
+                    </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("cbo_crop", new SelectList(ViewBag.indicators_crops, "CropID", "Crop"), new { @class = "form-control", onchange = "update_maps()" })
+                    </div>
+                    <label class="col-lg-2 control-label" for="cbo_group">
+                        @Localizer["Group"]
+                    </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("cbo_group", new SelectList(ViewBag.indicators_group, "GroupID", "Group"), new { @class = "form-control", onchange = "update_maps()" })
+                    </div>
+                    <label class="col-lg-1 control-label" for="cbo_time">
+                        @Localizer["Time"]
+                    </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("cbo_time", new SelectList(ViewBag.period, "Value", "Text"), new { @class = "form-control", onchange = "update_time()" })
+                    </div>
+                    <label class="col-lg-1 control-label" for="cbo_compare">
+                        @Localizer["Compare"]
+                    </label>
+                    <div class="col-lg-1">
+                        @Html.DropDownList("cbo_compare", new SelectList(ViewBag.compare, "Value", "Text"), new { @class = "form-control", onchange = "update_maps()" })
+                    </div>
+                </div>
             </div>
             <br />
             <div id="maps_section">
@@ -73,8 +77,9 @@
 </div>
 
 
-@section Scripts {    
+@section Scripts {
     <script type="text/javascript" src="~/js/map/maps_indicators.js"></script>
+    <script type="text/javascript" src="~/js/map/map_overlays.js"></script>
     <script type="text/javascript">
 
     var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
@@ -88,8 +93,9 @@
     categories_title = '@Html.Raw(Localizer["Categories"].Value.ToString())';
     geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
     geoserver_workspace = "@Html.Raw(ViewBag.geoserver_workspace)";
-    conf = { latitude: ws[0].latitude, longitude: ws[0].longitude, zoom: 5 };    
+    conf = { latitude: ws[0].latitude, longitude: ws[0].longitude, zoom: 5 };
     layers_all = @Html.Raw(Json.Serialize(ViewBag.indicators_list));
+    mapOverlays =  @Html.Raw(Json.Serialize( @AppSettings.Value.mapOverlays));
     update_maps();
     window.loading_screen.finish();
     </script>

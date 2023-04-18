@@ -11,23 +11,26 @@
         {
             <li id="menu_main_indicators"><a href="/Indicadores/"><span class="glyphicon glyphicon-signal"></span> @Localizer["Indicators"]</a></li>
         }
-        <li id="menu_main_climate" class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Weather"]<span class="caret"></span></a>
-            <ul class="dropdown-menu" aria-labelledby="drop_weather">
-                <li style="padding:5px 15px;">
-                    <b>@Localizer["Search"]</b>
-                </li>
-                <li style="padding:5px 15px;">
-                    <select id="menu_climate_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
-                        <option value=""></option>
-                        @foreach (var ws in ViewBag.WeatherStations)
-                        {
-                            <option value="Clima/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality, @ws.Name </option>
-                        }
-                    </select>
-                </li>
-            </ul>
-        </li>
+        @if (ViewBag.modules_climate)
+        {
+            <li id="menu_main_climate" class="dropdown">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Weather"]<span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="drop_weather">
+                    <li style="padding:5px 15px;">
+                        <b>@Localizer["Search"]</b>
+                    </li>
+                    <li style="padding:5px 15px;">
+                        <select id="menu_climate_cbo" name="menu_climate_cbo" class="form-control" style="width:100%;">
+                            <option value=""></option>
+                            @foreach (var ws in ViewBag.WeatherStations)
+                            {
+                                <option value="Clima/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality, @ws.Name </option>
+                            }
+                        </select>
+                    </li>
+                </ul>
+            </li>
+        }
         @if (ViewBag.modules_rice)
         {
             <li id="menu_main_rice" class="dropdown">
@@ -68,9 +71,18 @@
                 </ul>
             </li>
         }
-        <li id="menu_main_expert"><a href="/Experto/"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>
-        <li id="menu_main_glossary"><a href="/Home/Glosario/"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
-        <li id="menu_main_about"><a href="/Home/AcercaDe/"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
+        @if (ViewBag.modules_expert)
+        {
+            <li id="menu_main_expert"><a href="/Experto/"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>
+        }
+        @if (ViewBag.modules_glossary)
+        {
+            <li id="menu_main_glossary"><a href="/Home/Glosario/"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
+        }
+        @if (ViewBag.modules_about)
+        {
+            <li id="menu_main_about"><a href="/Home/AcercaDe/"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
+        }
     </ul>
     <!-- Start Help -->
     <ul class="nav navbar-nav navbar-right">
