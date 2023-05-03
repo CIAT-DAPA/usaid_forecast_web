@@ -54,9 +54,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 RepositoryForecastWeather rFW = new RepositoryForecastWeather(Root);
                 ForecastWeather forecast = await rFW.SearchAsync(ws.Id);
                 // Sending the climate data to the view
-                ViewBag.climate_data = forecast.Climate.First().Data;
+                ViewBag.climate_data = forecast.Climate.FirstOrDefault()?.Data ?? new List<ForecastClimateData>();
+
                 // Processing Scenarios data
-                List<ForecastScenario> scenario = forecast.Scenario.ToList();
+                List <ForecastScenario> scenario = forecast.Scenario.ToList();
                 var scenario_name = scenario.Select(p => p.Name).Distinct();
                 var measures = scenario.SelectMany(p => p.Monthly_Data).SelectMany(p => p.Data).Select(p => p.Measure).Distinct();
                 List<Scenario> scenario_list = new List<Scenario>();

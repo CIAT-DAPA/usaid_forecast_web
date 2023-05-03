@@ -32,6 +32,7 @@ function lines(data, control, y_axis, x_axis) {
     });
 }
 
+
 /**
  * Method that plots all lines for historical weather
  * @param {any} data

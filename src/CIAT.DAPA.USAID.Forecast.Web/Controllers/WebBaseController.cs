@@ -111,9 +111,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         protected WeatherStationFull SearchWS(string state, string municipality, string ws)
         {
-            WeatherStationFull answer = WeatherStations.SingleOrDefault(p => p.State.Equals(state) 
+            WeatherStationFull answer = WeatherStations.Where(p => p.State.Equals(state) 
                                                     && p.Municipality.Equals(municipality) 
-                                                    && p.Name.Equals(ws));
+                                                    && p.Name.Equals(ws)).FirstOrDefault();
             return answer;
 
         }

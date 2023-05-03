@@ -54,7 +54,13 @@
             }
         },
 
-
+        "Peru": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Peru"
+            }
+        },
 
         "IIS Express": {
             "commandName": "IISExpress",
