@@ -15,5 +15,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
         public List<Setup> setups { get; set; }
         public List<Soil> soils { get; set; }
         public List<Cultivar> cultivars { get; set; }
+        public List<Recommendation> recommendations { get; set; }
     }
 }

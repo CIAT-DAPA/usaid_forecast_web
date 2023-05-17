@@ -394,14 +394,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Crop/CropConfigDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CropConfigDelete(string crop, string label, double min, double max)
+        public async Task<IActionResult> CropConfigDelete(string crop, string label, double min, double max, string type)
         {
             try
             {
                 // Get original crop data
                 Crop entity_new = await db.crop.byIdAsync(crop);
                 // Delete the setup
-                await db.crop.deleteCropConfigAsync(entity_new, label, min, max);
+                await db.crop.deleteCropConfigAsync(entity_new, label, min, max, type);
                 await writeEventAsync(crop + "Configuration del: " + label + "-" + min.ToString() + "-" + max.ToString(), LogEvent.upd);
                 return RedirectToAction("CropConfig", new { id = crop });
             }

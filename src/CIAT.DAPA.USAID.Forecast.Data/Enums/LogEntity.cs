@@ -40,6 +40,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         cp_cultivar,
         /// <summary>
+        /// Recommendation table
+        /// </summary>
+        cp_recommendation,
+        /// <summary>
         /// Administrative log table
         /// </summary>
         log_administrative,

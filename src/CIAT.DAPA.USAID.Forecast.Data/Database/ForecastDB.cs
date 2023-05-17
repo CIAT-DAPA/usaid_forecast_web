@@ -118,6 +118,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public SetupFactory setup { get; set; }
         /// <summary>
+        /// Recommendations for decision making
+        /// </summary>
+        public RecommendationFactory recommendation { get; set; }
+        /// <summary>
         /// Get or set the user permission entity in the database
         /// </summary>
         public UserPermissionFactory userPermission { get; set; }
@@ -163,6 +167,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             forecastYield = new ForecastYieldFactory(db);
             forecastScenario = new ForecastScenarioFactory(db);
             forecastPhenPhase = new ForecastPhenPhaseFactory(db);
+            recommendation = new RecommendationFactory(db);
             user = new UserFactory(db);
             role = new RoleFactory(db);
             source = new SourceFactory(db);

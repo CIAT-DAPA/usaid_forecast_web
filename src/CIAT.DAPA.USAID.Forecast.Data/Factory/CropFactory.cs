@@ -118,14 +118,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="min">Minimum</param>
         /// <param name="max">Maximum</param>
         /// <returns>True if the entity is updated, false otherwise</returns>
-        public async Task<bool> deleteCropConfigAsync(Crop entity, string label, double min, double max)
+        public async Task<bool> deleteCropConfigAsync(Crop entity, string label, double min, double max, string type)
         {
             List<CropConfig> allCropConfigs = new List<CropConfig>();
             // This cicle search the range to delete
             foreach (var r in entity.crop_config)
             {
                 // If the setup is found, it will update
-                if (!( r.label.Equals(label) && r.min == min && r.max == max))
+                if (!( r.label.Equals(label) && r.min == min && r.max == max && r.type == type))
                     allCropConfigs.Add(r);
             }
             entity.crop_config = allCropConfigs;

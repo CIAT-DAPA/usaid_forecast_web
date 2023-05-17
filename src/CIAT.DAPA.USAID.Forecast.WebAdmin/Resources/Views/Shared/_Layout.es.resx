@@ -156,6 +156,9 @@
   <data name="MenuProduction" xml:space="preserve">
     <value>Producción</value>
   </data>
+  <data name="MenuRecommendation" xml:space="preserve">
+    <value>Recomendaciones</value>
+  </data>
   <data name="MenuSetups" xml:space="preserve">
     <value>Configuraciones</value>
   </data>

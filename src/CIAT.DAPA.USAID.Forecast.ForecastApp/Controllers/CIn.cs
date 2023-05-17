@@ -480,28 +480,42 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 var fields = line.Split(Program.settings.splitted);
                                 try
                                 {
-                                    yields.Add(new ImportYield()
+                                    bool exceptions = true;
+                                    foreach(string file_check in fields)
                                     {
-                                        weather_station = fields[0],
-                                        soil = fields[1],
-                                        cultivar = fields[2],
-                                        start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
-                                        end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
-                                        measure = fields[5],
-                                        avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
-                                        median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),
-                                        min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
-                                        max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
-                                        quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
-                                        quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
-                                        quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
-                                        conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
-                                        conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
-                                        sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
-                                        perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
-                                        perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
-                                        coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
-                                    });
+                                        if(file_check.ToLower().Equals("na") || file_check.ToLower().Equals("inf") || file_check.ToLower().Equals("-Inf"))
+                                        {
+                                            exceptions = false;
+                                            break;
+
+                                        }
+                                    }
+                                    if (exceptions)
+                                    {
+                                        yields.Add(new ImportYield()
+                                        {
+                                            weather_station = fields[0],
+                                            soil = fields[1],
+                                            cultivar = fields[2],
+                                            start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
+                                            end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
+                                            measure = fields[5],
+                                            avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
+                                            median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),
+                                            min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
+                                            max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
+                                            quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
+                                            quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
+                                            quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
+                                            conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
+                                            conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
+                                            sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
+                                            perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
+                                            perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
+                                            coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
+                                        });
+                                    }
+                                    
                                 }
                                 catch (Exception ex2)
                                 {
@@ -535,18 +549,32 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                     var fields = line.Split(Program.settings.splitted);
                                     try
                                     {
-                                        phases.Add(new ImportPhenoPhase()
+                                        bool exceptions = true;
+                                        foreach (string file_check in fields)
                                         {
-                                            weather_station = fields[5],
-                                            soil = fields[7],
-                                            cultivar = fields[6],
-                                            forecast = forecast.id.ToString(),
-                                            name = fields[0],
-                                            start_phase_date = DateTime.Parse(fields[1]),
-                                            end_phase_date = DateTime.Parse(fields[2]),
-                                            start_date = DateTime.Parse(fields[3]),
-                                            end_date = DateTime.Parse(fields[4]),
-                                        });
+                                            if (file_check.ToLower().Equals("na") || file_check.ToLower().Equals("inf") || file_check.ToLower().Equals("-Inf"))
+                                            {
+                                                exceptions = false;
+                                                break;
+
+                                            }
+                                        }
+                                        if (exceptions)
+                                        {
+                                            phases.Add(new ImportPhenoPhase()
+                                            {
+                                                weather_station = fields[5],
+                                                soil = fields[7],
+                                                cultivar = fields[6],
+                                                forecast = forecast.id.ToString(),
+                                                name = fields[0],
+                                                start_phase_date = DateTime.Parse(fields[1]),
+                                                end_phase_date = DateTime.Parse(fields[2]),
+                                                start_date = DateTime.Parse(fields[3]),
+                                                end_date = DateTime.Parse(fields[4]),
+                                            });
+                                        }
+                                        
                                     }
                                     catch (Exception ex3)
                                     {

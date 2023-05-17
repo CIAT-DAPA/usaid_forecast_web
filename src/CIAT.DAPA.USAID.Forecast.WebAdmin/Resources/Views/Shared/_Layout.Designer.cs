@@ -178,6 +178,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recommendations.
+        /// </summary>
+        public static string MenuRecommendation {
+            get {
+                return ResourceManager.GetString("MenuRecommendation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setups.
         /// </summary>
         public static string MenuSetups {

@@ -12,6 +12,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities
         public string cultivar { get; set; }
         public string soil { get; set; }
         public DateTime date { get; set; }
+        public DateTime end_date { get; set; }
         public YieldData yield { get; set; }
     }
 }

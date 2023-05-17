@@ -34,6 +34,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Upper tertile of normality of precipitation
         /// </summary>
-        prec_ter_2
+        prec_ter_2,
+
+
+
     }
 }

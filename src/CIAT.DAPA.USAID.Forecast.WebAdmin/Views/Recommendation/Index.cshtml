@@ -1,0 +1,63 @@
+﻿@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.Recommendation>
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink(Localizer["New"].Value, "Create")
+</p>
+
+<p>
+    <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
+</p>
+<table class="table" id="index_list">
+    <tr>
+        <th>
+            @Localizer["Country"]
+        </th>
+        <th>
+            @Localizer["Enum"]
+        </th>
+        <th>
+            @Localizer["Type"]
+        </th>
+        <th>
+            @Localizer["Response"]
+        </th>
+        <th></th>
+    </tr>
+    @foreach (Recommendation item in Model)
+    {
+<tr>
+    <td>
+        @{ Country cty = ((List<Country>)ViewBag.countries).FirstOrDefault(p => p.id == item.country); }
+        @cty.name
+    </td>
+    <td>
+        @{ string enm = ((List<string>)ViewBag.enums).FirstOrDefault(p => p == item.type_enum); }
+        @enm
+    </td>
+    <td>
+        @{ var t_reps = ((List<string>)ViewBag.type_resp).FirstOrDefault(p => p == item.type_resp); }
+        @t_reps
+    </td>
+    <td>
+        @{ string resp = (item.resp.Length > 15 ? item.resp.Substring(0, 15) : item.resp); }
+        @resp
+    </td>
+    <td>
+        @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
+        @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id })
+    </td>
+</tr>
+    }
+</table>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}

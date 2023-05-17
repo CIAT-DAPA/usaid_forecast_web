@@ -10,7 +10,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities
     {
         public string ws_id { get; set; }
         public string ws_name { get; set; }
-        public RecommendationType type { get; set; }
+        public string type { get; set; }
         public List<RecommendationKey> keys { get; set; }
         public string content { get; set; }
         public override string ToString()
