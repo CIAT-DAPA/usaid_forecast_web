@@ -21,18 +21,37 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      PROYECT_NAME: CIAT.DAPA.USAID.Forecast
+
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 2.2.X
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: Create Output Directory WebAdmin
+      run: mkdir -p ./publish/WebAdmin
+    - name: Create Output Directory WebApi
+      run: mkdir -p ./publish/WebApi
+    - name: Create Output test Directory WebAdmin
+      run: mkdir -p ./TestResults/WebAdmin
+    - name: Create Output test Directory WebApi
+      run: mkdir -p ./TestResults/WebAPI
+
+    - name: Build WebAdmin
+      run: dotnet build src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release
+
+    - name: Test WebAdmin
+      run: dotnet test src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release --logger trx --results-directory TestResults/WebAdmin
+
+    - name: Build WebApi
+      run: dotnet build src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAdmin.csproj --configuration Release
+
+    - name: Test WebApi
+      run: dotnet test src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAdmin.csproj --configuration Release --logger trx --results-directory TestResults/WebAPI
+
 
 
 # ------- END API PROCCESS -------- #    
@@ -73,15 +92,38 @@ jobs:
     - uses: actions/setup-node@v3
       with:
           node-version: 18
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 2.2.X
+
+    #Publish WebAdmin
+    - name: Publish $PROJECT_NAME
+      run: dotnet publish src/$PROJECT_NAME/$PROJECT_NAME.WebAdmin.csproj --configuration Release --output ./publish/WebAdmin --overwrite
+    #Publish WebApi
+    - name: Publish $PROJECT_NAME
+      run: dotnet publish src/$PROJECT_NAME/$PROJECT_NAME.WebApi.csproj --configuration Release --output ./publish/WebApi --overwrite
+
     # API Zip
     - name: Zip artifact for deployment
-      run: zip releaseApi.zip ./src/* -r
+      run: zip releaseApi.zip ./publish/WebApi/ -r
+    # Admin Zip
+    - name: Zip artifact for deployment
+      run: zip releaseAdmin.zip ./publish/WebAdmin/ -r
+
+
     # Upload Artifacts
     - name: Upload Api artifact for deployment job
       uses: actions/upload-artifact@v3
       with:
         name: WebApi
         path: releaseApi.zip
+    - name: Upload Admin artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: WebAdmin
+        path: releaseAdmin.zip
+
     # Generate Tagname
     - name: Generate Tagname for release
       id: taggerDryRun
@@ -93,6 +135,7 @@ jobs:
         DEFAULT_BUMP: patch
         RELEASE_BRANCHES : stage,master
         BRANCH_HISTORY: last
+
     # Create release
     - name: Create Release
       id: create_release
@@ -106,6 +149,7 @@ jobs:
         body: ${{ github.event.head_commit.message }}
         draft: false
         prerelease: false
+
     # Upload Assets to release
     - name: Upload Release Asset API
       id: upload-api-release-asset 
@@ -116,6 +160,16 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ./releaseApi.zip
         asset_name: releaseApi.zip
+        asset_content_type: application/zip
+    - name: Upload Release Asset Admin
+      id: upload-api-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./releaseAdmin.zip
+        asset_name: releaseAdmin.zip
         asset_content_type: application/zip
 
 # ------- END RELEASE PROCCESS -------- #
