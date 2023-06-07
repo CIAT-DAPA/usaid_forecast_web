@@ -70,6 +70,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Home {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select a country to continue.
+        /// </summary>
+        public static string ModalTitle {
+            get {
+                return ResourceManager.GetString("ModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Areas of agroclimatic forecasts.
         /// </summary>
         public static string Title {

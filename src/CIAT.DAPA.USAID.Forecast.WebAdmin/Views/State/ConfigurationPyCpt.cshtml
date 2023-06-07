@@ -1,0 +1,35 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.State
+@using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
+@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (ViewBag.message != null)
+{
+    @if (ViewBag.message.type == MessageType.error)
+    {
+        <p class="bg-danger">@ViewBag.message.content</p>
+    }
+    else
+    {
+        <p class="bg-success">@ViewBag.message.content</p>
+    }
+}
+
+@{await Html.RenderPartialAsync("_PyCPTCreate", (Model.id.ToString(), "State"));}
+
+@{await Html.RenderPartialAsync("_PyCPTList", (Model.id.ToString(), Model.conf_pycpt, (string[])ViewBag.months, "State"));}
+
+<p>
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
+</p>
+
+@section Scripts {
+    <script src="~/js/configuration.js"></script>
+}

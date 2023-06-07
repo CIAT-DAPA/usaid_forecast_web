@@ -1,0 +1,114 @@
+﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.CropConfig>
+@using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h4>@ViewBag.cp_name</h4>
+
+@if (ViewBag.message != null)
+{
+    @if (ViewBag.message.type == MessageType.error)
+    {
+        <p class="bg-danger">@ViewBag.message.content</p>
+    }
+    else
+    {
+        <p class="bg-success">@ViewBag.message.content</p>
+    }
+}
+
+@using (Html.BeginForm("CropConfig", "Crop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" id="id" name="id" value="@ViewBag.cp_id" />
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>@Localizer["Title"]</legend>
+            <div class="form-group">
+                <label for="label" class="control-label col-md-2">@Localizer["Label"]:</label>
+                <div class="col-md-10">
+                    @Html.Editor("label", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="min" class="control-label col-md-2">@Localizer["Min"]:</label>
+                <div class="col-md-10">
+                    @Html.Editor("min", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="max" class="control-label col-md-2">@Localizer["Max"]:</label>
+                <div class="col-md-10">
+                    @Html.Editor("max", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type" class="control-label col-md-2">@Localizer["Type"]:</label>
+                <div class="col-md-10">
+                    @Html.Editor("type", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.cp_id })
+</div>
+<h3>@Localizer["CropConfigs"]</h3>
+<table class="table">
+    <tr>
+        <th>@Localizer["Label"]</th>
+        <th>@Localizer["Min"]</th>
+        <th>@Localizer["Max"]</th>
+        <th>@Localizer["Type"]</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @item.label
+    </td>
+    <td>
+        @item.min
+    </td>
+    <td>
+        @item.max
+    </td>
+    <td>
+        @item.type
+    </td>
+    <td>
+        @using (Html.BeginForm("CropConfigDelete", "Crop", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="crop" name="crop" value="@ViewBag.cp_id" />
+            <input type="hidden" id="label" name="label" value="@item.label" />
+            <input type="hidden" id="min" name="min" value="@item.min.ToString()" />
+            <input type="hidden" id="max" name="max" value="@item.max.ToString()" />
+            <input type="hidden" id="type" name="type" value="@item.type" />
+            <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
+        }
+    </td>
+</tr>
+    }
+</table>
+<div>
+    @Html.ActionLink(Localizer["Back"].Value, "Details", new { id = ViewBag.cp_id })
+</div>
+
+@section Scripts {
+
+}

@@ -27,6 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Name of directory to export the configuration files of weather stations
         /// </summary>
         public string Out_PATH_WS_FILES { get; set; }
+        public string Out_PATH_WSPYCPT_FILES { get; set; }
         /// <summary>
         /// Name of directory to export the setup for the yield forecast
         /// </summary>
@@ -59,6 +60,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// File's name of the forecast probabilities
         /// </summary>
         public string In_PATH_FS_FILE_PROBABILITY { get; set; }
+        /// <summary>
+        /// File's name of the forecast probabilities for subseasonal
+        /// </summary>
+        public string In_PATH_FS_FILE_SUBSEASONAL { get; set; }
         /// <summary>
         /// File's name of the performance probabilities
         /// </summary>
@@ -103,5 +108,26 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Set or get if it should add one day for crop forecast
         /// </summary>
         public bool Add_Day { get; set; }
+        /// <summary>
+        /// Set or get the path where the configuration folder of webadmin is
+        /// </summary>
+        public string In_PATH_D_WEBADMIN_CONFIGURATION { get; set; }
+        /// <summary>
+        /// Set or get the default value of sowing days
+        /// </summary>
+        public int SOWING_DAYS { get; set; }
+        /// <summary>
+        /// Set or get the name of the window config file
+        /// </summary>
+        public string Out_WINDOW_CONFIG { get; set; }
+        /// <summary>
+        /// Set or get the name of the crop config file
+        /// </summary>
+        public string Out_CROP_CONFIG { get; set; }
+        /// <summary>
+        /// Set or get the name of the phenological phase config file
+        /// </summary>
+        public string In_PATH_FS_FILE_PHENO_PHASES { get; set; }
+
     }
 }

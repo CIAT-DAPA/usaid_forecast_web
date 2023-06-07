@@ -38,9 +38,19 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public int order { get; set; }
         /// <summary>
+        /// List of soil thresholds
+        /// </summary>    
+        public IEnumerable<Threshold> threshold { get; set; }
+        /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
+        /// <summary>
+        /// Country in which is located this soil
+        /// </summary>
+        [Display(Name = "País"), Required(ErrorMessage = "Es obligatorio indicar el país")]
+        [BsonRequired]
+        public ObjectId country { get; set; }
     }
 }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="bio_acu_Description" xml:space="preserve">
-    <value>Cantidad de peso acumulado por todos los organos de la planta</value>
+    <value>Cantidad de peso acumulado por todos los órganos de la planta</value>
   </data>
   <data name="bio_acu_Title" xml:space="preserve">
     <value>Bíomasa acumulada</value>

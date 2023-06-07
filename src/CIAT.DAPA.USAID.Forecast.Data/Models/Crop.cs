@@ -29,9 +29,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public Track track { get; set; }
         /// <summary>
-        /// Shows the trace of the changes that occurred in the entity
+        /// List of Crop Config
         /// </summary>
-        [BsonRequired]
-        public IEnumerable<Setup> setup{ get; set; }
+        public IEnumerable<CropConfig> crop_config { get; set; }
     }
 }

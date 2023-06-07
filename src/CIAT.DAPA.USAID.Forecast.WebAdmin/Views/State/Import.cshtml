@@ -1,5 +1,7 @@
 ﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.State
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
+@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
 
 @{
     ViewBag.Title = Localizer["Title"];
@@ -25,19 +27,12 @@
     }
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.country.name)
+            @Html.DisplayNameFor(model => model.country)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.country.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.country.iso2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.country.iso2)
+            @{ var s = ((List<Country>)ViewBag.countries).FirstOrDefault(p => p.id == @Model.country); }
+            @s.name
         </dd>
 
         <dt>

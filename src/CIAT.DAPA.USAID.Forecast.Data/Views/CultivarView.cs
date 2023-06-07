@@ -11,5 +11,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Views
         public string name { get; set; }
         public bool rainfed { get; set; }
         public bool national { get; set; }
+        public string country_id { get; set; }
     }
 }

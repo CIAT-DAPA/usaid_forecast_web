@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MongoDB.Bson;
+using CIAT.DAPA.USAID.Forecast.Data.Database;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -332,7 +334,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
                 ViewBag.Role = Role.ROLES_PLATFORM.Select(x => new SelectListItem { Text = x.ToUpper(), Value = x.ToUpper() }).ToList();
-                return View(new UserEditViewModel() { Email = entity.Email, Role = entity.Roles, LockoutEnabled = entity.LockoutEnabled });
+                ViewBag.ListCountries = (await db.country.listEnableAsync()).Select(p=> new SelectListItem { Text = p.name, Value = p.id.ToString() });
+                UserPermission permission = await db.userPermission.byUserAsync(entity.Email);
+                List<string> countries = permission == null ? new List<string>() : permission.countries.Select(p => p.ToString()).ToList();
+                //return View(new UserEditViewModel() { Email = entity.Email, Role = entity.Roles, LockoutEnabled = entity.LockoutEnabled, Countries = countries  });
+                return View(new UserEditViewModel() { Email = entity.Email, LockoutEnabled = entity.LockoutEnabled, Countries = countries });
             }
             catch (Exception ex)
             {
@@ -354,9 +360,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 {
                     //User current = await db.user.byIdAsync(model.Email);
                     //User newEntity = await db.user.byIdAsync(model.Email);
-
                     User current = await managerUser.FindByEmailAsync(model.Email); 
-                    foreach(var r in Role.ROLES_PLATFORM)
+                    /*foreach(var r in Role.ROLES_PLATFORM)
                     {
                         if(current.Roles.Contains(r) && !model.Role.Contains(r))
                             await managerUser.RemoveFromRoleAsync(current, r);
@@ -365,6 +370,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     {
                         if (!current.Roles.Contains(r))
                             await managerUser.AddToRoleAsync(current, r);
+                    }*/
+                    List<ObjectId> countries = new List<ObjectId>();
+                    foreach (var c in model.Countries)
+                        countries.Add(ForecastDB.parseId(c));
+                    UserPermission permission = await db.userPermission.byUserAsync(current.Email);
+                    if(permission == null)
+                    {
+                        permission = new UserPermission() { countries = countries, user = current.Email };
+                        await db.userPermission.insertAsync(permission);
+                    }
+                    else
+                    {
+                        UserPermission new_permission = await db.userPermission.byUserAsync(current.Email);
+                        new_permission.countries = countries;
+                        await db.userPermission.updateAsync(permission, new_permission);
                     }
                     //await db.user.updateAsync(current, newEntity);
                     await writeEventAsync("Update the user: " + model.Email, LogEvent.upd);

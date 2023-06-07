@@ -81,5 +81,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var results = await collection.Find(filter).ToListAsync<Municipality>();
             return results.FirstOrDefault();
         }
+
+        public async Task<List<Municipality>> listAllAsync()
+        {
+            return await collection.Find("{}").ToListAsync<Municipality>();
+        }
     }
 }

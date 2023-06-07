@@ -1,4 +1,10 @@
 ﻿function change_searchbox(placeholder) {
+    var menu_country_cbo = $('#menu_country_cbo').select2({ placeholder: placeholder });
+    menu_country_cbo.on("change", function (e) {
+        var re = /^https?:\/\/[^/]+/;
+        window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_country_cbo').val();
+    });
+
     var menu_climate_cbo = $('#menu_climate_cbo').select2({ placeholder: placeholder });
     menu_climate_cbo.on("change", function (e) {
         var re = /^https?:\/\/[^/]+/;

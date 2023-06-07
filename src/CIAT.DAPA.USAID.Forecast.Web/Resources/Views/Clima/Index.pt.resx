@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ClimatologyContentEnd" xml:space="preserve">
+    <value>nos diz que</value>
+  </data>
+  <data name="ClimatologyContentStart" xml:space="preserve">
+    <value>O clima para</value>
+  </data>
+  <data name="ClimatologyContentWS" xml:space="preserve">
+    <value>na estação meteorológica</value>
+  </data>
+  <data name="ClimatologyDescriptionEnd" xml:space="preserve">
+    <value>média dos últimos 30 anos para cada mês</value>
+  </data>
+  <data name="ClimatologyDescriptionStart" xml:space="preserve">
+    <value>Este gráfico mostra</value>
+  </data>
+  <data name="ClimatologyIndicatorHighest" xml:space="preserve">
+    <value>O mês com o maior valor é</value>
+  </data>
+  <data name="ClimatologyIndicatorLowest" xml:space="preserve">
+    <value>O mês com o menor valor é</value>
+  </data>
+  <data name="ClimatologyTitle" xml:space="preserve">
+    <value>média histórica mensal de</value>
+  </data>
+  <data name="ClimatologyXAxis" xml:space="preserve">
+    <value>Mês</value>
+  </data>
+  <data name="ForecastAbove" xml:space="preserve">
+    <value>acima do normal</value>
+  </data>
+  <data name="ForecastBelow" xml:space="preserve">
+    <value>abaixo do normal</value>
+  </data>
+  <data name="ForecastExplanation" xml:space="preserve">
+    <value>A previsão do clima é dada como uma porcentagem de probabilidade em relação à faixa normal de precipitação para uma área e um trimestre específico. Na parte inferior, você poderá encontrar a categoria mais provável para o município selecionado e o trimestre previsto.</value>
+  </data>
+  <data name="ForecastMunicipality" xml:space="preserve">
+    <value>A previsão do tempo é apresentada para a cidade de</value>
+  </data>
+  <data name="ForecastNormal" xml:space="preserve">
+    <value>dentro do normal</value>
+  </data>
+  <data name="ForecastPeriod" xml:space="preserve">
+    <value>para o período entre</value>
+  </data>
+  <data name="ForecastProbabilitiesTitle" xml:space="preserve">
+    <value>Possibilidade de precipitação (%)</value>
+  </data>
+  <data name="ForecastScenarioAvg" xml:space="preserve">
+    <value>Média</value>
+  </data>
+  <data name="ForecastScenarioDate" xml:space="preserve">
+    <value>Encontro</value>
+  </data>
+  <data name="ForecastScenarioMaximun" xml:space="preserve">
+    <value>Máximo</value>
+  </data>
+  <data name="ForecastScenarioMinimun" xml:space="preserve">
+    <value>Mínimo</value>
+  </data>
+  <data name="ForecastScenarioTitle" xml:space="preserve">
+    <value>Cenários de previsão</value>
+  </data>
+  <data name="ForecastSummaryMonth" xml:space="preserve">
+    <value>para o trimestre</value>
+  </data>
+  <data name="ForecastSummaryNormal" xml:space="preserve">
+    <value>Normalmente, há precipitação entre</value>
+  </data>
+  <data name="ForecastSummaryResult" xml:space="preserve">
+    <value>previsão do clima sugere que a precipitação é mais provável</value>
+  </data>
+  <data name="ForecastSummaryWS" xml:space="preserve">
+    <value>no município de</value>
+  </data>
+  <data name="ForecastTitle" xml:space="preserve">
+    <value>Previsão do clima</value>
+  </data>
+  <data name="ForecastWS" xml:space="preserve">
+    <value>A estação meteorológica de referência para fazer essas previsões foi</value>
+  </data>
+  <data name="ForecastWSProvider" xml:space="preserve">
+    <value>fornecido por ele</value>
+  </data>
+  <data name="HistoricalContentEnd" xml:space="preserve">
+    <value>apresenta o seguinte comportamento</value>
+  </data>
+  <data name="HistoricalContentMid" xml:space="preserve">
+    <value>na estação meteorológica</value>
+  </data>
+  <data name="HistoricalContentStart" xml:space="preserve">
+    <value>Historicamente no município de</value>
+  </data>
+  <data name="HistoricalDescriptionEnd" xml:space="preserve">
+    <value>Você pode filtrar o mês de interesse clicando na categoria</value>
+  </data>
+  <data name="HistoricalDescriptionStart" xml:space="preserve">
+    <value>Este gráfico mostra os valores históricos de</value>
+  </data>
+  <data name="HistoricalPlotXAxis" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="HistoricalTitle" xml:space="preserve">
+    <value>Comportamento histórico mensal de</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>Janeiro,Fevereiro,Março,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro</value>
+  </data>
+  <data name="prec" xml:space="preserve">
+    <value>Precipitação</value>
+  </data>
+  <data name="prec_unit" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="sol_rad" xml:space="preserve">
+    <value>Radiação solar</value>
+  </data>
+  <data name="sol_rad_unit" xml:space="preserve">
+    <value>MJ/m²d</value>
+  </data>
+  <data name="t" xml:space="preserve">
+    <value>Temperaturas máximas e mínimas</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Clima</value>
+  </data>
+  <data name="t_max" xml:space="preserve">
+    <value>Temperatura máxima</value>
+  </data>
+  <data name="t_max_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="t_min" xml:space="preserve">
+    <value>Temperatura mínima</value>
+  </data>
+  <data name="t_min_unit" xml:space="preserve">
+    <value>°C</value>
+  </data>
+</root>

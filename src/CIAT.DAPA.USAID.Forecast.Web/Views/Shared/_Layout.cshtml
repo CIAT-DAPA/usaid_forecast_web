@@ -35,7 +35,7 @@
 <body>
     <header class="header-logo">
         <h1 class="text-center">
-            <a href="http://www.aclimatecolombia.org"><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
+            <a href=""><img alt="logo" src="~/images/logo.png" class="text-center" /></a>
         </h1>
     </header>
     <nav class="navbar navbar-default" id="mainMenu">
@@ -131,9 +131,11 @@
         <script src="~/lib/nvd3/nv.d3.min.js"></script>
         <script src="~/lib/select2/js/select2.full.min.js"></script>
         <script src="~/lib/leaflet/leaflet.js"></script>
+        <script src="~/lib/axios/axios.min.js"></script>
         <script src="~/lib/please-wait/build/please-wait.js"></script>
         <script src="~/js/tools/tools.js"></script>
         <script src="~/js/tools/menu.js"></script>
+        <script src="~/js/lib/leaflet-side-by-side.min.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"
@@ -150,6 +152,10 @@
                 asp-fallback-src="~/lib/leaflet/leaflet.js"
                 crossorigin="anonymous">
         </script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"
+                asp-fallback-src="~/lib/axios/axios.min.js"
+                crossorigin="anonymous">
+        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"
                 asp-fallback-src="~/lib/d3/d3.min.js"
                 crossorigin="anonymous">
@@ -158,7 +164,7 @@
         <script src="~/js/site.min.js"></script>
     </environment>
 
-    <!-- Start Loader -->    
+    <!-- Start Loader -->
     <script type="text/javascript">
         window.loading_screen = window.pleaseWait({
             logo: "/images/logo.png",
@@ -167,7 +173,7 @@
         });
     </script>
     <!-- Start Loader -->
-    
+
     @RenderSection("Scripts", required: false)
 
     <script type="text/javascript">

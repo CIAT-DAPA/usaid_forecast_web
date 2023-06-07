@@ -3,6 +3,7 @@ using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             db = new ForecastDB(Program.settings.ConnectionString, Program.settings.Database);
         }
 
-        public async Task<bool> importForecastAsync(string path, double cf)
+        public async Task<bool> importForecastAsync(string path, double cf, string forecast_id = "")
         {
             StreamReader file;
             string line;
@@ -35,15 +36,36 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             var states = await db.state.listEnableAsync();
             foreach (var s in states)
                 climate_conf.Add(new ClimateConfiguration() { state = s.id, conf = s.conf.ToList().Where(p => p.track.enable) });
-            // Create a forecast            
-            var forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
+            // Create a forecast or search forecast depends of the parameter forecast_id
+            Data.Models.Forecast forecast = new Data.Models.Forecast();
+            
+            if(forecast_id != "")
             {
-                start = DateTime.Now,
-                end = DateTime.Now,
-                confidence = cf,
-                climate_conf = climate_conf
-            });
+                Console.WriteLine("Search forecast ");
+                forecast = await db.forecast.byIdAsync(forecast_id);
+                if(forecast == null)
+                {
+                    Console.WriteLine("Forecast not Found");
+                    Console.WriteLine("Check forecast Id");
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Created forecast ");
+                forecast = await db.forecast.insertAsync(new Data.Models.Forecast()
+                {
+                    start = DateTime.Now,
+                    end = DateTime.Now,
+                    confidence = cf,
+                    climate_conf = climate_conf
+                });
+            }
+            
             Console.WriteLine("Created forecast " + forecast.id.ToString());
+            if (File.Exists(path + "forecast.csv"))
+                File.Delete(path + "forecast.csv");
+            File.WriteAllText(path + "forecast.csv", "forecast_id" + "\n" + forecast.id.ToString());
             // Load probabilities
             Console.WriteLine("Getting probabilities and performance");
             Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
@@ -70,7 +92,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             {
                                 year = int.Parse(fields[0]),
                                 month = int.Parse(fields[1]),
-                                ws = fields[2],
+                                ws = fields[2].Replace("\"", ""),
                                 below = double.Parse(fields[3]),
                                 normal = double.Parse(fields[4]),
                                 above = double.Parse(fields[5])
@@ -82,15 +104,19 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
             else
                 Console.WriteLine("Probabilities not found");
-            // Get the performance metrics file
-            List<ImportPerformance> performances = new List<ImportPerformance>();
-            string fpe = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
-            if (!string.IsNullOrEmpty(fpe))
+            // Load subseasonal
+            Console.WriteLine("Getting subseasonal");
+            //Console.WriteLine(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
+            //var f_subseasonal = Directory.EnumerateFiles(path + Program.settings.In_PATH_FS_CLIMATE + Path.DirectorySeparatorChar + Program.settings.In_PATH_FS_PROBABILITIES);
+            // Get the probabilities file
+            List<ImportSubseasonal> subseasonal = new List<ImportSubseasonal>();
+            string fsub = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_SUBSEASONAL));
+            if (!string.IsNullOrEmpty(fsub))
             {
-                Console.WriteLine("Processing: performance");
-                Console.WriteLine(fpe);
+                Console.WriteLine("Processing: subseasonal");
+                Console.WriteLine(fsub);
                 // Reading the file
-                using (file = File.OpenText(fpe))
+                using (file = File.OpenText(fsub))
                 {
                     int count = 0;
                     while ((line = file.ReadLine()) != null)
@@ -100,15 +126,78 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             // Get the probabilities from the file in a temp memmory
                             var fields = line.Split(Program.settings.splitted);
-                            performances.Add(new ImportPerformance()
+                            
+                            subseasonal.Add(new ImportSubseasonal()
                             {
                                 year = int.Parse(fields[0]),
-                                month = int.Parse(fields[1]),
-                                ws = fields[2],
-                                pearson = double.Parse(fields[3]),
-                                kendall = double.Parse(fields[4]),
-                                goodness = double.Parse(fields[5])
+                                week = int.Parse(fields[1]),
+                                month = int.Parse(fields[2]),
+                                ws = fields[3].Replace("\"", ""),
+                                below = double.Parse(fields[4]),
+                                normal = double.Parse(fields[5]),
+                                above = double.Parse(fields[6])
                             });
+                        }
+                        count += 1;
+                    }
+                }
+            }
+            else
+                Console.WriteLine("Subseasonal not found");
+            // Get the performance metrics file
+            List<ImportPerformance> performances = new List<ImportPerformance>();
+            List<string> tittles = new List<string>();
+            string fpe = f_probabilities.SingleOrDefault(p => p.Contains(Program.settings.In_PATH_FS_FILE_PERFORMANCE));
+            Console.WriteLine("Search forecast ");
+            if (!string.IsNullOrEmpty(fpe))
+            {
+                Console.WriteLine("Processing: performance");
+                Console.WriteLine(fpe);
+                // Reading the file
+                using (file = File.OpenText(fpe))
+                {
+                    int count = 0;
+                    
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        // Omitted the file's header
+                        if (count != 0 && !string.IsNullOrEmpty(line))
+                        {
+                            // Get the probabilities from the file in a temp memmory
+                            var fields = line.Split(Program.settings.splitted);
+                            ImportPerformance import_performance = new ImportPerformance();
+                            int count_tittle = 0;
+                            // Create ImportPerformance dynamically depending on the measures in the metrics csv columns
+                            foreach (var data in fields)
+                            {
+                                if (tittles[count_tittle] != "id")
+                                {
+                                    if (tittles[count_tittle] == "year" || tittles[count_tittle] == "month")
+                                    {
+                                        import_performance.GetType().GetProperty(tittles[count_tittle]).SetValue(import_performance, int.Parse(data), null);
+                                    }
+                                    else
+                                    {
+                                        import_performance.GetType().GetProperty(tittles[count_tittle]).SetValue(import_performance, double.Parse(data), null);
+                                    }
+
+                                }
+                                else
+                                {
+                                    string replace = data.Replace("\"", "");
+                                    import_performance.GetType().GetProperty("ws").SetValue(import_performance, replace.Replace("\'", ""), null);
+                                }
+
+                                count_tittle += 1;
+                            }
+                            performances.Add(import_performance);
+                        }
+                        else if (count == 0 && !string.IsNullOrEmpty(line))
+                        {
+                            foreach (string tittle in line.Split(Program.settings.splitted))
+                            {
+                                tittles.Add(tittle.Replace("\"", ""));
+                            }
                         }
                         count += 1;
                     }
@@ -122,9 +211,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             {
                 // Casting the metrics
                 List<PerformanceMetric> metrics = new List<PerformanceMetric>();
+                // Import performances only if the mesuare is contained in the names of the csv columns
                 foreach (var m in Enum.GetValues(typeof(MeasurePerformance)).Cast<MeasurePerformance>())
                 {
-                    if (m == MeasurePerformance.goodness)
+                    if (m == MeasurePerformance.goodness && tittles.Contains("goodness"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -132,7 +222,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.goodness
                         }).ToList());
-                    else if (m == MeasurePerformance.kendall)
+                    else if (m == MeasurePerformance.kendall && tittles.Contains("kendall"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -140,7 +230,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.kendall
                         }).ToList());
-                    else if (m == MeasurePerformance.pearson)
+                    else if (m == MeasurePerformance.pearson && tittles.Contains("pearson"))
                         metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
                         {
                             year = p.year,
@@ -148,17 +238,67 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             name = m,
                             value = p.pearson
                         }).ToList());
+                    else if (m == MeasurePerformance.canonica && tittles.Contains("canonica"))
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.canonica
+                        }).ToList());
+                    else if (m == MeasurePerformance.afc2 && tittles.Contains("afc2"))
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.afc2
+                        }).ToList());
+                    else if (m == MeasurePerformance.groc && tittles.Contains("groc"))
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.groc
+                        }).ToList());
+                    else if (m == MeasurePerformance.ignorance && tittles.Contains("ignorance"))
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.ignorance
+                        }).ToList());
+                    else if (m == MeasurePerformance.rpss && tittles.Contains("rpss"))
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.rpss
+                        }).ToList());
+                    else if (m == MeasurePerformance.spearman && tittles.Contains("spearman"))
+                        metrics.AddRange(performances.Where(p => p.ws.Equals(ws)).Select(p => new PerformanceMetric()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            name = m,
+                            value = p.spearman
+                        }).ToList());
                 }
                 // Saving in the database
-                await db.forecastClimate.insertAsync(new ForecastClimate()
+                if (string.IsNullOrEmpty(fsub))
                 {
-                    forecast = forecast.id,
-                    weather_station = ForecastDB.parseId(ws),
-                    data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
+                    await db.forecastClimate.insertAsync(new ForecastClimate()
                     {
-                        year = p.year,
-                        month = p.month,
-                        probabilities = new List<Probability>()
+                        forecast = forecast.id,
+                        weather_station = ForecastDB.parseId(ws),
+                        data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            probabilities = new List<Probability>()
                         {
                             new Probability()
                             {
@@ -168,9 +308,50 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 upper = p.above
                             }
                         }
-                    }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
-                    performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList()
-                });
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList()
+                    });
+                }
+                else
+                {
+                    await db.forecastClimate.insertAsync(new ForecastClimate()
+                    {
+                        forecast = forecast.id,
+                        weather_station = ForecastDB.parseId(ws),
+                        data = probabilities.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilityClimate()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            probabilities = new List<Probability>()
+                            {
+                                new Probability()
+                                {
+                                    measure = MeasureClimatic.prec,
+                                    lower = p.below,
+                                    normal = p.normal,
+                                    upper = p.above
+                                }
+                            }
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        performance = metrics.OrderBy(p => p.year).ThenBy(p => p.month).ToList(),
+                        subseasonal = subseasonal.Where(p => p.ws.Equals(ws)).Select(p => new ProbabilitySubseasonal()
+                        {
+                            year = p.year,
+                            month = p.month,
+                            week = p.week,
+                            probabilities = new List<Probability>()
+                            {
+                                new Probability()
+                                {
+                                    measure = MeasureClimatic.prec,
+                                    lower = p.below,
+                                    normal = p.normal,
+                                    upper = p.above
+                                }
+                            }
+                        }).OrderBy(p => p.year).ThenBy(p => p.month).ThenBy(p => p.week).ToList()
+                    });
+                }
             }
 
 
@@ -270,19 +451,22 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
             else
                 Console.WriteLine("Folder to save the raster files doesn't exist: " + Program.settings.In_PATH_FS_RASTER_DESTINATION);
-
+            
             // Load yield data
             Console.WriteLine("Getting yield");
             Console.WriteLine(path + Program.settings.In_PATH_FS_YIELD);
             // Get folder of the scenarios
             var d_crops = Directory.EnumerateDirectories(path + Program.settings.In_PATH_FS_YIELD);
             List<ImportYield> yields = new List<ImportYield>();
+            List<ImportPhenoPhase> phases = new List<ImportPhenoPhase>();
             foreach (var dc in d_crops)
             {
                 Console.WriteLine("Crop " + dc);
                 var d_f_yield = Directory.EnumerateFiles(dc);
-                foreach (var f_yield in d_f_yield.Where(p => p.EndsWith(".csv")))
+                foreach (var f_yield in d_f_yield.Where(p => p.EndsWith(".csv") && !p.EndsWith(Program.settings.In_PATH_FS_FILE_PHENO_PHASES)))
                 {
+                    // Split yield file path to get id
+                    string file_id = f_yield.Split(Path.DirectorySeparatorChar)[f_yield.Split(Path.DirectorySeparatorChar).Length - 1].Split(".csv")[0];
                     Console.WriteLine("Working in " + f_yield);
                     using (file = File.OpenText(f_yield))
                     {
@@ -294,33 +478,120 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             {
                                 // Get the data from the file in a temp memmory
                                 var fields = line.Split(Program.settings.splitted);
-                                yields.Add(new ImportYield()
+                                try
                                 {
-                                    weather_station = fields[0],
-                                    soil = fields[1],
-                                    cultivar = fields[2],
-                                    start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
-                                    end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
-                                    measure = fields[5],
-                                    avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
-                                    median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),                                    
-                                    min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
-                                    max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
-                                    quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
-                                    quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
-                                    quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
-                                    conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
-                                    conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
-                                    sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
-                                    perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
-                                    perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
-                                    coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
-                                });
+                                    bool exceptions = true;
+                                    foreach(string file_check in fields)
+                                    {
+                                        if(file_check.ToLower().Equals("na") || file_check.ToLower().Equals("inf") || file_check.ToLower().Equals("-Inf"))
+                                        {
+                                            exceptions = false;
+                                            break;
+
+                                        }
+                                    }
+                                    if (exceptions)
+                                    {
+                                        yields.Add(new ImportYield()
+                                        {
+                                            weather_station = fields[0],
+                                            soil = fields[1],
+                                            cultivar = fields[2],
+                                            start = Program.settings.Add_Day ? DateTime.Parse(fields[3]).AddDays(1) : DateTime.Parse(fields[3]),
+                                            end = Program.settings.Add_Day ? DateTime.Parse(fields[4]).AddDays(1) : DateTime.Parse(fields[4]),
+                                            measure = fields[5],
+                                            avg = double.Parse(fields[6].ToLower().Equals("nan") ? "0" : fields[6]),
+                                            median = double.Parse(fields[7].ToLower().Equals("nan") ? "0" : fields[7]),
+                                            min = double.Parse(fields[8].ToLower().Equals("nan") ? "0" : fields[8]),
+                                            max = double.Parse(fields[9].ToLower().Equals("nan") ? "0" : fields[9]),
+                                            quar_1 = double.Parse(fields[10].ToLower().Equals("nan") ? "0" : fields[10]),
+                                            quar_2 = double.Parse(fields[11].ToLower().Equals("nan") ? "0" : fields[11]),
+                                            quar_3 = double.Parse(fields[12].ToLower().Equals("nan") ? "0" : fields[12]),
+                                            conf_lower = double.Parse(fields[13].ToLower().Equals("nan") ? "0" : fields[13]),
+                                            conf_upper = double.Parse(fields[14].ToLower().Equals("nan") ? "0" : fields[14]),
+                                            sd = double.Parse(fields[15].ToLower().Equals("nan") ? "0" : fields[15]),
+                                            perc_5 = double.Parse(fields[16].ToLower().Equals("nan") ? "0" : fields[16]),
+                                            perc_95 = double.Parse(fields[17].ToLower().Equals("nan") ? "0" : fields[17]),
+                                            coef_var = double.Parse(fields[18].ToLower().Equals("nan") ? "0" : fields[18])
+                                        });
+                                    }
+                                    
+                                }
+                                catch (Exception ex2)
+                                {
+                                    Console.WriteLine(ex2.Message);
+                                    Console.WriteLine(ex2.StackTrace);
+                                    Console.WriteLine(line);
+                                    throw new Exception();
+                                }
+
                             }
                             count += 1;
                         }
                     }
+                    
+                    string phese_path = dc + Path.DirectorySeparatorChar + file_id + Program.settings.In_PATH_FS_FILE_PHENO_PHASES;
+                    Console.WriteLine("Getting Phenological phases");
+                    Console.WriteLine(phese_path);
+                    Console.WriteLine(File.Exists(phese_path));
+                    if (File.Exists(phese_path))
+                    {
+                        Console.WriteLine("Working in " + phese_path);
+                        using (file = File.OpenText(phese_path))
+                        {
+                            int count = 0;
+                            while ((line = file.ReadLine()) != null)
+                            {
+                                // Omitted the file's header
+                                if (count != 0 && !string.IsNullOrEmpty(line))
+                                {
+                                    // Get the data from the file in a temp memmory
+                                    var fields = line.Split(Program.settings.splitted);
+                                    try
+                                    {
+                                        bool exceptions = true;
+                                        foreach (string file_check in fields)
+                                        {
+                                            if (file_check.ToLower().Equals("na") || file_check.ToLower().Equals("inf") || file_check.ToLower().Equals("-Inf"))
+                                            {
+                                                exceptions = false;
+                                                break;
+
+                                            }
+                                        }
+                                        if (exceptions)
+                                        {
+                                            phases.Add(new ImportPhenoPhase()
+                                            {
+                                                weather_station = fields[5],
+                                                soil = fields[7],
+                                                cultivar = fields[6],
+                                                forecast = forecast.id.ToString(),
+                                                name = fields[0],
+                                                start_phase_date = DateTime.Parse(fields[1]),
+                                                end_phase_date = DateTime.Parse(fields[2]),
+                                                start_date = DateTime.Parse(fields[3]),
+                                                end_date = DateTime.Parse(fields[4]),
+                                            });
+                                        }
+                                        
+                                    }
+                                    catch (Exception ex3)
+                                    {
+                                        Console.WriteLine(ex3.Message);
+                                        Console.WriteLine(ex3.StackTrace);
+                                        Console.WriteLine(line);
+                                        throw new Exception();
+                                    }
+
+                                }
+                                count += 1;
+                            }
+                        }
+                    }
+                    
                 }
+
             }
             // Create the records of the yield in the database
             Console.WriteLine("Saving the yield in the database");
@@ -375,6 +646,49 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 await db.forecastYield.insertAsync(fy_new);
             }
 
+
+            // Create the records of the phenological phase in the database
+            
+            Console.WriteLine("Saving the phenological phase in the database");
+            ForecastPhenPhase ph_new;
+            PhaseCrop phc_entity;
+            List<PhaseCrop> phc_entities;
+            List<PhaseData> phd_entities;
+            var ws_list_ph = phases.Select(p => new { p.weather_station, p.cultivar, p.soil }).Distinct();
+            foreach (var ws in ws_list_ph)
+            {
+                Console.WriteLine("Working in ws: " + ws.weather_station + " soil: " + ws.soil + " cultivar: " + ws.cultivar);
+                ph_new = new ForecastPhenPhase()
+                {
+                    forecast = forecast.id,
+                    ws = ForecastDB.parseId(ws.weather_station),
+                    cultivar = ForecastDB.parseId(ws.cultivar),
+                    soil = ForecastDB.parseId(ws.soil)
+
+                };
+                IEnumerable<ImportPhenoPhase> phase_crop = phases.Where(p => p.weather_station == ws.weather_station && p.soil == ws.soil && p.cultivar == ws.cultivar);
+                phc_entities = new List<PhaseCrop>();
+                var dates_list = phase_crop.Select(p => new { start = p.start_date, end = p.end_date }).Distinct();
+                foreach (var dc in dates_list)
+                {
+                    phc_entity = new PhaseCrop() { start = dc.start, end = dc.end };
+                    IEnumerable<ImportPhenoPhase> ph_data = phase_crop.Where(p => p.start_date == dc.start && p.end_date == dc.end);
+                    phd_entities = new List<PhaseData>();
+                    foreach (ImportPhenoPhase pd in ph_data)
+                        phd_entities.Add(new PhaseData()
+                        {
+                            name = pd.name,
+                            start = pd.start_phase_date,
+                            end = pd.end_phase_date,
+                        });
+                    phc_entity.data = phd_entities;
+                    phc_entities.Add(phc_entity);
+                }
+                ph_new.phases_crop = phc_entities;
+                await db.forecastPhenPhase.insertAsync(ph_new);
+            }
+            
+
             Console.WriteLine("Forecast imported");
             return true;
         }
@@ -403,7 +717,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         // Reading the headers
                         if (lines == 1)
                         {
-                            patterns = line.Split(',').Skip(2).ToArray();
+                            patterns = line.Replace("\"", "").Split(',').Skip(2).ToArray();
                             // Searching the weather stations according of the parameter to seek
                             if (search == 1)
                                 ws = await db.weatherStation.listEnableByExtIDsAsync(patterns);
@@ -458,7 +772,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 var monthlyData = hc_new.monthly_data.FirstOrDefault(p => p.month == m) ?? new MonthlyDataStation() { month = m, data = new List<ClimaticData>() };
                                 var restMonthlyData = hc_new.monthly_data.Where(p => p.month != m).ToList() ?? new List<MonthlyDataStation>();
                                 data = monthlyData.data.ToList();
-                                data.Add(ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault());
+                                ClimaticData new_data = ws_values.Where(p => p.month == m).Select(p => new ClimaticData() { measure = mc, value = p.value }).FirstOrDefault();
+                                if (data.Where(p=> p.measure == new_data.measure).FirstOrDefault() != null)
+                                {
+                                    int count = 0;
+                                    foreach(ClimaticData  clim_data in data)
+                                    {
+                                        if(clim_data.measure == new_data.measure)
+                                        {
+                                            data[count].value = new_data.value;
+                                        }
+                                        count++;
+                                    }
+                                }
+                                else
+                                {
+                                    data.Add(new_data);
+                                }
+                                
                                 monthlyData.data = data;
                                 restMonthlyData.Add(monthlyData);
                                 hc_new.monthly_data = restMonthlyData;
@@ -476,5 +807,233 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             Console.WriteLine("Import process has finished");
             return true;
         }
+
+        public async Task<bool> importCropConfigurationAsync(string path, string crop, string window = "0", string start_month = "0", string end_month = "0", string sowing_days = "0")
+        {
+            Console.WriteLine("Importing crop configuration from: " + path);
+            string[] folders = Directory.GetDirectories(path);
+            string tmp_folder = path + Path.DirectorySeparatorChar.ToString() + "tmp";
+            if (!Directory.Exists(tmp_folder))
+            {
+                Directory.CreateDirectory(tmp_folder);
+            }
+            
+            foreach (string folder in folders)
+            {
+                try
+                {
+                    Console.WriteLine("\tStarting: " + folder);
+                    string f = folder.Split(Path.DirectorySeparatorChar.ToString()).Last();
+                    if (f == "tmp") continue;
+                    string new_folder = tmp_folder + Path.DirectorySeparatorChar.ToString() + f;
+                    if (!Directory.Exists(new_folder))
+                    {
+                        Directory.CreateDirectory(new_folder);
+                    }
+                    // This array has the configuration
+                    // 0 = Weather station
+                    // 1 = Cultivar
+                    // 2 = Soil
+                    // 3 = Days
+                    string[] conf = f.Split("_");
+                    // Saving the data of the configuration files
+                    List<ConfigurationFile> files = new List<ConfigurationFile>();
+                    ConfigurationFile file_temp;
+                    int i = 0;
+                    // This cicle add all files upload to the setup entity
+                    foreach (var file in Directory.GetFiles(folder))
+                    {
+                        i += 1;
+                        string file_name = file.Split(Path.DirectorySeparatorChar).Last();
+                        file_temp = new ConfigurationFile()
+                        {
+                            date = DateTime.Now,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-setup-" + crop + "-" + file_name,
+                            name = Path.GetFileNameWithoutExtension(file)
+                        };
+                        File.Copy(file, file_temp.path);
+
+                        files.Add(file_temp);
+                        File.Copy(file, new_folder + Path.DirectorySeparatorChar.ToString() + file_name);
+                        File.Delete(file);
+                        System.Threading.Thread.Sleep(1000);
+                    }
+                    DateTime now = DateTime.Now;
+                    Season season = null;
+                    if (window == "1")
+                    {
+                        season = new Season()
+                        {
+                            start = int.Parse(start_month),
+                            end = int.Parse(end_month),
+                            sowing_days = sowing_days != "0" ? int.Parse(sowing_days) : Program.settings.SOWING_DAYS
+                        };
+                    }
+                    
+                    Setup entity = new Setup()
+                    {
+                        conf_files = files,
+                        crop = ForecastDB.parseId(crop),
+                        weather_station = ForecastDB.parseId(conf[0]),
+                        cultivar = ForecastDB.parseId(conf[1]),
+                        soil = ForecastDB.parseId(conf[2]),
+                        days = int.Parse(conf[3]),
+                        track = new Track() { enable = true, register = now, updated = now },
+                        window = window == "1" ? true:false,
+                        season = window == "1" ? season : null,
+                    };
+                    await db.setup.insertAsync(entity);
+                    Directory.Delete(folder);
+                    Console.WriteLine("\tEnd");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error");
+                    Console.WriteLine(folder);
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("\tEnd");
+                }
+
+            }
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
+        /// <summary>
+        /// Method to import the information of the ranges of the weather stations
+        /// </summary>
+        /// <param name="path">Path where is the csv located</param>
+
+        public async Task<bool> importRangesConfigurationAsync(string path)
+        {
+            Console.WriteLine("Importing range configuration from: " + path);
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
+                List<WeatherCsv> weather_list = lines.Skip(1).Select(line => WeatherCsv.FromCsv(line, lines[0])).ToList();
+
+                List<MunicipalityList> municipality_list = MunicipalityList.CreateList(weather_list);
+                       
+                foreach (MunicipalityList municipality in municipality_list)
+                {
+
+                    var weather_stations = await db.weatherStation.listEnableByMunicipalityAsync(municipality.municipality_id);
+                    foreach (var weather_station in weather_stations)
+                    {
+                        Console.WriteLine("Importing ranges in the weather station: " + weather_station.name);
+                        await db.weatherStation.updateWeatherRangeAsync(weather_station, municipality.ranges);
+                    }
+                    Console.WriteLine("\tEnd " + municipality.municipality_name);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\tEnd");
+            }
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
+        /// <summary>
+        /// Method to import soil information from csv
+        /// </summary>
+        /// <param name="path">Path where is the csv located</param>
+
+        public async Task<bool> importSoilDataAsync(string path)
+        {
+            Console.WriteLine("Importing soil data from: " + path);
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
+                //Iterate each line of the csv and build a list of soils
+                List<Soil> soil_list = lines.Skip(1).Select(line => SoilCsv.FromCsv(line, lines[0])).ToList();
+
+
+                foreach (Soil soil in soil_list)
+                {
+                    Console.WriteLine("Importing soil: " + soil.name);
+                    await db.soil.insertAsync(soil);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\tEnd");
+            }
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
+        /// <summary>
+        /// Method to import the configuration files by weather station
+        /// </summary>
+        /// <param name="path">Path where the folders will be located</param>
+
+        public async Task<bool> importDailyConfigurationAsync(string path, int type)
+        {
+            Console.WriteLine("Importing daily configuration from: " + path);
+            try
+            {
+                string tmp_folder = path + Path.DirectorySeparatorChar.ToString() + "tmp";
+                if (!Directory.Exists(tmp_folder))
+                {
+                    Directory.CreateDirectory(tmp_folder);
+                }
+                string[] files = Directory.GetFiles(path);
+                foreach (string file in files)
+                {
+                    if (file.Contains("daily.csv"))
+                    {
+                        string file_name = file.Split(Path.DirectorySeparatorChar).Last();
+                        string weather_station_id = file_name.Split("_daily")[0];
+                        ConfigurationFile file_temp = new ConfigurationFile()
+                        {
+                            date = DateTime.Now,
+                            path = Program.settings.In_PATH_D_WEBADMIN_CONFIGURATION + Path.DirectorySeparatorChar.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + "-wsconfig-" + file_name,
+                            name = "daily"
+                        };
+                        File.Copy(file, file_temp.path);
+                        File.Copy(file, tmp_folder + Path.DirectorySeparatorChar.ToString() + file_name);
+                        File.Delete(file);
+                        WeatherStation weather_station = null;
+                        if(type == 1)
+                        {
+                            weather_station = await db.weatherStation.byIdAsync(weather_station_id);
+                        }
+                        else
+                        {
+                            weather_station = await db.weatherStation.searchWeatherStationForExtId(weather_station_id);
+                        }
+                        if (weather_station != null)
+                        {
+                            await db.weatherStation.addConfigurationFileAsync(weather_station, file_temp);
+                        }
+
+                        Console.WriteLine("\tEnd: " + file);
+
+                    }
+                }
+                 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\tEnd");
+            }
+
+            // Read the file
+            Console.WriteLine("Import process has finished");
+            return true;
+        }
+
     }
 }
+

@@ -1,0 +1,178 @@
+﻿@model (string id, string controller, string action)
+
+@using (Html.BeginForm(@Model.action, @Model.controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" id="id" name="id" value="@Model.id" />
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>@Localizer["NewSetup"]</legend>
+            <div class="form-group">
+                <label for="obs" class="control-label col-md-2">@Localizer["Month"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("month", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="predictors" class="control-label col-md-2">@Localizer["Predictors"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("predictors", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="northernmost_lat1" class="control-label col-md-1">@Localizer["Nla"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="northernmost_lat1" name="northernmost_lat1" type="text" value="">
+                </div>
+                <label for="southernmost_lat1" class="control-label col-md-1">@Localizer["Sla"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="southernmost_lat1" name="southernmost_lat1" type="text" value="">
+                </div>
+                <label for="westernmost_lat1" class="control-label col-md-1">@Localizer["Wlo"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="westernmost_lat1" name="westernmost_lat1" type="text" value="">
+                </div>
+                <label for="easternmost_lat1" class="control-label col-md-1">@Localizer["Elo"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="easternmost_lat1" name="easternmost_lat1" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="predictand" class="control-label col-md-2">@Localizer["Predictand"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("predictand", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="northernmost_lat2" class="control-label col-md-1">@Localizer["Nla"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="northernmost_lat2" name="northernmost_lat2" type="text" value="">
+                </div>
+                <label for="southernmost_lat2" class="control-label col-md-1">@Localizer["Sla"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="southernmost_lat2" name="southernmost_lat2" type="text" value="">
+                </div>
+                <label for="westernmost_lat2" class="control-label col-md-1">@Localizer["Wlo"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="westernmost_lat2" name="westernmost_lat2" type="text" value="">
+                </div>
+                <label for="easternmost_lat2" class="control-label col-md-1">@Localizer["Elo"]:</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="easternmost_lat2" name="easternmost_lat2" type="text" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="modelspycpt" class="control-label col-md-2">@Localizer["Modelspycpt"]:</label>
+                <div class="col-md-10">
+                    <table>
+                        @foreach (var models in @ViewBag.modelspycpt)
+                        {
+                            <tr>
+                                <td>@Html.CheckBox("modelspycpt", @models.Selected, new { @value = models.Value })</td>
+                                <td><label class="control-label col-md-2">@models.Text</label></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="obs" class="control-label col-md-2">@Localizer["Obs"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("obs", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mos" class="control-label col-md-2">@Localizer["Mos"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("mos", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">@Localizer["YearRange"]:</label>
+                <label for="tini" class="control-label col-md-2">@Localizer["Min"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("tini", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <label for="tend" class="control-label col-md-2">@Localizer["Max"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("tend", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">@Localizer["XModes"]:</label>
+                <label for="xmodes_min" class="control-label col-md-2">@Localizer["Min"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("xmodes_min", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <label for="xmodes_max" class="control-label col-md-2">@Localizer["Max"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("xmodes_max", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">@Localizer["YModes"]:</label>
+                <label for="ymodes_min" class="control-label col-md-2">@Localizer["Min"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("ymodes_min", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <label for="ymodes_max" class="control-label col-md-2">@Localizer["Max"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("ymodes_max", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">@Localizer["CCAModes"]:</label>
+                <label for="ccamodes_min" class="control-label col-md-2">@Localizer["Min"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("ccamodes_min", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <label for="ccamodes_max" class="control-label col-md-2">@Localizer["Max"]:</label>
+                <div class="col-md-3">
+                    @Html.Editor("ccamodes_max", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="station" class="control-label col-md-2">@Localizer["Station"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("station", (SelectList)ViewBag.bool_values, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="force_download" class="control-label col-md-2">@Localizer["ForceDownload"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("force_download", (SelectList)ViewBag.bool_values, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="single_models" class="control-label col-md-2">@Localizer["SingleModels"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("single_models", (SelectList)ViewBag.bool_values, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="forecast_anomaly" class="control-label col-md-2">@Localizer["ForecastAnomaly"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("forecast_anomaly", (SelectList)ViewBag.bool_values, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="forecast_spi" class="control-label col-md-2">@Localizer["ForecastSpi"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("forecast_spi", (SelectList)ViewBag.bool_values, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confidence_level" class="control-label col-md-2">@Localizer["ConfidenceLevel"]:</label>
+                <div class="col-md-10">
+                    @Html.Editor("confidence_level", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

@@ -42,6 +42,98 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Cumulative Evapotranspiration
         /// </summary>
-        et_acu
+        et_acu,
+        /// <summary>
+        /// Land preparation day
+        /// </summary>
+        land_pre_day,
+        /// <summary>
+        /// nitrogen stress germination to booting
+        /// </summary>
+        st_ger_boo_n,
+        /// <summary>
+        /// nitrogen stress booting to anthesis
+        /// </summary>
+        st_boo_ant_n,
+        /// <summary>
+        /// nitrogen stress beginning to end of grain filling
+        /// </summary>
+        st_beg_end_gf_n,
+        /// <summary>
+        /// water stress germination to booting
+        /// </summary>
+        st_ger_boo_w,
+        /// <summary>
+        /// water stress booting to anthesis
+        /// </summary>
+        st_boo_ant_w,
+        /// <summary>
+        /// water stress beginning to end of grain filling
+        /// </summary>
+        st_beg_end_gf_w,
+        /// <summary>
+        /// nitrogen stress germination to anthesis
+        /// </summary>
+        st_ger_ant_n,
+        /// <summary>
+        /// water stress germination to anthesis
+        /// </summary>
+        st_ger_ant_w,
+        /// <summary>
+        /// Hydrological balance between sowing and emergence
+        /// </summary>
+        hs_hb_s_e,
+        /// <summary>
+        /// Hydrological balance during tillering
+        /// </summary>
+        hs_hb_t,
+        /// <summary>
+        /// Hydrological balance between  beginning of stem elongation period and end of booting
+        /// </summary>
+        hs_hb_ei_b,
+        /// <summary>
+        /// Hydrological balance between beginning of heading and full maturity
+        /// </summary>
+        hs_hb_bh_m,
+        /// <summary>
+        /// Hydrological balance between sowing and full maturity
+        /// </summary>
+        hs_hb_s_m,
+        /// <summary>
+        /// Rainfall amount during pre-sowing period
+        /// </summary>
+        hs_ra_s,
+        /// <summary>
+        /// Number of rainy days with rain above 10 mm  during tillering
+        /// </summary>
+        hs_ndr10_t,
+        /// <summary>
+        /// Number of rainy days with rain above 40 mm  during tillering
+        /// </summary>
+        hs_ndr40_t,
+        /// <summary>
+        /// Number of days with rain above 5 mm between heading and full maturity
+        /// </summary>
+        hs_ndr5_h_m,
+        /// <summary>
+        /// Number of days with rain above 40 mm between heading and full maturity
+        /// </summary>
+        hs_ndr40_bh_m,
+        /// <summary>
+        /// Maximum number of consecutive days with rain above 5 mm between heading and flowering
+        /// </summary>
+        hs_cdr5_h_f,
+        /// <summary>
+        /// Maximum number of consecutive days with rain above 5 mm between flowering and full maturity
+        /// </summary>
+        hs_cdr5_f_m,
+        /// <summary>
+        /// Number of days with minimum daily temperature below 2 °C between booting and flowering
+        /// </summary>
+        hs_ndt2_b_f,
+        /// <summary>
+        /// Number of hot days with maximum daily temperature above 28 °C between beginning of stem elongation period and flowering
+        /// </summary>
+        hs_ndt28_b_f,
     }
 }

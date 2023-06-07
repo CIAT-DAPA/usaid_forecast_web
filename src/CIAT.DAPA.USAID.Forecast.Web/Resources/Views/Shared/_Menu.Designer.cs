@@ -61,6 +61,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maize.
         /// </summary>
         public static string CropMaize {
@@ -84,6 +93,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         public static string Help {
             get {
                 return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indices.
+        /// </summary>
+        public static string Indicators {
+            get {
+                return ResourceManager.GetString("Indicators", resourceCulture);
             }
         }
         

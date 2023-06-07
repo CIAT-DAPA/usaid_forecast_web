@@ -31,6 +31,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
+        private async Task<PermissionList> LoadEnableByPermissionAsync()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listEnableAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.soils = await db.soil.listEnableAsync();
+            val.soils = val.soils.Where(p => permission.countries.Contains(p.country)).ToList();
+            return val;
+        }
+
         // GET: /Soil/
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -38,7 +49,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 ViewBag.crops = await db.crop.listEnableAsync();
-                var list = await db.soil.listEnableAsync();
+                var obj = await LoadEnableByPermissionAsync();
+                var list = obj.soils;
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -62,6 +74,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new BadRequestResult();
                 }
                 Soil entity = await db.soil.byIdAsync(id);
+                ViewBag.country = await db.country.byIdAsync(entity.country.ToString());
                 ViewBag.crop = await db.crop.byIdAsync(entity.crop.ToString());
                 if (entity == null)
                 {
@@ -84,6 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             var crops = await db.crop.listEnableAsync();
             ViewBag.crop = new SelectList(crops, "id", "name");
+            await generateListCountriesAsync(string.Empty);
             return View();
         }
 
@@ -95,6 +109,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             try
             {
                 entity.crop = getId(HttpContext.Request.Form["crop"].ToString());
+                entity.country = getId(HttpContext.Request.Form["country"].ToString());
                 if (ModelState.IsValid)
                 {
                     await db.soil.insertAsync(entity);
@@ -129,7 +144,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 var crops = await db.crop.listEnableAsync();
-                ViewBag.crop = new SelectList(crops, "id", "name");
+                ViewBag.crop = new SelectList(crops, "id", "name", entity.crop);
+                await generateListCountriesAsync(entity.country.ToString());
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
@@ -153,6 +169,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
                     entity.id = getId(id);
                     entity.crop = getId(HttpContext.Request.Form["crop"].ToString());
+                    entity.country = getId(HttpContext.Request.Form["country"].ToString());
                     await db.soil.updateAsync(current_entity, entity);
                     await writeEventAsync(entity.ToString(), LogEvent.upd);
                     return RedirectToAction("Index");
@@ -162,6 +179,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
             catch (Exception ex)
             {
+                await generateListCountriesAsync(entity.country.ToString());
                 await writeExceptionAsync(ex);
                 return View(entity);
             }
@@ -211,6 +229,106 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await writeExceptionAsync(ex);
                 return RedirectToAction("Delete", new { id = id });
             }
+        }
+
+        // GET: /Soil/Threshold/5
+        [HttpGet]
+        public async Task<IActionResult> Threshold(string id)
+        {
+            Soil entity = null;
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                entity = await db.soil.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                // Set data for the view
+                ViewBag.soil_name = entity.name;
+                ViewBag.soil_id = entity.id;
+                // Get data 
+
+                List<Threshold> entities = new List<Threshold>();
+                if(entity.threshold != null)
+                {
+                    entities = (List<Threshold>)entity.threshold;
+                }
+                
+                // Fill the select list
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                return View(entities);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+
+        // POST: /Soil/Threshold/5
+        [HttpPost, ActionName("Threshold")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThresholdAdd(string id)
+        {
+            try
+            {
+                // Get original soil data
+                var form = HttpContext.Request.Form;
+                Soil entity_new = await db.soil.byIdAsync(id);
+                // Instance the new threshold entity
+                Threshold threshold = new Threshold()
+                {
+                    label = form["label"],
+                    value = double.Parse(form["value"]),
+                };
+                await db.soil.addThresholdAsync(entity_new, threshold);
+                await writeEventAsync(id + "Threshold add: " + entity_new.id.ToString() + "-" + threshold.label + "-" + threshold.value.ToString(), LogEvent.upd);
+                return RedirectToAction("Threshold", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Threshold", new { id = id });
+            }
+        }
+
+        // POST: /Soil/ThresholdDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ThresholdDelete(string soil_id, string label, double value)
+        {
+            try
+            {
+                // Get original soil data
+                Soil entity_new = await db.soil.byIdAsync(soil_id);
+                // Delete the setup
+                await db.soil.deleteThresholdAsync(entity_new, label, value);
+                await writeEventAsync(soil_id + "Threshold del: " + label + "-" + value.ToString(), LogEvent.upd);
+                return RedirectToAction("Threshold", new { id = soil_id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("Threshold", new { id = soil_id });
+            }
+        }
+
+        private async Task<bool> generateListCountriesAsync(string selected)
+        {
+            var obj = await LoadEnableByPermissionAsync();
+            // Filter states by permission by countries            
+            var countries = obj.countries.Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
+                ViewData["country"] = new SelectList(countries, "id", "name");
+            else
+                ViewData["country"] = new SelectList(countries, "id", "name", selected);
+            return countries.Count() > 0;
         }
     }
 }

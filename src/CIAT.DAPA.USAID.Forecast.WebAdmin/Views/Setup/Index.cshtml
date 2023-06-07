@@ -1,0 +1,100 @@
+﻿@model X.PagedList.PagedList<CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend.SetupExtend>
+@using X.PagedList.Mvc.Core
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink(Localizer["New"].Value, "Create")
+</p>
+<p>
+    <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
+</p>
+<h3>@Localizer["ConfAvalaible"]</h3>
+<table class="table" id="index_list">
+    <thead>
+        <tr>
+        <tr>
+            <th>
+                @Localizer["ID"]
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Date"].Value, "Index", new { sortOrder = ViewBag.DatesortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Crop"].Value, "Index", new { sortOrder = ViewBag.CropsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["WS"].Value, "Index", new { sortOrder = ViewBag.WSsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Cultivar"].Value, "Index", new { sortOrder = ViewBag.CultivarsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Soil"].Value, "Index", new { sortOrder = ViewBag.SoilsortParam })
+            </th>
+            <th>
+                @Html.ActionLink(@Localizer["Days"].Value, "Index", new { sortOrder = ViewBag.DayssortParam })
+            </th>
+            <th>
+                @Localizer["File"]
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(p => p.track.enable))
+        {
+            <tr>
+                <td>
+                    @item.id.ToString()
+                </td>
+                <td>
+                    @item.track.register.ToString("yyyy-MM-dd")
+                </td>
+                <td>
+                    @item.crop_name
+                </td>
+                <td>
+                    @item.weather_station_name
+                </td>
+                <td>
+                    @item.cultivar_name
+                </td>
+                <td>
+                    @item.soil_name
+                </td>
+                <td>
+                    @item.days
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var f in item.conf_files)
+                        {
+                            <li>
+                                @Html.ActionLink(f.name, "Download", "Home", new { file = @f.path.Split('/').Last(), type = 1 }, new { target = "_blank" })
+                            </li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
+                    @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
+                    @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+@Localizer["Page"] @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) @Localizer["Of"] @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { sortOrder = ViewBag.CurrentSort, page }))
+
+@section Scripts {
+    @await Html.PartialAsync("_ManagementScriptsPartial")
+}

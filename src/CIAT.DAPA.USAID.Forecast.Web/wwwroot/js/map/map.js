@@ -4,13 +4,12 @@
   * @param {any} ws list of weather stations
   * @param {any} crops list of weather stations with crops
   */
-function plot_map(id, ws, crops) {
+async function plot_map(id, ws, crops) {
     var map = L.map(id).setView([ws[0].latitude, ws[0].longitude], 6);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
-
     for (var i = 0; i < ws.length; ++i) {
         // Search crops with data
         var crops_ws = search_ws_crop(crops, ws[i].id);

@@ -13,7 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <returns>String with the content of the state</returns>
         public override string ToString()
         {
-            return id.ToString() + "|" + country.name + "|" + country.iso2 + "|" + name;
+            return id.ToString() + "|" + name + "|" + country.ToString();
         }
     }
 }

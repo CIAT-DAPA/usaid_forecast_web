@@ -1,0 +1,89 @@
+﻿@model (string id, IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.ConfigurationPyCPT> conf, string[] months, string controller, string action_delete)
+
+<h3>@Localizer["SetupAvalaible"]</h3>
+<table class="table">
+    <tr>
+        <th>@Localizer["Date"]</th>
+        <th>@Localizer["Month"]</th>
+        <th>@Localizer["Obs"]</th>
+        <th>@Localizer["Mos"]</th>
+        <th>@Localizer["Models"]</th>
+        <th>@Localizer["Predictand"]</th>
+        <th>@Localizer["Predictors"]</th>
+        <th>@Localizer["Ranges"]</th>
+        <th>@Localizer["OthersParameters"]</th>
+        <th></th>
+    </tr>
+    @if (Model.conf != null)
+    {
+        @foreach (var item in Model.conf.Where(p => p.track.enable).OrderBy(p => p.track.register).OrderBy(p => p.month))
+        {
+            <tr>
+                <td>@item.track.register.ToString("yyyy-MM-dd")</td>
+                <td>@Model.months[item.month - 1]</td>
+                <td>@item.obs</td>
+                <td>@item.mos</td>
+                <td>
+                    <ul>
+                        @foreach (var i in item.models)
+                        {
+                            <li>@i</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    @item.predictors
+                    <br />
+                    <b>N: </b>@item.spatial_predictors.rigth_upper.lat
+                    <br />
+                    <b>S: </b>@item.spatial_predictors.left_lower.lat
+                    <br />
+                    <b>E: </b>@item.spatial_predictors.rigth_upper.lon
+                    <br />
+                    <b>W: </b>@item.spatial_predictors.left_lower.lon
+                    <br />
+                </td>
+                <td>
+                    @item.predictand
+                    <br />
+                    <b>N: </b>@item.spatial_predictands.rigth_upper.lat
+                    <br />
+                    <b>S: </b>@item.spatial_predictands.left_lower.lat
+                    <br />
+                    <b>E: </b>@item.spatial_predictands.rigth_upper.lon
+                    <br />
+                    <b>W: </b>@item.spatial_predictands.left_lower.lon
+                    <br />
+                </td>
+
+                <td>
+                    <ul>
+                        <li><b>@Localizer["Years"]:</b> [@item.ranges_years.min - @item.ranges_years.max]</li>
+                        <li><b>@Localizer["CCAModes"]:</b> [@item.ccamodes.min - @item.ccamodes.max]</li>
+                        <li><b>@Localizer["XModes"]:</b> [@item.xmodes.min - @item.xmodes.max]</li>
+                        <li><b>@Localizer["YModes"]:</b> [@item.ymodes.min - @item.ymodes.max]</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li><b>@Localizer["Station"]:</b> @item.station</li>
+                        <li><b>@Localizer["SingleModels"]:</b> @item.single_models</li>
+                        <li><b>@Localizer["ForecastAnomaly"]:</b> @item.forecast_anomaly</li>
+                        <li><b>@Localizer["ForecastSpi"]:</b> @item.forecast_spi</li>
+                        <li><b>@Localizer["ConfidenceLevel"]:</b> @item.confidence_level</li>
+                    </ul>
+                </td>
+                <td>
+                    @using (Html.BeginForm(Model.action_delete, Model.controller, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="id" name="id" value="@Model.id" />
+                        <input type="hidden" id="month" name="month" value="@item.month" />
+                        <input type="hidden" id="register" name="register" value="@item.track.register.Ticks.ToString()" />
+                        <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
+                    }
+                </td>
+            </tr>
+        }
+    }
+</table>

@@ -45,6 +45,25 @@ Export Data
 				theorical regions and cpt modes.
 
 -usr			Export the enable users in the webadmin.
+
+-c	"value"		Mandatory parameter. It is the ObjectId of Country
+				to export data for only country indicated in the parameter.
+
+-m	"value"		Mandatory parameter. It is the Month number that you want
+				to export. It just works for PyCPT export file
+
+-st	"value"		Optional parameter. It is the ObjectId of State
+				to export coordinates of weather stations by State.
+
+-py				Export json file from pycpt configuration for seasonal by country or 
+				by state depends of indicator.
+
+-pyco			Create a only file of weather station with their
+				coordinates by country or state.
+
+-sub			Export json file from pycpt configuration for subseasonal a country.
+
+
 -----------------------------------------------------------------
 Import Data
 
@@ -69,6 +88,23 @@ Import Data
 -type value		Set the kind of search of the weather station.
 				Value can be either 1 for Extern Id or 2 for name
 
+-wr				Imports the ranges in the weather stations of the selected csv file.
+
+-sli			Imports the soil info in the db of the selected csv file.
+
+-fcfg			Imports the configuration daily info in the db of the selected csv files.
+
+-typd value		Set the kind of search of the weather station.
+				Value can be either 1 for Id or 2 for Extern Id  
+
+-wd "value"		This parameter indicates if the config has planting window or not
+
+-stm "value"	This parameter indicates the month in which the planting window starts
+
+-edm "value"	This parameter indicatesthe month in which the planting window ends
+
+-sd "value"		This parameter indicates the sowing days
+
 -----------------------------------------------------------------
 Examples
 
@@ -86,3 +122,14 @@ Examples
 
 #Import forecast
 -in -fs -p "C:\import\\" -cf 0.5
+
+# Normal calls
+
+-out -py -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9" -m "4"
+-out -s "prec" -p "D:\\CIAT\\Aclimate\\" -start 1982 -end 2013 -c "61e59d829d5d2486e18d2ea9"
+-out -wf -p "D:\\CIAT\\Aclimate\\" -name "daily" -c "61e59d829d5d2486e18d2ea9"
+-out -co -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9"
+-out -fs -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9"
+-out -py -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9" -m "5"
+-out -pyco -p "D:\\CIAT\\Aclimate\\" -c "61e59d829d5d2486e18d2ea9"
+

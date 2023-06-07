@@ -1,5 +1,6 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using CIAT.DAPA.USAID.Forecast.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,51 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
                 Builders<State>.Update.Set("conf", entity.conf));
             return result.ModifiedCount > 0;
+        }
+        public async Task<List<State>> listAllAsync()
+        {
+            return await collection.Find("{}").ToListAsync<State>();
+        }
+
+        public async Task<bool> addConfigurationPyCpt(State entity, ConfigurationPyCPT conf)
+        {
+            conf.track = new Track() { enable = true, register = DateTime.Now, updated = DateTime.Now };
+            List<ConfigurationPyCPT> allConf = entity.conf_pycpt.ToList();
+            allConf.Add(conf);
+            entity.conf_pycpt = allConf;
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
+                Builders<State>.Update.Set("conf_pycpt", entity.conf_pycpt));
+            return result.ModifiedCount > 0;
+        }
+
+        public async Task<bool> deleteConfigurationPyCPTAsync(State entity, int month, long register)
+        {
+            List<ConfigurationPyCPT> allConf = new List<ConfigurationPyCPT>();
+            foreach (var c in entity.conf_pycpt)
+            {
+                if (c.month == month && c.track.register.Ticks == register)
+                {
+                    c.track.updated = DateTime.Now;
+                    c.track.enable = false;
+                }
+                allConf.Add(c);
+            }
+            entity.conf_pycpt = allConf;
+            var result = await collection.UpdateOneAsync(Builders<State>.Filter.Eq("_id", entity.id),
+                Builders<State>.Update.Set("conf_pycpt", entity.conf_pycpt));
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Method that search states by country and enable
+        /// </summary>
+        /// <param name="country">id country</param>
+        /// <returns>List states</returns>
+        public async Task<List<State>> listByCountryEnableAsync(ObjectId country)
+        {
+            var builder = Builders<State>.Filter;
+            var filter = builder.Eq("country", country) & builder.Eq("track.enable", true);
+            return await collection.Find(filter).ToListAsync<State>();
         }
     }
 }

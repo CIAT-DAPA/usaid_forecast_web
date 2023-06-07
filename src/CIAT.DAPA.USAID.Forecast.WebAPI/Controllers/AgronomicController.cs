@@ -24,7 +24,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        [Route("api/[controller]/{cultivar?}/{format?}")]
+        [Route("api/[controller]/{cultivar}/{format}")]
         public async Task<IActionResult> Get(bool cultivar, string format)
         {
             try
@@ -41,17 +41,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     StringBuilder builder = new StringBuilder();
                     // add header depends if the requested a cultivars information or soils
                     if (cultivar)
-                        builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "cultivar_id", "cultivar_name", "cultivar_rainfed", "cultivar_national", "\n" }));
+                        builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "cultivar_id", "cultivar_name", "cultivar_rainfed", "cultivar_national", "country_id", "\n" }));
                     else
-                        builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "soil_id", "soil_name", "\n" }));
+                        builder.Append(string.Join<string>(delimiter, new string[] { "crop_id", "crop_name", "soil_id", "soil_name", "country_id", "\n" }));
                     foreach (var i in json)
                     {
                         if (cultivar)
                             foreach (var j in i.cultivars)
-                                builder.Append(string.Join<string>(delimiter, new string[] { i.cp_id, i.cp_name, j.id, j.name, j.rainfed.ToString(), j.national.ToString(), "\n" }));
+                                builder.Append(string.Join<string>(delimiter, new string[] { i.cp_id, i.cp_name, j.id, j.name, j.rainfed.ToString(), j.national.ToString(), j.country_id, "\n" }));
                         else
                             foreach (var j in i.soils)
-                                builder.Append(string.Join<string>(delimiter, new string[] { i.cp_id, i.cp_name, j.id, j.name, "\n" }));
+                                builder.Append(string.Join<string>(delimiter, new string[] { i.cp_id, i.cp_name, j.id, j.name, j.country_id, "\n" }));
                     }
                     var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
                     return File(file, "text/csv", "agronomic.csv");

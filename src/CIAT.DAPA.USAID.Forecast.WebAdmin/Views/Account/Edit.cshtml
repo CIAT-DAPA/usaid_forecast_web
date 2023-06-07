@@ -16,23 +16,23 @@
             <label asp-for="Email" class="control-label">@Model.Email</label>
             <input type="hidden" id="Email" name="Email" value="@Model.Email" />
         </div>
-    </div>
+    </div>    
     <div class="form-group">
-        <label for="Role" class="col-md-2 control-label">@Localizer["Roles"]:</label>
+        <label for="Countries" class="col-md-2 control-label">@Localizer["Countries"]:</label>
         <div class="col-md-10">
-            @foreach (var item in ViewBag.Role)
+            @foreach (var item in ViewBag.ListCountries)
             {
-                @if (Model.Role.Where(p=>p ==item.Value).Count() > 0)
+                @if (Model.Countries.Where(p => p == item.Value).Count() > 0)
                 {
-                    <label><input class="form-control" type="checkbox" checked="checked" name="Role" value="@item.Value" /> @item.Text</label>
+                    <label><input class="form-control" type="checkbox" checked="checked" name="Countries" value="@item.Value" /> @item.Text</label>
                 }
                 else
                 {
-                    <label><input class="form-control" type="checkbox" name="Role" value="@item.Value" /> @item.Text</label>
+                    <label><input class="form-control" type="checkbox" name="Countries" value="@item.Value" /> @item.Text</label>
                 }
             }
         </div>
-    </div>    
+    </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-default">@Localizer["EditCMD"]</button>

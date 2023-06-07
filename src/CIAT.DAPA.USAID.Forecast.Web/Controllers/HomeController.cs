@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories;
 using System.Web;
+using System.IO;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
@@ -24,13 +25,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
         }
 
+        [Route("/")]
         public async Task<IActionResult> Index()
         {
             try
             {
                 // Set the parameters
                 ViewBag.Section = SectionSite.Climate;
-
                 // Setting data
                 SetWS();
 
@@ -42,6 +43,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             }
         }
 
+        [Route("[controller]/[action]")]
         public IActionResult Glosario()
         {
 
@@ -56,6 +58,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             return View();
         }
 
+        [Route("/[controller]/[action]")]
         public IActionResult AcercaDe()
         {
             ViewBag.Section = SectionSite.About;

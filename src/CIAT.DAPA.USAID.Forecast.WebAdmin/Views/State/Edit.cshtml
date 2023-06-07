@@ -19,23 +19,15 @@
         @Html.HiddenFor(model => model.id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.country.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="crop" class="control-label col-md-2">@Localizer["Country"]:</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.country.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.country.name, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.country, selectList: (SelectList)ViewData["country"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.country.iso2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.country.iso2, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.country.iso2, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label for="crop" class="control-label col-md-2">@Localizer["StateName"]:</label>
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })

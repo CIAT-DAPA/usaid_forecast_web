@@ -20,7 +20,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="database">Database connected to mongo</param>
         public ForecastYieldFactory(IMongoDatabase database): base(database, LogEntity.fs_forecast_yield)
         {
-
+            var indexKeys = Builders<ForecastYield>.IndexKeys.Combine(
+                            Builders<ForecastYield>.IndexKeys.Ascending(x => x.forecast),
+                            Builders<ForecastYield>.IndexKeys.Ascending(x => x.cultivar));
+            var indexOptions = new CreateIndexOptions { Unique = false }; // if you want the index is unique
+            var indexModel = new CreateIndexModel<ForecastYield>(indexKeys, indexOptions);
+            collection.Indexes.CreateOne(indexModel);
         }
 
         public async override Task<bool> updateAsync(ForecastYield entity, ForecastYield newEntity)
@@ -65,6 +70,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var query = from fy in collection.AsQueryable()
                         where ws.Contains(fy.weather_station) && fy.forecast == forecast
                         select fy;
+            return query;
+        }
+
+        public async Task<IEnumerable<ForecastYield>> byForecastCul(ObjectId forecast, IEnumerable<ObjectId> cultivar)
+        {
+            var builder = Builders<ForecastYield>.Filter;
+            var filter = builder.And(builder.Eq(x => x.forecast, forecast), builder.In(x => x.cultivar, cultivar));
+            var query = await collection.Find(filter).ToListAsync<ForecastYield>();
             return query;
         }
         /// <summary>

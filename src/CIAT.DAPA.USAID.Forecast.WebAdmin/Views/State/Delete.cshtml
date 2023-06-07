@@ -13,23 +13,9 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.country.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.country.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.country.iso2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.country.iso2)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.name)
+            <label class="control-label">
+                @Localizer["StateName"]
+            </label>
         </dt>
 
         <dd>
@@ -37,7 +23,9 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.track.register)
+            <label class="control-label">
+                @Localizer["RegisterDate"]
+            </label>
         </dt>
 
         <dd>
@@ -45,7 +33,9 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.track.updated)
+            <label class="control-label">
+                @Localizer["UpdateDate"]
+            </label>
         </dt>
 
         <dd>

@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<CIAT.DAPA.USAID.Forecast.Data.Models.ConfigurationCPT>
 @using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Tools
+@using CIAT.DAPA.USAID.Forecast.Data.Models
+@using System.Linq
 
 @{
     ViewBag.Title = Localizer["Title"];
@@ -9,7 +11,8 @@
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>@ViewBag.state.country.name - @ViewBag.state.name</h4>
+    @{ var s = ((List<Country>)ViewBag.countries).FirstOrDefault(p => p.id == @ViewBag.state.country); }
+    <h4>@s.name - @ViewBag.state.name</h4>
     <hr />
 </div>
 

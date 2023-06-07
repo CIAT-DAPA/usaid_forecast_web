@@ -10,9 +10,9 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Repositories
     {
         private WebAPIForecast Client { get; set; }
 
-        public RepositoryAgronomic(string root)
+        public RepositoryAgronomic(string root, string id_country)
         {
-            Client = new WebAPIForecast(root);
+            Client = new WebAPIForecast(root, id_country);
         }
 
         /// <summary>

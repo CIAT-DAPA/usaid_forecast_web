@@ -9,6 +9,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
     {
         goodness,
         kendall,
-        pearson
+        pearson,
+        canonica,
+        afc2,
+        groc,
+        ignorance,
+        rpss,
+        spearman
     }
 }

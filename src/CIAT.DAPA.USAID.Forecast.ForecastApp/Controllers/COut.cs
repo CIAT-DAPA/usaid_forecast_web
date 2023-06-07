@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Export;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 {
@@ -20,6 +22,10 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Database object
         /// </summary>
         private ForecastDB db { get; set; }
+        /// <summary>
+        /// Gets the list of names for months
+        /// </summary>
+        private string[] months { get { return new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }; } }
 
         /// <summary>
         /// Method Construct
@@ -36,7 +42,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// <param name="measure">Measure to export</param>
         /// <param name="start">Year to start</param>
         /// <param name="end">Year to end</param>
-        public async Task<bool> exportStatesHistoricalClimateAsync(string path, MeasureClimatic measure, int start, int end)
+        public async Task<bool> exportStatesHistoricalClimateAsync(string path, MeasureClimatic measure, int start, int end, string mainCountry)
         {
             StringBuilder csv;
             string header, line;
@@ -45,7 +51,8 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
             var states = await db.state.listEnableAsync();
-            foreach (var s in states)
+            IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
+            foreach (var s in statesByCountry)
             {
                 Console.WriteLine("Creating " + s.name);
                 if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
@@ -106,20 +113,31 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
         /// <param name="name">Name of file to filter</param>
-        public async Task<bool> exportFilesWeatherStationAsync(string path, string name)
+        public async Task<bool> exportFilesWeatherStationAsync(string path, string name, string mainCountry)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_WS_FILES);
             var weather_stations = await db.weatherStation.listEnableAsync();
+            var dir_def = "data_configuration/";
             foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
             {
-                Console.WriteLine("Exporting files ws: " + ws.name);
-                var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
-                if (f != null)
-                    File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
-                else
-                    Console.WriteLine("File not found");
+                var municipality = await db.municipality.byIdAsync(ws.municipality.ToString());
+                var state = await db.state.byIdAsync(municipality.state.ToString());
+                var country = await db.country.byIdAsync(state.country.ToString());
+                if (country.id.ToString() == mainCountry)
+                {
+                    Console.WriteLine("Exporting files ws: " + ws.name);
+                    var f = ws.conf_files.Where(p => p.name.Equals(name)).OrderByDescending(p => p.date).FirstOrDefault();
+                    if (f != null)
+                    {
+                            File.Copy(f.path, path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + COut.getExtension(f.path), true);
+                    }
+                    else
+                    {
+                        Console.WriteLine("File not found");
+                    }
+                }
             }
             return true;
         }
@@ -128,7 +146,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method to export the configuration files by weather station
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportCoordsWeatherStationAsync(string path)
+        public async Task<bool> exportCoordsWeatherStationAsync(string path, string mainCountry)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_WS_FILES))
@@ -136,11 +154,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             var weather_stations = await db.weatherStation.listEnableAsync();
             foreach (var ws in weather_stations.Where(p => p.visible && p.conf_files.Count() > 0))
             {
-                Console.WriteLine("Exporting coords ws: " + ws.name);
-                StringBuilder coords = new StringBuilder();
-                coords.Append("lat,lon\n");
-                coords.Append(ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
-                File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + "_coords.csv", coords.ToString());
+                var municipality = await db.municipality.byIdAsync(ws.municipality.ToString());
+                var state = await db.state.byIdAsync(municipality.state.ToString());
+                var country = await db.country.byIdAsync(state.country.ToString());
+                if (country.id.ToString() == mainCountry)
+                {
+                    Console.WriteLine("Exporting coords ws: " + ws.name);
+                    StringBuilder coords = new StringBuilder();
+                    coords.Append("lat,lon\n");
+                    coords.Append(ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                    File.WriteAllText(path + Program.settings.Out_PATH_WS_FILES + Path.DirectorySeparatorChar + ws.id.ToString() + "_coords.csv", coords.ToString());
+                }
             }
             return true;
         }
@@ -149,7 +173,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that exports the configuration for the forecast 
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportForecastSetupAsync(string path)
+        public async Task<bool> exportForecastSetupAsync(string path, string mainCountry)
         {
             // Create directory
             if (!Directory.Exists(path + Program.settings.Out_PATH_FS_FILES))
@@ -160,22 +184,64 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 Console.WriteLine("Exporting " + cp.name);
                 string dir_crop = path + Program.settings.Out_PATH_FS_FILES + Path.DirectorySeparatorChar + Tools.folderCropName(cp.name);
                 Directory.CreateDirectory(dir_crop);
-                foreach (var st in cp.setup.Where(p => p.track.enable))
+                var setups = await db.setup.listEnableAsync();
+                //var dir_def = "data_configuration/";
+                foreach (var st in setups.Where(p => p.crop == cp.id))
                 {
-                    string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
-                    Directory.CreateDirectory(dir_setup);
-                    foreach (var f in st.conf_files)
-                        File.Copy(f.path, dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
-                    // Add csv file with geolocation for rice crop only
-                    if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
+                    var weather_station = await db.weatherStation.byIdAsync(st.weather_station.ToString());
+                    var municipality = await db.municipality.byIdAsync(weather_station.municipality.ToString());
+                    var state = await db.state.byIdAsync(municipality.state.ToString());
+                    var country = await db.country.byIdAsync(state.country.ToString());
+                    if (country.id.ToString() == mainCountry)
                     {
-                        WeatherStation ws = await db.weatherStation.byIdAsync(st.weather_station.ToString());
-                        StringBuilder coords = new StringBuilder();
-                        coords.Append("name,value\n");
-                        coords.Append("lat," + ws.latitude.ToString() + "\n");
-                        coords.Append("long," + ws.longitude.ToString() + "\n");
-                        coords.Append("elev," + ws.elevation.ToString() + "\n");
-                        File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
+                        string dir_setup = dir_crop + Path.DirectorySeparatorChar + st.weather_station.ToString() + "_" + st.cultivar.ToString() + "_" + st.soil.ToString() + "_" + st.days.ToString();
+                        Directory.CreateDirectory(dir_setup);
+                        foreach (var f in st.conf_files)
+                        {
+                            //File.Copy(dir_def + f.path.Substring(42), dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                            File.Copy(f.path, dir_setup + Path.DirectorySeparatorChar + f.name + COut.getExtension(f.path), true);
+                        }
+                        // Add csv file with geolocation for rice crop only
+                        if (Program.settings.Out_CROPS_COORDINATES.Contains(Tools.folderCropName(cp.name)))
+                        {
+                            WeatherStation ws = await db.weatherStation.byIdAsync(st.weather_station.ToString());
+                            StringBuilder coords = new StringBuilder();
+                            coords.Append("name,value\n");
+                            coords.Append("lat," + ws.latitude.ToString() + "\n");
+                            coords.Append("long," + ws.longitude.ToString() + "\n");
+                            coords.Append("elev," + ws.elevation.ToString() + "\n");
+                            File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_PATH_FILE_COORDINATES, coords.ToString());
+                        }
+
+                        //  Export csv with season info to use in planting window
+                        if (st.window)
+                        {
+                            
+                            StringBuilder planting_window = new StringBuilder();
+                            planting_window.Append("name,value\n");
+                            planting_window.Append("window," + st.window.ToString() + "\n");
+                            planting_window.Append("start_season," + st.season.start.ToString() + "\n");
+                            planting_window.Append("end_season," + st.season.end.ToString() + "\n");
+                            planting_window.Append("sowing_days," + st.season.sowing_days.ToString() + "\n");
+                            File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_WINDOW_CONFIG, planting_window.ToString());
+                        }
+
+                        // Export csv with crop configuration
+                        if (cp.crop_config != null && cp.crop_config.Count() > 0)
+                        {
+
+                            StringBuilder crop_config = new StringBuilder();
+                            crop_config.Append("name,min,max,tag\n");
+                            foreach (CropConfig c_config in cp.crop_config)
+                            {
+                                crop_config.Append(c_config.label.ToString() + ",");
+                                crop_config.Append(c_config.min.ToString() + ",");
+                                crop_config.Append(c_config.max.ToString() + ",");
+                                crop_config.Append(c_config.type.ToString() + ",\n");
+                            }
+                                
+                            File.WriteAllText(dir_setup + Path.DirectorySeparatorChar + Program.settings.Out_CROP_CONFIG, crop_config.ToString());
+                        }
                     }
                 }
             }
@@ -186,7 +252,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that export all cpt  configuration needs by the forecast
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportCPTSetupAsync(string path)
+        public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
         {
             StringBuilder header_cpt, x_m, y_m, cca, gamma, header_areas;
             StringBuilder[] x1, x2, y1, y2;
@@ -194,8 +260,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
             var states = await db.state.listEnableAsync();
+            IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
             // Filter the states with configuration
-            var states_ctp = from s_cpt in states
+            var states_ctp = from s_cpt in statesByCountry
                              where s_cpt.conf.Where(p => p.track.enable).Count() > 0
                              select s_cpt;
             foreach (var s in states_ctp)
@@ -219,21 +286,24 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 // This cicle is by every quarter of year
                 foreach (string q in Enum.GetNames(typeof(Quarter)))
                 {
-                    var conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
+                    ConfigurationCPT conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
+                    bool config_exit = conf != null;
                     // the cpt configuration 
                     header_cpt.Append(q + ",");
-                    x_m.Append((conf.x_mode.ToString() ?? string.Empty) + ",");
-                    y_m.Append(conf.y_mode.ToString() + ",");
-                    cca.Append(conf.cca_mode.ToString() + ",");
-                    gamma.Append(conf.gamma.ToString() + ",");
+                    x_m.Append(config_exit ? (conf.x_mode.ToString() ?? string.Empty) + "," : "NA,");
+                    y_m.Append(config_exit ? conf.y_mode.ToString() + "," : "NA,");
+                    cca.Append(config_exit ? conf.cca_mode.ToString() + "," : "NA,");
+                    gamma.Append(config_exit ? conf.gamma.ToString() + "," : "NA,");
                     // the regions configurations
                     header_areas.Append(q + ",");
-                    x1[0].Append(conf.regions.ElementAt(0).left_lower.lon.ToString() + ",");
-                    x2[0].Append(conf.regions.ElementAt(0).rigth_upper.lon.ToString() + ",");
-                    y1[0].Append(conf.regions.ElementAt(0).left_lower.lat.ToString() + ",");
-                    y2[0].Append(conf.regions.ElementAt(0).rigth_upper.lat.ToString() + ",");
+                    x1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lon.ToString() + "," : "NA,");
+                    x2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lon.ToString() + "," : "NA,");
+                    y1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lat.ToString() + "," : "NA,");
+                    y2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lat.ToString() + "," : "NA,");
+
+                    
                     // Second region
-                    if (conf.regions.Count() > 1)
+                    if (config_exit && conf.regions.Count() > 1)
                     {
                         x1[1].Append(conf.regions.ElementAt(1).left_lower.lon.ToString() + ",");
                         x2[1].Append(conf.regions.ElementAt(1).rigth_upper.lon.ToString() + ",");
@@ -305,6 +375,164 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         public static string getExtension(string path)
         {
             return path.Substring(path.Length - 4, 4);
+        }
+
+        /// <summary>
+        /// Method that calculates the periods for forecast when 
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        private List<PeriodsTgts> calculatePeriodsPyCPT(int m)
+        {
+            List<PeriodsTgts> r = new List<PeriodsTgts>();
+            /*int i1 =  m == 1? 12 : ((m-1) % 13);
+            int i2 = ((m + 1) % 13);
+            int i3 = ((m + 2) % 13);
+            int i4 = ((m + 4) % 13);
+            r = new string[] { months[i1-1] + "-" + months[i2-1], months[i3-1] + "-" + months[i4-1] };
+            #
+            int i1 = m;
+            int i2 = ((m + 2) % 13) == 0 ? 1 : ((m + 2) % 13);
+            int i3 = ((m + 3) % 13) == 0 ? 1 : ((m + 3) % 13);
+            int i4 = ((m + 5) % 13) == 0 ? 1 : ((m + 5) % 13);*/
+
+            int i1 = m;
+            int i2 = ((m + 2) > 12) ? (m + 2) - 12 : m + 2;
+            int i3 = ((m + 3) > 12) ? (m + 3) - 12 : m + 3;
+            int i4 = ((m + 5) > 12) ? (m + 5) - 12 : m + 5;
+
+            string first_trimester_year = ((m + 1) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
+            string second_trimester_year = ((m + 4) > 12) ? DateTime.Now.AddYears(1).ToString("yyyy") : DateTime.Now.ToString("yyyy");
+
+
+            PeriodsTgts first_trimester = new PeriodsTgts()
+            {
+                months = months[i1 - 1] + "-" + months[i2 - 1],
+                year = first_trimester_year
+            };
+
+            PeriodsTgts second_trimester = new PeriodsTgts()
+            {
+                months = months[i3 - 1] + "-" + months[i4 - 1],
+                year = second_trimester_year
+            };
+
+            r.Add(first_trimester);
+            r.Add(second_trimester);
+            return r;
+        }
+
+        /// <summary>
+        /// Method that builds an entity that can be parse to json in order
+        /// to export the configuration of PyCPT
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="id"></param>
+        /// <param name="month_list"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public async Task<bool> exportConfigurationPyCpt(string path, string id, List<int> month_list,TypePyCPT type )
+        {
+            Country country = await db.country.byIdAsync(id);
+            var pycpt = type == TypePyCPT.seasonal ? country.conf_pycpt : country.subseasonal_pycpt;
+            var conf_pycpt = pycpt.Where(p => p.track.enable == true).OrderByDescending(o => o.track.register);
+            List<object> confs = new List<object>();
+            foreach (var con in conf_pycpt.Where(p=> month_list.Contains(p.month)))
+                confs.Add(new
+                {
+                    spatial_predictors = con.spatial_predictors.jsonConfiguration(),
+                    spatial_predictands = con.spatial_predictands.jsonConfiguration(),
+                    models = con.getModelsPyCPT(),
+                    obs = ConfigurationPyCPT.getNameObs(con.obs),
+                    station = con.station,
+                    mos = ConfigurationPyCPT.getNameMos(con.mos),
+                    predictand = ConfigurationPyCPT.getNamePredictand(con.predictand),
+                    predictors = ConfigurationPyCPT.getNamePredictors(con.predictors),
+                    mons = new string[] { months[con.month - 1], months[con.month - 1] },
+                    //tgtii = new string[] { "1.5", "4.5" },
+                    //tgtff = new string[] { "3.5", "6.5" },
+                    tgtii = new string[] { "0.5", "3.5" },
+                    tgtff = new string[] { "4.5", "6.5" },
+                    tgts = calculatePeriodsPyCPT(con.month),
+                    tini = con.ranges_years.min.ToString(),
+                    tend = con.ranges_years.max.ToString(),
+                    xmodes_min = con.xmodes.min.ToString(),
+                    xmodes_max = con.xmodes.max.ToString(),
+                    ymodes_min = con.ymodes.min.ToString(),
+                    ymodes_max = con.ymodes.max.ToString(),
+                    ccamodes_min = con.ccamodes.min.ToString(),
+                    ccamodes_max = con.ymodes.max.ToString(),
+                    force_download = con.force_download,
+                    single_models = con.single_models,
+                    forecast_anomaly = con.forecast_anomaly,
+                    forecast_spi = con.forecast_spi,
+                    confidence_level = con.confidence_level.ToString()
+                });
+            var jsn = JsonConvert.SerializeObject(confs);
+            string full_path = path + Enum.GetName(typeof(TypePyCPT), type) + "_pycpt.json";
+            if (File.Exists(full_path))
+                File.Delete(full_path);
+            File.WriteAllText(full_path, jsn);
+            return true;
+        }
+
+        public async Task<bool> exportCoordsWsPycptAsync(string path, string mainCountry, string mainState = null)
+        {
+            // Create directory
+            /*if (!Directory.Exists(path + Program.settings.Out_PATH_WSPYCPT_FILES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_WSPYCPT_FILES);*/
+            var weather_stations = await db.weatherStation.listEnableAsync();
+            if (mainCountry != null && mainState == null)
+            {
+                foreach (var ws in weather_stations.Where(p => p.visible))
+                {
+                    var municipality = await db.municipality.byIdAsync(ws.municipality.ToString());
+                    var state = await db.state.byIdAsync(municipality.state.ToString());
+                    var country = await db.country.byIdAsync(state.country.ToString());
+                    if (country.id.ToString() == mainCountry)
+                    {
+                        Console.WriteLine("Exporting coords ws: " + ws.name);
+                        StringBuilder coords = new StringBuilder();
+                        if (!File.Exists(path + "stations_coords.csv"))
+                        {
+                            coords.Append("id,lat,lon\n");
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.WriteAllText(path + "stations_coords.csv", coords.ToString());
+                        }
+                        else
+                        {
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.AppendAllText(path  + "stations_coords.csv", coords.ToString());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var state = await db.state.byIdAsync(mainState);
+                var country = await db.country.byIdAsync(state.country.ToString());
+                var municipalities = await db.municipality.listEnableAsync();
+                foreach (var municipality in municipalities.Where(p => p.visible && p.state == state.id))
+                {
+                    foreach (var ws in weather_stations.Where(q => q.visible && q.municipality == municipality.id))
+                    {
+                        Console.WriteLine("Exporting coords ws: " + ws.name);
+                        StringBuilder coords = new StringBuilder();
+                        if (!File.Exists(path + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv"))
+                        {
+                            coords.Append("id,lat,lon\n");
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.WriteAllText(path + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                        }
+                        else
+                        {
+                            coords.Append(ws.id.ToString() + "," + ws.latitude.ToString() + "," + ws.longitude.ToString() + "\n");
+                            File.AppendAllText(path  + state.id.ToString() + Path.DirectorySeparatorChar + "stations_coords.csv", coords.ToString());
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
     }

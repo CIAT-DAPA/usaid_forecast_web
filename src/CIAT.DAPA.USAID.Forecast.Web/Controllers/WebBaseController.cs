@@ -16,14 +16,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
     public abstract class WebBaseController : Controller
     {
         protected IHostingEnvironment hostingEnvironment { get; set; }
-
         protected RepositoryWeatherStations rWS { get; set; }
-
         protected string Root { get; set; }
-
+        protected string IdCountry { get; set; }
         protected IEnumerable<WeatherStationFull> WeatherStations { get; set; }
         protected List<WeatherStationFullCrop> WeatherStationsCrops { get; set; }
-
+        protected Settings Configurations { get; set; }
+        
         /// <summary>
         /// Method Construct
         /// </summary>
@@ -32,8 +31,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         public WebBaseController(IOptions<Settings> settings, IHostingEnvironment environment) : base()
         {
             hostingEnvironment = environment;
+            Configurations = settings.Value;
             Root = settings.Value.api_fs;
-            rWS = new RepositoryWeatherStations(Root);
+            IdCountry = settings.Value.idCountry;            
+            rWS = new RepositoryWeatherStations(Root, IdCountry);
             try
             {
                 Task.Run(() => this.InitAsync()).Wait(350000);
@@ -43,6 +44,16 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+        }
+
+        /// <summary>
+        /// Method that load the permission for modules
+        /// </summary>
+        protected void loadModules()
+        {
+            ViewBag.modules_indicators = Configurations.modules_indicators;
+            ViewBag.modules_maize = Configurations.modules_maize;
+            ViewBag.modules_rice = Configurations.modules_rice;
         }
 
         /// <summary>
@@ -89,6 +100,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             // Setting data
             ViewBag.WeatherStations = WeatherStations;
             ViewBag.WeatherStationsCrops = WeatherStationsCrops;
+            loadModules();
         }
 
         protected WeatherStationFull SearchWS(string state, string municipality, string ws)

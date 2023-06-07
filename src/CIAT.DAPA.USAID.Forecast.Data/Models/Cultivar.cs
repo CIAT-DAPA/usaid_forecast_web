@@ -57,5 +57,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Track track { get; set; }
+        /// <summary>
+        /// List of Cultivar threshold
+        /// </summary>
+        public IEnumerable<Threshold> threshold { get; set; }
+        /// <summary>
+        /// Country in which is located this cultivar
+        /// </summary>
+        [Display(Name = "País"), Required(ErrorMessage = "Es obligatorio indicar el país")]
+        [BsonRequired]
+        public ObjectId country { get; set; }
     }
 }

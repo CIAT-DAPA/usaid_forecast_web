@@ -98,20 +98,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Home {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to About.
         /// </summary>
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public static string Title1 {
-            get {
-                return ResourceManager.GetString("Title1", resourceCulture);
             }
         }
         

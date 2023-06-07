@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Views
 {
     public class WeatherStationFull: WeatherStation
-    {        
+    {
+        public string Country { get; set; }
         public string State { get; set; }     
         public string Municipality { get; set; }
         public string Station { get; set; }

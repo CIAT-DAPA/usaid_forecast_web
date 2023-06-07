@@ -53,7 +53,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.ws = ws;
 
                 // Getting the agronomic configuration
-                RepositoryAgronomic rA = new RepositoryAgronomic(Root);
+                RepositoryAgronomic rA = new RepositoryAgronomic(Root, IdCountry);
                 IEnumerable<Agronomic> agronomics = await rA.ListAsync();
                 Agronomic agronomic = agronomics.SingleOrDefault(p => p.Cp_Name.ToLower() == crop.ToLower());
                 

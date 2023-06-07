@@ -70,6 +70,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Save {
@@ -84,6 +93,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Resources.Views.State {
         public static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State name.
+        /// </summary>
+        public static string StateName {
+            get {
+                return ResourceManager.GetString("StateName", resourceCulture);
             }
         }
         

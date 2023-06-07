@@ -12,6 +12,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         Expert,
         Glossary,
         About,
-        Map
+        Map,
+        Indicators
     }
 }

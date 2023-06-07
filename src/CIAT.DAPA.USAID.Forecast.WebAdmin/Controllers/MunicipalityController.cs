@@ -32,14 +32,43 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
+        private async Task<PermissionList> LoadEnableByPermission()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            var countries = await db.country.listEnableAsync();
+            val.countries = countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listEnableAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            var states_ids = val.states.Select(p => p.id).ToList();
+            val.municipalities = await db.municipality.listEnableAsync();
+            val.municipalities = val.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
+            return val;
+        }
+
+        private async Task<PermissionList> LoadAllByPermission()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listAllAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listAllAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            var states_ids = val.states.Select(p => p.id).ToList();
+            val.municipalities = await db.municipality.listAllAsync();
+            val.municipalities = val.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
+            return val;
+        }
+
         // GET: /Municipality/
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var list = await db.municipality.listEnableAsync();
-                ViewBag.states = await db.state.listEnableAsync();                
+                var obj = await LoadAllByPermission();
+                var list = obj.municipalities;
+                ViewBag.states = obj.states;
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -131,13 +160,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
-                await generateListStatesAsync(entity.state.ToString());
+                await generateAllListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                await generateListStatesAsync(entity.state.ToString());
+                await generateAllListStatesAsync(entity.state.ToString());
                 return View(entity);
             }
         }
@@ -223,8 +252,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
         private async Task<bool> generateListStatesAsync(string selected)
         {
-            var states = (await db.state.listEnableAsync()).Select(p => new { id = p.id.ToString(), name = p.name });
+            var obj = await LoadEnableByPermission();
+            var states = obj.states.Select(p => new { id = p.id.ToString(), name = p.name });
             if(string.IsNullOrEmpty(selected))
+                ViewData["state"] = new SelectList(states, "id", "name");
+            else
+                ViewData["state"] = new SelectList(states, "id", "name", selected);
+            return states.Count() > 0;
+        }
+        private async Task<bool> generateAllListStatesAsync(string selected)
+        {
+            var obj = await LoadAllByPermission();
+            var states = obj.states.Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
                 ViewData["state"] = new SelectList(states, "id", "name");
             else
                 ViewData["state"] = new SelectList(states, "id", "name", selected);

@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Meta_Description"] = "Indicadores de riesgo agroclimático";
+    ViewData["Meta_Keywords"] = "indicadores,indicadores de riesgo climático";
+}
+
+<div id="containerBlock">
+    <section class="col-md-12 sections">
+        <div class="row section-content">
+            <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
+            <p class="text-justify">
+                Este visualizador de mapas agroclimáticos é uma plataforma interativa que permite aos usuários,
+                principalmente extensionistas, quadros técnicos e entidades tomadoras de decisões, a visualizar
+                informações espaciais históricas sobre indicadores agroclimáticos (por exemplo, necessidade
+                hídrica das culturas, períodos secos, períodos chuvosos, ondas de calor, condições de défice
+                e excesso) específicos para as zonas de produção de milho, feijão, soja e café de Angola.
+                Os mapas obtidos através desta ferramenta podem ser utilizados para diversos fins, tais como:<br />
+                <ol>
+                    <li>
+                        Conhecer os padrões espaciais médios dos indicadores agroclimáticos mencionados acima.
+                    </li>
+                    <li>
+                        Explorar como fases específicas do fenômeno El Niño-Oscilação do Sul (ENSO) (ou seja, “El Niño”,
+                        “La Niña”) afetaram historicamente as condições de necessidade hídrica em milho, feijão, e
+                        em regiões de produção de soja e café.
+                    </li>
+                    <li>
+                        Identificar as regiões agrícolas com maior probabilidade de serem afetadas por secas, inundações e ondas de calor.
+                    </li>
+                </ol>
+                Todos os indicadores agroclimáticos foram calculados para as campanhas regulares de milho
+                (setembro-abril), feijão (novembro-março), soja (outubro-abril) e café (setembro-agosto);
+                usando informações climáticas históricas para o período 1981-2020. Adicionalmente, foram 
+                considerados seis eventos El Niño (1982-1983, 1987-1988, 1991-1992, 1997-1998, 2009-2010, 
+                2015-2016) e seis eventos La Niña (1984-1985, 1988-1989, 1998-1999, 1999-2000, 2007-2008, 
+                2010-2011), a fim de caracterizar o comportamento dos diferentes indicadores nessas fases 
+                do fenômeno ENSO.
+            </p>
+            <div class="row">
+                    <div class="row form-group border border-dark">
+                                <label class="col-lg-1 control-label" for="cbo_crop">
+                                    @Localizer["Crop"]
+                                </label>
+                                <div class="col-lg-2">
+                                    @Html.DropDownList("cbo_crop", new SelectList(ViewBag.indicators_crops, "CropID", "Crop"), new { @class = "form-control", onchange = "update_maps()" })
+                                </div>
+                                <label class="col-lg-2 control-label" for="cbo_group">
+                                    @Localizer["Group"]
+                                </label>
+                                <div class="col-lg-2">
+                                    @Html.DropDownList("cbo_group", new SelectList(ViewBag.indicators_group, "GroupID", "Group"), new { @class = "form-control", onchange = "update_maps()" })
+                                </div>
+                                <label class="col-lg-1 control-label" for="cbo_time">
+                                    @Localizer["Time"]
+                                </label>
+                                <div class="col-lg-2">
+                                    @Html.DropDownList("cbo_time", new SelectList(ViewBag.period, "Value", "Text"), new { @class = "form-control", onchange = "update_time()" })
+                                </div>
+                                <label class="col-lg-1 control-label" for="cbo_compare">
+                                    @Localizer["Compare"]
+                                </label>
+                                <div class="col-lg-1">
+                                    @Html.DropDownList("cbo_compare", new SelectList(ViewBag.compare, "Value", "Text"), new { @class = "form-control", onchange = "update_maps()" })
+                                </div>
+                    </div>                
+            </div>
+            <br />
+            <div id="maps_section">
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section Scripts {    
+    <script type="text/javascript" src="~/js/map/maps_indicators.js"></script>
+    <script type="text/javascript">
+
+    var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
+    scales = {
+        heavy_rainfall: ['#f7fcf0', '#e0f3db', '#ccebc5', '#a8ddb5', '#7bccc4', '#4eb3d3', '#2b8cbe', '#0868ac', '#084081', '#08306b'],
+        water_demand: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026' ],
+        dry_spells: ['#ffffe5', '#fff7bc', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404', '#7f2704', '#662506'],
+        heat_waves: ['#ffffcc', '#ffeda0', '#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c', '#bd0026', '#800026', '#67000d'],
+        spei: ['#b2182b', '#ef8a62', '#fddbc7', '#f7f7f7', '#d1e5f0', '#67a9cf','#2166ac']
+    };
+    categories_title = '@Html.Raw(Localizer["Categories"].Value.ToString())';
+    geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
+    geoserver_workspace = "@Html.Raw(ViewBag.geoserver_workspace)";
+    conf = { latitude: ws[0].latitude, longitude: ws[0].longitude, zoom: 5 };    
+    layers_all = @Html.Raw(Json.Serialize(ViewBag.indicators_list));
+    update_maps();
+    window.loading_screen.finish();
+    </script>
+}

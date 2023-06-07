@@ -126,6 +126,9 @@
   <data name="MenuClimatology" xml:space="preserve">
     <value>Climatology</value>
   </data>
+  <data name="MenuCountry" xml:space="preserve">
+    <value>Country</value>
+  </data>
   <data name="MenuCrops" xml:space="preserve">
     <value>Crops</value>
   </data>
@@ -152,6 +155,12 @@
   </data>
   <data name="MenuProduction" xml:space="preserve">
     <value>Production</value>
+  </data>
+  <data name="MenuRecommendation" xml:space="preserve">
+    <value>Recommendations</value>
+  </data>
+  <data name="MenuSetups" xml:space="preserve">
+    <value>Setups</value>
   </data>
   <data name="MenuSoils" xml:space="preserve">
     <value>Soils</value>

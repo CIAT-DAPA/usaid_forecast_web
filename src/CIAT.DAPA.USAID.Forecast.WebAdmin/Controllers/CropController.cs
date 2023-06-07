@@ -92,7 +92,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
-                entity.setup = new List<Setup>();
+                //entity.setup = new List<Setup>();
                 if (ModelState.IsValid)
                 {
                     await db.crop.insertAsync(entity);
@@ -233,8 +233,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var cu = await db.cultivar.listEnableAsync();
                 var so = await db.soil.listEnableAsync();
                 List<CropSetup> entities = new List<CropSetup>();
-                foreach (var c in entity.setup)
-                    entities.Add(new CropSetup(c, ws, cu, so));
+                //foreach (var c in entity.setup)
+                //    entities.Add(new CropSetup(c, ws, cu, so));
                 // Fill the select list
                 ViewBag.weather_station = new SelectList(ws, "id", "name");
                 ViewBag.cultivar = new SelectList(cu.Where(p => p.crop == entity.id), "id", "name");
@@ -291,7 +291,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }
                 // Set the files to the setup entity
                 setup.conf_files = files;
-                await db.crop.addSetupAsync(entity_new, setup);
+                //await db.crop.addSetupAsync(entity_new, setup);
                 await writeEventAsync(id + " setup add: " + setup.weather_station.ToString() + "|" + setup.cultivar.ToString() + "|" + setup.soil.ToString() + "|" + setup.days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = id });
             }
@@ -312,7 +312,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 // Get original crop data
                 Crop entity_new = await db.crop.byIdAsync(crop);
                 // Delete the setup
-                await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
+                //await db.crop.deleteSetupAsync(entity_new, ws, cu, so, days);
                 await writeEventAsync(crop + " setup del: " + ws + "|" + cu + "|" + so + "|" + days.ToString(), LogEvent.upd);
                 return RedirectToAction("Setup", new { id = crop });
             }
@@ -320,6 +320,95 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             {
                 await writeExceptionAsync(ex);
                 return RedirectToAction("Setup", new { id = crop });
+            }
+        }
+
+        // GET: /Crop/CropConfig/5
+        [HttpGet]
+        public async Task<IActionResult> CropConfig(string id)
+        {
+            Crop entity = null;
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                entity = await db.crop.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                // Set data for the view
+                ViewBag.cp_name = entity.name;
+                ViewBag.cp_id = entity.id;
+                // Get data 
+
+                List<CropConfig> entities = new List<CropConfig>();
+                if (entity.crop_config != null)
+                {
+                    entities = (List<CropConfig>)entity.crop_config;
+                }
+
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                return View(entities);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+
+        // POST: /Crop/CropConfig/5
+        [HttpPost, ActionName("CropConfig")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CropConfigAdd(string id)
+        {
+            try
+            {
+                // Get original weather station data
+                var form = HttpContext.Request.Form;
+                Crop entity_new = await db.crop.byIdAsync(id);
+                // Instance the new range entity
+                CropConfig crop_config = new CropConfig()
+                {
+                    label = form["label"],
+                    min = double.Parse(form["min"]),
+                    max = double.Parse(form["max"]),
+                    type = form["type"]
+                };
+                await db.crop.addCropConfigAsync(entity_new, crop_config);
+                await writeEventAsync(id + "Crop Configuration add: " + crop_config.label + "-" + crop_config.min.ToString() + "-" + crop_config.max.ToString() + "-" + crop_config.type.ToString(), LogEvent.upd);
+                return RedirectToAction("CropConfig", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("CropConfig", new { id = id });
+            }
+        }
+
+        // POST: /Crop/CropConfigDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CropConfigDelete(string crop, string label, double min, double max, string type)
+        {
+            try
+            {
+                // Get original crop data
+                Crop entity_new = await db.crop.byIdAsync(crop);
+                // Delete the setup
+                await db.crop.deleteCropConfigAsync(entity_new, label, min, max, type);
+                await writeEventAsync(crop + "Configuration del: " + label + "-" + min.ToString() + "-" + max.ToString(), LogEvent.upd);
+                return RedirectToAction("CropConfig", new { id = crop });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("CropConfig", new { id = crop });
             }
         }
     }

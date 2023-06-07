@@ -1,0 +1,59 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Recommendation
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>@Localizer["Recommendation"]</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.country)
+        </dt>
+
+        <dd>
+            @Model.country.ToString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type_enum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type_enum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type_resp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type_resp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lang)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.resp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.resp)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = Model.id }) |
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
+</p>

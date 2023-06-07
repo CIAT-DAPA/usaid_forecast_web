@@ -38,13 +38,37 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
+        private async Task<PermissionList> LoadEnableByPermissionAsync()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listEnableAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listEnableAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            return val;
+        }
+
+        private async Task<PermissionList> LoadAllByPermissionAsync()
+        {
+            UserPermission permission = await getPermissionAsync();
+            PermissionList val = new PermissionList();
+            val.countries = await db.country.listAllAsync();
+            val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
+            val.states = await db.state.listAllAsync();
+            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            return val;
+        }
+
         // GET: /State/
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var list = await db.state.listEnableAsync();
+                var obj = await LoadEnableByPermissionAsync();
+                var list = obj.states;                
+                ViewBag.countries = obj.countries;
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -62,6 +86,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                ViewBag.countries = await db.country.listAllAsync();
                 if (string.IsNullOrEmpty(id))
                 {
                     await writeEventAsync("Search without id", LogEvent.err);
@@ -85,8 +110,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /State/Create
         [HttpGet]
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await generateListCountriesAsync(string.Empty);
             return View();
         }
 
@@ -97,6 +123,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                entity.country = getId(HttpContext.Request.Form["country"].ToString());
                 if (ModelState.IsValid)
                 {
                     await db.state.insertAsync(entity);
@@ -104,11 +131,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
+                await generateListCountriesAsync(string.Empty);
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
+                await generateListCountriesAsync(string.Empty);
                 return View(entity);
             }
         }
@@ -117,6 +146,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
+            State entity = null;
             try
             {
                 if (string.IsNullOrEmpty(id))
@@ -124,18 +154,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     await writeEventAsync("Search without id", LogEvent.err);
                     return new BadRequestResult();
                 }
-                State entity = await db.state.byIdAsync(id);
+                entity = await db.state.byIdAsync(id);
                 if (entity == null)
                 {
                     await writeEventAsync("Not found id: " + id, LogEvent.err);
                     return new NotFoundResult();
                 }
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
+                await generateListAllCountriesAsync(entity.country.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
+                await generateListAllCountriesAsync(entity.country.ToString());
                 return View();
             }
         }
@@ -147,6 +179,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                entity.country = getId(HttpContext.Request.Form["country"].ToString());
                 if (ModelState.IsValid)
                 {
                     State current_entity = await db.state.byIdAsync(id);
@@ -157,11 +190,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return RedirectToAction("Index");
                 }
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
+                await generateListAllCountriesAsync(entity.country.ToString());
                 return View(entity);
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
+                UserPermission permission = await getPermissionAsync();
+                await generateListAllCountriesAsync(entity.country.ToString());
                 return View(entity);
             }
         }
@@ -218,6 +254,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                ViewBag.countries = await db.country.listAllAsync();
                 if (string.IsNullOrEmpty(id))
                 {
                     await writeEventAsync("Search without id", LogEvent.err);
@@ -324,11 +361,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
             catch (Exception ex)
             {
+
                 await writeExceptionAsync(ex);
                 msg = new Message() { content = "Import MWS. An error occurred in the system, contact the administrator", type = MessageType.error };
             }
             ViewBag.message = msg;
-            return View("Import", entity);
+            ViewBag.countries = await db.country.listAllAsync();
+            return View("Import", entity );
         }
 
         // GET: /State/Configuration/5
@@ -337,6 +376,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             try
             {
+                ViewBag.countries = await db.country.listAllAsync();
                 if (string.IsNullOrEmpty(id))
                 {
                     await writeEventAsync("Search without id", LogEvent.err);
@@ -441,6 +481,98 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             var quarters = from Quarter q in Enum.GetValues(typeof(Quarter))
                            select new { id = (int)q, name = q.ToString() };
             ViewBag.trimester = new SelectList(quarters, "id", "name");
+        }
+
+        /// <summary>
+        /// Method that create a select list with the countries available
+        /// </summary>
+        /// <param name="selected">The id of the entity, if it is empty or null, it will takes the first</param>
+        private async Task<bool> generateListCountriesAsync(string selected)
+        {
+            var obj = await LoadEnableByPermissionAsync();
+            // Filter states by permission by countries            
+            var countries = obj.countries.Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
+                ViewData["country"] = new SelectList(countries, "id", "name");
+            else
+                ViewData["country"] = new SelectList(countries, "id", "name", selected);
+            return countries.Count() > 0;
+        }
+        private async Task<bool> generateListAllCountriesAsync(string selected)
+        {
+            var obj = await LoadAllByPermissionAsync();            
+            var countries = obj.countries.Select(p => new { id = p.id.ToString(), name = p.name });
+            if (string.IsNullOrEmpty(selected))
+                ViewData["country"] = new SelectList(countries, "id", "name");
+            else
+                ViewData["country"] = new SelectList(countries, "id", "name", selected);
+            return countries.Count() > 0;
+        }
+        // GET: /Country/ConfigurationPyCpt/5
+        [HttpGet]
+        public async Task<IActionResult> ConfigurationPyCpt(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    await writeEventAsync("Search without id", LogEvent.err);
+                    return new BadRequestResult();
+                }
+                State entity = await db.state.byIdAsync(id);
+                if (entity == null)
+                {
+                    await writeEventAsync("Not found id: " + id, LogEvent.err);
+                    return new NotFoundResult();
+                }
+                await writeEventAsync("Search id: " + id, LogEvent.rea);
+                generateListsPyCPT();
+                return View(entity);
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return View();
+            }
+        }
+        
+        // POST: /Satate/ConfigurationPyCpt/5
+        [HttpPost, ActionName("ConfigurationPyCpt")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationPyCptAdd(string id)
+        {
+            try
+            {
+                var form = HttpContext.Request.Form;
+                State entity = await db.state.byIdAsync(id);
+                ConfigurationPyCPT confPyCpt = generatePyCPTConfAsync(form);
+                await db.state.addConfigurationPyCpt(entity, confPyCpt);
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+        }
+        // POST: /Country/ConfigurationDelete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfigurationPyCptDelete(string id, int month, long register)
+        {   
+            try
+            {
+                // Get original crop data
+                State entity_new = await db.state.byIdAsync(id);
+                // Delete the setup
+                await db.state.deleteConfigurationPyCPTAsync(entity_new, month, register);
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
+            catch (Exception ex)
+            {
+                await writeExceptionAsync(ex);
+                return RedirectToAction("ConfigurationPyCpt", new { id = id });
+            }
         }
     }
 }

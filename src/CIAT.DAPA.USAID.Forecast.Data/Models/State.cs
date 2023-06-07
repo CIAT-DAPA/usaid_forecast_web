@@ -29,7 +29,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         //[Display(Name = "Country"), Required(ErrorMessage = "The country is required")]
         [Display(Name = "País"), Required(ErrorMessage = "País es obligatorio")]
         [BsonRequired]
-        public Country country { get; set; }
+        public ObjectId country { get; set; }
         /// <summary>
         /// Contains the configurations of each quarter for the execution of cpt
         /// </summary>
@@ -39,5 +39,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]        
         public Track track { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        //[BsonRequired]
+        public IEnumerable<ConfigurationPyCPT> conf_pycpt { get; set; }
     }
 }

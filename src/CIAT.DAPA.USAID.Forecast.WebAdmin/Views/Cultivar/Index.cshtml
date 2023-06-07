@@ -54,7 +54,8 @@
             <td>
                 @Html.ActionLink(Localizer["Edit"].Value, "Edit", new { id = item.id }) |
                 @Html.ActionLink(Localizer["Details"].Value, "Details", new { id = item.id }) |
-                @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id })
+                @Html.ActionLink(Localizer["Delete"].Value, "Delete", new { id = item.id }) |
+                @Html.ActionLink(Localizer["Threshold"].Value, "Threshold", new { id = item.id })
             </td>
         </tr>
     }

@@ -1,0 +1,51 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Recommendation
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>@Localizer["Message"]</h3>
+<div>
+    <h4>@Localizer["Recommendation"]</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.country)
+        </dt>
+
+        <dd>
+            @Model.country.ToString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type_enum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type_resp)
+        </dd>
+
+        <dt>
+            @Html.DisplayFor(model => model.lang)
+        </dt>
+
+        <dd>
+            @Html.DisplayNameFor(model => model.resp)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id)
+
+        <div class="form-actions no-color">
+            <input type="submit" value="@Localizer["DeleteRecord"]" class="btn btn-default" /> |
+            @Html.ActionLink(Localizer["Back"].Value, "Index")
+        </div>
+    }
+</div>

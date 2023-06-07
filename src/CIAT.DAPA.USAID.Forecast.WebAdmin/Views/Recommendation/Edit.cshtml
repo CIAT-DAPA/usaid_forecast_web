@@ -1,0 +1,74 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Recommendation
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>@Localizer["Recommendation"]</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.country, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.country, selectList: (SelectList)ViewData["country"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.type_enum, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.type_enum, selectList: (SelectList)ViewData["enum"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.type_enum, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.type_resp, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.type_resp, selectList: (SelectList)ViewData["resp"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.type_resp, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.lang, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.lang, selectList: (SelectList)ViewData["lang"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.lang, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.resp, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.TextAreaFor(model => model.resp, htmlAttributes: new { @class = "form-control", @cols = 80, @rows = 10 })
+                @Html.ValidationMessageFor(model => model.resp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
+</div>

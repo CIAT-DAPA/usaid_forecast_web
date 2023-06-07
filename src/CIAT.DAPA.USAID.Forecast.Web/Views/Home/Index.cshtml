@@ -11,7 +11,7 @@
             <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
             <p class="text-justify">
                 @Localizer["Description"]
-            </p>
+            </p>            
             <div id="map">
             </div>
         </div>
@@ -21,7 +21,7 @@
 
 @section Scripts {
     <script src="~/js/map/map.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript">        
         var models = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
         var crops = @Html.Raw(Json.Serialize(ViewBag.WeatherStationsCrops));
         plot_map('map', models, crops);

@@ -8,6 +8,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
     public enum LogEntity
     {
         /// <summary>
+        /// Countries' table
+        /// </summary>
+        lc_country,
+        /// <summary>
         /// States' table
         /// </summary>
         lc_state,
@@ -20,6 +24,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         lc_weather_station,
         /// <summary>
+        /// Setup table
+        /// </summary>
+        cp_setup,
+        /// <summary>
         /// Crops' table
         /// </summary>
         cp_crop,
@@ -31,6 +39,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// Cultivars' table
         /// </summary>
         cp_cultivar,
+        /// <summary>
+        /// Recommendation table
+        /// </summary>
+        cp_recommendation,
         /// <summary>
         /// Administrative log table
         /// </summary>
@@ -68,6 +80,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         fs_forecast_climate,
         /// <summary>
+        /// Phenological phase forecast table
+        /// </summary>
+        fs_forecast_phen_phase,
+        /// <summary>
         /// Users table
         /// </summary>
         users,
@@ -78,6 +94,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// Source table
         /// </summary>
-        ad_source
+        ad_source,
+        /// <summary>
+        /// User permission
+        /// </summary>
+        ad_user_permission
     }
 }

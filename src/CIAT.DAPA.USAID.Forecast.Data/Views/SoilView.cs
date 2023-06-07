@@ -9,5 +9,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Views
     {
         public string id { get; set; }
         public string name { get; set; }
+        public string country_id { get; set; }
     }
 }

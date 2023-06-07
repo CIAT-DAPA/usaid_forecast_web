@@ -123,6 +123,9 @@
   <data name="Back" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="Countries" xml:space="preserve">
+    <value>Countries</value>
+  </data>
   <data name="EditCMD" xml:space="preserve">
     <value>Edit</value>
   </data>

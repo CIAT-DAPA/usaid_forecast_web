@@ -1,0 +1,106 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Setup
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("EditSetup", "Setup", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <fieldset>
+            <h4>@Localizer["Crop"]</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id)
+            <div class="form-group">
+                <label for="crop" class="control-label col-md-2">@Localizer["Crop"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("crop", (SelectList)ViewData["crop"], @Localizer["SelectCrop"].Value, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="weather_station" class="control-label col-md-2">@Localizer["WS"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("weather_station", (SelectList)ViewData["ws"], @Localizer["SelectWS"].Value, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cultivar" class="control-label col-md-2">@Localizer["Cultivar"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("cultivar", (SelectList)ViewData["cultivar"], @Localizer["SelectCultivar"].Value, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="soil" class="control-label col-md-2">@Localizer["Soil"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("soil", (SelectList)ViewData["soil"], @Localizer["SelectSoil"].Value, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="days" class="control-label col-md-2">@Localizer["Days"]:</label>
+                <div class="col-md-10">
+                    @Html.Editor("days", null, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>@Localizer["ConfFile"]</legend>
+            <table class="table" id="edit_files">
+                <thead>
+                    <tr>
+                        <th>@Localizer["File"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul>
+                                @foreach (var item in Model.conf_files.Select((value, i) => new { i, value }))
+                                {
+                                <li>
+                                    @Html.ActionLink(@item.value.name, "Download", "Home", new { file = @item.value.path.Split('\\').Last(), type = 1 }, new { target = "_blank" })
+                                    <button type="button" id="delete_file_@item.i" value="" title="Delete file" class="btn btn-default" onclick="deleteFileConf(@item.i,'@Model.id')"><img class="img_delete_file" src="~/images/trash.png" /></button>
+                                </li>
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <div class="col-md-">
+                    <input type="button" id="add_file" value="@Localizer["AddFile"]" class="btn btn-default" />
+                </div>
+            </div>
+            <table class="table" id="conf_files">
+                <thead>
+                    <tr>
+                        <th>@Localizer["ParameterName"]</th>
+                        <th>@Localizer["File"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
+</div>
+
+@section Scripts {
+    <script src="~/js/setup.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" type="text/css"/>
+}
