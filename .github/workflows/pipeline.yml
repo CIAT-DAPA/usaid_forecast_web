@@ -1,0 +1,122 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Devops AClimate System
+
+on:
+  push:
+    branches: [ "stage" ]
+    tags:
+    - 'v*'
+
+
+permissions:
+  contents: read
+
+jobs:
+
+# ------- START API PROCCESS -------- #
+
+  TestApi:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 2.2.X
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+
+# ------- END API PROCCESS -------- #    
+
+
+
+# ------- START MERGE PROCCESS -------- #
+
+  MergeMasterApi:
+    needs: [TestApi]
+    name: Merge Pre deploy with Master
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge pre_deploy -> master
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          head_to_merge: ${{ github.ref }}
+          target_branch: master
+          github_token: ${{ github.token }}
+
+# ------- END MERGE PROCCESS -------- #
+
+# ------- START RELEASE PROCCESS -------- #
+
+  PostRelease:
+    needs: MergeMasterApi
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+    - uses: actions/setup-node@v3
+      with:
+          node-version: 18
+    # API Zip
+    - name: Zip artifact for deployment
+      run: zip releaseApi.zip ./src/* -r
+    # Upload Artifacts
+    - name: Upload Api artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: WebApi
+        path: releaseApi.zip
+    # Generate Tagname
+    - name: Generate Tagname for release
+      id: taggerDryRun
+      uses: anothrNick/github-tag-action@1.61.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+        DRY_RUN: true
+        DEFAULT_BUMP: patch
+        RELEASE_BRANCHES : stage,master
+        BRANCH_HISTORY: last
+    # Create release
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        tag_name: ${{ steps.taggerDryRun.outputs.new_tag }}
+        release_name: Release ${{ steps.taggerDryRun.outputs.new_tag }}
+        #body_path: ./body.md
+        body: ${{ github.event.head_commit.message }}
+        draft: false
+        prerelease: false
+    # Upload Assets to release
+    - name: Upload Release Asset API
+      id: upload-api-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./releaseApi.zip
+        asset_name: releaseApi.zip
+        asset_content_type: application/zip
+
+# ------- END RELEASE PROCCESS -------- #
+      
