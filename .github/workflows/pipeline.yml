@@ -35,6 +35,10 @@ jobs:
       run: mkdir -p ./publish/WebApi
     - name: Create Output test Directory WebApi
       run: mkdir -p ./TestResults/WebApi
+    - name: Remove Previous Publish Folder
+      run: rm -rf ./publish/WebApi/*
+    - name: Remove Previous TestResults Folder
+      run: rm -rf ./TestResults/WebApi/*
 
     - name: Build WebApi
       run: dotnet build src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAPI.csproj --configuration Release
@@ -66,6 +70,10 @@ jobs:
       run: mkdir -p ./publish/WebAdmin
     - name: Create Output test Directory WebAdmin
       run: mkdir -p ./TestResults/WebAdmin
+    - name: Remove Previous Publish Folder
+      run: rm -rf ./publish/WebAdmin/*
+    - name: Remove Previous TestResults Folder
+      run: rm -rf ./TestResults/WebAdmin/*
 
     - name: Build WebAdmin
       run: dotnet build src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release
@@ -119,10 +127,14 @@ jobs:
         dotnet-version: 2.2.X
 
     #Publish WebAdmin
-    - name: Publish $PROJECT_NAME
+    - name: Restore NuGet Packages
+      run: dotnet restore src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj
+    - name: Publish WebAdmin
       run: dotnet publish src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release -o ./publish/WebAdmin --no-restore
     #Publish WebApi
-    - name: Publish $PROJECT_NAME
+    - name: Restore NuGet Packages
+      run: dotnet restore src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAPI.csproj
+    - name: Publish WebApi
       run: dotnet publish src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAPI.csproj --configuration Release -o ./publish/WebApi --no-restore
 
     # API Zip
