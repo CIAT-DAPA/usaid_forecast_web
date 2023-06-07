@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PROYECT_NAME: CIAT.DAPA.USAID.Forecast
+      PROJECT_NAME: CIAT.DAPA.USAID.Forecast
 
     steps:
     - uses: actions/checkout@v3
@@ -31,20 +31,10 @@ jobs:
       with:
         dotnet-version: 2.2.X
 
-    - name: Create Output Directory WebAdmin
-      run: mkdir -p ./publish/WebAdmin
     - name: Create Output Directory WebApi
       run: mkdir -p ./publish/WebApi
-    - name: Create Output test Directory WebAdmin
-      run: mkdir -p ./TestResults/WebAdmin
     - name: Create Output test Directory WebApi
       run: mkdir -p ./TestResults/WebAPI
-
-    - name: Build WebAdmin
-      run: dotnet build src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release
-
-    - name: Test WebAdmin
-      run: dotnet test src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release --logger trx --results-directory TestResults/WebAdmin
 
     - name: Build WebApi
       run: dotnet build src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAdmin.csproj --configuration Release
@@ -56,12 +46,41 @@ jobs:
 
 # ------- END API PROCCESS -------- #    
 
+# ------- START API PROCCESS -------- #
+
+  TestAdmin:
+
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_NAME: CIAT.DAPA.USAID.Forecast
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 2.2.X
+
+    - name: Create Output Directory WebAdmin
+      run: mkdir -p ./publish/WebAdmin
+    - name: Create Output test Directory WebAdmin
+      run: mkdir -p ./TestResults/WebAdmin
+
+    - name: Build WebAdmin
+      run: dotnet build src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release
+
+    - name: Test WebAdmin
+      run: dotnet test src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release --logger trx --results-directory TestResults/WebAdmin
+
+
+# ------- END API PROCCESS -------- #    
 
 
 # ------- START MERGE PROCCESS -------- #
 
   MergeMasterApi:
-    needs: [TestApi]
+    needs: [TestApi, TestAdmin]
     name: Merge Pre deploy with Master
     permissions: write-all
     runs-on: ubuntu-latest
