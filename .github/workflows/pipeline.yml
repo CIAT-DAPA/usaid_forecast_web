@@ -120,10 +120,10 @@ jobs:
 
     #Publish WebAdmin
     - name: Publish $PROJECT_NAME
-      run: dotnet publish src/$PROJECT_NAME/$PROJECT_NAME.WebAdmin.csproj --configuration Release --output ./publish/WebAdmin --overwrite
+      run: dotnet publish src/$PROJECT_NAME.WebAdmin/$PROJECT_NAME.WebAdmin.csproj --configuration Release -o ./publish/WebAdmin --no-restore
     #Publish WebApi
     - name: Publish $PROJECT_NAME
-      run: dotnet publish src/$PROJECT_NAME/$PROJECT_NAME.WebApi.csproj --configuration Release --output ./publish/WebApi --overwrite
+      run: dotnet publish src/$PROJECT_NAME.WebAPI/$PROJECT_NAME.WebAPI.csproj --configuration Release -o ./publish/WebApi --no-restore
 
     # API Zip
     - name: Zip artifact for deployment
