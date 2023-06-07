@@ -26,6 +26,9 @@
             @Localizer["Type"]
         </th>
         <th>
+            @Localizer["Lang"]
+        </th>
+        <th>
             @Localizer["Response"]
         </th>
         <th></th>
@@ -44,6 +47,10 @@
     <td>
         @{ var t_reps = ((List<string>)ViewBag.type_resp).FirstOrDefault(p => p == item.type_resp); }
         @t_reps
+    </td>
+    <td>
+        @{ var langs = ((List<string>)ViewBag.langs).FirstOrDefault(p => p == item.lang); }
+        @langs
     </td>
     <td>
         @{ string resp = (item.resp.Length > 15 ? item.resp.Substring(0, 15) : item.resp); }

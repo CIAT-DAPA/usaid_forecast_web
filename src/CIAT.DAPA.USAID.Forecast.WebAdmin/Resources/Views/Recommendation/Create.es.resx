@@ -123,6 +123,9 @@
   <data name="country" xml:space="preserve">
     <value>País</value>
   </data>
+  <data name="lang" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
   <data name="Recommendation" xml:space="preserve">
     <value>Recomendación</value>
   </data>

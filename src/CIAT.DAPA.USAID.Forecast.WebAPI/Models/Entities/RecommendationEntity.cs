@@ -18,7 +18,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities
             string all_keys = "";
             foreach (var k in keys)
                 all_keys += "{\"tag\":\"" + (k.tag ?? "") + "\",\"value\":\"" + (k.value ?? "") + "\",\"id\":\"" + (k.id ?? "") + "\"}";
-            return ws_id + "," + ws_name + "," + Enum.GetName(typeof(RecommendationType), type) + ",\"" + content + "\"," + all_keys + "\n";
+            return ws_id + "," + ws_name + "," + type + ",\"" + content + "\"," + all_keys + "\n";
         }
     }
 }

@@ -23,7 +23,8 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var indexKeys = Builders<Recommendation>.IndexKeys.Combine(
                             Builders<Recommendation>.IndexKeys.Ascending(x => x.country),
                             Builders<Recommendation>.IndexKeys.Ascending(x => x.type_enum),
-                            Builders<Recommendation>.IndexKeys.Ascending(x => x.type_resp));
+                            Builders<Recommendation>.IndexKeys.Ascending(x => x.type_resp),
+                            Builders<Recommendation>.IndexKeys.Ascending(x => x.lang));
             var indexOptions = new CreateIndexOptions { Unique = false }; // if you want the index is unique
             var indexModel = new CreateIndexModel<Recommendation>(indexKeys, indexOptions);
             collection.Indexes.CreateOne(indexModel);
@@ -72,10 +73,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="ws">ID weather station array</param>
         /// <returns>List of the Forecast Climate</returns>
 
-        public async Task<IEnumerable<Recommendation>> byIndexAsync(ObjectId country, string type_enum, string type_resp)
+        public async Task<IEnumerable<Recommendation>> byIndexAsync(ObjectId country, string type_enum, string type_resp, RecommendationLang lang)
         {
             var builder = Builders<Recommendation>.Filter;
-            var filter = builder.And(builder.Eq(x => x.country, country), builder.Eq(x => x.type_enum, type_enum), builder.Eq(x => x.type_resp, type_resp));
+            var filter = builder.And(builder.Eq(x => x.country, country), builder.Eq(x => x.type_enum, type_enum), builder.Eq(x => x.type_resp, type_resp), builder.Eq(x => x.lang, lang.ToString()));
             var query = await collection.Find(filter).ToListAsync<Recommendation>();
             return query;
         }

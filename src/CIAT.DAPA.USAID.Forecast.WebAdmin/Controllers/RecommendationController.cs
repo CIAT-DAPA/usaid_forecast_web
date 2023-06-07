@@ -67,7 +67,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     resp.Add(en.ToString());
                 }
 
+                List<string> langs = new List<string>();
+                foreach (RecommendationLang lang in (RecommendationLang[])Enum.GetValues(typeof(RecommendationLang)))
+                {
+                    langs.Add(lang.ToString());
+                }
+
                 ViewBag.enums = enums;
+
+                ViewBag.langs = langs;
 
                 ViewBag.type_resp = resp;
 
@@ -117,6 +125,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             await generateListCountriesAsync("");
             await generateListEnumAsync("");
             await generateListRespAsync("");
+            await generateListLangAsync("");
             return View();
         }
 
@@ -130,6 +139,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 entity.country = getId(HttpContext.Request.Form["country"].ToString());
                 entity.type_enum = HttpContext.Request.Form["type_enum"].ToString();
                 entity.type_resp = HttpContext.Request.Form["type_resp"].ToString();
+                entity.lang = HttpContext.Request.Form["lang"].ToString();
                 if (ModelState.IsValid)
                 {
                     await db.recommendation.insertAsync(entity);
@@ -166,6 +176,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await generateListCountriesAsync(entity.country.ToString());
                 await generateListEnumAsync(entity.type_enum.ToString());
                 await generateListRespAsync(entity.type_resp.ToString());
+                await generateListLangAsync(entity.lang.ToString());
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
@@ -293,6 +304,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewData["resp"] = new SelectList(resp);
             else
                 ViewData["resp"] = new SelectList(resp, selected);
+            return resp.Count() > 0;
+        }
+
+        private async Task<bool> generateListLangAsync(string selected)
+        {
+            // Filter states by permission by countries            
+            List<string> resp = new List<string>();
+            foreach (RecommendationLang lang in (RecommendationLang[])Enum.GetValues(typeof(RecommendationLang)))
+            {
+                resp.Add(lang.ToString());
+            }
+            if (string.IsNullOrEmpty(selected))
+                ViewData["lang"] = new SelectList(resp);
+            else
+                ViewData["lang"] = new SelectList(resp, selected);
             return resp.Count() > 0;
         }
     }

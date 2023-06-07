@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -39,5 +40,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [Display(Name = "Response"), Required(ErrorMessage = "Response is required")]
         [BsonRequired]
         public string resp { get; set; }
+        /// <summary>
+        /// language  of the recommendation
+        /// </summary>
+        [Display(Name = "Language"), Required(ErrorMessage = "Response is required")]
+        [BsonRequired]
+        public string lang { get; set; }
     }
 }

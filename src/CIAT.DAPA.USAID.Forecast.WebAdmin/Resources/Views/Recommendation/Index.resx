@@ -132,6 +132,9 @@
   <data name="Enum" xml:space="preserve">
     <value>Type of enum</value>
   </data>
+  <data name="Lang" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="New" xml:space="preserve">
     <value>New record</value>
   </data>

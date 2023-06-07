@@ -28,8 +28,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        [Route("api/[controller]/RecommendationYield/{weather_stations}/{format}")]
-        public async Task<IActionResult> RecommendationYield(string weather_stations, string format)
+        [Route("api/[controller]/RecommendationYield/{weather_stations}/{language}/{format}")]
+        public async Task<IActionResult> RecommendationYield(string weather_stations, string language, string format)
         {
             try
             {
@@ -52,7 +52,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                 List<RecommendationEntity> rc_ws = new List<RecommendationEntity>();
                 DateTime today = DateTime.Today;
-                today = today.AddDays(30);
+
+                RecommendationLang recommendation_lang;
+
+                if (Enum.IsDefined(typeof(RecommendationLang), language))
+                {
+                    Enum.TryParse(language, out recommendation_lang);
+                }
+                else
+                {
+                    recommendation_lang = RecommendationLang.eng;
+                }
+
+
+
                 // Loop for weather station
                 foreach (var station in fy.Select(p => p.weather_station).Distinct())
                 {
@@ -135,6 +148,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                                         new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
                                                         new RecommendationKey(){ tag = "date", value=yield_crop.start.ToString("yyyy-MM-dd")},
                                                         new RecommendationKey(){ tag = "yield", value=yield_data.avg.ToString()},
+                                                        new RecommendationKey(){ tag = "advisory", value=AdvisoryType.in_season.ToString()},
                                                     };
                                             RecommendationEntity recommentdation = new RecommendationEntity()
                                             {
@@ -158,17 +172,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                                             if (yield_data.avg > 0.66)
                                             {
-                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.above_normal.ToString());
+                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.above_normal.ToString(), recommendation_lang);
 
 
                                             }
                                             else if (yield_data.avg > 0.33)
                                             {
-                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.normal.ToString());  
+                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.normal.ToString(), recommendation_lang);  
                                             }
                                             else
                                             {
-                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.below_normal.ToString());
+                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.below_normal.ToString(), recommendation_lang);
                                                 
                                             }
 
@@ -182,7 +196,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                             }
                                             else
                                             {
-                                                recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString();
+                                                recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString() + " and this langauges: " + recommendation_lang;
                                             }
 
                                             is_inseason = true;
@@ -198,6 +212,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                                         new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
                                                         new RecommendationKey(){ tag = "date", value=yield_crop.start.ToString("yyyy-MM-dd")},
                                                         new RecommendationKey(){ tag = "yield", value=yield_data.avg.ToString()},
+                                                        new RecommendationKey(){ tag = "advisory", value=AdvisoryType.in_season.ToString()},
                                                     };
                                             RecommendationEntity recommentdation = new RecommendationEntity()
                                             {
@@ -217,7 +232,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                             replaces.Add(new VarReplace("sol_name", best_sol.name));
 
 
-                                            IEnumerable<Recommendation> climate_msgs = await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.climate.ToString());
+                                            IEnumerable<Recommendation> climate_msgs = await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.climate.ToString(), recommendation_lang);
 
 
                                             if (climate_msgs.Count() > 0)
@@ -230,7 +245,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                             }
                                             else
                                             {
-                                                recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString();
+                                                recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString() + " and this langauges: " + recommendation_lang;
                                             }
 
 
@@ -263,12 +278,24 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                     new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
                                     new RecommendationKey(){ tag = "date", value=best.date.ToString("yyyy-MM-dd")},
                                     new RecommendationKey(){ tag = "yield", value=best.yield.avg.ToString()},
+                                    new RecommendationKey(){ tag = "advisory", value=AdvisoryType.pre_season.ToString()},
                                 };
 
-                                IEnumerable<Recommendation> planting_day_msgs = await db.recommendation.byIndexAsync(country_id, "best_planting_date", Data.Enums.RecommendationType.pre_season.ToString());
+                                IEnumerable<Recommendation> planting_day_msgs = await db.recommendation.byIndexAsync(country_id, "best_planting_date", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
 
+                                string planting_day_msg = "";
 
-                                string planting_day_msg = planting_day_msgs.First().resp;
+                                if (planting_day_msgs.Count() > 0)
+                                {
+                                    planting_day_msg = planting_day_msgs.First().resp;
+
+                                }
+                                else
+                                {
+                                    planting_day_msg = "It is necessary to add a recommendation for best planting date" + " and this langauges: " + recommendation_lang;
+                                }
+
+                                
 
                                 List<VarReplace> replaces = new List<VarReplace>();
 
@@ -292,10 +319,21 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                     content = new_planting_day_msg
                                 });
 
-                                IEnumerable<Recommendation> best_cultivar_msgs = await db.recommendation.byIndexAsync(country_id, "best_cultivar", Data.Enums.RecommendationType.pre_season.ToString());
+                                IEnumerable<Recommendation> best_cultivar_msgs = await db.recommendation.byIndexAsync(country_id, "best_cultivar", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
 
 
-                                string best_cultivar_msg = best_cultivar_msgs.First().resp;
+                                string best_cultivar_msg = "";
+
+                                if (best_cultivar_msgs.Count() > 0)
+                                {
+                                    best_cultivar_msg = best_cultivar_msgs.First().resp;
+
+                                }
+                                else
+                                {
+                                    best_cultivar_msg = "It is necessary to add a recommendation for best cultivar" + " and this langauges: " + recommendation_lang;
+                                }
+
 
 
                                 string new_best_cultivar_msg = VarReplace.createNewMsg(replaces, best_cultivar_msg);
@@ -331,13 +369,25 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                                         new RecommendationKey(){ tag = "soil", value=best_sol_land.name, id=best_sol_land.id },
                                         new RecommendationKey(){ tag = "date", value=best_land.date.ToString("yyyy-MM-dd")},
                                         new RecommendationKey(){ tag = "yield", value=best_land.yield.avg.ToString()},
+                                        new RecommendationKey(){ tag = "advisory", value=AdvisoryType.pre_season.ToString()},
                                     };
 
 
-                                IEnumerable<Recommendation> land_pre_msgs = await db.recommendation.byIndexAsync(country_id, "land_pre_day", Data.Enums.RecommendationType.pre_season.ToString());
+                                IEnumerable<Recommendation> land_pre_msgs = await db.recommendation.byIndexAsync(country_id, "land_pre_day", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
 
 
-                                string land_pre_msg = land_pre_msgs.First().resp;
+                                string land_pre_msg = "";
+
+                                if (land_pre_msgs.Count() > 0)
+                                {
+                                    land_pre_msg = land_pre_msgs.First().resp;
+
+                                }
+                                else
+                                {
+                                    land_pre_msg = "It is necessary to add a recommendation for best cultivar" + " and this langauges: " + recommendation_lang;
+                                }
+
 
                                 List<VarReplace> replaces = new List<VarReplace>();
 
