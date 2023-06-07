@@ -103,6 +103,8 @@ jobs:
     needs: MergeMasterApi
     name: Create Release
     runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: CIAT.DAPA.USAID.Forecast
     permissions: write-all
     steps:
     - uses: actions/checkout@v3
