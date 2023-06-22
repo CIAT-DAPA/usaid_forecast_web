@@ -16,6 +16,7 @@ using System.Linq;
 using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -35,14 +36,23 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
-        private async Task<PermissionList> LoadEnableByPermission()
+        private async Task<PermissionList> LoadEnableByPermission(string countrySelected = "")
         {
             UserPermission permission = await getPermissionAsync();
             PermissionList val = new PermissionList();
             var countries = await db.country.listEnableAsync();
             val.countries = countries.Where(p => permission.countries.Contains(p.id)).ToList();
             val.states = await db.state.listEnableAsync();
-            val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            if (countrySelected != "" && countrySelected != "000000")
+            {
+                val.states = val.states.Where(p => permission.countries.Contains(p.country) && p.country == new MongoDB.Bson.ObjectId(countrySelected)).ToList();
+            }
+            else
+            {
+                val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
+            }
+                
+            
             var states_ids = val.states.Select(p => p.id).ToList();
             val.municipalities = await db.municipality.listEnableAsync();
             val.municipalities = val.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
@@ -58,7 +68,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: SetupController
         [HttpGet]
-        public async Task<IActionResult> Index(string sortOrder, int?page)
+        public async Task<IActionResult> Index(string sortOrder, int?page, string countrySelect = "")
         {
             try
             {
@@ -70,7 +80,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewBag.SoilsortParam = sortOrder == "Soil" ? "soil_desc" : "Soil";
                 ViewBag.DayssortParam = sortOrder == "Days" ? "days_desc" : "Days";
                 //var setups = await db.setup.listEnableDescAsync();
-                var data_with_permissions = await LoadEnableByPermission();
+                var data_with_permissions = await LoadEnableByPermission(countrySelect);
                 var setups = data_with_permissions.setups;
                 // Get the data
                 var crp = await db.crop.listEnableAsync();
@@ -124,6 +134,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 }
                 var pageSize = 10;
                 var pageNumber = (page ?? 1);
+
+                ViewData["countriesData"] = getCountriesListWithDefult(data_with_permissions);
 
                 return View(entities.ToPagedList(pageNumber, pageSize));
             }
@@ -437,5 +449,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 return false;
             }
         }
+
+        private SelectList getCountriesListWithDefult(PermissionList obj)
+        {
+            List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
+
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            SelectList selectList = new SelectList(originalList, "Value", "Text");
+
+            return selectList;
+        }
+
     }
 }

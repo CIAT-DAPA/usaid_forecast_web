@@ -162,6 +162,9 @@
   <data name="Soil" xml:space="preserve">
     <value>Suelo</value>
   </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Configuración</value>
   </data>
