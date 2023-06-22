@@ -129,6 +129,9 @@
   <data name="Ext_ID" xml:space="preserve">
     <value>Ext ID</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
   </data>

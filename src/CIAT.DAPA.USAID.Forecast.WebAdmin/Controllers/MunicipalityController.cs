@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var obj = await LoadAllByPermission();
                 var list = obj.municipalities;
                 ViewBag.states = obj.states;
+
+                ViewData["countries"] = getCountriesListWithDefult(obj);
+                string dataJson = JsonConvert.SerializeObject(getListOfCountryMunicipalities(obj));
+                ViewBag.data = dataJson;
+
+
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -269,6 +276,43 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             else
                 ViewData["state"] = new SelectList(states, "id", "name", selected);
             return states.Count() > 0;
+        }
+
+        private List<Object> getListOfCountryMunicipalities(PermissionList obj)
+        {
+            List<object> listCountryStations = new List<object>();
+            foreach (Country country in obj.countries)
+            {
+                IEnumerable<State> st = obj.states.Where(s => s.country == country.id);
+                List<ObjectId> states_ids = st.Select(p => p.id).ToList();
+                IEnumerable<Municipality> mun = obj.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
+                var countryStations = new
+                {
+                    countryId = country.id,
+                    listData = mun
+                };
+                listCountryStations.Add(countryStations);
+            }
+            return listCountryStations;
+        }
+
+        private SelectList getCountriesListWithDefult(PermissionList obj)
+        {
+            List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
+
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            SelectList selectList = new SelectList(originalList, "Value", "Text");
+
+            return selectList;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ObtainCountryFilterData()
+        {
+            var obj = await LoadAllByPermission();
+            string dataJson = JsonConvert.SerializeObject(getListOfCountryMunicipalities(obj));
+            return Content(dataJson, "application/json");
         }
     }
 }

@@ -563,9 +563,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                         {
                                             phases.Add(new ImportPhenoPhase()
                                             {
-                                                weather_station = fields[5],
-                                                soil = fields[7],
-                                                cultivar = fields[6],
+                                                weather_station = fields[5].Replace("\"", ""),
+                                                soil = fields[7].Replace("\"", ""),
+                                                cultivar = fields[6].Replace("\"", ""),
                                                 forecast = forecast.id.ToString(),
                                                 name = fields[0],
                                                 start_phase_date = DateTime.Parse(fields[1]),

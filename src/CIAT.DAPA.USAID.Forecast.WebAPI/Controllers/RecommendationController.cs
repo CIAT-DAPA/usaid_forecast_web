@@ -28,7 +28,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        [Route("api/[controller]/RecommendationYield/{weather_stations}/{language}/{format}")]
+        [Route("api/[controller]/RecommendationYield/{weather_stations}/{language?}/{format}")]
         public async Task<IActionResult> RecommendationYield(string weather_stations, string language, string format)
         {
             try
@@ -52,6 +52,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                 List<RecommendationEntity> rc_ws = new List<RecommendationEntity>();
                 DateTime today = DateTime.Today;
+                language = language.ToLower();
 
                 RecommendationLang recommendation_lang;
 

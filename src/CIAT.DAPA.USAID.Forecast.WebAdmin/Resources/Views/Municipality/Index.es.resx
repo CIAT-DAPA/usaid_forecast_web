@@ -126,6 +126,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtro</value>
+  </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
   </data>

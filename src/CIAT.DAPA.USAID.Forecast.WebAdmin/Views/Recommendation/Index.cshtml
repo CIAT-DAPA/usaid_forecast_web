@@ -11,13 +11,31 @@
     @Html.ActionLink(Localizer["New"].Value, "Create")
 </p>
 
-<p>
+<div style="display: flex;justify-content: start;gap: 8%;margin-bottom: 1%;">
+    @{
+        var countriesData = (SelectList)ViewData["countriesData"];
+        var countryList = countriesData.ToList();
+    }
+    @if (countryList.Count > 2)
+    {
+        <div class="col-md-4" style="
+            display: flex;
+            align-items: center;
+        ">
+            @Html.Label("countrySelect", @Localizer["Filter"].Value, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownList("countrySelect", selectList: (SelectList)ViewData["countriesData"], optionLabel: null, htmlAttributes: new { @class = "form-control", onchange = "change_filter(this.value, 'Recommendation')", style = "display: flex;justify-content: start;gap: 8%;margin-bottom: 1%;" })
+            @Html.ValidationMessage("countrySelect", "", new { @class = "text-danger" })
+        </div>
+    }
     <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
-</p>
+</div>
 <table class="table" id="index_list">
     <tr>
         <th>
             @Localizer["Country"]
+        </th>
+        <th>
+            @Localizer["Id"]
         </th>
         <th>
             @Localizer["Enum"]
@@ -39,6 +57,9 @@
     <td>
         @{ Country cty = ((List<Country>)ViewBag.countries).FirstOrDefault(p => p.id == item.country); }
         @cty.name
+    </td>
+    <td>
+        @item.id
     </td>
     <td>
         @{ string enm = ((List<string>)ViewBag.enums).FirstOrDefault(p => p == item.type_enum); }

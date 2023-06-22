@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewBag.crops = await db.crop.listEnableAsync();
                 var obj = await LoadEnableByPermissionAsync();
                 var list = obj.soils;
+
+                ViewData["countries"] = getCountriesListWithDefult(obj);
+                string dataJson = JsonConvert.SerializeObject(getListOfCountrySoils(obj));
+                ViewBag.data = dataJson;
+
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -329,6 +335,43 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             else
                 ViewData["country"] = new SelectList(countries, "id", "name", selected);
             return countries.Count() > 0;
+        }
+
+
+        private List<Object> getListOfCountrySoils(PermissionList obj)
+        {
+            List<object> listCountryData = new List<object>();
+            foreach (Country country in obj.countries)
+            {
+                IEnumerable<Soil> ct = obj.soils.Where(s => s.country == country.id);
+
+                var countryData = new
+                {
+                    countryId = country.id,
+                    listData = ct
+                };
+                listCountryData.Add(countryData);
+            }
+            return listCountryData;
+        }
+
+        private SelectList getCountriesListWithDefult(PermissionList obj)
+        {
+            List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
+
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            SelectList selectList = new SelectList(originalList, "Value", "Text");
+
+            return selectList;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ObtainCountryFilterData()
+        {
+            var obj = await LoadEnableByPermissionAsync();
+            string dataJson = JsonConvert.SerializeObject(getListOfCountrySoils(obj));
+            return Content(dataJson, "application/json");
         }
     }
 }

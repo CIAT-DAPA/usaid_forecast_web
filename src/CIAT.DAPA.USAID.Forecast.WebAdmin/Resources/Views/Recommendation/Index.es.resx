@@ -132,6 +132,9 @@
   <data name="Enum" xml:space="preserve">
     <value>Tipo de Enum</value>
   </data>
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
   <data name="Lang" xml:space="preserve">
     <value>Idioma</value>
   </data>

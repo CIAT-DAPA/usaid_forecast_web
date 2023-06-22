@@ -17,6 +17,7 @@ using CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Extend;
 using CIAT.DAPA.USAID.Forecast.Data.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
@@ -80,6 +81,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var obj = await LoadAllByPermission();
                 var list = obj.weather_stations;
                 ViewBag.municipalities = obj.municipalities;
+
+
+                ViewData["countries"] = getCountriesListWithDefult(obj);
+                string dataJson = JsonConvert.SerializeObject(getListOfCountryStations(obj));
+                ViewBag.data = dataJson;
+
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -451,6 +458,46 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             else
                 ViewData["municipality"] = new SelectList(municipalities, "id", "name", selected);
             return municipalities.Count() > 0;
+        }
+
+
+        private List<Object> getListOfCountryStations(PermissionList obj)
+        {
+            List<object> listCountryStations = new List<object>();
+            foreach (Country country in obj.countries)
+            {
+                IEnumerable<State> st = obj.states.Where(s => s.country == country.id);
+                List<ObjectId> states_ids = st.Select(p => p.id).ToList();
+                IEnumerable<Municipality> mun = obj.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
+                List<ObjectId> municipalities_ids = mun.Select(p => p.id).ToList();
+                IEnumerable<WeatherStation> ws = obj.weather_stations.Where(p => municipalities_ids.Contains(p.municipality)).ToList();
+                var countryStations = new
+                {
+                    countryId = country.id,
+                    listData = ws
+                };
+                listCountryStations.Add(countryStations);
+            }
+            return listCountryStations;
+        }
+
+        private SelectList getCountriesListWithDefult(PermissionList obj)
+        {
+            List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
+
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            SelectList selectList = new SelectList(originalList, "Value", "Text");
+
+            return selectList;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ObtainCountryFilterData()
+        {
+            var obj = await LoadAllByPermission();
+            string dataJson = JsonConvert.SerializeObject(getListOfCountryStations(obj));
+            return Content(dataJson, "application/json");
         }
     }
 }

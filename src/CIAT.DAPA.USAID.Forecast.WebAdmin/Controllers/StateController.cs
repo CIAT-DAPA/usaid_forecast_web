@@ -16,6 +16,7 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Globalization;
+using Newtonsoft.Json;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -69,6 +70,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var obj = await LoadEnableByPermissionAsync();
                 var list = obj.states;                
                 ViewBag.countries = obj.countries;
+
+                ViewData["countriesData"] = getCountriesListWithDefult(obj);
+                string dataJson = JsonConvert.SerializeObject(getListOfCountryStates(obj));
+                ViewBag.data = dataJson;
+
+
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
             }
@@ -573,6 +580,42 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 await writeExceptionAsync(ex);
                 return RedirectToAction("ConfigurationPyCpt", new { id = id });
             }
+        }
+
+
+        private List<Object> getListOfCountryStates(PermissionList obj)
+        {
+            List<object> listCountryData = new List<object>();
+            foreach (Country country in obj.countries)
+            {
+                IEnumerable<State> st = obj.states.Where(s => s.country == country.id);
+                var countryData = new
+                {
+                    countryId = country.id,
+                    listData = st
+                };
+                listCountryData.Add(countryData);
+            }
+            return listCountryData;
+        }
+
+        private SelectList getCountriesListWithDefult(PermissionList obj)
+        {
+            List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
+
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            SelectList selectList = new SelectList(originalList, "Value", "Text");
+
+            return selectList;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ObtainCountryFilterData()
+        {
+            var obj = await LoadEnableByPermissionAsync();
+            string dataJson = JsonConvert.SerializeObject(getListOfCountryStates(obj));
+            return Content(dataJson, "application/json");
         }
     }
 }

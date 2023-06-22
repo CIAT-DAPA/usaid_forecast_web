@@ -43,6 +43,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 var f = await db.forecast.getLatestAsync();
                 var fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
                 var fs = await db.forecastScenario.byForecastAndWeatherStationAsync(f.id, ws);
+
+                // It check the previous forecast for Ethiopia when the new forecast was add and Ethiopia has not been updated
+                if (fc.Count() < 1 && fs.Count() < 1)
+                {
+                    f = await db.forecast.getLatestAsync(true);
+                    fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+                    fs = await db.forecastScenario.byForecastAndWeatherStationAsync(f.id, ws);
+                }
+
                 var json = new
                 {
                     forecast = f.id.ToString(),
@@ -151,6 +160,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                 // Search information of forecast yield by id
                 var fy_ws = await GenerateYieldForecastAsync(f, ws);
+
+                // It check the previous forecast for Ethiopia when the new forecast was add and Ethiopia has not been updated
+                if (fy_ws.Count() < 1)
+                {
+                    f = await db.forecast.getLatestAsync(true);
+                    fy_ws = await GenerateYieldForecastAsync(f, ws);
+
+                }
                 // Build a json to return
                 var json = new
                 {
@@ -364,6 +381,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                 var f = await db.forecast.getLatestAsync();
                 var fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+
+                // It check the previous forecast for Ethiopia when the new forecast was add and Ethiopia has not been updated
+                if (fc.Count() < 1)
+                {
+                    f = await db.forecast.getLatestAsync(true);
+                    fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+
+                }
+
                 var json = new
                 {
                     forecast = f.id.ToString(),

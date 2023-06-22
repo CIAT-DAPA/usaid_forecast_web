@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +79,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 ViewBag.langs = langs;
 
                 ViewBag.type_resp = resp;
+
+
+                ViewData["countriesData"] = getCountriesListWithDefult(obj);
+                string dataJson = JsonConvert.SerializeObject(getListOfCountryRecommendation(obj));
+                ViewBag.data = dataJson;
 
                 await writeEventAsync(list.Count().ToString(), LogEvent.lis);
                 return View(list);
@@ -320,6 +326,43 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             else
                 ViewData["lang"] = new SelectList(resp, selected);
             return resp.Count() > 0;
+        }
+
+
+        private List<Object> getListOfCountryRecommendation(PermissionList obj)
+        {
+            List<object> listCountryData = new List<object>();
+            foreach (Country country in obj.countries)
+            {
+                IEnumerable<Recommendation> rc = obj.recommendations.Where(s => s.country == country.id);
+
+                var countryData = new
+                {
+                    countryId = country.id,
+                    listData = rc
+                };
+                listCountryData.Add(countryData);
+            }
+            return listCountryData;
+        }
+
+        private SelectList getCountriesListWithDefult(PermissionList obj)
+        {
+            List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
+
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            SelectList selectList = new SelectList(originalList, "Value", "Text");
+
+            return selectList;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ObtainCountryFilterData()
+        {
+            var obj = await LoadEnableByPermissionAsync();
+            string dataJson = JsonConvert.SerializeObject(getListOfCountryRecommendation(obj));
+            return Content(dataJson, "application/json");
         }
     }
 }

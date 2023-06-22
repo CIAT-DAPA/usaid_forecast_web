@@ -1,4 +1,5 @@
 ﻿<script>
+    var data = [];
     function search_text() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue, found;
@@ -15,12 +16,68 @@
                 td = tds[j];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
-                    found = txtValue.toUpperCase().indexOf(filter) > -1;
-                    if (found)
-                        break;
+                    if (data.length != 0) {
+                        txtValue2 = tds[1].innerText.replaceAll("\n", "").replaceAll(" ", "");
+                        found = txtValue.toUpperCase().indexOf(filter) > -1 && data.find(p => p.id == txtValue2) != undefined;
+                        if (found)
+                            break;
+                    } else {
+                        found = txtValue.toUpperCase().indexOf(filter) > -1;
+                        if (found)
+                            break;
+                    }
+                    
                 }
             }
             tr[i].style.display = found ? "" : "none";
         }
+    }
+
+
+    function change_filter(selectedValue, urlModule) {
+        // Declare variables
+        let tableF, trF, tdF, i, txtValue, found, filterData, selectElement;
+        tableF = document.getElementById("index_list");
+        trF = tableF.getElementsByTagName("tr");
+        selectElement = document.getElementById("countrySelect");
+        document.getElementById("txt_search").value = ""
+
+        $(document).ready(function () {
+            selectElement.disabled = true;
+            $.ajax({
+                url: `/${urlModule}/ObtainCountryFilterData`, // Ruta de la acción en el controlador que devuelve los datos
+                type: 'GET',
+                success: function (listData) {
+                    selectElement.disabled = false;
+                    filterData = listData.find(st => st.countryId == selectedValue)?.listData;
+                    data = filterData
+                    // Loop through all table rows, and hide those who don't match the search query
+                    for (i = 1; i < trF.length; i++) {
+                        tds = trF[i].getElementsByTagName("td");
+                        if (selectedValue == "000000") {
+                            trF[i].style.display = "";
+                            data = []
+                        } else {
+                            found = false;
+                            for (j = 0; j < tds.length - 1; j++) {
+                                tdF = tds[j];
+                                if (tdF) {
+                                    txtValue = tdF.innerText.replaceAll("\n", "").replaceAll(" ", "");
+                                    found = filterData.find(p => p.id == txtValue) != undefined;
+                                    if (found)
+                                        break;
+                                }
+                            }
+                            trF[i].style.display = found ? "" : "none";
+                        }
+
+                    }
+                }
+            });
+        });
+
+
+
+
     }
 </script>
