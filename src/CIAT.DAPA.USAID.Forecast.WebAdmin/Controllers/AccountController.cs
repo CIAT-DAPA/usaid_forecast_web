@@ -173,14 +173,27 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Login
         [HttpGet]
-        //[Authorize(Roles = "ADMIN,TECH")]
+        [Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Index()
         {
             try
             {
                 //var users = await db.user.listAllAsync();
                 var users = managerUser.Users;
+                List<UserRoles> listOfRoles = new List<UserRoles>();
+                foreach (User user in users)
+                {
+                    List<string> role = (List<string>)await managerUser.GetRolesAsync(user);
+                    UserRoles userRoles = new UserRoles()
+                    {
+                        id = user.Id,
+                        listData = role
+                    };
+                    listOfRoles.Add(userRoles);
+                }
+                ViewData["RoleNames"] = listOfRoles;
                 await writeEventAsync("List all users " + users.Count().ToString(), LogEvent.lis);
+                
                 return View(users);
             }
             catch (Exception ex)
@@ -192,7 +205,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Register
         [HttpGet]
-        //[Authorize(Roles = "ADMIN,TECH")]
+        [Authorize(Roles = "ADMIN,TECH")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -204,7 +217,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "ADMIN,TECH")]
+        [Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             try
@@ -315,7 +328,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Account/Edit
         [HttpGet]
-        //[Authorize(Roles = "ADMIN,TECH")]
+        [Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -351,7 +364,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "ADMIN,TECH")]
+        [Authorize(Roles = "ADMIN,TECH")]
         public async Task<IActionResult> Edit(UserEditViewModel model)
         {
             try

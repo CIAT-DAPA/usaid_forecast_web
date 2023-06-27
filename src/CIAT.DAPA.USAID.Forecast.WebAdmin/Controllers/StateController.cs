@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    //[Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
+    [Authorize(Roles = "ADMIN,CLIMATOLOGIST")]
     [Authorize]
     public class StateController : WebAdminBaseController
     {

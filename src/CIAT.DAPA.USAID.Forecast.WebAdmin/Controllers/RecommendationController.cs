@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
-    //[Authorize(Roles = "ADMIN,IMPROVER")]
+    [Authorize(Roles = "ADMIN,IMPROVER")]
     [Authorize]
     public class RecommendationController : WebAdminBaseController
     {

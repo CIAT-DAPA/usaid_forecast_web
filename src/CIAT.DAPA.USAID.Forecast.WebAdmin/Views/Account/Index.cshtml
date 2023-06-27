@@ -28,10 +28,16 @@
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @foreach (var role in item.Roles)
+                @foreach (CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account.UserRoles userRole in (List<CIAT.DAPA.USAID.Forecast.WebAdmin.Models.Account.UserRoles>)ViewData["RoleNames"])
                 {
-                    @role.ToString()
-                    <span>, </span>
+                    if (item.Id == (string)userRole.id)
+                    {
+                        foreach (string role in (List<string>)userRole.listData)
+                        {
+                            @role.ToString()
+                            <span>, </span>
+                        }
+                    }
                 }
             </td>
             <td>

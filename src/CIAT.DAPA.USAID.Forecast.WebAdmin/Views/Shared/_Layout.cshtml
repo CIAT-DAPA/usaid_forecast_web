@@ -33,38 +33,54 @@
                     <li class="dropdown text-bold">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> @Localizer["MenuAdmin"]<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="Source" asp-action="Index">@Localizer["MenuSources"]</a></li>
-                            <li><a asp-area="" asp-controller="Account" asp-action="Index">@Localizer["MenuUsers"]</a></li>
+                            @if (User.IsInRole("ADMIN") || User.IsInRole("CLIMATOLOGIST") || User.IsInRole("IMPROVER"))
+                            {
+                                <li><a asp-area="" asp-controller="Source" asp-action="Index">@Localizer["MenuSources"]</a></li>
+                            }
+                            @if (User.IsInRole("ADMIN") || User.IsInRole("TECH"))
+                            {
+                                <li><a asp-area="" asp-controller="Account" asp-action="Index">@Localizer["MenuUsers"]</a></li>
+                            }
+
                         </ul>
                     </li>
-                    <li class="dropdown text-bold">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> @Localizer["MenuGeography"]<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="Country" asp-action="Index">@Localizer["MenuCountry"]</a></li>
-                            <li><a asp-area="" asp-controller="State" asp-action="Index">@Localizer["MenuStates"]</a></li>
-                            <li><a asp-area="" asp-controller="Municipality" asp-action="Index">@Localizer["MenuMunicipalities"]</a></li>
-                            <li><a asp-area="" asp-controller="WeatherStation" asp-action="Index">@Localizer["MenuWS"]</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown text-bold">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> @Localizer["MenuProduction"]<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="Crop" asp-action="Index">@Localizer["MenuCrops"]</a></li>
-                            <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">@Localizer["MenuCultivars"]</a></li>
-                            <li><a asp-area="" asp-controller="Soil" asp-action="Index">@Localizer["MenuSoils"]</a></li>
-                            <li><a asp-area="" asp-controller="Setup" asp-action="Index">@Localizer["MenuSetups"]</a></li>
-                            <li><a asp-area="" asp-controller="Recommendation" asp-action="Index">@Localizer["MenuRecommendation"]</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown text-bold">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cloud-upload"></span> @Localizer["MenuImport"]<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-controller="Import" asp-action="HistoricalClimate">@Localizer["MenuHistoricalClimatic"]</a></li>
-                            <li><a asp-controller="Import" asp-action="Climatology">@Localizer["MenuClimatology"]</a></li>
-                            <li><a asp-controller="Import" asp-action="HistoricalYield">@Localizer["MenuHistoricalYield"]</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                    @if (User.IsInRole("ADMIN") || User.IsInRole("CLIMATOLOGIST"))
+                    {
+                        <li class="dropdown text-bold">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe"></span> @Localizer["MenuGeography"]<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Country" asp-action="Index">@Localizer["MenuCountry"]</a></li>
+                                <li><a asp-area="" asp-controller="State" asp-action="Index">@Localizer["MenuStates"]</a></li>
+                                <li><a asp-area="" asp-controller="Municipality" asp-action="Index">@Localizer["MenuMunicipalities"]</a></li>
+                                <li><a asp-area="" asp-controller="WeatherStation" asp-action="Index">@Localizer["MenuWS"]</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("ADMIN") || User.IsInRole("IMPROVER"))
+                    {
+                        <li class="dropdown text-bold">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> @Localizer["MenuProduction"]<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Crop" asp-action="Index">@Localizer["MenuCrops"]</a></li>
+                                <li><a asp-area="" asp-controller="Cultivar" asp-action="Index">@Localizer["MenuCultivars"]</a></li>
+                                <li><a asp-area="" asp-controller="Soil" asp-action="Index">@Localizer["MenuSoils"]</a></li>
+                                <li><a asp-area="" asp-controller="Setup" asp-action="Index">@Localizer["MenuSetups"]</a></li>
+                                <li><a asp-area="" asp-controller="Recommendation" asp-action="Index">@Localizer["MenuRecommendation"]</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("ADMIN") || User.IsInRole("CLIMATOLOGIST") || User.IsInRole("IMPROVER"))
+                    {
+                        <li class="dropdown text-bold">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cloud-upload"></span> @Localizer["MenuImport"]<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Import" asp-action="HistoricalClimate">@Localizer["MenuHistoricalClimatic"]</a></li>
+                                <li><a asp-controller="Import" asp-action="Climatology">@Localizer["MenuClimatology"]</a></li>
+                                <li><a asp-controller="Import" asp-action="HistoricalYield">@Localizer["MenuHistoricalYield"]</a></li>
+                            </ul>
+                        </li>
+                    }
+                    </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>

@@ -19,6 +19,7 @@ using System.Globalization;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 {
+    [Authorize(Roles = "ADMIN, CLIMATOLOGIST")]
     [Authorize]
     public class CountryController : WebAdminBaseController
     {
@@ -36,6 +37,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         }
         // GET: /Country/
         [HttpGet]
+        
         public async Task<IActionResult> Index()
         {
             try
@@ -56,6 +58,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         }
         // GET: /Country/Details/1
         [HttpGet]
+        
         public async Task<IActionResult> Details(string id)
         {
             try
@@ -83,6 +86,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         }
         // GET: /State/Create
         [HttpGet]
+        
         public ActionResult Create()
         {
             generateItems(string.Empty, string.Empty);
@@ -91,6 +95,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Create(Country entity)
         {
             try
@@ -114,6 +119,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         }
         // GET: /State/Edit/5
         [HttpGet]
+        
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -142,6 +148,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Edit(Country entity, string id)
         {
             try
@@ -169,6 +176,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         }
         // GET: /State/Delete/5
         [HttpGet]
+        
         public async Task<IActionResult> Delete(string id)
         {
             try
@@ -196,6 +204,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             try
@@ -213,6 +222,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
         [HttpGet]
+        
         public async Task<IActionResult> Configuration()
         {
             try
@@ -257,6 +267,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Country/SeasonalPyCpt/5
         [HttpGet]
+        
         public async Task<IActionResult> SeasonalPyCpt(string id)
         {
             return await LoadPyCptAsync(id);
@@ -264,6 +275,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
         // GET: /Country/SubseasonalPyCpt/5
         [HttpGet]
+        
         public async Task<IActionResult> SubseasonalPyCpt(string id)
         {
             return await LoadPyCptAsync(id);
@@ -296,6 +308,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/SeasonalPyCpt/5
         [HttpPost, ActionName("SeasonalPyCpt")]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> SeasonalPyCptAdd(string id) 
         {
             return await PyCptAddAsync(id, HttpContext.Request.Form, "SeasonalPyCPT", TypePyCPT.seasonal);
@@ -304,6 +317,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/SeasonalPyCpt/5
         [HttpPost, ActionName("SubseasonalPyCpt")]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> SubseasonalPyCptAdd(string id)
         {
             return await PyCptAddAsync(id, HttpContext.Request.Form, "SubseasonalPyCPT", TypePyCPT.subseasonal);
@@ -330,6 +344,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/SeasonalPyCptDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> SeasonalPyCptDelete(string id, int month, long register)
         {
             return await PyCptDeleteAsync(id, month, register, "SeasonalPyCPT", TypePyCPT.seasonal);
@@ -338,6 +353,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Country/SubseasonalPyCptDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> SubseasonalPyCptDelete(string id, int month, long register)
         {
             return await PyCptDeleteAsync(id, month, register, "SubseasonalPyCPT", TypePyCPT.subseasonal);
