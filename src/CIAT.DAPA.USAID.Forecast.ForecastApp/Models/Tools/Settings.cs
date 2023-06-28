@@ -128,6 +128,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Tools
         /// Set or get the name of the phenological phase config file
         /// </summary>
         public string In_PATH_FS_FILE_PHENO_PHASES { get; set; }
+        public string Out_PATH_CPT_FILE { get; set; }
 
     }
 }

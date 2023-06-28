@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Export;
+using Newtonsoft.Json.Linq;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 {
@@ -252,7 +253,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that export all cpt  configuration needs by the forecast
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
+        public async Task<bool> exportCPTSetupAsync2(string path, string mainCountry)
         {
             StringBuilder header_cpt, x_m, y_m, cca, gamma, header_areas;
             StringBuilder[] x1, x2, y1, y2;
@@ -347,6 +348,184 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             }
             return true;
+        }
+
+
+        public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
+        {
+            //Get current month
+            DateTime CurrentDate = DateTime.Now;
+            int currentMonth = CurrentDate.Month == 12 ? 0 : CurrentDate.Month;
+      
+            //Create folders
+            if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
+                Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
+            List<State> states = await db.state.listEnableAsync();
+            IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
+            // Filter the states with configuration
+            IEnumerable<State> states_ctp = from s_cpt in statesByCountry
+                             where s_cpt.conf.Where(p => p.track.enable).Count() > 0
+                             select s_cpt;
+            foreach (State s in states_ctp)
+            {
+                List<object> cpt_info = new List<object>();
+                Console.WriteLine("Creating " + s.name);
+                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
+                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString());
+                ForecastType type = s.conf.FirstOrDefault().forc_type;
+                List<ConfigurationCPT> listOfConfig;             
+                if(type.ToString() == "tri")
+                {
+                    Quarter current_quarter = ((Quarter)currentMonth);
+                    listOfConfig = s.conf.Where(p => (p.trimester == current_quarter || p.trimester == GetQuarter(current_quarter)) && p.track.enable).ToList(); ;
+
+                    foreach (ConfigurationCPT config in listOfConfig)
+                    {
+
+                        cpt_info.Add(new
+                        {
+                            type = type.ToString(),
+                            season = config.trimester.ToString(),
+                            areas = getRegions(config),
+                            modes = new ModesCpt() { 
+                                x = config.x_mode.ToString(),
+                                y = config.y_mode.ToString(),
+                                cca = config.cca_mode.ToString()
+                            },
+                            transformation = getTransformation(config),
+                            predictor = config.predictor.ToString(),
+                            predictand = config.predictand.ToString(),
+
+                        });
+                    }
+                    cpt_info = fillListOfConfig(listOfConfig, s, current_quarter, cpt_info, type);
+                }
+                else if(type.ToString() == "bi")
+                {
+
+                }
+
+                String jsn = JsonConvert.SerializeObject(cpt_info);
+                string full_path = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + Program.settings.Out_PATH_CPT_FILE;
+                if (File.Exists(full_path))
+                    File.Delete(full_path);
+                File.WriteAllText(full_path, jsn);
+
+            }
+            return true;
+        }
+
+        public static List<object> fillListOfConfig(List<ConfigurationCPT> listOfConfig, State s, Quarter current_quarter, List<object> cpt_info, ForecastType type)
+        {
+            List<object> newList = cpt_info;
+            if(listOfConfig.Count() == 2)
+            {
+                return newList;
+            }
+            if (listOfConfig.Count() == 1)
+            {
+                if (listOfConfig.FirstOrDefault().trimester == current_quarter)
+                {
+                    newList.Add(new
+                    {
+                        type = type.ToString(),
+                        season = GetQuarter(current_quarter).ToString(),
+                        areas = new JArray(),
+                        modes = new JObject(),
+                        transformation = new JArray(),
+                        predictor = "",
+                        predictand = "",
+
+                    });
+                }
+                else
+                {
+                    newList.Add(new
+                    {
+                        type = type.ToString(),
+                        season = current_quarter.ToString(),
+                        areas = new JArray(),
+                        modes = new JObject(),
+                        transformation = new JArray(),
+                        predictor = "",
+                        predictand = "",
+
+                    });
+                }
+            }
+            else if (listOfConfig.Count() == 0)
+            {
+                for (int x = 0; x < 2; x++)
+                {
+                        newList.Add(new
+                    {
+                        type = type.ToString(),
+                        season = x == 0 ? current_quarter.ToString() : GetQuarter(current_quarter).ToString(),
+                        areas = new JArray(),
+                        modes = new JObject(),
+                        transformation = new JArray(),
+                        predictor = "",
+                        predictand = "",
+
+                    });
+                }
+            }
+            return newList;
+        }
+
+        public static List<AreasCpt> getRegions(ConfigurationCPT config)
+        {
+            List<AreasCpt> r = new List<AreasCpt>();
+            foreach(Region region in config.regions)
+            {
+                AreasCpt area = new AreasCpt()
+                {
+                    x_min = region.left_lower.lon.ToString(),
+                    x_max = region.rigth_upper.lon.ToString(),
+                    y_min = region.left_lower.lat.ToString(),
+                    y_max = region.rigth_upper.lat.ToString(),
+                };
+                r.Add(area);
+            }
+
+            if(r.Count() == 1)
+            {
+                r.Add(new AreasCpt()
+                {
+                    x_min = "NA",
+                    x_max = "NA",
+                    y_min = "NA",
+                    y_max = "NA",
+                });
+            }
+            
+            return r;
+        }
+
+        public static List<TransformationCpt> getTransformation(ConfigurationCPT config)
+        {
+            List<TransformationCpt> t = new List<TransformationCpt>();
+            TransformationCpt transformation = new TransformationCpt()
+            {
+                gamma = config.gamma
+            };
+            t.Add(transformation);
+            return t;
+        }
+
+        public static Quarter GetQuarter(Quarter current_quarter)
+        {
+            Quarter quarter;
+            if(Convert.ToInt32(current_quarter) > 8)
+            {
+                int value = Convert.ToInt32(current_quarter) - 9;
+                quarter = ((Quarter)value);
+            }
+            else
+            {
+                quarter = current_quarter + 3;
+            }
+            return quarter;
         }
 
         /// <summary>

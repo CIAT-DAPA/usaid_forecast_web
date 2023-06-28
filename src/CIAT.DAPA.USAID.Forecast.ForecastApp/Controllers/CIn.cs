@@ -95,7 +95,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 ws = fields[2].Replace("\"", ""),
                                 below = double.Parse(fields[3]),
                                 normal = double.Parse(fields[4]),
-                                above = double.Parse(fields[5])
+                                above = double.Parse(fields[5]),
+                                type = fields[6],
+                                predictand = fields[7]
                             });
                         }
                         count += 1;
@@ -298,11 +300,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             year = p.year,
                             month = p.month,
+                            type = (ForecastType)Enum.Parse(typeof(ForecastType), p.type),
                             probabilities = new List<Probability>()
                         {
                             new Probability()
                             {
-                                measure = MeasureClimatic.prec,
+                                measure = (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), p.predictand),
                                 lower = p.below,
                                 normal = p.normal,
                                 upper = p.above
@@ -322,11 +325,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             year = p.year,
                             month = p.month,
+                            type = (ForecastType)Enum.Parse(typeof(ForecastType), p.type),
                             probabilities = new List<Probability>()
                             {
                                 new Probability()
                                 {
-                                    measure = MeasureClimatic.prec,
+                                    measure = (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), p.predictand),
                                     lower = p.below,
                                     normal = p.normal,
                                     upper = p.above

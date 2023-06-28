@@ -147,6 +147,12 @@
   <data name="NewSetup" xml:space="preserve">
     <value>New configuration</value>
   </data>
+  <data name="Predictand" xml:space="preserve">
+    <value>Predictand</value>
+  </data>
+  <data name="Predictor" xml:space="preserve">
+    <value>Predictor</value>
+  </data>
   <data name="Regions" xml:space="preserve">
     <value>Regions</value>
   </data>
@@ -161,5 +167,8 @@
   </data>
   <data name="Trimester" xml:space="preserve">
     <value>Trimester</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

@@ -13,5 +13,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Import
         public double below { get; set; }
         public double normal { get; set; }
         public double above { get; set; }
+        public string type { get; set; }
+        public string predictand { get; set; }
     }
 }

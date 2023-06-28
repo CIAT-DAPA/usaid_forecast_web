@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired] 
         public int month { get; set; }
+        /// <summary>
+        /// Type of forecast
+        /// </summary>
+        [BsonRequired]
+        public ForecastType type { get; set; }
         /// <summary>
         /// List of variables forecast for the month
         /// </summary>
