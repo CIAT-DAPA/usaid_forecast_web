@@ -122,6 +122,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// </summary>
         public RecommendationFactory recommendation { get; set; }
         /// <summary>
+        /// Get or Set urls in AClimate proccess
+        /// </summary>
+        public UrlFactory url { get; set; }
+        /// <summary>
         /// Get or set the user permission entity in the database
         /// </summary>
         public UserPermissionFactory userPermission { get; set; }
@@ -168,6 +172,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             forecastScenario = new ForecastScenarioFactory(db);
             forecastPhenPhase = new ForecastPhenPhaseFactory(db);
             recommendation = new RecommendationFactory(db);
+            url = new UrlFactory(db);
             user = new UserFactory(db);
             role = new RoleFactory(db);
             source = new SourceFactory(db);

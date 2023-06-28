@@ -44,6 +44,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         cp_recommendation,
         /// <summary>
+        /// Url table
+        /// </summary>
+        cp_url,
+        /// <summary>
         /// Administrative log table
         /// </summary>
         log_administrative,
