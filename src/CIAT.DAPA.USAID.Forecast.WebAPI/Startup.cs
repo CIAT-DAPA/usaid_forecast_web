@@ -74,7 +74,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
                 {
                     Version = "v1",
                     Title = "Aclimate Web API",
-                    Description = "This documentation provide the information about checkout Aclimate API endpoints",
+                    Description = "This documentation provide the information about checkout Aclimate API endpoints. " +
+                      "See more details <a target=\"_blank\" href=\"https://docs.aclimate.org/en/latest/08-webapi.html\">Here</a>.",
                     //TermsOfService =  "None",
                     Contact = new OpenApiContact()
                     {
