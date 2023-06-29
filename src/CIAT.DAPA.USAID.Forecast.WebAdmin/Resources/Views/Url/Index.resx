@@ -117,67 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Footer" xml:space="preserve">
-    <value>&amp;copy; 2016 - CIAT - USAID</value>
-  </data>
-  <data name="MenuAdmin" xml:space="preserve">
-    <value>Administration</value>
-  </data>
-  <data name="MenuClimatology" xml:space="preserve">
-    <value>Climatology</value>
-  </data>
-  <data name="MenuCountry" xml:space="preserve">
+  <data name="Country" xml:space="preserve">
     <value>Country</value>
   </data>
-  <data name="MenuCrops" xml:space="preserve">
-    <value>Crops</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
   </data>
-  <data name="MenuCultivars" xml:space="preserve">
-    <value>Cultivars</value>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
   </data>
-  <data name="MenuGeography" xml:space="preserve">
-    <value>Geographic</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="MenuHistoricalClimatic" xml:space="preserve">
-    <value>Historical climate</value>
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
   </data>
-  <data name="MenuHistoricalYield" xml:space="preserve">
-    <value>Historical yield</value>
+  <data name="New" xml:space="preserve">
+    <value>New record</value>
   </data>
-  <data name="MenuImport" xml:space="preserve">
-    <value>Import</value>
+  <data name="Response" xml:space="preserve">
+    <value>Response</value>
   </data>
-  <data name="MenuMain" xml:space="preserve">
-    <value>WebAdmin</value>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="MenuMunicipalities" xml:space="preserve">
-    <value>Municipalities</value>
+  <data name="Title" xml:space="preserve">
+    <value>Url</value>
   </data>
-  <data name="MenuProduction" xml:space="preserve">
-    <value>Production</value>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="MenuRecommendation" xml:space="preserve">
-    <value>Recommendations</value>
-  </data>
-  <data name="MenuSetups" xml:space="preserve">
-    <value>Setups</value>
-  </data>
-  <data name="MenuSoils" xml:space="preserve">
-    <value>Soils</value>
-  </data>
-  <data name="MenuSources" xml:space="preserve">
-    <value>Sources</value>
-  </data>
-  <data name="MenuStates" xml:space="preserve">
-    <value>States</value>
-  </data>
-  <data name="MenuUrl" xml:space="preserve">
-    <value>Urls</value>
-  </data>
-  <data name="MenuUsers" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="MenuWS" xml:space="preserve">
-    <value>Stations</value>
+  <data name="Visible" xml:space="preserve">
+    <value>Visible</value>
   </data>
 </root>

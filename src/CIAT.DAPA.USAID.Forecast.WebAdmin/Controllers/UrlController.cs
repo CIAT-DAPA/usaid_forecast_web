@@ -98,28 +98,52 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
+        // GET: /Url/Create
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            await generateListCountriesAsync("");
+            await generateListTypeAsync();
+            return View();
+        }
+
 
         // POST: /Url/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Url entity)
+        public async Task<IActionResult> CreateUrl()
         {
             try
             {
-                entity.country = getId(HttpContext.Request.Form["country"].ToString());
-                if (ModelState.IsValid)
+                var form = HttpContext.Request.Form;
+                int count = form.Keys.Where(p => p.Contains("url_name_")).Count();
+                List<UrlData> url_data = new List<UrlData>();
+                string country_id = form["country"];
+                for (int i = 1; i <= count; i++)
                 {
-                    await db.url.insertAsync(entity);
-                    await writeEventAsync(entity.ToString(), LogEvent.cre);
-                    return RedirectToAction("Index");
+                    url_data.Add(new UrlData()
+                    {
+                        name = form["url_name_" + i.ToString()],
+                        value = form["url_value_" + i.ToString()],
+
+                    });
                 }
+                if (url_data.Count() == 0)
+                    return RedirectToAction("Create");
+                Url entity = new Url()
+                {
+                    country = MongoDB.Bson.ObjectId.Parse(country_id),
+                    type = (UrlTypes)int.Parse(form["type"]),
+                    urls = url_data
+                };
+                await db.url.insertAsync(entity);
                 await writeEventAsync(ModelState.ToString(), LogEvent.err);
-                return View(entity);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 await writeExceptionAsync(ex);
-                return View(entity);
+                return RedirectToAction("Create");
             }
         }
 
@@ -236,6 +260,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             else
                 ViewData["country"] = new SelectList(countries, "id", "name", selected);
             return countries.Count() > 0;
+        }
+
+
+        private async Task generateListTypeAsync()
+        {
+            // List climate variables
+            var types = from UrlTypes q in Enum.GetValues(typeof(UrlTypes))
+                           select new { id = (int)q, name = q.ToString() };
+            ViewBag.type = new SelectList(types, "id", "name");
         }
 
 

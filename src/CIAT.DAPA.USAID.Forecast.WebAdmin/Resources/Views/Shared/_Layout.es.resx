@@ -171,6 +171,9 @@
   <data name="MenuStates" xml:space="preserve">
     <value>Estados</value>
   </data>
+  <data name="MenuUrl" xml:space="preserve">
+    <value>Urls</value>
+  </data>
   <data name="MenuUsers" xml:space="preserve">
     <value>Usuarios</value>
   </data>

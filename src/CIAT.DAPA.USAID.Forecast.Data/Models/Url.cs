@@ -28,7 +28,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [Display(Name = "Type"), Required(ErrorMessage = "Type is required")]
         [BsonRequired]
-        public string type { get; set; }
+        public UrlTypes type { get; set; }
         /// <summary>
         /// Type of response vinculated to the recommendation
         /// </summary>

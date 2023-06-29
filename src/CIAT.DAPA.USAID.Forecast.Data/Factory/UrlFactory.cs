@@ -80,7 +80,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public async Task<IEnumerable<Url>> byIndexAsync(ObjectId country, string type)
         {
             var builder = Builders<Url>.Filter;
-            var filter = builder.And(builder.Eq(x => x.country, country), builder.Eq(x => x.type, type));
+            var filter = builder.And(builder.Eq(x => x.country, country), builder.Eq(x => x.type, (UrlTypes)Enum.Parse(typeof(UrlTypes), type)));
             var query = await collection.Find(filter).ToListAsync<Url>();
             return query;
         }

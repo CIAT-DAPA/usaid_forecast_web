@@ -1,0 +1,63 @@
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Url
+
+@{
+    ViewBag.Title = Localizer["Title"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("CreateUrl", "Url", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>@Localizer["NewUrl"]</legend>
+            <div class="form-group">
+                <label for="country" class="control-label col-md-2">@Localizer["Country"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("country", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type" class="control-label col-md-2">@Localizer["Type"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("type", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>@Localizer["Urls"]</legend>
+            <div class="form-group">
+                <div class="col-md-">
+                    <input type="button" id="add_url" value="@Localizer["Add"]" class="btn btn-default" />
+                </div>
+            </div>
+            <table class="table" id="conf_url">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Name"]</th>
+                        <th>@Localizer["Value"]</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink(Localizer["Back"].Value, "Index")
+</div>
+
+
+@section Scripts {
+    <script src="~/js/url.js"></script>
+}
