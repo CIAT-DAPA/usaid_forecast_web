@@ -57,6 +57,54 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// November December January
         /// </summary>
-        ndj
+        ndj,
+        /// <summary>
+        /// December January
+        /// </summary>
+        dj,
+        /// <summary>
+        /// January February
+        /// </summary>
+        jf,
+        /// <summary>
+        /// February March
+        /// </summary>
+        fm,
+        /// <summary>
+        /// March April
+        /// </summary>
+        ma,
+        /// <summary>
+        /// April May
+        /// </summary>
+        am,
+        /// <summary>
+        /// May June
+        /// </summary>
+        mj,
+        /// <summary>
+        /// June July
+        /// </summary>
+        jj,
+        /// <summary>
+        /// July August
+        /// </summary>
+        ja,
+        /// <summary>
+        /// August September
+        /// </summary>
+        @as,
+        /// <summary>
+        /// September October
+        /// </summary>
+        so,
+        /// <summary>
+        /// October November
+        /// </summary>
+        on,
+        /// <summary>
+        /// November December
+        /// </summary>
+        nd
     }
 }
