@@ -1,0 +1,22 @@
+﻿
+
+.legend {
+    background: white;
+    padding: 12px;
+    min-width: 100px;
+}
+
+.select-control{
+    padding:6px;
+    min-width:160px;
+
+}
+.period-selector {
+    border: none;
+}
+
+.error-msg {
+    text-align: center;
+    color: red;
+    font-size: 1.4em;
+}

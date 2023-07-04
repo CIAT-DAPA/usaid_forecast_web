@@ -1,0 +1,95 @@
+﻿@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+@inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
+
+
+
+<div id="containerBlock">
+    <section class="col-md-12 sections">
+        <div class="row section-content">
+            <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
+            <p class="text-justify">
+              
+            </p>
+
+            <div class="lds-dual-ring" id="capabilitiesLoader"></div>
+            <div class="row" id="capabilitiesFilter">
+                <div class="row form-group border border-dark">
+                    <div id="cropSelect" class="col-lg-2 control-label">
+                        <label for="cbo_crop">
+                            @Localizer["Crop"]
+                        </label>
+                        @Html.DropDownList("cbo_crop", new SelectList(new List<String>(), "Value", "Text"), new { @class = "form-control", onchange = "initMaps()" })
+                    </div>
+                    <div id="groupSelect" class="col-lg-2 control-label">
+                        <label for="cbo_group">
+                            @Localizer["Group"]
+                        </label>
+                        @Html.DropDownList("cbo_group", new SelectList(new List<String>(), "Value", "Text"), new { @class = "form-control", onchange = "initMaps()" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-msg" id="errorMsg"></div>
+            <br />
+    
+            <div id="maps_section" class="row">
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/loader.css" />
+    <link rel="stylesheet" href="~/css/maps.css" />
+    <script src="~/lib/x2js/xml2json.min.js"></script>
+    <script type="text/javascript" src="~/js/map/geo_indicators.js"></script>
+    <script type="text/javascript" src="~/js/map/map_overlays.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.control.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
+
+
+
+    <script type="text/javascript">
+
+
+        var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
+
+        geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
+        geoserver_workspace = "@Html.Raw(ViewBag.geoserver_workspace)";
+
+         var translations = {
+             compare: '@Localizer["Compare"]',
+             period: '@Localizer["Period"]',
+             none: '@Localizer["None"]',
+             average: '@Localizer["Average"]',
+             el_nino: '@Localizer["El_nino"]',
+             la_nina: '@Localizer["La_nina"]',
+
+             precipitation: '@Localizer["Precipitation"]',
+             temperature: '@Localizer["Temperature"]',
+             humidity  :'@Localizer["Humidity"]',
+         };
+
+   
+
+        const bounds = L.latLngBounds(ws.map((c) => {
+            return [c.latitude, c.longitude];
+        }));
+        conf = { bounds: bounds };
+        mapOverlays =  @Html.Raw(Json.Serialize( @AppSettings.Value.mapOverlays));
+
+
+        indicatorYearConstants =  @Html.Raw(Json.Serialize(new
+                             {
+                                 avg = AppSettings.Value.indicator_geoserver_average,
+                                 nino = AppSettings.Value.indicator_NINA,
+                                 nina = AppSettings.Value.indicator_NINO
+                             }));
+        init();
+        window.loading_screen.finish();
+    </script>
+}

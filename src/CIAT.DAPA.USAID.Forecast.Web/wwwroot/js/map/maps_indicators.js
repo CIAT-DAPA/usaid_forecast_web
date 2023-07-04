@@ -1,4 +1,6 @@
-﻿// Global variable for map
+﻿
+
+// Global variable for map
 var conf;
 var layers_all;
 var layers_selected;
@@ -19,7 +21,7 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
 
     maps[idx] = L.map(id, { zoomControl: false }).setView([conf.latitude, conf.longitude], conf.zoom);
     L.control.zoom({ position: 'bottomright' }).addTo(maps[idx]);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(maps[idx]);
@@ -81,7 +83,7 @@ function load_country() {
  */
 function getColor(index, type) {
 
-    //console.log(index + ' ' + type + ' ' + scales[type][index]);
+    //console.log(index, type, scales);
     return scales[type][index];
 }
 
@@ -143,6 +145,7 @@ function searchPointData(layer, lat, lon, marker, units) {
  * @param {any} compare period of time
  */
 function plot_layer(idx, layer, time, compare) {
+
     var wmsLayer = L.tileLayer.wms(geoserver_url, {
         layers: geoserver_workspace + ":" + layer,
         format: 'image/png',
@@ -192,6 +195,7 @@ function plot_layer(idx, layer, time, compare) {
  * Method which updates layers base on user selection
  * */
 function update_maps() {
+    //console.log("update_maps");
     // Get the values selected in the controls
     var crop = $("#cbo_crop").val();
     var group = $("#cbo_group").val();
@@ -205,6 +209,7 @@ function update_maps() {
 }
 
 function update_time() {
+    //console.log("update_time");
     load_maps();
 }
 
@@ -212,6 +217,8 @@ function update_time() {
  * Method that loads all maps from scratch
  * */
 function load_maps() {
+
+
     var time = $("#cbo_time").val();
     var compare = $("#cbo_compare").val();
     var maps_section = '';

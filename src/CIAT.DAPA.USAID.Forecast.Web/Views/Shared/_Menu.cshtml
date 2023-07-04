@@ -9,7 +9,11 @@
     <ul class="nav navbar-nav">
         @if (ViewBag.modules_indicators)
         {
-            <li id="menu_main_indicators"><a href="/Indicadores/"><span class="glyphicon glyphicon-signal"></span> @Localizer["Indicators"]</a></li>
+            <li id="menu_main_indicators"><a href="/Indicators/"><span class="glyphicon glyphicon-signal"></span> @Localizer["Indicators"]</a></li>
+        }
+        @if (ViewBag.modules_geo_indicators == true)
+        {
+            <li id="menu_main_indicators"><a href="/GeoIndicators/"><span class="glyphicon glyphicon-signal"></span> @Localizer["Indicators"]</a></li>
         }
         @if (ViewBag.modules_climate)
         {

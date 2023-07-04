@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores {
+namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicators {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicadores.Index", typeof(Index).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Indicators.Index", typeof(Index).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -28,7 +28,10 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         ///Country Folder Name for resources like images etc
         /// </summary>
         public string countryName { get; set; }
-
+        /// <summary>
+        /// Get or set if geoserver indicators module is enable
+        /// </summary>
+        public bool modules_geo_indicators { get; set; }
         /// <summary>
         /// Get or set if indicators module is enable
         /// </summary>
@@ -70,6 +73,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         /// Map overlays
         /// </summary>
         public List<Dictionary<string, string>> mapOverlays { get; set; }
+
+
+        /// <summary>
+        /// Get or set the path to indicators.csv url
+        /// </summary>
+        public string indicators_path { get; set; }
 
         /// <summary>
         /// Get or set the geoser url

@@ -87,6 +87,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
 
                 options.modules_climate = bool.Parse(Configuration.GetSection("Modules:Climate").Value);
                 options.modules_indicators = bool.Parse(Configuration.GetSection("Modules:Indicators").Value);
+                options.modules_geo_indicators = bool.Parse(Configuration.GetSection("Modules:GeoIndicators").Value);
                 options.modules_rice = bool.Parse(Configuration.GetSection("Modules:Rice").Value);
                 options.modules_maize = bool.Parse(Configuration.GetSection("Modules:Maize").Value);
                 options.modules_expert = bool.Parse(Configuration.GetSection("Modules:Expert").Value);
@@ -96,10 +97,14 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                 options.partners = partners;
                 options.mapOverlays = mapOverlays;
 
-                if (options.modules_indicators)
+
+        
+                if (options.modules_indicators || options.modules_geo_indicators)
                 {
-                    options.indicator_geoserver_url= Configuration.GetSection("Indicators:GeoserverUrl").Value;
+                    options.indicators_path = Configuration.GetSection("Indicators:IndicatorsPath").Value;
+                    options.indicator_geoserver_url = Configuration.GetSection("Indicators:GeoserverUrl").Value;
                     options.indicator_geoserver_workspace = Configuration.GetSection("Indicators:GeoserverWorkspace").Value;
+
                     options.indicator_geoserver_average = int.Parse(Configuration.GetSection("Indicators:GeoserverAverage").Value);
                     options.indicator_geoserver_cv = int.Parse(Configuration.GetSection("Indicators:GeoserverCV").Value);
                     string[] limit = Configuration.GetSection("Indicators:GeoserverTime").Value.ToString().Split("-");

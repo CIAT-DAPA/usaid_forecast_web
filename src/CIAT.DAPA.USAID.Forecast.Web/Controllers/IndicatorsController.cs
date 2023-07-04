@@ -17,18 +17,18 @@ using CIAT.DAPA.USAID.Forecast.Web.Models.Indicators;
 
 namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 {
-    public class IndicadoresController : WebBaseController
+    public class IndicatorsController : WebBaseController
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="settings">Settings options</param>
         /// <param name="hostingEnvironment">Host Enviroment</param>
-        public IndicadoresController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, hostingEnvironment)
+        public IndicatorsController(IOptions<Settings> settings, IHostingEnvironment hostingEnvironment) : base(settings, hostingEnvironment)
         {
         }
 
-        // GET: /Indicadores/
+        // GET: /Indicators/
         [Route("/[controller]/")]
         public async Task<IActionResult> Index()
         {
@@ -51,15 +51,19 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
 
         private async Task<bool> listIndicatorsAsync()
         {
+
             if (IndicatorRepository.GetInstance().Indicators.Count() == 0)
-                await IndicatorRepository.GetInstance().LoadAsync(hostingEnvironment.ContentRootPath + $"{Path.DirectorySeparatorChar}Data{Path.DirectorySeparatorChar}indicators.csv");
+                await IndicatorRepository.GetInstance().LoadAsync(hostingEnvironment.ContentRootPath + $"{Path.DirectorySeparatorChar}{Configurations.indicators_path}");
 
             ViewBag.indicators_crops = IndicatorRepository.GetInstance()
                                     .Indicators.Select(p => new { CropID = p.CropID, Crop = p.Crop }).Distinct();
+            ViewBag.indicators_periods = IndicatorRepository.GetInstance()
+                                    .Indicators.Select(p => new { PeriodID = p.PeriodID, Period = p.Period }).Distinct();
+
             ViewBag.indicators_group = IndicatorRepository.GetInstance()
                                     .Indicators.Select(p => new { GroupID = p.GroupID, Group = p.Group }).Distinct();
             ViewBag.indicators_list = IndicatorRepository.GetInstance()
-                                    .Indicators.Select(p => new { CropID = p.CropID, GroupID = p.GroupID, 
+                                    .Indicators.Select(p => new { CropID = p.CropID, GroupID = p.GroupID, PeriodID = p.PeriodID,
                                                                 IndicatorID = p.IndicatorNameID, Indicator = p.IndicatorName, 
                                                                 Description= p.Description, 
                                                                 Units = p.Units, Min = p.Min, Max=p.Max,
@@ -73,12 +77,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
         {
             ViewBag.geoserver_url = Configurations.indicator_geoserver_url;
             ViewBag.geoserver_workspace = Configurations.indicator_geoserver_workspace;
-            var period= Enumerable.Range(Configurations.indicator_geoserver_time[0], 
+            var periods = Enumerable.Range(Configurations.indicator_geoserver_time[0], 
                                         (Configurations.indicator_geoserver_time[1] - Configurations.indicator_geoserver_time[0]) + 2)
                                     .Append(Configurations.indicator_geoserver_average)
                                     .Select(p => new { Text = (p == Configurations.indicator_geoserver_average ? "Average" : p == Configurations.indicator_geoserver_cv ? "CV" : p.ToString()), Value = p })
                                     .OrderBy(p=>p.Value);
-            ViewBag.period = period;
+            ViewBag.periods = periods;
             ViewBag.compare = (new List<string>() { "None", Configurations.indicator_NINO.ToString(), Configurations.indicator_NINA.ToString(), Configurations.indicator_geoserver_average.ToString() })
                                 .Select(p=>new { Text = (Configurations.indicator_NINO.ToString() == p ? "El Niño" : (Configurations.indicator_NINA.ToString() == p ? "La Niña": (Configurations.indicator_geoserver_average.ToString() == p ? "Average" : p))), Value = p });
         }

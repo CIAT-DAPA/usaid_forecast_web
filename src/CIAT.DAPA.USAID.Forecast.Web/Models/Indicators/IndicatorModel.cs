@@ -24,6 +24,18 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Indicators
         /// Get or set the group id
         /// </summary>
         public string GroupID { get; set; }
+
+
+        /// <summary>
+        /// Get or set the Period name
+        /// </summary>
+        public string Period { get; set; }
+        /// <summary>
+        /// Get or set the period id
+        /// </summary>
+        public string PeriodID { get; set; }
+
+
         /// <summary>
         /// Get or set the indicator name
         /// </summary>

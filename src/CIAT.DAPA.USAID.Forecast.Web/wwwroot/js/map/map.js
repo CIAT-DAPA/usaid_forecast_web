@@ -8,7 +8,7 @@
   */
 async function plot_map(id, ws, crops) {
     var map = L.map(id).setView([ws[0].latitude, ws[0].longitude], 6);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
