@@ -26,4 +26,26 @@
             '</tr>';
         $("#tgtff_table tbody").append(row);
     });
+
+    let forcTypeSelect = $("#forc_type");
+
+
+    let trimesterContainer = $("#trimester_container");
+    let bimonthlyContainer = $("#bimonthly_container");
+
+    forcTypeSelect.on("change", function () {
+        let selectedValue = $(this).val();
+
+        if (selectedValue === "0") {
+            trimesterContainer.show();
+            bimonthlyContainer.hide();
+        } else if (selectedValue === "1") {
+            trimesterContainer.hide();
+            bimonthlyContainer.show();
+        } else {
+            trimesterContainer.show();
+            typeContainer.hide();
+        }
+    });
+
 });

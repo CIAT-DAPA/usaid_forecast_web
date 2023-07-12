@@ -419,14 +419,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var form = HttpContext.Request.Form;
                 State entity_new = await db.state.byIdAsync(id);
                 // Instance the new configuration entity
+
+                ForecastType forc_type = (ForecastType)int.Parse(form["forc_type"]);
+
                 ConfigurationCPT conf = new ConfigurationCPT()
                 {
                     cca_mode = int.Parse(form["cca"]),
                     gamma = !form["gamma"].Equals("false"),
-                    trimester = (Quarter)int.Parse(form["trimester"]),
+                    trimester = forc_type.ToString() == "tri" ? (Quarter)int.Parse(form["trimester"]) : (Quarter)int.Parse(form["bimonthly"]),
                     x_mode = int.Parse(form["x"]),
                     y_mode = int.Parse(form["y"]),
-                    forc_type = (ForecastType)int.Parse(form["forc_type"]),
+                    forc_type = forc_type,
                     predictor = (ForecastPredictors)int.Parse(form["forc_predic"]),
                     predictand = (MeasureClimatic)int.Parse(form["measure"]),
 
@@ -490,9 +493,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         private async Task generateListOfEnumsAsync()
         {
             // List climate variables
-            var quarters = from Quarter q in Enum.GetValues(typeof(Quarter))
-                           select new { id = (int)q, name = q.ToString() };
+            var quarters = Enum.GetValues(typeof(Quarter))
+                           .Cast<Quarter>()
+                           .Where(q => q.ToString().Length > 2)
+                           .Select(q => new { id = (int)q, name = q.ToString() });
+
             ViewBag.trimester = new SelectList(quarters, "id", "name");
+
+            var bimonthly = Enum.GetValues(typeof(Quarter))
+                           .Cast<Quarter>()
+                           .Where(q => q.ToString().Length <= 2)
+                           .Select(q => new { id = (int)q, name = q.ToString() });
+
+            ViewBag.bimonthly = new SelectList(bimonthly, "id", "name");
 
             var type = from ForecastType q in Enum.GetValues(typeof(ForecastType))
                            select new { id = (int)q, name = q.ToString() };

@@ -132,6 +132,9 @@
   <data name="Back" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="Bimonthly" xml:space="preserve">
+    <value>Bimonthly</value>
+  </data>
   <data name="Date" xml:space="preserve">
     <value>Date</value>
   </data>

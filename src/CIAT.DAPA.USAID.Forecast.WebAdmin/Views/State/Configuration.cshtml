@@ -37,9 +37,21 @@
         <fieldset>
             <legend>@Localizer["NewSetup"]</legend>
             <div class="form-group">
+                <label for="forc_type" class="control-label col-md-2">@Localizer["Type"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("forc_type", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group" id="trimester_container">
                 <label for="trimester" class="control-label col-md-2">@Localizer["Trimester"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("trimester", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group" id="bimonthly_container" style="display: none;">
+                <label for="bimonthly" class="control-label col-md-2">@Localizer["Bimonthly"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("bimonthly", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
@@ -58,12 +70,6 @@
                 <label for="y" class="control-label col-md-2">@Localizer["AmountY"]:</label>
                 <div class="col-md-10">
                     @Html.Editor("y", null, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="forc_type" class="control-label col-md-2">@Localizer["Type"]:</label>
-                <div class="col-md-10">
-                    @Html.DropDownList("forc_type", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
