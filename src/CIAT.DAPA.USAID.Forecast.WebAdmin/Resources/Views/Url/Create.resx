@@ -126,8 +126,17 @@
   <data name="Country" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="forc_type" xml:space="preserve">
+    <value>Forecast type</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NewUrl" xml:space="preserve">
     <value>New url</value>
+  </data>
+  <data name="prob_type" xml:space="preserve">
+    <value>Url category</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -140,5 +149,8 @@
   </data>
   <data name="Urls" xml:space="preserve">
     <value>Urls</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Url</value>
   </data>
 </root>

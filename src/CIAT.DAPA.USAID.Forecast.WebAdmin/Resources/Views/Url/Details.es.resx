@@ -129,9 +129,6 @@
   <data name="lang" xml:space="preserve">
     <value>Idioma</value>
   </data>
-  <data name="Recommendation" xml:space="preserve">
-    <value>Recomendaciones</value>
-  </data>
   <data name="resp" xml:space="preserve">
     <value>Mensaje de respuesta</value>
   </data>
@@ -143,5 +140,11 @@
   </data>
   <data name="type_resp" xml:space="preserve">
     <value>Tipo de respuesta</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="UrlData" xml:space="preserve">
+    <value>Lista de Urls</value>
   </data>
 </root>

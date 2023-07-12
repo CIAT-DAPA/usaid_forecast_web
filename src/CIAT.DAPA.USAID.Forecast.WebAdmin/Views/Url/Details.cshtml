@@ -9,7 +9,7 @@
 <h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>@Localizer["Recommendation"]</h4>
+    <h4>@Localizer["Url"]</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -27,6 +27,8 @@
         <dd>
             @Html.DisplayFor(model => model.type)
         </dd>
+        <h4>@Localizer["UrlData"]</h4>
+        <hr />
         @foreach (UrlData urlData in Model.urls)
         {
 
@@ -38,7 +40,7 @@
                 @Html.DisplayName(urlData.value)
             </dd>
             <dt>
-                @Html.DisplayName(urlData.forc_type)
+                @Html.DisplayName(urlData.forc_type.ToString())
             </dt>
 
             <dd>

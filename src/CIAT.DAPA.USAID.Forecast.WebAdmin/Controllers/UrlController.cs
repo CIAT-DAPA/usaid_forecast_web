@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -125,6 +126,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     {
                         name = form["url_name_" + i.ToString()],
                         value = form["url_value_" + i.ToString()],
+                        forc_type = (ForecastType)int.Parse(form["forc_type_" + i.ToString()]),
+                        prob_type = (CategoryUrl)int.Parse(form["prob_type_" + i.ToString()]),
 
                     });
                 }
@@ -165,6 +168,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     return new NotFoundResult();
                 }
                 await generateListCountriesAsync(entity.country.ToString());
+                await generateListTypeAsync();
                 await writeEventAsync("Search id: " + id, LogEvent.rea);
                 return View(entity);
             }
@@ -178,28 +182,47 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /Url/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Url entity, string id)
+        public async Task<IActionResult> EditUrl()
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    Url current_entity = await db.url.byIdAsync(id);
+                var form = HttpContext.Request.Form;
+                Url current_entity = await db.url.byIdAsync(form["id"]);
 
-                    entity.id = getId(id);
-                    entity.country = getId(HttpContext.Request.Form["country"].ToString());
-                    await db.url.updateAsync(current_entity, entity);
-                    await writeEventAsync(entity.ToString(), LogEvent.upd);
-                    return RedirectToAction("Index");
+                int count = form.Keys.Where(p => p.Contains("url_name_")).Count();
+                List<UrlData> url_data = new List<UrlData>();
+                string country_id = form["country"];
+                for (int i = 1; i <= count; i++)
+                {
+                    url_data.Add(new UrlData()
+                    {
+                        name = form["url_name_" + i.ToString()],
+                        value = form["url_value_" + i.ToString()],
+                        forc_type = (ForecastType)int.Parse(form["forc_type_" + i.ToString()]),
+                        prob_type = (CategoryUrl)int.Parse(form["prob_type_" + i.ToString()]),
+
+                    });
                 }
-                await writeEventAsync(ModelState.ToString(), LogEvent.err);
-                return View(entity);
+                if (url_data.Count() == 0)
+                    return RedirectToAction("Edit", new RouteValueDictionary { { "id", current_entity.id } });
+                Url entity = new Url()
+                {
+                    id = current_entity.id,
+                    country = MongoDB.Bson.ObjectId.Parse(country_id),
+                    type = (UrlTypes)int.Parse(form["type"]),
+                    urls = url_data
+                };
+                await db.url.updateAsync(current_entity, entity);
+                await writeEventAsync(entity.ToString(), LogEvent.upd);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                await generateListCountriesAsync(entity.country.ToString());
+                var form = HttpContext.Request.Form;
+                await generateListCountriesAsync(form["id"]);
+                Url current_entity = await db.url.byIdAsync(form["id"]);
                 await writeExceptionAsync(ex);
-                return View(entity);
+                return RedirectToAction("Edit", new RouteValueDictionary { { "id", current_entity.id } });
             }
         }
 
@@ -269,6 +292,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             var types = from UrlTypes q in Enum.GetValues(typeof(UrlTypes))
                            select new { id = (int)q, name = q.ToString() };
             ViewBag.type = new SelectList(types, "id", "name");
+
+            var forc_type = from ForecastType q in Enum.GetValues(typeof(ForecastType))
+                        select new { id = (int)q, name = q.ToString() };
+            ViewBag.forc_type = new SelectList(forc_type, "id", "name");
+
+            var prob_type = from CategoryUrl q in Enum.GetValues(typeof(CategoryUrl))
+                        select new { id = (int)q, name = q.ToString() };
+            ViewBag.prob_type = new SelectList(prob_type, "id", "name");
         }
 
 
@@ -306,6 +337,24 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             var obj = await LoadEnableByPermissionAsync();
             string dataJson = JsonConvert.SerializeObject(getListOfCountryUrl(obj));
+            return Content(dataJson, "application/json");
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetSelectData()
+        {
+            var forc_type = from ForecastType q in Enum.GetValues(typeof(ForecastType))
+                            select new { id = (int)q, name = q.ToString() };
+
+            var prob_type = from CategoryUrl q in Enum.GetValues(typeof(CategoryUrl))
+                            select new { id = (int)q, name = q.ToString() };
+            var jsonData = new
+            {
+                forc_type,
+                prob_type,
+            };
+            string dataJson = JsonConvert.SerializeObject(jsonData);
             return Content(dataJson, "application/json");
         }
     }

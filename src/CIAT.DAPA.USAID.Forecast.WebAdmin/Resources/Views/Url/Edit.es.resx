@@ -117,16 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Agregar url</value>
+  </data>
   <data name="Back" xml:space="preserve">
     <value>Volver a la lista</value>
   </data>
-  <data name="Recommendation" xml:space="preserve">
-    <value>Recomendacion</value>
+  <data name="Country" xml:space="preserve">
+    <value>Pais</value>
+  </data>
+  <data name="forc_type" xml:space="preserve">
+    <value>Tipo de pronostico</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="NewUrl" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Opciones</value>
+  </data>
+  <data name="prob_type" xml:space="preserve">
+    <value>Categoria de url</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Eliminar</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Guardar</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Editar</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Url</value>
   </data>
 </root>

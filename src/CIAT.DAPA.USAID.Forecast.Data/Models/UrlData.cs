@@ -22,7 +22,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public string value { get; set; }
         [BsonRequired]
-        public string forc_type { get; set; }
+        public ForecastType forc_type { get; set; }
         [BsonRequired]
         public CategoryUrl prob_type { get; set; }
 

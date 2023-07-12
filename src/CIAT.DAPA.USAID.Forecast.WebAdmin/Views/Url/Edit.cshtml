@@ -1,4 +1,5 @@
-﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Recommendation
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Url
+@using CIAT.DAPA.USAID.Forecast.Data.Models
 
 @{
     ViewBag.Title = Localizer["Title"];
@@ -8,67 +9,98 @@
 <h2>@ViewBag.Title</h2>
 
 
-@using (Html.BeginForm())
+
+@using (Html.BeginForm("EditUrl", "Url", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>@Localizer["Recommendation"]</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.id)
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>@Localizer["NewUrl"]</legend>
+            @Html.HiddenFor(model => model.id)
+            <div class="form-group">
+                <label for="country" class="control-label col-md-2">@Localizer["Country"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.country, selectList: (SelectList)ViewData["country"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type" class="control-label col-md-2">@Localizer["Type"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.type, selectList: (SelectList)ViewData["type"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>@Localizer["Urls"]</legend>
+            <div class="form-group">
+                <div class="col-md-">
+                    <input type="button" id="add_url" value="@Localizer["Add"]" class="btn btn-default" />
+                </div>
+            </div>
+            <table class="table" id="conf_url">
+                <thead>
+                    <tr>
+                        <th>@Localizer["Name"]</th>
+                        <th>@Localizer["Value"]</th>
+                        <th>@Localizer["forc_type"]</th>
+                        <th>@Localizer["prob_type"]</th>
+                        <th>@Localizer["Options"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.urls.Select((value, index) => new { Index = index, Value = value }))
+                    {
+                        int currentIndex = item.Index + 1;
+                        UrlData currentItem = item.Value;
+                    <tr>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.country, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.country, selectList: (SelectList)ViewData["country"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                        <td><input class="form-control col-md-6" id="url_name_@currentIndex" name="url_name_@currentIndex" type="text" value="@currentItem.name"></td>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.type_enum, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.type_enum, selectList: (SelectList)ViewData["enum"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.type_enum, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                        <td><input class="form-control col-md-6" id="url_value_@currentIndex" name="url_value_@currentIndex" type="text" value="@currentItem.value"></td>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.type_resp, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.type_resp, selectList: (SelectList)ViewData["resp"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.type_resp, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                        <td>
+                            <select class="form-control col-md-6" id="forc_type_@currentIndex" name="forc_type_@currentIndex">
+                                @foreach (var forcTypeItem in ViewBag.forc_type as SelectList)
+                                {
+                                    bool isSelected = Convert.ToInt32(forcTypeItem.Value) == (int)currentItem.forc_type;
+                                    <option value="@forcTypeItem.Value" selected="@isSelected">@forcTypeItem.Text</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control col-md-6" id="prob_type_@currentIndex" name="prob_type_@currentIndex">
+                                @foreach (var probTypeItem in ViewBag.prob_type as SelectList)
+                                {
+                                    bool isSelected = Convert.ToInt32(probTypeItem.Value) == (int)currentItem.prob_type;
+                                    <option value="@probTypeItem.Value" selected="@isSelected">@probTypeItem.Text</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="button" id="remove_@currentIndex" value="@Localizer["Remove"]" class="btn btn-danger" />
+                        </td>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.lang, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.lang, selectList: (SelectList)ViewData["lang"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.lang, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.resp, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="checkbox">
-                @Html.TextAreaFor(model => model.resp, htmlAttributes: new { @class = "form-control", @cols = 80, @rows = 10 })
-                @Html.ValidationMessageFor(model => model.resp, "", new { @class = "text-danger" })
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
     @Html.ActionLink(Localizer["Back"].Value, "Index")
 </div>
+
+
+@section Scripts {
+    <script src="~/js/url.js"></script>
+}

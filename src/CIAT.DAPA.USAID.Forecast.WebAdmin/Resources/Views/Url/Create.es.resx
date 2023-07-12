@@ -126,8 +126,17 @@
   <data name="Country" xml:space="preserve">
     <value>País</value>
   </data>
+  <data name="forc_type" xml:space="preserve">
+    <value>Tipo de pronostico</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
   <data name="NewUrl" xml:space="preserve">
     <value>Nueva url</value>
+  </data>
+  <data name="prob_type" xml:space="preserve">
+    <value>Categoria de url</value>
   </data>
   <data name="resp" xml:space="preserve">
     <value>Respuesta</value>
@@ -143,5 +152,8 @@
   </data>
   <data name="Urls" xml:space="preserve">
     <value>Urls</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Url</value>
   </data>
 </root>
