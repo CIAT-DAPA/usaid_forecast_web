@@ -44,9 +44,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async override Task<bool> deleteAsync(Url entity)
         {
-            var result = await collection.UpdateOneAsync(Builders<Url>.Filter.Eq("_id", entity.id), Builders<Url>.Update.Set("track.enable", false)
-                                                                                               .Set("track.updated", DateTime.Now));
-            return result.ModifiedCount > 0;
+
+            FilterDefinition<Url> filter = Builders<Url>.Filter.Eq("_id", entity.id);
+            var result = collection.DeleteOne(filter);
+            return result.DeletedCount > 0;
         }
 
         public async override Task<Url> insertAsync(Url entity)

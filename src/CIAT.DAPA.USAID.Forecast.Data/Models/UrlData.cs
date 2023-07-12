@@ -21,6 +21,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public string value { get; set; }
+        [BsonRequired]
+        public string forc_type { get; set; }
+        [BsonRequired]
+        public CategoryUrl prob_type { get; set; }
 
     }
 }

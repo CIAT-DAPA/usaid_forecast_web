@@ -1,4 +1,5 @@
-﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Recommendation
+﻿@model CIAT.DAPA.USAID.Forecast.Data.Models.Url
+@using CIAT.DAPA.USAID.Forecast.Data.Models
 
 @{
     ViewBag.Title = Localizer["Title"];
@@ -20,36 +21,33 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.type_enum)
+            @Html.DisplayNameFor(model => model.type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.type_enum)
+            @Html.DisplayFor(model => model.type)
         </dd>
+        @foreach (UrlData urlData in Model.urls)
+        {
 
-        <dt>
-            @Html.DisplayNameFor(model => model.type_resp)
-        </dt>
+            <dt>
+                @Html.DisplayName(urlData.name)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.type_resp)
-        </dd>
+            <dd>
+                @Html.DisplayName(urlData.value)
+            </dd>
+            <dt>
+                @Html.DisplayName(urlData.forc_type)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.lang)
-        </dt>
+            <dd>
+                @Html.DisplayName(urlData.prob_type.ToString())
+            </dd>
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.lang)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.resp)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.resp)
-        </dd>
 
     </dl>
 </div>
