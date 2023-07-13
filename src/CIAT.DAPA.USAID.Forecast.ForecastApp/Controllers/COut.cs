@@ -535,5 +535,23 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             return true;
         }
 
+
+        public async Task<bool> exportUrls(string country, string type)
+        {
+            try
+            {
+                IEnumerable<Url> url = await db.url.byIndexAsync(MongoDB.Bson.ObjectId.Parse(country), type);
+                if(url.Count() != 1)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return true;
+            }
+            
+        }
     }
 }
