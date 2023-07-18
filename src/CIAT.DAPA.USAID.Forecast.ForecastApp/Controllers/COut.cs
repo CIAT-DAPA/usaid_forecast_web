@@ -677,7 +677,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 r.Add(area);
             }
 
-            if(r.Count() == 1)
+            /*if(r.Count() == 1)
             {
                 r.Add(new AreasCpt()
                 {
@@ -686,7 +686,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                     y_min = "NA",
                     y_max = "NA",
                 });
-            }
+            }*/
             
             return r;
         }
