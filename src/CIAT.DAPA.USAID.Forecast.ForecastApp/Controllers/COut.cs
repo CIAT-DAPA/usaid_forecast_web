@@ -536,22 +536,87 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         }
 
 
-        public async Task<bool> exportUrls(string country, string type)
+        public async Task<bool> exportUrls(string path, string country, string type)
         {
+            UrlsJsonFormat json_data = new UrlsJsonFormat()
+            {
+                status = false,
+                msg = "Error",
+            };
+            string full_path = path + Path.DirectorySeparatorChar + country + "_" + type + ".json";
             try
             {
                 IEnumerable<Url> url = await db.url.byIndexAsync(MongoDB.Bson.ObjectId.Parse(country), type);
                 if(url.Count() != 1)
                 {
+                    json_data.msg = "Url not found in the databaase";
+                    String jsn_error = JsonConvert.SerializeObject(json_data);
+                    
+                    if (File.Exists(full_path))
+                        File.Delete(full_path);
+                    File.WriteAllText(full_path, jsn_error);
                     return false;
                 }
+                Url selected_url = url.FirstOrDefault();
+                if(selected_url.type == UrlTypes.download_seasonal_prec)
+                {
+                    json_data.status = true;
+                    json_data.msg = "ok";
+                    foreach (UrlData data in selected_url.urls)
+                    {
+                        int INITIAL_MONTH_VALUE_GUATE = 755;
+                        int INITIAL_YEAR_VALUE_GUATE = 2023;
+                        string url_value = data.value.Replace("{month}", Convert.ToString(DateTime.Now.Month) + ".0");
+                        int month = ((DateTime.Now.Year - INITIAL_YEAR_VALUE_GUATE) *12) + (INITIAL_MONTH_VALUE_GUATE + DateTime.Now.Month);
+                        url_value = url_value.Replace("{g_month}", Convert.ToString(month) + ".0");
+                        url_value = url_value.Replace("{category}", data.prob_type.ToString());
+                        url_value = url_value.Replace("{g_category}", getCategoryGuate(data.prob_type.ToString()));
+                        url_value = url_value.Replace("{file_name}", data.prob_type.ToString());
+                        json_data.urls.Add(new
+                        {
+                            name = data.name,
+                            url = url_value
+                        });
+                    }
+                }
+                String jsn = JsonConvert.SerializeObject(json_data);
+                if (File.Exists(full_path))
+                    File.Delete(full_path);
+                File.WriteAllText(full_path, jsn);
                 return true;
             }
             catch(Exception ex)
             {
-                return true;
+                json_data.msg = ex.Message;
+                String jsn = JsonConvert.SerializeObject(json_data);
+                if (File.Exists(full_path))
+                    File.Delete(full_path);
+                File.WriteAllText(full_path, jsn);
+                return false;
             }
             
+        }
+
+        public static string getCategoryGuate(string category)
+        {
+            string translatedValue = category;
+
+            switch (category)
+            {
+                case "above":
+                    translatedValue = "Sobre";
+                    break;
+                case "normal":
+                    translatedValue = "Normal";
+                    break;
+                case "below":
+                    translatedValue = "Bajo";
+                    break;
+                case "deterministic":
+                    translatedValue = "Determinístico";
+                    break;
+            }
+            return translatedValue;
         }
     }
 }
