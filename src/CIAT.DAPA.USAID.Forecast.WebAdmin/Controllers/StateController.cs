@@ -82,7 +82,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var list = obj.states;                
                 ViewBag.countries = obj.countries;
 
-                ViewData["countriesData"] = getCountriesListWithDefult(obj, countrySelect == "" ? obj.countries.FirstOrDefault().id.ToString() : countrySelect);
+                if (countrySelect == "")
+                {
+                    ViewBag.countrySelected = obj.countries[0].id.ToString();
+                }
+                else
+                {
+                    ViewBag.countrySelected = "";
+                }
+                ViewData["countriesData"] = getCountriesListWithDefult(obj, countrySelect);
                 string dataJson = JsonConvert.SerializeObject(getListOfCountryStates(obj));
                 ViewBag.data = dataJson;
 
@@ -615,17 +623,23 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
 
             List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
 
-            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+            originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------", Selected = false });
 
-            // Buscar el ítem con el ID seleccionado y establecer su propiedad "Selected" en true
-            string countryIdSelected = selectedCountryId == "" ? obj.countries.FirstOrDefault().id.ToString() : selectedCountryId;
-            SelectListItem selectedItem = originalList.FirstOrDefault(item => item.Value == countryIdSelected);
-            if (selectedItem != null)
+            if (string.IsNullOrEmpty(selectedCountryId) && originalList.Count > 0)
             {
+                SelectListItem selectedItem = originalList[1];
                 selectedItem.Selected = true;
             }
-
+            else
+            {
+                SelectListItem selectedItem = originalList.FirstOrDefault(item => item.Value == selectedCountryId);
+                if (selectedItem != null)
+                {
+                    selectedItem.Selected = true;
+                }
+            }
             SelectList selectList = new SelectList(originalList, "Value", "Text");
+
 
             return selectList;
         }

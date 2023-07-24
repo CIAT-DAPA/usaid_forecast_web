@@ -15,6 +15,11 @@
     @{
         var countriesData = (SelectList)ViewData["countriesData"];
         var countryList = countriesData.ToList();
+        string countrySelected = ViewBag.countrySelected;
+    }
+    @if (ViewBag.countrySelected != "")
+    {
+        @Html.Hidden("countrySelected", countrySelected)
     }
     @if (countryList.Count > 2)
     {

@@ -72,6 +72,17 @@
 
     }*/
 
-
+    $(document).ready(function () {
+        let selected = document.getElementById("countrySelected")
+        let select = document.getElementById("countrySelect")
+        if (selected && select) {
+            let options = select.getElementsByTagName("option")
+            for (i = 0; i < options.length; i++) {
+                if (options[i].value == selected.value) {
+                    options[i].selected = true
+                }
+            }
+        }
+    })
     
 </script>

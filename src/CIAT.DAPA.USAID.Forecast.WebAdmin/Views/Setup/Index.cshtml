@@ -16,20 +16,25 @@
     @{
         var countriesData = (SelectList)ViewData["countriesData"];
         var countryList = countriesData.ToList();
+        string countrySelected = ViewBag.countrySelected;
+    }
+    @if (ViewBag.countrySelected != "")
+    {
+        @Html.Hidden("countrySelected", countrySelected)
     }
     @if (countryList.Count > 2)
     {
-    <div class="col-md-4" style = "display: flex;align-items: center;">
-        @Html.Label("countrySelect", @Localizer["Filter"].Value, htmlAttributes: new { @class = "control-label col-md-2" })
-        @using (Html.BeginForm("Index", "Setup", FormMethod.Get, htmlAttributes: new
-        {
-            @style = "display: flex;align-items: center;gap: 2%;width: 80%;"
-        }))
-        {
-        @Html.DropDownList("countrySelect", selectList: (SelectList)ViewData["countriesData"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
-        <button type="submit" class="btn btn-primary">@Localizer["Submit"]</button>
-        }
-    </div>
+        <div class="col-md-4" style="display: flex;align-items: center;">
+            @Html.Label("countrySelect", @Localizer["Filter"].Value, htmlAttributes: new { @class = "control-label col-md-2" })
+            @using (Html.BeginForm("Index", "Setup", FormMethod.Get, htmlAttributes: new
+            {
+                @style = "display: flex;align-items: center;gap: 2%;width: 80%;"
+            }))
+            {
+                @Html.DropDownList("countrySelect", selectList: (SelectList)ViewData["countriesData"], optionLabel: null, htmlAttributes: new { @class = "form-control" })
+                <button type="submit" class="btn btn-primary">@Localizer["Submit"]</button>
+            }
+        </div>
     }
     <input type="text" id="txt_search" class="form-control" onkeyup="search_text()" placeholder="@Localizer["Search"]" />
 </div>
