@@ -1,5 +1,4 @@
 ﻿<script>
-    var data = [];
     function search_text() {
         // Declare variables
         var input, filter, table, tr, td, i, txtValue, found;
@@ -10,23 +9,15 @@
 
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 1; i < tr.length; i++) {
-            tds = tr[i].getElementsByTagName("td");            
+            tds = tr[i].getElementsByTagName("td");
             found = false;
             for (j = 0; j < tds.length - 1; j++) {
                 td = tds[j];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
-                    if (data.length != 0) {
-                        txtValue2 = tds[1].innerText.replaceAll("\n", "").replaceAll(" ", "");
-                        found = txtValue.toUpperCase().indexOf(filter) > -1 && data.find(p => p.id == txtValue2) != undefined;
-                        if (found)
-                            break;
-                    } else {
-                        found = txtValue.toUpperCase().indexOf(filter) > -1;
-                        if (found)
-                            break;
-                    }
-                    
+
+                    found = txtValue.toUpperCase().indexOf(filter) > -1;
+                    if (found) break;
                 }
             }
             tr[i].style.display = found ? "" : "none";
@@ -34,7 +25,8 @@
     }
 
 
-    function change_filter(selectedValue, urlModule) {
+
+    /*function change_filter(selectedValue, urlModule) {
         // Declare variables
         let tableF, trF, tdF, i, txtValue, found, filterData, selectElement;
         tableF = document.getElementById("index_list");
@@ -76,8 +68,10 @@
             });
         });
 
+        
+
+    }*/
 
 
-
-    }
+    
 </script>

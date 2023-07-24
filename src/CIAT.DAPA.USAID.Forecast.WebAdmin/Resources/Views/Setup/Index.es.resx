@@ -144,6 +144,9 @@
   <data name="File" xml:space="preserve">
     <value>Archivo</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtro</value>
+  </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
   </data>
@@ -163,7 +166,7 @@
     <value>Suelo</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Buscar</value>
+    <value>Filtrar</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Configuración</value>

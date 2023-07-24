@@ -44,16 +44,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             var countries = await db.country.listEnableAsync();
             val.countries = countries.Where(p => permission.countries.Contains(p.id)).ToList();
             val.states = await db.state.listEnableAsync();
-            if (countrySelected != "" && countrySelected != "000000")
+            if (countrySelected != "" && countrySelected != "000000" && permission.countries.Count() > 1)
             {
                 val.states = val.states.Where(p => permission.countries.Contains(p.country) && p.country == new MongoDB.Bson.ObjectId(countrySelected)).ToList();
+            }
+            else if (countrySelected == "" && permission.countries.Count() > 1)
+            {
+                val.states = val.states.Where(p => permission.countries.Contains(p.country) && p.country == permission.countries.FirstOrDefault()).ToList();
             }
             else
             {
                 val.states = val.states.Where(p => permission.countries.Contains(p.country)).ToList();
             }
-                
-            
+
+
             var states_ids = val.states.Select(p => p.id).ToList();
             val.municipalities = await db.municipality.listEnableAsync();
             val.municipalities = val.municipalities.Where(p => states_ids.Contains(p.state)).ToList();
@@ -136,7 +140,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 var pageSize = 10;
                 var pageNumber = (page ?? 1);
 
-                ViewData["countriesData"] = getCountriesListWithDefult(data_with_permissions);
+                ViewData["countriesData"] = getCountriesListWithDefult(data_with_permissions, countrySelect == "" ? data_with_permissions.countries.FirstOrDefault().id.ToString() : countrySelect);
 
                 return View(entities.ToPagedList(pageNumber, pageSize));
             }
@@ -451,11 +455,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             }
         }
 
-        private SelectList getCountriesListWithDefult(PermissionList obj)
+        private SelectList getCountriesListWithDefult(PermissionList obj, string selectedCountryId)
         {
+
             List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
 
             originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            // Buscar el ítem con el ID seleccionado y establecer su propiedad "Selected" en true
+            string countryIdSelected = selectedCountryId == "" ? obj.countries.FirstOrDefault().id.ToString() : selectedCountryId;
+            SelectListItem selectedItem = originalList.FirstOrDefault(item => item.Value == countryIdSelected);
+            if (selectedItem != null)
+            {
+                selectedItem.Selected = true;
+            }
 
             SelectList selectList = new SelectList(originalList, "Value", "Text");
 

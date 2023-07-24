@@ -129,6 +129,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filtro</value>
+  </data>
   <data name="Id" xml:space="preserve">
     <value>ID</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Filtrar</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Url</value>

@@ -144,6 +144,9 @@
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>
   </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Filtrar</value>
+  </data>
   <data name="Threshold" xml:space="preserve">
     <value>Umbral</value>
   </data>

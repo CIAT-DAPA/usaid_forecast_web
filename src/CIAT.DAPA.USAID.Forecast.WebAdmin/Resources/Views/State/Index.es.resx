@@ -153,6 +153,9 @@
   <data name="SetupPyCpt" xml:space="preserve">
     <value>Configuración PyCpt</value>
   </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Filtrar</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Estados</value>
   </data>

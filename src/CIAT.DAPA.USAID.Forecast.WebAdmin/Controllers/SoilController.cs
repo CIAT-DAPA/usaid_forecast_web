@@ -32,28 +32,39 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
         }
 
-        private async Task<PermissionList> LoadEnableByPermissionAsync()
+        private async Task<PermissionList> LoadEnableByPermissionAsync(string countrySelected = "")
         {
             UserPermission permission = await getPermissionAsync();
             PermissionList val = new PermissionList();
             val.countries = await db.country.listEnableAsync();
             val.countries = val.countries.Where(p => permission.countries.Contains(p.id)).ToList();
             val.soils = await db.soil.listEnableAsync();
-            val.soils = val.soils.Where(p => permission.countries.Contains(p.country)).ToList();
+            if (countrySelected != "" && countrySelected != "000000" && permission.countries.Count() > 1)
+            {
+                val.soils = val.soils.Where(p => permission.countries.Contains(p.country) && p.country == new MongoDB.Bson.ObjectId(countrySelected)).ToList();
+            }
+            else if (countrySelected == "" && permission.countries.Count() > 1)
+            {
+                val.soils = val.soils.Where(p => permission.countries.Contains(p.country) && p.country == permission.countries.FirstOrDefault()).ToList();
+            }
+            else
+            {
+                val.soils = val.soils.Where(p => permission.countries.Contains(p.country)).ToList();
+            }
             return val;
         }
 
         // GET: /Soil/
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string countrySelect = "")
         {
             try
             {
                 ViewBag.crops = await db.crop.listEnableAsync();
-                var obj = await LoadEnableByPermissionAsync();
+                var obj = await LoadEnableByPermissionAsync(countrySelect);
                 var list = obj.soils;
 
-                ViewData["countries"] = getCountriesListWithDefult(obj);
+                ViewData["countries"] = getCountriesListWithDefult(obj, countrySelect == "" ? obj.countries.FirstOrDefault().id.ToString() : countrySelect);
                 string dataJson = JsonConvert.SerializeObject(getListOfCountrySoils(obj));
                 ViewBag.data = dataJson;
 
@@ -355,11 +366,20 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
             return listCountryData;
         }
 
-        private SelectList getCountriesListWithDefult(PermissionList obj)
+        private SelectList getCountriesListWithDefult(PermissionList obj, string selectedCountryId)
         {
+
             List<SelectListItem> originalList = new List<SelectListItem>(obj.countries.Select(c => new SelectListItem { Value = c.id.ToString(), Text = c.name }));
 
             originalList.Insert(0, new SelectListItem { Value = "000000", Text = "------" });
+
+            // Buscar el ítem con el ID seleccionado y establecer su propiedad "Selected" en true
+            string countryIdSelected = selectedCountryId == "" ? obj.countries.FirstOrDefault().id.ToString() : selectedCountryId;
+            SelectListItem selectedItem = originalList.FirstOrDefault(item => item.Value == countryIdSelected);
+            if (selectedItem != null)
+            {
+                selectedItem.Selected = true;
+            }
 
             SelectList selectList = new SelectList(originalList, "Value", "Text");
 
