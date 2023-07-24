@@ -430,7 +430,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     x_mode = int.Parse(form["x"]),
                     y_mode = int.Parse(form["y"]),
                     forc_type = forc_type,
-                    predictor = (ForecastPredictors)int.Parse(form["forc_predic"]),
                     predictand = (MeasureClimatic)int.Parse(form["measure"]),
 
 
@@ -442,6 +441,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                 {
                     regions.Add(new Region()
                     {
+                        predictor = (ForecastPredictors)int.Parse(form["predictor_" + i.ToString()]),
                         left_lower = new Coords()
                         {
                             lat = double.Parse(form["left_lower_" + i.ToString() + "_lat"]),
@@ -472,15 +472,15 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         // POST: /State/ConfigurationDelete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfigurationDelete(string id, string quarter, int cca, bool gamma, int x, int y, double left_lat, double left_lon, double right_lat, double right_lon, DateTime register, string type, string predictor, string predictand)
+        public async Task<IActionResult> ConfigurationDelete(string id, string quarter, int cca, bool gamma, int x, int y, double left_lat, double left_lon, double right_lat, double right_lon, DateTime register, string type, string predictand)
         {
             try
             {
                 // Get original crop data
                 State entity_new = await db.state.byIdAsync(id);
                 // Delete the setup
-                await db.state.deleteConfigurationCPTAsync(entity_new, (Quarter)Enum.Parse(typeof(Quarter), quarter), cca, gamma, x, y, register, (ForecastType)Enum.Parse(typeof(ForecastType), type), (ForecastPredictors)Enum.Parse(typeof(ForecastPredictors), predictor), (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), predictand));
-                await writeEventAsync(id + " conf del: " + quarter.ToString() + "|" + type.ToString() + predictand.ToString() + "|" + predictor.ToString() + "|" + cca.ToString() + "|" + gamma.ToString() + "|" + x.ToString() + "|" + y.ToString() + "|" + left_lat.ToString() + "," + left_lon.ToString() + "|" + right_lat.ToString() + "," + right_lon, LogEvent.upd);
+                await db.state.deleteConfigurationCPTAsync(entity_new, (Quarter)Enum.Parse(typeof(Quarter), quarter), cca, gamma, x, y, register, (ForecastType)Enum.Parse(typeof(ForecastType), type), (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), predictand));
+                await writeEventAsync(id + " conf del: " + quarter.ToString() + "|" + type.ToString() + predictand.ToString() + "|" + cca.ToString() + "|" + gamma.ToString() + "|" + x.ToString() + "|" + y.ToString() + "|" + left_lat.ToString() + "," + left_lon.ToString() + "|" + right_lat.ToString() + "," + right_lon, LogEvent.upd);
                 return RedirectToAction("Configuration", new { id = id });
             }
             catch (Exception ex)
@@ -511,9 +511,6 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                            select new { id = (int)q, name = q.ToString() };
             ViewBag.forc_type = new SelectList(type, "id", "name");
 
-            var predictor = from ForecastPredictors q in Enum.GetValues(typeof(ForecastPredictors))
-                           select new { id = (int)q, name = q.ToString() };
-            ViewBag.forc_predic = new SelectList(predictor, "id", "name");
 
             var measures = from MeasureClimatic q in Enum.GetValues(typeof(MeasureClimatic))
                             select new { id = (int)q, name = q.ToString() };
@@ -646,6 +643,16 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
         {
             var obj = await LoadEnableByPermissionAsync();
             string dataJson = JsonConvert.SerializeObject(getListOfCountryStates(obj));
+            return Content(dataJson, "application/json");
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult> ObtainPredictorData()
+        {
+            var predictor = from ForecastPredictors q in Enum.GetValues(typeof(ForecastPredictors))
+                            select new { id = (int)q, name = q.ToString() };
+            string dataJson = JsonConvert.SerializeObject(predictor);
             return Content(dataJson, "application/json");
         }
     }

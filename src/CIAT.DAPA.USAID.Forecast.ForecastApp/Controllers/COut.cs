@@ -394,7 +394,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 cca = config.cca_mode.ToString()
                             },
                             transformation = getTransformation(config),
-                            predictor = config.predictor.ToString(),
                             predictand = config.predictand.ToString(),
 
                         });
@@ -421,7 +420,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 cca = config.cca_mode.ToString()
                             },
                             transformation = getTransformation(config),
-                            predictor = config.predictor.ToString(),
                             predictand = config.predictand.ToString(),
 
                         });
@@ -459,7 +457,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -473,7 +470,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -490,7 +486,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -516,7 +511,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 areas = new JArray(),
                                 modes = new JObject(),
                                 transformation = new JArray(),
-                                predictor = "",
                                 predictand = "",
 
                             });
@@ -530,7 +524,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 areas = new JArray(),
                                 modes = new JObject(),
                                 transformation = new JArray(),
-                                predictor = "",
                                 predictand = "",
 
                             });
@@ -546,7 +539,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 areas = new JArray(),
                                 modes = new JObject(),
                                 transformation = new JArray(),
-                                predictor = "",
                                 predictand = "",
 
                             });
@@ -566,7 +558,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -577,7 +568,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -595,7 +585,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -606,7 +595,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -622,7 +610,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -633,7 +620,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -651,7 +637,6 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                             areas = new JArray(),
                             modes = new JObject(),
                             transformation = new JArray(),
-                            predictor = "",
                             predictand = "",
 
                         });
@@ -669,6 +654,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             {
                 AreasCpt area = new AreasCpt()
                 {
+                    predictor = region.predictor.ToString(),
                     x_min = region.left_lower.lon.ToString(),
                     x_max = region.rigth_upper.lon.ToString(),
                     y_min = region.left_lower.lat.ToString(),

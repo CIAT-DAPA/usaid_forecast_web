@@ -48,10 +48,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Type of forecast
         /// </summary>
         public ForecastType forc_type { get; set; }
-        /// <summary>
-        /// Predictor of config
-        /// </summary>
-        public ForecastPredictors predictor { get; set; }
+
         /// <summary>
         /// Predictand of config
         /// </summary>

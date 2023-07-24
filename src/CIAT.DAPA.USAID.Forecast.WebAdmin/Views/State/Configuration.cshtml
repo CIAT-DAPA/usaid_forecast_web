@@ -73,12 +73,6 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="forc_predic" class="control-label col-md-2">@Localizer["Predictor"]:</label>
-                <div class="col-md-10">
-                    @Html.DropDownList("forc_predic", null, htmlAttributes: new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
                 <label for="measure" class="control-label col-md-2">@Localizer["Predictand"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("measure", null, htmlAttributes: new { @class = "form-control" })
@@ -101,6 +95,7 @@
             <table class="table" id="conf_regions">
                 <thead>
                     <tr>
+                        <th>@Localizer["Predictor"].</th>
                         <th>Y min.</th>
                         <th>X min.</th>
                         <th>Y max.</th>
@@ -127,7 +122,6 @@
         <th>@Localizer["AmountX"]</th>
         <th>@Localizer["AmountY"]</th>
         <th>@Localizer["Type"]</th>
-        <th>@Localizer["Predictor"]</th>
         <th>@Localizer["Predictand"]</th>
         <th>@Localizer["Regions"]</th>
         <th></th>
@@ -158,9 +152,6 @@
         @item.forc_type
     </td>
     <td>
-        @item.predictor
-    </td>
-    <td>
         @item.predictand
     </td>
     <td>
@@ -169,6 +160,8 @@
             {
 
                 <li>
+                    @c.predictor.ToString()
+                    -
                     @c.left_lower.lat
                     -
                     @c.left_lower.lon
@@ -192,7 +185,6 @@
             <input type="hidden" id="y" name="y" value="@item.y_mode.ToString()" />
             <input type="hidden" id="register" name="register" value="@item.track.register.ToString("yyyy-MM-dd HH:mm:ss")" />
             <input type="hidden" id="type" name="type" value="@item.forc_type" />
-            <input type="hidden" id="predictor" name="predictor" value="@item.predictor" />
             <input type="hidden" id="predictand" name="predictand" value="@item.predictand" />
             <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
         }
