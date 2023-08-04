@@ -565,5 +565,127 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+
+
+        // GET: api/Forecast/ClimatePrevious
+        [HttpGet]
+        [Route("api/[controller]/ClimatePrevious/{forecast}/{weather_stations}/{probabilities}/{format}")]
+        public async Task<IActionResult> GetClimatePrevious(string forecast, string weather_stations, bool probabilities, string format)
+        {
+            try
+            {
+                // Transform the string id to object id
+                string[] ws_parameter = weather_stations.Split(',');
+                ObjectId[] ws = new ObjectId[ws_parameter.Length];
+                for (int i = 0; i < ws_parameter.Length; i++)
+                    ws[i] = getId(ws_parameter[i]);
+
+                var f = await db.forecast.byIdAsync(forecast);
+
+                var fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+                var fs = await db.forecastScenario.byForecastAndWeatherStationAsync(f.id, ws);
+
+                var json = new
+                {
+                    forecast = f.id.ToString(),
+                    confidence = f.confidence,
+                    climate = fc.Select(p => new
+                    {
+                        weather_station = p.weather_station.ToString(),
+                        performance = p.performance.Select(p2 => new
+                        {
+                            measure = Enum.GetName(typeof(MeasurePerformance), p2.name),
+                            value = p2.value,
+                            year = p2.year,
+                            month = p2.month
+                        }),
+                        data = p.data.Select(p2 => new
+                        {
+                            year = p2.year,
+                            month = p2.month,
+                            probabilities = p2.probabilities.Select(p3 => new
+                            {
+                                measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
+                                lower = p3.lower,
+                                normal = p3.normal,
+                                upper = p3.upper
+                            })
+                        }),
+                        subseasonal_data = p.subseasonal != null && p.subseasonal.Count() > 0 ?
+                            p.subseasonal.Select(p3 => new SubseasonalDataEntity()
+                            {
+                                year = p3.year,
+                                month = p3.month,
+                                week = p3.week,
+                                probabilities = p3.probabilities.Select(p4 => new ProbabilityEntity()
+                                {
+                                    measure = Enum.GetName(typeof(MeasureClimatic), p4.measure),
+                                    lower = p4.lower,
+                                    normal = p4.normal,
+                                    upper = p4.upper
+                                })
+                            }) : new List<SubseasonalDataEntity>()
+                    }),
+                    scenario = fs.Select(p => new
+                    {
+                        weather_station = p.weather_station.ToString(),
+                        name = Enum.GetName(typeof(ScenarioName), p.name),
+                        year = p.year,
+                        monthly_data = p.monthly_data.Select(p2 => new
+                        {
+                            month = p2.month,
+                            data = p2.data.Select(p3 => new
+                            {
+                                measure = Enum.GetName(typeof(MeasureClimatic), p3.measure),
+                                value = p3.value
+                            })
+                        })
+                    })
+                };
+                // Write event log
+                writeEvent("Forecast climate and scenarios id " + f.id.ToString(), LogEvent.lis);
+                //writeEvent(Json(json).ToJson(), LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // Validate the type date to export
+                    if (probabilities)
+                    {
+                        // add header
+                        builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "year", "month", "measure", "lower", "normal", "upper", "\n" }));
+
+                        foreach (var w in json.climate)
+                            foreach (var m in w.data)
+                                foreach (var d in m.probabilities)
+                                    builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, m.year.ToString(), m.month.ToString(), d.measure, d.lower.ToString(), d.normal.ToString(), d.upper.ToString(), "\n" }));
+                    }
+                    else
+                    {
+                        // add header
+                        builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "scenario", "year", "month", "measure", "value", "\n" }));
+
+                        foreach (var w in json.scenario)
+                            foreach (var m in w.monthly_data)
+                                foreach (var d in m.data)
+                                    builder.Append(string.Join<string>(delimiter, new string[] { w.weather_station, w.name, w.year.ToString(), m.month.ToString(), d.measure, d.value.ToString(), "\n" }));
+                    }
+
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "forecast_climate_" + (probabilities ? "probabilities" : "scenarios") + ".csv");
+                }
+                else
+                    return Content("Format not supported");
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
+        }
     }
 }
