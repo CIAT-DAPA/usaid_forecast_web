@@ -96,7 +96,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 below = double.Parse(fields[3]),
                                 normal = double.Parse(fields[4]),
                                 above = double.Parse(fields[5]),
-                                type = fields[6],
+                                season = changeSeason(fields[6]),
                                 predictand = fields[7]
                             });
                         }
@@ -300,7 +300,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             year = p.year,
                             month = p.month,
-                            type = (ForecastType)Enum.Parse(typeof(ForecastType), p.type),
+                            season = p.season,
                             probabilities = new List<Probability>()
                         {
                             new Probability()
@@ -325,7 +325,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             year = p.year,
                             month = p.month,
-                            type = (ForecastType)Enum.Parse(typeof(ForecastType), p.type),
+                            season = p.season,
                             probabilities = new List<Probability>()
                             {
                                 new Probability()
@@ -695,6 +695,50 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             Console.WriteLine("Forecast imported");
             return true;
+        }
+
+
+        public static Quarter changeSeason(string season)
+        {
+            Quarter season_result;
+            if (season.Count(ch => ch == '-') == 2)
+            {
+                string[] season_names = new string[] {
+                    "Dec-Feb-Mar",
+                    "Jan-Feb-Mar",
+                    "Feb-Mar-Apr",
+                    "Mar-Apr-May",
+                    "Apr-May-Jun",
+                    "May-Jun-Jul",
+                    "Jun-Jul-Aug",
+                    "Jul-Aug-Sep",
+                    "Aug-Sep-Oct",
+                    "Sep-Oct-Nov",
+                    "Oct-Nov-Dec",
+                    "Nov-Dec-Jan"
+                };
+                season_result = (Quarter)Array.IndexOf(season_names, season);
+            }
+            else
+            {
+                string[] season_names = new string[]
+                {
+                    "Dic-Jan",
+                    "Ene-Feb",
+                    "Feb-Mar",
+                    "Mar-Abr",
+                    "Abr-May",
+                    "May-Jun",
+                    "Jun-Jul",
+                    "Jul-Ago",
+                    "Ago-Sep",
+                    "Sep-Oct",
+                    "Oct-Nov",
+                    "Nov-Dic"
+                };
+                season_result = (Quarter)Array.IndexOf(season_names, season)+12;
+            }
+            return season_result;
         }
 
         public async Task<bool> importHistoricalAsync(string path, MeasureClimatic mc, int search)

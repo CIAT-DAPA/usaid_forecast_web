@@ -26,7 +26,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Type of forecast
         /// </summary>
         [BsonRequired]
-        public ForecastType type { get; set; }
+        public Quarter season { get; set; }
         /// <summary>
         /// List of variables forecast for the month
         /// </summary>

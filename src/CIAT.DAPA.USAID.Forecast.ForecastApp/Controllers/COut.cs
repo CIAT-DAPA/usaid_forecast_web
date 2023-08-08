@@ -351,7 +351,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         }
 
 
-        public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
+            public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
         {
             //Get current month
             DateTime CurrentDate = DateTime.Now;
@@ -386,7 +386,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         cpt_info.Add(new
                         {
                             type = type.ToString(),
-                            season = config.trimester.ToString(),
+                            season = changeSeason(type.ToString(), (int)config.trimester),
                             areas = getRegions(config),
                             modes = new ModesCpt() { 
                                 x = config.x_mode.ToString(),
@@ -411,7 +411,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         cpt_info.Add(new
                         {
                             type = type.ToString(),
-                            season = config.trimester.ToString(),
+                            season = changeSeason(type.ToString(), (int)config.trimester),
                             areas = getRegions(config),
                             modes = new ModesCpt()
                             {
@@ -435,6 +435,50 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             }
             return true;
+        }
+
+        public static string changeSeason(string type, int season)
+        {
+            string season_result = "";
+            if(type == "tri")
+            {
+                string[] season_names = new string [] {
+                    "Dec-Feb-Mar",
+                    "Jan-Feb-Mar",
+                    "Feb-Mar-Apr",
+                    "Mar-Apr-May",
+                    "Apr-May-Jun",
+                    "May-Jun-Jul",
+                    "Jun-Jul-Aug",
+                    "Jul-Aug-Sep",
+                    "Aug-Sep-Oct",
+                    "Sep-Oct-Nov",
+                    "Oct-Nov-Dec",
+                    "Nov-Dec-Jan"
+                };
+                season_result = season_names[season];
+            }
+            else
+            {
+                season = season + 12;
+                string[] season_names = new string[]
+                {
+                    "Dic-Jan",
+                    "Ene-Feb",
+                    "Feb-Mar",
+                    "Mar-Abr",
+                    "Abr-May",
+                    "May-Jun",
+                    "Jun-Jul",
+                    "Jul-Ago",
+                    "Ago-Sep",
+                    "Sep-Oct",
+                    "Oct-Nov",
+                    "Nov-Dic"
+                };
+                season_result = season_names[season];
+            }
+            return season_result;
         }
 
         public static List<object> fillListOfConfig(List<ConfigurationCPT> listOfConfig, State s, Quarter current_quarter, List<object> cpt_info, ForecastType type)
