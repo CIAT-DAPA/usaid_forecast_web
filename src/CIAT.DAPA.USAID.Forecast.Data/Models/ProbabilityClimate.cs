@@ -2,7 +2,7 @@
 using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using MongoDB.Bson;
 using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
@@ -25,6 +25,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// Type of forecast
         /// </summary>
+        [BsonRepresentation(BsonType.String)]
         [BsonRequired]
         public Quarter season { get; set; }
         /// <summary>
