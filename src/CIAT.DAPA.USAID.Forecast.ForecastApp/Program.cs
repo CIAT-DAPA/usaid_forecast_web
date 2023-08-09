@@ -190,6 +190,17 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                         await output.exportConfigurationPyCpt(args[path + 1], args[country + 1], args[m + 1].Split(",").Select(int.Parse).ToList(), TypePyCPT.subseasonal);
                     }
 
+                    // Export json file with urls for forecast process
+                    // -out -url -p "C:\Users\hsotelo\Desktop\test export\\" -c "1112222133344444" -type "download_seasonal_prec"
+                    int url = Program.searchParameter(args, "-url");
+                    if (url >= 0)
+                    {
+                        int type = Program.searchParameter(args, "-type");
+                        Program.validateParameter(type, "-type");
+                        Console.WriteLine("Exporting Json with Url data");
+                        await output.exportUrls(args[path + 1], args[country + 1], args[type + 1]);
+                    }
+
                 }
                 else if (Program.searchParameter(args, "-in") == 0)
                 {

@@ -63,6 +63,10 @@ Export Data
 
 -sub			Export json file from pycpt configuration for subseasonal a country.
 
+-url			Export json file with urls for forecast process.
+
+-type			Type of urls that you want to obtain
+
 
 -----------------------------------------------------------------
 Import Data

@@ -562,6 +562,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 {
                     json_data.status = true;
                     json_data.msg = "ok";
+                    json_data.urls = new List<UrlJsonData>();
                     foreach (UrlData data in selected_url.urls)
                     {
                         int INITIAL_MONTH_VALUE_GUATE = 755;
@@ -571,11 +572,11 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         url_value = url_value.Replace("{g_month}", Convert.ToString(month) + ".0");
                         url_value = url_value.Replace("{category}", data.prob_type.ToString());
                         url_value = url_value.Replace("{g_category}", getCategoryGuate(data.prob_type.ToString()));
-                        url_value = url_value.Replace("{file_name}", data.prob_type.ToString());
-                        json_data.urls.Add(new
+                        url_value = url_value.Replace("{file_name}", data.name.ToString());
+                        json_data.urls.Add(new UrlJsonData()
                         {
                             name = data.name,
-                            url = url_value
+                            value = url_value
                         });
                     }
                 }

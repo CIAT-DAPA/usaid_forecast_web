@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Export
 {
-    public class UrlsJsonFormat
+    public class UrlJsonData
     {
-        public bool status { get; set; }
-        public string msg { get; set; }
-        public List<UrlJsonData> urls { get; set; }
+        public string name { get; set; } 
+        public string value { get; set; }
 
     }
 }
