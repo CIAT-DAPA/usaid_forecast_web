@@ -460,7 +460,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             }
             else
             {
-                season = season + 12;
+                season = season - 12;
                 string[] season_names = new string[]
                 {
                     "Dic-Jan",
