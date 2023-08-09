@@ -704,7 +704,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if (season.Count(ch => ch == '-') == 2)
             {
                 string[] season_names = new string[] {
-                    "Dec-Feb-Mar",
+                    "Dec-Jan-Feb",
                     "Jan-Feb-Mar",
                     "Feb-Mar-Apr",
                     "Mar-Apr-May",
@@ -723,18 +723,18 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             {
                 string[] season_names = new string[]
                 {
-                    "Dic-Jan",
-                    "Ene-Feb",
+                    "Dec-Jan",
+                    "Jan-Feb",
                     "Feb-Mar",
-                    "Mar-Abr",
-                    "Abr-May",
+                    "Mar-Apr",
+                    "Apr-May",
                     "May-Jun",
                     "Jun-Jul",
-                    "Jul-Ago",
-                    "Ago-Sep",
+                    "Jul-Aug",
+                    "Aug-Sep",
                     "Sep-Oct",
                     "Oct-Nov",
-                    "Nov-Dic"
+                    "Nov-Dec"
                 };
                 season_result = (Quarter)Array.IndexOf(season_names, season)+12;
             }

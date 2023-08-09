@@ -253,105 +253,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// Method that export all cpt  configuration needs by the forecast
         /// </summary>
         /// <param name="path">Path where the files will be located</param>
-        public async Task<bool> exportCPTSetupAsync2(string path, string mainCountry)
-        {
-            StringBuilder header_cpt, x_m, y_m, cca, gamma, header_areas;
-            StringBuilder[] x1, x2, y1, y2;
-            // Create directory
-            if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
-                Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
-            var states = await db.state.listEnableAsync();
-            IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
-            // Filter the states with configuration
-            var states_ctp = from s_cpt in statesByCountry
-                             where s_cpt.conf.Where(p => p.track.enable).Count() > 0
-                             select s_cpt;
-            foreach (var s in states_ctp)
-            {
-                Console.WriteLine("Creating " + s.name);
-                if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
-                    Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString());
-
-                // the cpt configuration 
-                header_cpt = new StringBuilder("var,");
-                x_m = new StringBuilder("x_modes,");
-                y_m = new StringBuilder("y_modes,");
-                cca = new StringBuilder("cca_modes,");
-                gamma = new StringBuilder("trasformation,");
-                // the regions configurations
-                header_areas = new StringBuilder("order,var,");
-                x1 = new StringBuilder[] { new StringBuilder("1,x1,"), new StringBuilder("2,x1,") };
-                x2 = new StringBuilder[] { new StringBuilder("1,x2,"), new StringBuilder("2,x2,") };
-                y1 = new StringBuilder[] { new StringBuilder("1,y1,"), new StringBuilder("2,y1,") };
-                y2 = new StringBuilder[] { new StringBuilder("1,y2,"), new StringBuilder("2,y2,") };
-                // This cicle is by every quarter of year
-                foreach (string q in Enum.GetNames(typeof(Quarter)))
-                {
-                    ConfigurationCPT conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
-                    bool config_exit = conf != null;
-                    // the cpt configuration 
-                    header_cpt.Append(q + ",");
-                    x_m.Append(config_exit ? (conf.x_mode.ToString() ?? string.Empty) + "," : "NA,");
-                    y_m.Append(config_exit ? conf.y_mode.ToString() + "," : "NA,");
-                    cca.Append(config_exit ? conf.cca_mode.ToString() + "," : "NA,");
-                    gamma.Append(config_exit ? conf.gamma.ToString() + "," : "NA,");
-                    // the regions configurations
-                    header_areas.Append(q + ",");
-                    x1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lon.ToString() + "," : "NA,");
-                    x2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lon.ToString() + "," : "NA,");
-                    y1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lat.ToString() + "," : "NA,");
-                    y2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lat.ToString() + "," : "NA,");
-
-                    
-                    // Second region
-                    if (config_exit && conf.regions.Count() > 1)
-                    {
-                        x1[1].Append(conf.regions.ElementAt(1).left_lower.lon.ToString() + ",");
-                        x2[1].Append(conf.regions.ElementAt(1).rigth_upper.lon.ToString() + ",");
-                        y1[1].Append(conf.regions.ElementAt(1).left_lower.lat.ToString() + ",");
-                        y2[1].Append(conf.regions.ElementAt(1).rigth_upper.lat.ToString() + ",");
-                    }
-                    else
-                    {
-                        x1[1].Append("NA,");
-                        x2[1].Append("NA,");
-                        y1[1].Append("NA,");
-                        y2[1].Append("NA,");
-                    }
-                }
-                // Create the physical file cpt
-                string file_name_cpt = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "cpt" + ".csv";
-                if (File.Exists(file_name_cpt))
-                    File.Delete(file_name_cpt);
-                File.WriteAllText(file_name_cpt, header_cpt.ToString().Substring(0, header_cpt.ToString().Length - 1) + "\n" +
-                    x_m.ToString().Substring(0, x_m.ToString().Length - 1) + "\n" +
-                    y_m.ToString().Substring(0, y_m.ToString().Length - 1) + "\n" +
-                    cca.ToString().Substring(0, cca.ToString().Length - 1) + "\n" +
-                    gamma.ToString().Substring(0, gamma.ToString().Length - 1));
-
-                // Create the physical file regions
-                string file_name_regions = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "areas" + ".csv";
-                if (File.Exists(file_name_regions))
-                    File.Delete(file_name_regions);
-                File.WriteAllText(file_name_regions, header_areas.ToString().Substring(0, header_areas.ToString().Length - 1) + "\n" +
-                    x1[0].ToString().Substring(0, x1[0].ToString().Length - 1) + "\n" +
-                    x2[0].ToString().Substring(0, x2[0].ToString().Length - 1) + "\n" +
-                    y1[0].ToString().Substring(0, y1[0].ToString().Length - 1) + "\n" +
-                    y2[0].ToString().Substring(0, y2[0].ToString().Length - 1) + "\n" +
-                    x1[1].ToString().Substring(0, x1[1].ToString().Length - 1) + "\n" +
-                    x2[1].ToString().Substring(0, x2[1].ToString().Length - 1) + "\n" +
-                    y1[1].ToString().Substring(0, y1[1].ToString().Length - 1) + "\n" +
-                    y2[1].ToString().Substring(0, y2[1].ToString().Length - 1) + "\n");
-
-                // Create the theorical areas file
-                Console.WriteLine("Creating regions " + s.name);
-
-            }
-            return true;
-        }
-
-
-            public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
+        public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
         {
             //Get current month
             DateTime CurrentDate = DateTime.Now;
@@ -443,7 +345,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
             if(type == "tri")
             {
                 string[] season_names = new string [] {
-                    "Dec-Feb-Mar",
+                    "Dec-Jan-Feb",
                     "Jan-Feb-Mar",
                     "Feb-Mar-Apr",
                     "Mar-Apr-May",
@@ -463,18 +365,18 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 season = season - 12;
                 string[] season_names = new string[]
                 {
-                    "Dic-Jan",
-                    "Ene-Feb",
+                    "Dec-Jan",
+                    "Jan-Feb",
                     "Feb-Mar",
-                    "Mar-Abr",
-                    "Abr-May",
+                    "Mar-Apr",
+                    "Apr-May",
                     "May-Jun",
                     "Jun-Jul",
-                    "Jul-Ago",
-                    "Ago-Sep",
+                    "Jul-Aug",
+                    "Aug-Sep",
                     "Sep-Oct",
                     "Oct-Nov",
-                    "Nov-Dic"
+                    "Nov-Dec"
                 };
                 season_result = season_names[season];
             }
@@ -706,7 +608,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                 };
                 r.Add(area);
             }
-
+            //Add NA region object if this part is uncomment
             /*if(r.Count() == 1)
             {
                 r.Add(new AreasCpt()
