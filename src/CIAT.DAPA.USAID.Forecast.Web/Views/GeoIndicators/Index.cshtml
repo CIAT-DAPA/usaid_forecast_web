@@ -1,26 +1,31 @@
 ﻿@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+
+@inject IOptions<RequestLocalizationOptions> LocOptions
 @inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
-
-
 
 <div id="containerBlock">
     <section class="col-md-12 sections">
         <div class="row section-content">
-            <h2 class="text-center" id="sectionTitle" style="">@Localizer["Title"]</h2>
-            <p class="text-justify">
-              
+            <h2 class="text-center" id="indicatorsTitle" style="">@Localizer["Title"]</h2>
+            <p class="text-justify" id="indicatorsDesc">
+
+
             </p>
+
 
             <div class="lds-dual-ring" id="capabilitiesLoader"></div>
             <div class="row" id="capabilitiesFilter">
                 <div class="row form-group border border-dark">
-                    <div id="cropSelect" class="col-lg-2 control-label">
+                    <div id="cropSelect" class="col-lg-6 control-label">
                         <label for="cbo_crop">
                             @Localizer["Crop"]
                         </label>
                         @Html.DropDownList("cbo_crop", new SelectList(new List<String>(), "Value", "Text"), new { @class = "form-control", onchange = "initMaps()" })
                     </div>
-                    <div id="groupSelect" class="col-lg-2 control-label">
+                    <div id="groupSelect" class="col-lg-6 control-label">
                         <label for="cbo_group">
                             @Localizer["Group"]
                         </label>
@@ -31,8 +36,8 @@
 
             <div class="error-msg" id="errorMsg"></div>
             <br />
-    
-            <div id="maps_section" class="row">
+
+            <div id="maps_section" class="indicator-maps-container">
 
             </div>
         </div>
@@ -46,7 +51,7 @@
     <script src="~/lib/x2js/xml2json.min.js"></script>
     <script type="text/javascript" src="~/js/map/geo_indicators.js"></script>
     <script type="text/javascript" src="~/js/map/map_overlays.js"></script>
-
+    <script type="text/javascript" src="~/js/map/wfs_overlays.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.control.min.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js"></script>
@@ -56,6 +61,7 @@
     <script type="text/javascript">
 
 
+        var currentLocale = '@System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName';
         var ws = @Html.Raw(Json.Serialize(ViewBag.WeatherStations));
 
         geoserver_url = "@Html.Raw(ViewBag.geoserver_url)";
@@ -71,16 +77,29 @@
 
              precipitation: '@Localizer["Precipitation"]',
              temperature: '@Localizer["Temperature"]',
-             humidity  :'@Localizer["Humidity"]',
+             humidity: '@Localizer["Humidity"]',
+
+
+             coffee: '@Localizer["coffee"]',
+             maize: '@Localizer["maize"]',
+             dry_bean: '@Localizer["dry_bean"]',
+             soybean: '@Localizer["soybean"]',
+
+             heat_waves: '@Localizer["heat_waves"]',
+             heavy_rainfall: '@Localizer["heavy_rainfall"]',
+             dry_spells: '@Localizer["dry_spells"]',
+             spei: '@Localizer["spei"]',
+             water_demand: '@Localizer["water_demand"]',
+
          };
 
-   
 
-        const bounds = L.latLngBounds(ws.map((c) => {
-            return [c.latitude, c.longitude];
-        }));
-        conf = { bounds: bounds };
-        mapOverlays =  @Html.Raw(Json.Serialize( @AppSettings.Value.mapOverlays));
+
+                    const bounds = L.latLngBounds(ws.map((c) => {
+                        return [c.latitude, c.longitude];
+                    }));
+                    conf = { bounds: bounds };
+                mapOverlays =  @Html.Raw(Json.Serialize( @AppSettings.Value.mapOverlays));
 
 
         indicatorYearConstants =  @Html.Raw(Json.Serialize(new
@@ -88,8 +107,8 @@
                                  avg = AppSettings.Value.indicator_geoserver_average,
                                  nino = AppSettings.Value.indicator_NINA,
                                  nina = AppSettings.Value.indicator_NINO
-                             }));
-        init();
-        window.loading_screen.finish();
+            }));
+            init();
+            window.loading_screen.finish();
     </script>
 }

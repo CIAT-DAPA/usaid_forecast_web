@@ -70,6 +70,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.GeoIndicators {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coffee.
+        /// </summary>
+        public static string coffee {
+            get {
+                return ResourceManager.GetString("coffee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compare.
         /// </summary>
         public static string Compare {
@@ -88,11 +97,33 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.GeoIndicators {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In this section you can see a list of agroclimatic risk indices.
+        ///   Looks up a localized string similar to This agroclimatic map viewer is an interactive tool that allows users, mainly extension agents, technical staff and decision-making entities, to view historical information on agroclimatic indicators (for example, indicators that characterize droughts, excess rainfall, heat waves, cold waves, Moniliasis risk, and risk of thermal and water stress), specific to the department of San Martín (Peru).
+        ///
+        ///The maps obtained through this tool can be used for various purposes, such as:
+        ///
+        ///Know the average spatial pat [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Description {
+        public static string DescriptionLong {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("DescriptionLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drybean.
+        /// </summary>
+        public static string dry_bean {
+            get {
+                return ResourceManager.GetString("dry_bean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dry Periods.
+        /// </summary>
+        public static string dry_spells {
+            get {
+                return ResourceManager.GetString("dry_spells", resourceCulture);
             }
         }
         
@@ -115,6 +146,24 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.GeoIndicators {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Heatwaves.
+        /// </summary>
+        public static string heat_waves {
+            get {
+                return ResourceManager.GetString("heat_waves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wet periods.
+        /// </summary>
+        public static string heavy_rainfall {
+            get {
+                return ResourceManager.GetString("heavy_rainfall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Humidity.
         /// </summary>
         public static string Humidity {
@@ -129,6 +178,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.GeoIndicators {
         public static string La_nina {
             get {
                 return ResourceManager.GetString("La_nina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maize.
+        /// </summary>
+        public static string maize {
+            get {
+                return ResourceManager.GetString("maize", resourceCulture);
             }
         }
         
@@ -160,6 +218,24 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.GeoIndicators {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Soybean.
+        /// </summary>
+        public static string soybean {
+            get {
+                return ResourceManager.GetString("soybean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SPEI.
+        /// </summary>
+        public static string spei {
+            get {
+                return ResourceManager.GetString("spei", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temperature.
         /// </summary>
         public static string Temperature {
@@ -174,6 +250,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.GeoIndicators {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evapotranspiration.
+        /// </summary>
+        public static string water_demand {
+            get {
+                return ResourceManager.GetString("water_demand", resourceCulture);
             }
         }
     }

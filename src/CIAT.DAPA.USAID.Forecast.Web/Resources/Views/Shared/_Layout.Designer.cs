@@ -155,7 +155,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aclímate.
+        ///   Looks up a localized string similar to AClimate.
         /// </summary>
         public static string Title {
             get {

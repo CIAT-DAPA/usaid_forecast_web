@@ -90,6 +90,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                 options.modules_geo_indicators = bool.Parse(Configuration.GetSection("Modules:GeoIndicators").Value);
                 options.modules_rice = bool.Parse(Configuration.GetSection("Modules:Rice").Value);
                 options.modules_maize = bool.Parse(Configuration.GetSection("Modules:Maize").Value);
+                options.modules_fruit_trees = bool.Parse(Configuration.GetSection("Modules:FruitTrees").Value);
                 options.modules_expert = bool.Parse(Configuration.GetSection("Modules:Expert").Value);
                 options.modules_glossary = bool.Parse(Configuration.GetSection("Modules:Glossary").Value);
                 options.modules_about = bool.Parse(Configuration.GetSection("Modules:About").Value);

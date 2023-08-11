@@ -62,8 +62,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ForecastYield forecast = await rFY.SearchAsync(ws.Id);
                 ForecastYield forecast_exceedance = await rFY.SearchExceedanceAsync(ws.Id);
 
+         
+
                 IEnumerable<Yield> yield = forecast.Yield.FirstOrDefault().Yield;
-                IEnumerable<Yield> yield_exceedance = forecast_exceedance.Yield.FirstOrDefault().Yield.OrderByDescending(p=>p.Data.First(p2=>p2.Measure.StartsWith("yield")).Avg);
+                IEnumerable<Yield> yield_exceedance = forecast_exceedance.Yield.FirstOrDefault().Yield.OrderByDescending((p)=>
+                    p.Data.FirstOrDefault(p2 => p2.Measure.StartsWith("yield"))?.Avg ?? -1
+                );
 
                 // Filtering cultivars
                 IEnumerable<string> cultivars = yield.Select(p => p.Cultivar).Distinct().ToList();

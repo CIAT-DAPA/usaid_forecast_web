@@ -6,222 +6,225 @@
 
 @if (ViewBag.ws != null)
 {
-    <div id="containerBlock">
-        <!-- Start Probabilities -->
-        @if (ViewBag.climate_data.Count > 0)
-        {
-            <section class="col-md-12 sections" id="content_forecast">
-                <div class="row section-content">
-                    <h2 class="text-center" id="sectionTitle" style="">@Localizer["ForecastTitle"]</h2>
-                    <div>
-                        <p class="text-justify col-lg-12" style="font-size:1.1em;">
-                            @Localizer["ForecastMunicipality"]
-                            <span class="text-bold">@ViewBag.m</span>,
-                            @Localizer["ForecastPeriod"]
-                            <span class="text-bold">
-                                @{
-                                    var f_p = (List<ForecastClimateData>)ViewBag.climate_data;
-                                    int mon1 = f_p[0].Month == 1 ? 12 : f_p[0].Month - 1;
-                                    int mon2 = f_p[1].Month == 12 ? 0 : f_p[1].Month + 1;
-                                    <span>@Localizer["Months"].Value.Split(",")[mon1 - 1] - </span>
-                                    <span>@Localizer["Months"].Value.Split(",")[mon2 - 1]</span>
-                                }
-                            </span>.
-                            @Localizer["ForecastWS"]
-                            <span class="text-bold">@ViewBag.ws.Name - @ViewBag.ws.Ext_Id</span>,
-                            @Localizer["ForecastWSProvider"]
-                            <span class="text-bold">@ViewBag.ws.Origin</span>.
-                        </p>
-                        <p class="text-justify col-lg-12" style="font-size:1.1em;">
-                            @Localizer["ForecastExplanation"]
-                        </p>
-                    </div>
-                </div>
-                <div class="row" id="probabilities_pies">
-                    <div id="climate_carousel" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            @{
-                                int i = -1;
-                                foreach (ForecastClimateData d in ViewBag.climate_data)
-                                {
-                                    i = i + 1;
-                                    <li data-target="#climate_carousel" data-slide-to="@i" class="@(i == 0 ? " active" : null)"></li>
-                                }
-                            }
-                        </ol>
-                        <div class="carousel-inner" role="listbox">
-                            @{
-                                i = -1;
-                                foreach (ForecastClimateData d in ViewBag.climate_data)
-                                {
-                                    i = i + 1;
-                                    int month1 = d.Month == 1 ? 12 : d.Month - 1;
-                                    int month2 = d.Month;
-                                    int month3 = d.Month == 12 ? 1 : d.Month + 1;
-                                    int[] months = new int[] { month1, month2, month3 };
-                                    string[] months_names = Localizer["Months"].Value.Split(",");
-                                    ForecastClimateProbability p = d.Probabilities.First();
-                                    string summary = "ForecastNormal";
-                                    if (p.Lower >= p.Normal && p.Lower >= p.Upper) { summary = "ForecastBelow"; }
-                                    else if (p.Upper >= p.Normal && p.Upper >= p.Lower) { summary = "ForecastAbove"; }
-                                    HistoricalClimateMonthly climatology_month = ((HistoricalClimatology)ViewBag.climatology).Monthly_Data.FirstOrDefault(o => o.Month == month2);
-                                    <section class="item active forecast_slide" id="forecast_slide">
-                                        <article class="col-lg-4 article_content col-sm-offset-1">
-                                            <div class="section-content">
-                                                <h3 class="text-center">@d.Year</h3>
-                                                <h3 class="text-center">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</h3>
-                                                <h4 class="text-center">@Localizer["ForecastProbabilitiesTitle"]</h4>
-                                                <div id="@("pie_" + d.Year.ToString() + "_" + month2.ToString())" class="plot plot_pie">
-                                                    <svg></svg>
-                                                </div>
-                                                <p class="text-justify article_content">
-                                                    @Localizer["ForecastSummaryMonth"]
-                                                    <span class="text-bold">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</span>
-                                                    @Localizer["ForecastSummaryWS"]
-                                                    <span class="text-bold">@ViewBag.m</span>
+<div id="containerBlock">
 
-                                                    @Localizer["ForecastSummaryResult"] <span class="text-bold">@Localizer[summary]</span>.
-                                                </p>
+    <!-- Start Probabilities -->
+    @if (ViewBag.climate_data.Count > 0)
+    {
+        <section class="col-md-12 sections" id="content_forecast">
+            <div class="row section-content">
+                <h2 class="text-center" id="sectionTitle" style="">@Localizer["ForecastTitle"]</h2>
+                <div>
+                    <p class="text-justify col-lg-12" style="font-size:1.1em;">
+                        @Localizer["ForecastMunicipality"]
+                        <span class="text-bold">@ViewBag.m</span>,
+                        @Localizer["ForecastPeriod"]
+                        <span class="text-bold">
+                            @{
+                                var f_p = (List<ForecastClimateData>)ViewBag.climate_data;
+                                int mon1 = f_p[0].Month == 1 ? 12 : f_p[0].Month - 1;
+                                int mon2 = f_p[1].Month == 12 ? 0 : f_p[1].Month + 1;
+                                <span>@Localizer["Months"].Value.Split(",")[mon1 - 1] - </span>
+                                <span>@Localizer["Months"].Value.Split(",")[mon2 - 1]</span>
+                            }
+                        </span>.
+                        @Localizer["ForecastWS"]
+                        <span class="text-bold">@ViewBag.ws.Name - @ViewBag.ws.Ext_Id</span>,
+                        @Localizer["ForecastWSProvider"]
+                        <span class="text-bold">@ViewBag.ws.Origin</span>.
+                    </p>
+                    <p class="text-justify col-lg-12" style="font-size:1.1em;">
+                        @Localizer["ForecastExplanation"]
+                    </p>
+                </div>
+            </div>
+            <div class="row" id="probabilities_pies">
+                <div id="climate_carousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        @{
+                            int i = -1;
+                            foreach (ForecastClimateData d in ViewBag.climate_data)
+                            {
+                                i = i + 1;
+                                <li data-target="#climate_carousel" data-slide-to="@i" class="@(i == 0 ? " active" : null)"></li>
+                            }
+                        }
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        @{
+                            i = -1;
+                            foreach (ForecastClimateData d in ViewBag.climate_data)
+                            {
+                                i = i + 1;
+                                int month1 = d.Month == 1 ? 12 : d.Month - 1;
+                                int month2 = d.Month;
+                                int month3 = d.Month == 12 ? 1 : d.Month + 1;
+                                int[] months = new int[] { month1, month2, month3 };
+                                string[] months_names = Localizer["Months"].Value.Split(",");
+                                ForecastClimateProbability p = d.Probabilities.First();
+                                string summary = "ForecastNormal";
+                                if (p.Lower >= p.Normal && p.Lower >= p.Upper) { summary = "ForecastBelow"; }
+                                else if (p.Upper >= p.Normal && p.Upper >= p.Lower) { summary = "ForecastAbove"; }
+                                HistoricalClimateMonthly climatology_month = ((HistoricalClimatology)ViewBag.climatology).Monthly_Data.FirstOrDefault(o => o.Month == month2);
+                                <section class="item active forecast_slide" id="forecast_slide">
+                                    <article class="col-lg-4 article_content col-sm-offset-1">
+                                        <div class="section-content">
+                                            <h3 class="text-center">@d.Year</h3>
+                                            <h3 class="text-center">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</h3>
+                                            <h4 class="text-center">@Localizer["ForecastProbabilitiesTitle"]</h4>
+                                            <div id="@("pie_" + d.Year.ToString() + "_" + month2.ToString())" class="plot plot_pie">
+                                                <svg></svg>
                                             </div>
-                                        </article>
-                                        <article class="col-lg-6 article_content">
-                                            <h3 class="text-center">@Localizer["ForecastScenarioTitle"]</h3>
-                                            <div class="section-content">
-                                                @{
-                                                    int time = -1;
-                                                    List<Scenario> scenario_list = ViewBag.scenario;
-                                                    foreach (string s in scenario_list.Select(o => o.Measure).Distinct())
-                                                    {
-                                                        time = time + 1;
-                                                        @Html.Raw((time % 2) == 0 ? "<div class='row'>" : "")
-                                                        <article class="col-lg-6 article_content">
-                                                            <table class="table">
+                                            <p class="text-justify article_content">
+                                                @Localizer["ForecastSummaryMonth"]
+                                                <span class="text-bold">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</span>
+                                                @Localizer["ForecastSummaryWS"]
+                                                <span class="text-bold">@ViewBag.m</span>
+
+                                                @Localizer["ForecastSummaryResult"] <span class="text-bold">@Localizer[summary]</span>.
+                                            </p>
+                                        </div>
+                                    </article>
+                                    <article class="col-lg-6 article_content">
+                                        <h3 class="text-center">@Localizer["ForecastScenarioTitle"]</h3>
+                                        <div class="section-content">
+                                            @{
+                                                int time = -1;
+                                                List<Scenario> scenario_list = ViewBag.scenario;
+                                                foreach (string s in scenario_list.Select(o => o.Measure).Distinct())
+                                                {
+                                                    time = time + 1;
+                                                    @Html.Raw((time % 2) == 0 ? "<div class='row'>" : "")
+                                                    <article class="col-lg-6 article_content">
+                                                        <table class="table">
+                                                            <tr>
+                                                                <th colspan="4">@Localizer[s] (@Localizer[s + "_unit"])</th>
+                                                            </tr>
+                                                            <tr><th>@Localizer["ForecastScenarioDate"]</th><th>@Localizer["ForecastScenarioMinimun"]</th><th>@Localizer["ForecastScenarioAvg"]</th><th>@Localizer["ForecastScenarioMaximun"]</th></tr>
+                                                            @foreach (Scenario md in scenario_list.Where(o => o.Measure == s && months.Contains(o.Month)))
+                                                            {
                                                                 <tr>
-                                                                    <th colspan="4">@Localizer[s] (@Localizer[s + "_unit"])</th>
+                                                                    <td>@md.Year - @md.Month</td>
+                                                                    <td>@string.Format("{0:0.}", md.Min)</td>
+                                                                    <td>@string.Format("{0:0.}", md.Avg)</td>
+                                                                    <td>@string.Format("{0:0.}", md.Max)</td>
                                                                 </tr>
-                                                                <tr><th>@Localizer["ForecastScenarioDate"]</th><th>@Localizer["ForecastScenarioMinimun"]</th><th>@Localizer["ForecastScenarioAvg"]</th><th>@Localizer["ForecastScenarioMaximun"]</th></tr>
-                                                                @foreach (Scenario md in scenario_list.Where(o => o.Measure == s && months.Contains(o.Month)))
-                                                                {
-                                                                    <tr>
-                                                                        <td>@md.Year - @md.Month</td>
-                                                                        <td>@string.Format("{0:0.}", md.Min)</td>
-                                                                        <td>@string.Format("{0:0.}", md.Avg)</td>
-                                                                        <td>@string.Format("{0:0.}", md.Max)</td>
-                                                                    </tr>
-                                                                }
-                                                            </table>
-                                                        </article>
-                                                        @Html.Raw((time % 2) != 0 ? "</div>" : "")
-                                                    }
+                                                            }
+                                                        </table>
+                                                    </article>
+                                                    @Html.Raw((time % 2) != 0 ? "</div>" : "")
                                                 }
-                                            </div>
-                                        </article>
-                                    </section>
-                                }
+                                            }
+                                        </div>
+                                    </article>
+                                </section>
                             }
-                            <a class="left carousel-control" href="#climate_carousel" role="button" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" href="#climate_carousel" role="button" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
+                        }
+                        <a class="left carousel-control" href="#climate_carousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#climate_carousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
                 </div>
-            </section>
-        }
-        <!-- End Probabilities -->
-        <!-- Start Historical -->
-        <section class="col-md-12 sections" id="content_historical">
-            @{
-                foreach (string v in ViewBag.weather_vars)
-                {
-                    HistoricalClimateMonthly high = null;
-                    HistoricalClimateMonthly low = null;
-                    foreach (var x in ((HistoricalClimatology)ViewBag.climatology).Monthly_Data)
-                    {
-                        var d = x.Data.Where(o => o.Measure == v);
-                        if (d.Count() > 0 && (high == null || x.Data.Where(o => o.Measure == v).Max(o => o.Value) > high.Data.Where(o => o.Measure == v).Max(o => o.Value)))
-                        {
-                            high = x;
-                        }
-                        if (d.Count() > 0 && (low == null || x.Data.Where(o => o.Measure == v).Min(o => o.Value) < low.Data.Where(o => o.Measure == v).Min(o => o.Value)))
-                        {
-                            low = x;
-                        }
-                    }
-                    <div class="row">
-                        <!-- Start Climatology -->
-                        <article id="climatology" class="col-lg-6 article_content">
-                            <div class="section-content" style="min-height: 525px;">
-                                <h3 class="text-center">@Localizer["ClimatologyTitle"] @Localizer[v]</h3>
-                                <p class="text-justify">
-                                    @Localizer["ClimatologyDescriptionStart"]
-                                    @Localizer[v]
-                                    @Localizer["ClimatologyDescriptionEnd"].
-                                    @Localizer["ClimatologyContentStart"]
-                                    <span class="text-bold">@Localizer[v]</span>
-                                    @Localizer["ClimatologyContentWS"]
-                                    <span class="text-bold">@ViewBag.ws.Name</span>
-                                    @Localizer["ClimatologyContentEnd"]:
-                                </p>
-
-                                <ul>
-                                    <li>
-                                        @Localizer["ClimatologyIndicatorHighest"]
-                                        <span class="text-bold">
-                                            @Localizer["Months"].Value.ToString().Split(",")[high.Month - 1]
-                                            (@((int)high.Data.First(o => o.Measure == v).Value) @Localizer[v + "_unit"])
-                                        </span>
-                                    </li>
-                                    <li>
-                                        @Localizer["ClimatologyIndicatorLowest"]
-                                        <span class="text-bold">
-                                            @Localizer["Months"].Value.ToString().Split(",")[low.Month - 1]
-                                            (@((int)low.Data.First(o => o.Measure == v).Value) @Localizer[v + "_unit"])
-                                        </span>
-                                    </li>
-                                </ul>
-
-
-                                <div id="@("bar_climatology_" + v)" class="plot plot_climatology">
-                                    <svg></svg>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- End Climatology -->
-                        <!-- Start History -->
-
-                        <article id="climatic_historical" class="col-lg-6 article_content">
-                            <div class="section-content">
-                                <h3 class="text-center">@Localizer["HistoricalTitle"] @Localizer[v]</h3>
-                                <p class="text-justify">
-                                    @Localizer["HistoricalDescriptionStart"]
-                                    @Localizer[v].
-                                    @Localizer["HistoricalDescriptionEnd"].
-                                </p>
-                                <p class="text-justify">
-                                    @Localizer["HistoricalContentStart"]
-                                    <span class="text-bold">@ViewBag.m</span>
-                                    @Localizer["HistoricalContentMid"]
-                                    <span class="text-bold">@ViewBag.ws.Name</span>,
-                                    @Localizer["HistoricalContentEnd"]:
-                                </p>
-                                <div id="@("line_historical_" + v)" class="plot plot_historical">
-                                    <svg></svg>
-                                </div>
-                            </div>
-                        </article>
-                        <!-- End History -->
-                    </div>
-                }
-            }
+            </div>
         </section>
-        <!-- End Historical -->
-    </div>
+    }
+
+
+    <!-- End Probabilities -->
+    <!-- Start Historical -->
+    <section class="col-md-12 sections" id="content_historical">
+        @{
+            foreach (string v in ViewBag.weather_vars)
+            {
+                HistoricalClimateMonthly high = null;
+                HistoricalClimateMonthly low = null;
+                foreach (var x in ((HistoricalClimatology)ViewBag.climatology).Monthly_Data)
+                {
+                    var d = x.Data.Where(o => o.Measure == v);
+                    if (d.Count() > 0 && (high == null || x.Data.Where(o => o.Measure == v).Max(o => o.Value) > high.Data.Where(o => o.Measure == v).Max(o => o.Value)))
+                    {
+                        high = x;
+                    }
+                    if (d.Count() > 0 && (low == null || x.Data.Where(o => o.Measure == v).Min(o => o.Value) < low.Data.Where(o => o.Measure == v).Min(o => o.Value)))
+                    {
+                        low = x;
+                    }
+                }
+                <div class="row">
+                    <!-- Start Climatology -->
+                    <article id="climatology" class="col-lg-6 article_content">
+                        <div class="section-content" style="min-height: 525px;">
+                            <h3 class="text-center">@Localizer["ClimatologyTitle"] @Localizer[v]</h3>
+                            <p class="text-justify">
+                                @Localizer["ClimatologyDescriptionStart"]
+                                @Localizer[v]
+                                @Localizer["ClimatologyDescriptionEnd"].
+                                @Localizer["ClimatologyContentStart"]
+                                <span class="text-bold">@Localizer[v]</span>
+                                @Localizer["ClimatologyContentWS"]
+                                <span class="text-bold">@ViewBag.ws.Name</span>
+                                @Localizer["ClimatologyContentEnd"]:
+                            </p>
+
+                            <ul>
+                                <li>
+                                    @Localizer["ClimatologyIndicatorHighest"]
+                                    <span class="text-bold">
+                                        @Localizer["Months"].Value.ToString().Split(",")[high.Month - 1]
+                                        (@((int)high.Data.First(o => o.Measure == v).Value) @Localizer[v + "_unit"])
+                                    </span>
+                                </li>
+                                <li>
+                                    @Localizer["ClimatologyIndicatorLowest"]
+                                    <span class="text-bold">
+                                        @Localizer["Months"].Value.ToString().Split(",")[low.Month - 1]
+                                        (@((int)low.Data.First(o => o.Measure == v).Value) @Localizer[v + "_unit"])
+                                    </span>
+                                </li>
+                            </ul>
+
+
+                            <div id="@("bar_climatology_" + v)" class="plot plot_climatology">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- End Climatology -->
+                    <!-- Start History -->
+
+                    <article id="climatic_historical" class="col-lg-6 article_content">
+                        <div class="section-content">
+                            <h3 class="text-center">@Localizer["HistoricalTitle"] @Localizer[v]</h3>
+                            <p class="text-justify">
+                                @Localizer["HistoricalDescriptionStart"]
+                                @Localizer[v].
+                                @Localizer["HistoricalDescriptionEnd"].
+                            </p>
+                            <p class="text-justify">
+                                @Localizer["HistoricalContentStart"]
+                                <span class="text-bold">@ViewBag.m</span>
+                                @Localizer["HistoricalContentMid"]
+                                <span class="text-bold">@ViewBag.ws.Name</span>,
+                                @Localizer["HistoricalContentEnd"]:
+                            </p>
+                            <div id="@("line_historical_" + v)" class="plot plot_historical">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- End History -->
+                </div>
+            }
+        }
+    </section>
+    <!-- End Historical -->
+</div>
 
 }
 

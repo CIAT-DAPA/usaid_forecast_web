@@ -75,6 +75,31 @@
                 </ul>
             </li>
         }
+
+        
+
+        @if (ViewBag.modules_fruit_trees)
+        {
+            <li id="menu_main_fruit_trees" class="dropdown">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_fruit_trees" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> @Localizer["FruitTrees"]<span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="drop_fruit_trees">
+                    <li style="padding:5px 15px;">
+                        <b>@Localizer["Search"]</b>
+                    </li>
+                    <li style="padding:5px 15px;">
+                        <select id="menu_fruit_trees_cbo" name="menu_fruit_trees_cbo" class="form-control" style="width:100%;">
+                            <option value=""></option>
+                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower())))
+                            {
+                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                            }
+                        </select>
+                    </li>
+                </ul>
+            </li>
+        }
+
+
         @if (ViewBag.modules_expert)
         {
             <li id="menu_main_expert"><a href="/Experto/"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>

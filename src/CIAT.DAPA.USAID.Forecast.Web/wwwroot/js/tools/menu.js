@@ -18,8 +18,14 @@
     });
     var menu_maize_cbo = $('#menu_maize_cbo').select2({ placeholder: placeholder });
     menu_maize_cbo.on("change", function (e) {
+        console.log('changed damn maize 2')
         var re = /^https?:\/\/[^/]+/;
         window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_maize_cbo').val();
+    });
+    var menu_fruit_trees_cbo = $('#menu_fruit_trees_cbo').select2({ placeholder: placeholder });
+    menu_fruit_trees_cbo.on("change", function (e) {
+        var re = /^https?:\/\/[^/]+/;
+        window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_fruit_trees_cbo').val();
     });
 }
 $('ul.dropdown-menu').on('click', function (event) {

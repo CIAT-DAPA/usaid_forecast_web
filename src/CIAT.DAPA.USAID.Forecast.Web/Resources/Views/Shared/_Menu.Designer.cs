@@ -70,6 +70,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fruit Trees.
+        /// </summary>
+        public static string CropFruitTrees {
+            get {
+                return ResourceManager.GetString("CropFruitTrees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maize.
         /// </summary>
         public static string CropMaize {

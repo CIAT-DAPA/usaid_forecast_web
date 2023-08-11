@@ -6,6 +6,11 @@
     min-width: 100px;
 }
 
+    .legend h5 {
+        max-width: 200px;
+        font-weight: bold;
+    }
+
 .select-control{
     padding:6px;
     min-width:160px;
@@ -19,4 +24,31 @@
     text-align: center;
     color: red;
     font-size: 1.4em;
+}
+
+.indicator-map-container {
+    display: flex;
+    flex-direction: column;
+}
+.indicator-map-container p{
+    flex:1;
+}
+
+.indicator-maps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(720px, 1fr));
+    grid-gap: 36px;
+}
+
+
+@media (max-width: 900px) {
+    .indicator-maps-container {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .indicator-maps-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }

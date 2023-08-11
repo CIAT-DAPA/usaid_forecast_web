@@ -51,6 +51,13 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         public bool modules_maize { get; set; }
 
         /// <summary>
+        /// Get or set if fruit_trees are enable
+        /// </summary>
+        public bool modules_fruit_trees { get; set; }
+
+
+
+        /// <summary>
         /// Get or set if expert module is enable
         /// </summary>
         public bool modules_expert { get; set; }

@@ -6,17 +6,25 @@ var geoserver_url;
 var geoserver_workspace;
 var geoserverLayers = [];
 var indicatorYearConstants;
+var mapOverlays;
+var currentLocale;
+
 
 async function init() {
-   
+
+
     $('#capabilitiesLoader').toggle(true)
     $('#capabilitiesFilter').toggle(false)
     try {
-        var capabilities = await get_geoserver_capabilities();
+        var capabilities = await get_geoserver_wms_capabilities();
+
+        console.log("wms capabilities",capabilities)
         geoserverLayers = capabilities.WMS_Capabilities.Capability.Layer.Layer;
+        updateMetadata(capabilities.WMS_Capabilities.Capability.Layer);
         updateSelectionEl(geoserverLayers);
         $('#capabilitiesFilter').toggle(true)
         initMaps();
+        initWFSOverlays();
      
       
     } catch (e) {
@@ -31,37 +39,46 @@ async function init() {
 }
 
 // load getcapabilities content from geoserver
-async function get_geoserver_capabilities() {
-    var res = await axios.get(geoserver_url + "?service=wms&request=GetCapabilities&version=1.3.0");
+async function get_geoserver_wms_capabilities() {
+
+    var res = await axios.get(geoserver_url + "?service=wms&request=GetCapabilities&version=1.3.0&AcceptLanguages=" + currentLocale);
     var x2js = new X2JS();
     return x2js.xml_str2json(res.data);
 }
 
+function updateMetadata(mainLayer) {
+    $('#indicatorsTitle').html(mainLayer.Title);
+    $('#indicatorsDesc').html(mainLayer.Abstract);
 
+}
 
 function updateSelectionEl(layers) {
-    //console.log("layers", layers);
+   // console.log("layers", layers);
 
-   
+
     let crops = [];
     let groups = [];
+
+    //sort by order
+    layers = layers.sort((a, b) => {
+        let orderA = extractKeyword(a, 'order') ?? 1000;
+        let orderB = extractKeyword(b, 'order') ?? 1000;
+        return orderA - orderB;
+    })
+
   
     layers.forEach(layer => {
-
-        let keywords = layer.KeywordList.Keyword;
-
-        let cropString = keywords.find(k => k.startsWith("crop"))
-        let crop = cropString?.replaceAll('crop=', '');
+        let crop = extractKeyword(layer, 'crop')
         if (crop) {
             crops.push(crop)
         }
-
-        let groupString = keywords.find(k => k.startsWith("group"))
-        let group = groupString?.replaceAll('group=', '');
+        let group = extractKeyword(layer, 'group')
         if (group) {
             groups.push(group)
         }
     });
+
+
     
     // make unique and remove NA values
     crops = [...new Set(crops.filter(c => c.toLowerCase() != "NA".toLowerCase()))];
@@ -73,7 +90,7 @@ function updateSelectionEl(layers) {
     $('#cropSelect').toggle(crops.length>0);
     if (cropSelect) {
         crops.forEach(c =>
-            cropSelect.add(new Option(translations[c], c))
+            cropSelect.add(new Option(translations[c] ?? c, c))
         )
     }
 
@@ -81,28 +98,10 @@ function updateSelectionEl(layers) {
     $('#groupSelect').toggle(groups.length > 0);
     if (groupSelect) {
         groups.forEach(g =>
-            groupSelect.add(new Option(translations[g], g))
+            groupSelect.add(new Option(translations[g] ?? g, g))
         )
     }
 }
-
-
-
-function extractKeyword(str) {
-    if (typeof str === 'string' || str instanceof String) {
-        let parts = str.split('=');
-        return {
-            key: parts[0],
-            val: parts[1]
-        }
-    } else {
-        return {
-            key: null,
-            val: null
-        }
-    }
-}
-
 
 
 
@@ -117,29 +116,12 @@ function initMaps() {
     var group = $("#cbo_group").val();
    
 
-   // console.log("update_maps", crop, group);
-    let filteredLayers = geoserverLayers.filter(layer => {
-        let res = false;
-        let keywords = layer.KeywordList.Keyword;
+    console.log("update_maps", crop, group);
+    let filteredLayers = geoserverLayers.filter(layer => 
+         (!crop || extractKeyword(layer, 'crop') == crop)
+            && (!group || extractKeyword(layer, 'group') == group))
 
-        if (crop) {
-            res = keywords.findIndex(k => {
-                let keyVal = extractKeyword(k);
-                return keyVal.key = 'crop' && keyVal.val == crop;
-            })>-1;
-        }
-     
-        if (group) {
-            res = keywords.findIndex(k => {
-                let keyVal = extractKeyword(k);
-                return keyVal.key = 'group' && keyVal.val == group;
-            }) > -1;
-        }
-
-        return res;
-    })
-
-
+    console.log("filteredLayers", filteredLayers)
 
     const mapContainer = document.getElementById('maps_section');
     while (mapContainer.firstChild) {
@@ -150,7 +132,9 @@ function initMaps() {
     filteredLayers.forEach((layer, idx) => {
 
         const mapSectionEl = document.createElement('div');
-        mapSectionEl.classList.add('col-md-6');
+        mapSectionEl.classList.add('indicator-map-container');
+
+        
 
         const title = document.createElement('h3');
         title.textContent = layer.Title;
@@ -217,12 +201,17 @@ function plotMap(mapEl, layer) {
     //create custom period control
     addPeriodCtrl(map, layer);
     let periods = getPeriods(layer);
-    let period = periods[0].split('-')[0];
-    map.currentPeriod = period;
 
+    let period = periods[0]?.split('-')[0] ?? "01"; // use default if just one period is defined
+    map.currentPeriod = period;
     updatePeriod(map, layer)
 
-    console.log(map)
+   // console.log(map)
+
+    //add optional layers
+    if (mapOverlays && mapOverlays.length > 0) {
+        add_map_overlays(map, mapOverlays);
+    }
 
 }
 
@@ -231,6 +220,7 @@ function plotMap(mapEl, layer) {
 
 function addPeriodCtrl(map, layer) {
     let periods = getPeriods(layer);
+    if (periods.length == 0) return;
     var periodControl = L.control({ position: 'bottomleft' });
     periodControl.onAdd = function (map) {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-bar-horizontal leaflet-bar-timecontrol leaflet-control select-control');
@@ -273,7 +263,7 @@ function getPeriods(layer) {
 
     let periodString = keywords.find(k => k.startsWith("period"))
     if (!periodString) {
-        return ['01'];
+        return [];
     }
     return periodString.replaceAll('period=[', '').replaceAll(']', '').split(",");
 
@@ -294,7 +284,7 @@ function updatePeriod(map, layer) {
 function addWMSLayer(map, layer) {
 
 
-    console.log('addWMSLayer')
+
     // plot indicator layer
     let wmsLayer = L.tileLayer.wms(geoserver_url, {
         layers: geoserver_workspace + ":" + layer.Name,
@@ -327,8 +317,20 @@ function addWMSLegend(map, layer) {
     var legendControl = L.control({ position: 'topleft' });
     legendControl.onAdd = function (map) {
         var legendDiv = L.DomUtil.create('div', 'legend');
+
+        let acronym = extractKeyword(layer, 'acronym');
+        if (acronym) {
+            let titleEl = document.createElement("h5");
+            titleEl.innerHTML = acronym;
+            legendDiv.appendChild(titleEl);
+        }
+      
+
+      
+
+
         let legendUrl = geoserver_url + "?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=" + layer.Name;
-        legendUrl += "&WIDTH=10&HEIGHT=20";
+        legendUrl += "&WIDTH=10&HEIGHT=10";
         legendUrl += "&LEGEND_OPTIONS=";
         legendUrl += "fontStyle:bold;";
         legendUrl += "fontAntiAliasing:true;";
@@ -339,6 +341,15 @@ function addWMSLegend(map, layer) {
         let img = document.createElement("img");
         img.src = legendUrl;
         legendDiv.appendChild(img);
+
+
+
+        let unit = extractKeyword(layer, 'units');
+        if (unit) {
+            let unitEl = document.createElement("p");
+            unitEl.innerHTML ='('+ unit+')';
+            legendDiv.appendChild(unitEl);
+        }
 
         return legendDiv;
     };
@@ -434,26 +445,21 @@ function updateComparison(map, layer) {
     map.myData.sideBySideControl = L.control.sideBySide(tdWmsLayer, map.myData.wmsLayerCompare);
     map.myData.sideBySideControl.addTo(map);
 
-    
-    /*
-    // Add legends
-    var legend2 = L.control({ position: 'topright' });
-
-    legend2.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<strong>Compare</strong>';
-        return div;
-    };
-    legend2.addTo(map);
-
-   var legend3 = L.control({ position: 'topleft' });
-
-    legend3.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<strong>' + $("#cbo_time option:selected").text() + '</strong>';
-        return div;
-    };
-    legend3.addTo(map);
-    */
+ 
 }
 
+function extractKeyword(layer, key) {
+    let keywords = layer.KeywordList.Keyword;
+    if (!Array.isArray(keywords)) {
+        console.warn("Keywords are not sufficiently defined", layer)
+        return null;
+    }
+
+    let valueStr = keywords.find(keyword =>
+        (typeof keyword === 'string' || keyword instanceof String) && keyword.startsWith(key)
+    )
+
+    let value =  valueStr?.split('=')[1];
+    //console.log("extractKeyword", keywords, key, value)
+    return value;
+}
