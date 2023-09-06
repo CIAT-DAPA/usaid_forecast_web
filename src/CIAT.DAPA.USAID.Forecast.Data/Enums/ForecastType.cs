@@ -14,7 +14,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// bimonthly
         /// </summary>
         bi,
-
+        
 
     }
 }

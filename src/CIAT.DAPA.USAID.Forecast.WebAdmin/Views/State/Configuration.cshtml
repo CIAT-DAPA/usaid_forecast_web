@@ -37,9 +37,21 @@
         <fieldset>
             <legend>@Localizer["NewSetup"]</legend>
             <div class="form-group">
+                <label for="forc_type" class="control-label col-md-2">@Localizer["Type"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("forc_type", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group" id="trimester_container">
                 <label for="trimester" class="control-label col-md-2">@Localizer["Trimester"]:</label>
                 <div class="col-md-10">
                     @Html.DropDownList("trimester", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group" id="bimonthly_container" style="display: none;">
+                <label for="bimonthly" class="control-label col-md-2">@Localizer["Bimonthly"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("bimonthly", null, htmlAttributes: new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-group">
@@ -61,6 +73,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="measure" class="control-label col-md-2">@Localizer["Predictand"]:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("measure", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="gamma" class="control-label col-md-2">@Localizer["Gamma"]:</label>
                 <div class="col-md-10">
                     @Html.CheckBox("gamma", null, new { htmlAttributes = new { @class = "form-control" } })
@@ -77,6 +95,7 @@
             <table class="table" id="conf_regions">
                 <thead>
                     <tr>
+                        <th>@Localizer["Predictor"].</th>
                         <th>Y min.</th>
                         <th>X min.</th>
                         <th>Y max.</th>
@@ -102,63 +121,75 @@
         <th>@Localizer["Gamma"]</th>
         <th>@Localizer["AmountX"]</th>
         <th>@Localizer["AmountY"]</th>
+        <th>@Localizer["Type"]</th>
+        <th>@Localizer["Predictand"]</th>
         <th>@Localizer["Regions"]</th>
         <th></th>
     </tr>
 
     @foreach (var item in Model.Where(p => p.track.enable))
     {
-        <tr>
-            <td>
-                @item.track.register.ToString("yyyy-MM-dd")
-            </td>
-            <td>
-                @item.trimester
-            </td>
-            <td>
-                @item.cca_mode
-            </td>
-            <td>
-                @item.gamma
-            </td>
-            <td>
-                @item.x_mode
-            </td>
-            <td>
-                @item.y_mode
-            </td>
-            <td>
-                <ul>
-                    @foreach (var c in item.regions)
-                    {
+<tr>
+    <td>
+        @item.track.register.ToString("yyyy-MM-dd")
+    </td>
+    <td>
+        @item.trimester
+    </td>
+    <td>
+        @item.cca_mode
+    </td>
+    <td>
+        @item.gamma
+    </td>
+    <td>
+        @item.x_mode
+    </td>
+    <td>
+        @item.y_mode
+    </td>
+    <td>
+        @item.forc_type
+    </td>
+    <td>
+        @item.predictand
+    </td>
+    <td>
+        <ul>
+            @foreach (var c in item.regions)
+            {
 
-                        <li>
-                            @c.left_lower.lat
-                            -
-                            @c.left_lower.lon
-                            ,
-                            @c.rigth_upper.lat
-                            -
-                            @c.rigth_upper.lon
-                        </li>
-                    }
-                </ul>
-            </td>
-            <td>
-                @using (Html.BeginForm("ConfigurationDelete", "State", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" id="id" name="id" value="@ViewBag.state.id.ToString()" />
-                    <input type="hidden" id="quarter" name="quarter" value="@item.trimester" />
-                    <input type="hidden" id="cca" name="cca" value="@item.cca_mode.ToString()" />
-                    <input type="hidden" id="gamma" name="gamma" value="@item.gamma.ToString()" />
-                    <input type="hidden" id="x" name="x" value="@item.x_mode.ToString()" />
-                    <input type="hidden" id="y" name="y" value="@item.y_mode.ToString()" />
-                    <input type="hidden" id="register" name="register" value="@item.track.register.ToString("yyyy-MM-dd HH:mm:ss")" />
-                    <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
-                }
-            </td>
-        </tr>
+                <li>
+                    @c.predictor.ToString()
+                    -
+                    @c.left_lower.lat
+                    -
+                    @c.left_lower.lon
+                    ,
+                    @c.rigth_upper.lat
+                    -
+                    @c.rigth_upper.lon
+                </li>
+            }
+        </ul>
+    </td>
+    <td>
+        @using (Html.BeginForm("ConfigurationDelete", "State", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="id" name="id" value="@ViewBag.state.id.ToString()" />
+            <input type="hidden" id="quarter" name="quarter" value="@item.trimester" />
+            <input type="hidden" id="cca" name="cca" value="@item.cca_mode.ToString()" />
+            <input type="hidden" id="gamma" name="gamma" value="@item.gamma.ToString()" />
+            <input type="hidden" id="x" name="x" value="@item.x_mode.ToString()" />
+            <input type="hidden" id="y" name="y" value="@item.y_mode.ToString()" />
+            <input type="hidden" id="register" name="register" value="@item.track.register.ToString("yyyy-MM-dd HH:mm:ss")" />
+            <input type="hidden" id="type" name="type" value="@item.forc_type" />
+            <input type="hidden" id="predictand" name="predictand" value="@item.predictand" />
+            <input class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
+        }
+    </td>
+</tr>
     }
 </table>
 

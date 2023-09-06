@@ -95,7 +95,9 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 ws = fields[2].Replace("\"", ""),
                                 below = double.Parse(fields[3]),
                                 normal = double.Parse(fields[4]),
-                                above = double.Parse(fields[5])
+                                above = double.Parse(fields[5]),
+                                season = changeSeason(fields[6]),
+                                predictand = fields[7]
                             });
                         }
                         count += 1;
@@ -298,11 +300,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             year = p.year,
                             month = p.month,
+                            season = p.season,
                             probabilities = new List<Probability>()
                         {
                             new Probability()
                             {
-                                measure = MeasureClimatic.prec,
+                                measure = (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), p.predictand),
                                 lower = p.below,
                                 normal = p.normal,
                                 upper = p.above
@@ -322,11 +325,12 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                         {
                             year = p.year,
                             month = p.month,
+                            season = p.season,
                             probabilities = new List<Probability>()
                             {
                                 new Probability()
                                 {
-                                    measure = MeasureClimatic.prec,
+                                    measure = (MeasureClimatic)Enum.Parse(typeof(MeasureClimatic), p.predictand),
                                     lower = p.below,
                                     normal = p.normal,
                                     upper = p.above
@@ -691,6 +695,50 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 
             Console.WriteLine("Forecast imported");
             return true;
+        }
+
+
+        public static Quarter changeSeason(string season)
+        {
+            Quarter season_result;
+            if (season.Count(ch => ch == '-') == 2)
+            {
+                string[] season_names = new string[] {
+                    "Dec-Jan-Feb",
+                    "Jan-Feb-Mar",
+                    "Feb-Mar-Apr",
+                    "Mar-Apr-May",
+                    "Apr-May-Jun",
+                    "May-Jun-Jul",
+                    "Jun-Jul-Aug",
+                    "Jul-Aug-Sep",
+                    "Aug-Sep-Oct",
+                    "Sep-Oct-Nov",
+                    "Oct-Nov-Dec",
+                    "Nov-Dec-Jan"
+                };
+                season_result = (Quarter)Array.IndexOf(season_names, season);
+            }
+            else
+            {
+                string[] season_names = new string[]
+                {
+                    "Dec-Jan",
+                    "Jan-Feb",
+                    "Feb-Mar",
+                    "Mar-Apr",
+                    "Apr-May",
+                    "May-Jun",
+                    "Jun-Jul",
+                    "Jul-Aug",
+                    "Aug-Sep",
+                    "Sep-Oct",
+                    "Oct-Nov",
+                    "Nov-Dec"
+                };
+                season_result = (Quarter)Array.IndexOf(season_names, season)+12;
+            }
+            return season_result;
         }
 
         public async Task<bool> importHistoricalAsync(string path, MeasureClimatic mc, int search)

@@ -78,12 +78,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="right_lat">Right latitude</param>
         /// <param name="right_lon">Right longitude</param>
         /// <returns>True if the entity is updated, false otherwise</returns>
-        public async Task<bool> deleteConfigurationCPTAsync(State entity, Quarter quarter, int cca, bool gamma, int x, int y, DateTime register)
+        public async Task<bool> deleteConfigurationCPTAsync(State entity, Quarter quarter, int cca, bool gamma, int x, int y, DateTime register, ForecastType type, MeasureClimatic predictand)
         {
             List<ConfigurationCPT> allConf = new List<ConfigurationCPT>();
             foreach (var c in entity.conf)
             {
-                if (c.trimester == quarter && c.cca_mode == cca && c.gamma == gamma && c.x_mode == x && c.y_mode == y && c.track.register.ToString("yyyy-MM-dd HH:mm:ss") == register.ToString("yyyy-MM-dd HH:mm:ss"))
+                if (c.trimester == quarter && c.forc_type == type && c.predictand == predictand && c.cca_mode == cca && c.gamma == gamma && c.x_mode == x && c.y_mode == y && c.track.register.ToString("yyyy-MM-dd HH:mm:ss") == register.ToString("yyyy-MM-dd HH:mm:ss"))
                 {
                     c.track.updated = DateTime.Now;
                     c.track.enable = false;

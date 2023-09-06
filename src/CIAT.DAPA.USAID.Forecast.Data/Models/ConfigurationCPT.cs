@@ -45,6 +45,15 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         [BsonRequired]
         public bool gamma { get; set; }
         /// <summary>
+        /// Type of forecast
+        /// </summary>
+        public ForecastType forc_type { get; set; }
+
+        /// <summary>
+        /// Predictand of config
+        /// </summary>
+        public MeasureClimatic predictand { get; set; }
+        /// <summary>
         /// Shows the trace of the changes that occurred in the entity
         /// </summary>
         [BsonRequired]

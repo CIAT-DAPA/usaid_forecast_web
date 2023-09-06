@@ -21,10 +21,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// <summary>
         /// quarterly
         /// </summary>
-        sst_wind,
-        /// <summary>
-        /// quarterly
-        /// </summary>
         geohei
 
     }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using CIAT.DAPA.USAID.Forecast.Data.Enums;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
@@ -21,5 +21,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// </summary>
         [BsonRequired]
         public Coords rigth_upper { get; set; }
+        /// <summary>
+        /// Predictor of config
+        /// </summary>
+        public ForecastPredictors predictor { get; set; }
     }
 }

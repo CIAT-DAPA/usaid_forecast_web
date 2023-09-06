@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using CIAT.DAPA.USAID.Forecast.ForecastApp.Models.Export;
+using Newtonsoft.Json.Linq;
 
 namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
 {
@@ -254,99 +255,465 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
         /// <param name="path">Path where the files will be located</param>
         public async Task<bool> exportCPTSetupAsync(string path, string mainCountry)
         {
-            StringBuilder header_cpt, x_m, y_m, cca, gamma, header_areas;
-            StringBuilder[] x1, x2, y1, y2;
-            // Create directory
+            //Get current month
+            DateTime CurrentDate = DateTime.Now;
+            int currentMonth = CurrentDate.Month == 12 ? 0 : CurrentDate.Month;
+      
+            //Create folders
             if (!Directory.Exists(path + Program.settings.Out_PATH_STATES))
                 Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES);
-            var states = await db.state.listEnableAsync();
+            List<State> states = await db.state.listEnableAsync();
             IEnumerable<State> statesByCountry = states.Where(p => p.country.ToString() == mainCountry);
             // Filter the states with configuration
-            var states_ctp = from s_cpt in statesByCountry
+            IEnumerable<State> states_ctp = from s_cpt in statesByCountry
                              where s_cpt.conf.Where(p => p.track.enable).Count() > 0
                              select s_cpt;
-            foreach (var s in states_ctp)
+            foreach (State s in states_ctp)
             {
+                List<object> cpt_info = new List<object>();
                 Console.WriteLine("Creating " + s.name);
                 if (!Directory.Exists(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString()))
                     Directory.CreateDirectory(path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString());
-
-                // the cpt configuration 
-                header_cpt = new StringBuilder("var,");
-                x_m = new StringBuilder("x_modes,");
-                y_m = new StringBuilder("y_modes,");
-                cca = new StringBuilder("cca_modes,");
-                gamma = new StringBuilder("trasformation,");
-                // the regions configurations
-                header_areas = new StringBuilder("order,var,");
-                x1 = new StringBuilder[] { new StringBuilder("1,x1,"), new StringBuilder("2,x1,") };
-                x2 = new StringBuilder[] { new StringBuilder("1,x2,"), new StringBuilder("2,x2,") };
-                y1 = new StringBuilder[] { new StringBuilder("1,y1,"), new StringBuilder("2,y1,") };
-                y2 = new StringBuilder[] { new StringBuilder("1,y2,"), new StringBuilder("2,y2,") };
-                // This cicle is by every quarter of year
-                foreach (string q in Enum.GetNames(typeof(Quarter)))
+                ForecastType type = s.conf.FirstOrDefault(p => p.track.enable).forc_type;
+                List<ConfigurationCPT> listOfConfig;             
+                if(type.ToString() == "tri")
                 {
-                    ConfigurationCPT conf = s.conf.LastOrDefault(p => p.trimester == (Quarter)Enum.Parse(typeof(Quarter), q) && p.track.enable);
-                    bool config_exit = conf != null;
-                    // the cpt configuration 
-                    header_cpt.Append(q + ",");
-                    x_m.Append(config_exit ? (conf.x_mode.ToString() ?? string.Empty) + "," : "NA,");
-                    y_m.Append(config_exit ? conf.y_mode.ToString() + "," : "NA,");
-                    cca.Append(config_exit ? conf.cca_mode.ToString() + "," : "NA,");
-                    gamma.Append(config_exit ? conf.gamma.ToString() + "," : "NA,");
-                    // the regions configurations
-                    header_areas.Append(q + ",");
-                    x1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lon.ToString() + "," : "NA,");
-                    x2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lon.ToString() + "," : "NA,");
-                    y1[0].Append(config_exit ? conf.regions.ElementAt(0).left_lower.lat.ToString() + "," : "NA,");
-                    y2[0].Append(config_exit ? conf.regions.ElementAt(0).rigth_upper.lat.ToString() + "," : "NA,");
+                    Quarter current_quarter = ((Quarter)currentMonth);
+                    listOfConfig = s.conf.Where(p => (p.trimester == current_quarter || p.trimester == GetQuarter(current_quarter)) && p.track.enable)
+                        .OrderBy(p => GetCustomOrder(p.trimester, currentMonth, type)).ToList();
 
-                    
-                    // Second region
-                    if (config_exit && conf.regions.Count() > 1)
+                    foreach (ConfigurationCPT config in listOfConfig)
                     {
-                        x1[1].Append(conf.regions.ElementAt(1).left_lower.lon.ToString() + ",");
-                        x2[1].Append(conf.regions.ElementAt(1).rigth_upper.lon.ToString() + ",");
-                        y1[1].Append(conf.regions.ElementAt(1).left_lower.lat.ToString() + ",");
-                        y2[1].Append(conf.regions.ElementAt(1).rigth_upper.lat.ToString() + ",");
+
+                        cpt_info.Add(new
+                        {
+                            type = type.ToString(),
+                            season = changeSeason(type.ToString(), (int)config.trimester),
+                            areas = getRegions(config),
+                            modes = new ModesCpt() { 
+                                x = config.x_mode.ToString(),
+                                y = config.y_mode.ToString(),
+                                cca = config.cca_mode.ToString()
+                            },
+                            transformation = getTransformation(config),
+                            predictand = config.predictand.ToString(),
+
+                        });
                     }
-                    else
-                    {
-                        x1[1].Append("NA,");
-                        x2[1].Append("NA,");
-                        y1[1].Append("NA,");
-                        y2[1].Append("NA,");
-                    }
+                    cpt_info = fillListOfConfig(listOfConfig, s, current_quarter, cpt_info, type);
                 }
-                // Create the physical file cpt
-                string file_name_cpt = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "cpt" + ".csv";
-                if (File.Exists(file_name_cpt))
-                    File.Delete(file_name_cpt);
-                File.WriteAllText(file_name_cpt, header_cpt.ToString().Substring(0, header_cpt.ToString().Length - 1) + "\n" +
-                    x_m.ToString().Substring(0, x_m.ToString().Length - 1) + "\n" +
-                    y_m.ToString().Substring(0, y_m.ToString().Length - 1) + "\n" +
-                    cca.ToString().Substring(0, cca.ToString().Length - 1) + "\n" +
-                    gamma.ToString().Substring(0, gamma.ToString().Length - 1));
+                else if(type.ToString() == "bi")
+                {
+                    Quarter current_quarter = ((Quarter)currentMonth + 12);
+                    listOfConfig = s.conf.Where(p => (p.trimester == current_quarter || p.trimester == GetBimonthly(current_quarter,1) || p.trimester == GetBimonthly(current_quarter,2)) && p.track.enable)
+                        .OrderBy(p => GetCustomOrder(p.trimester, currentMonth, type)).ToList();
+                    foreach (ConfigurationCPT config in listOfConfig)
+                    {
 
-                // Create the physical file regions
-                string file_name_regions = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + "areas" + ".csv";
-                if (File.Exists(file_name_regions))
-                    File.Delete(file_name_regions);
-                File.WriteAllText(file_name_regions, header_areas.ToString().Substring(0, header_areas.ToString().Length - 1) + "\n" +
-                    x1[0].ToString().Substring(0, x1[0].ToString().Length - 1) + "\n" +
-                    x2[0].ToString().Substring(0, x2[0].ToString().Length - 1) + "\n" +
-                    y1[0].ToString().Substring(0, y1[0].ToString().Length - 1) + "\n" +
-                    y2[0].ToString().Substring(0, y2[0].ToString().Length - 1) + "\n" +
-                    x1[1].ToString().Substring(0, x1[1].ToString().Length - 1) + "\n" +
-                    x2[1].ToString().Substring(0, x2[1].ToString().Length - 1) + "\n" +
-                    y1[1].ToString().Substring(0, y1[1].ToString().Length - 1) + "\n" +
-                    y2[1].ToString().Substring(0, y2[1].ToString().Length - 1) + "\n");
+                        cpt_info.Add(new
+                        {
+                            type = type.ToString(),
+                            season = changeSeason(type.ToString(), (int)config.trimester),
+                            areas = getRegions(config),
+                            modes = new ModesCpt()
+                            {
+                                x = config.x_mode.ToString(),
+                                y = config.y_mode.ToString(),
+                                cca = config.cca_mode.ToString()
+                            },
+                            transformation = getTransformation(config),
+                            predictand = config.predictand.ToString(),
 
-                // Create the theorical areas file
-                Console.WriteLine("Creating regions " + s.name);
+                        });
+                    }
+                    cpt_info = fillListOfConfig(listOfConfig, s, current_quarter, cpt_info, type);
+                }
+
+                String jsn = JsonConvert.SerializeObject(cpt_info);
+                string full_path = path + Program.settings.Out_PATH_STATES + Path.DirectorySeparatorChar + s.id.ToString() + Path.DirectorySeparatorChar + Program.settings.Out_PATH_CPT_FILE;
+                if (File.Exists(full_path))
+                    File.Delete(full_path);
+                File.WriteAllText(full_path, jsn);
 
             }
             return true;
+        }
+
+        public static string changeSeason(string type, int season)
+        {
+            string season_result = "";
+            if(type == "tri")
+            {
+                string[] season_names = new string [] {
+                    "Dec-Jan-Feb",
+                    "Jan-Feb-Mar",
+                    "Feb-Mar-Apr",
+                    "Mar-Apr-May",
+                    "Apr-May-Jun",
+                    "May-Jun-Jul",
+                    "Jun-Jul-Aug",
+                    "Jul-Aug-Sep",
+                    "Aug-Sep-Oct",
+                    "Sep-Oct-Nov",
+                    "Oct-Nov-Dec",
+                    "Nov-Dec-Jan"
+                };
+                season_result = season_names[season];
+            }
+            else
+            {
+                season = season - 12;
+                string[] season_names = new string[]
+                {
+                    "Dec-Jan",
+                    "Jan-Feb",
+                    "Feb-Mar",
+                    "Mar-Apr",
+                    "Apr-May",
+                    "May-Jun",
+                    "Jun-Jul",
+                    "Jul-Aug",
+                    "Aug-Sep",
+                    "Sep-Oct",
+                    "Oct-Nov",
+                    "Nov-Dec"
+                };
+                season_result = season_names[season];
+            }
+            return season_result;
+        }
+
+        public static List<object> fillListOfConfig(List<ConfigurationCPT> listOfConfig, State s, Quarter current_quarter, List<object> cpt_info, ForecastType type)
+        {
+            List<object> newList = cpt_info;
+            if(type.ToString() == "tri")
+            {
+                if (listOfConfig.Count() == 2)
+                {
+                    return newList;
+                }
+                if (listOfConfig.Count() == 1)
+                {
+                    if (listOfConfig.FirstOrDefault().trimester == current_quarter)
+                    {
+                        newList.Add(new
+                        {
+                            type = type.ToString(),
+                            season = GetQuarter(current_quarter).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                    }
+                    else
+                    {
+                        newList.Add(new
+                        {
+                            type = type.ToString(),
+                            season = current_quarter.ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                    }
+                }
+                else if (listOfConfig.Count() == 0)
+                {
+                    for (int x = 0; x < 2; x++)
+                    {
+                        newList.Add(new
+                        {
+                            type = type.ToString(),
+                            season = x == 0 ? current_quarter.ToString() : GetQuarter(current_quarter).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                    }
+                }
+            }
+            else
+            {
+                if(listOfConfig.Count() == 3)
+                {
+                    return newList;
+                }
+                else if(listOfConfig.Count() == 2)
+                {
+                    if (listOfConfig.FirstOrDefault().trimester == current_quarter)
+                    {
+                        if(listOfConfig[1].trimester == GetBimonthly(current_quarter, 1))
+                        {
+                            newList.Add(new
+                            {
+                                type = type.ToString(),
+                                season = GetBimonthly(current_quarter,2).ToString(),
+                                areas = new JArray(),
+                                modes = new JObject(),
+                                transformation = new JArray(),
+                                predictand = "",
+
+                            });
+                        }
+                        else
+                        {
+                            newList.Insert(1,new
+                            {
+                                type = type.ToString(),
+                                season = GetBimonthly(current_quarter, 1).ToString(),
+                                areas = new JArray(),
+                                modes = new JObject(),
+                                transformation = new JArray(),
+                                predictand = "",
+
+                            });
+                        }
+                        
+                    }else if(listOfConfig.FirstOrDefault().trimester == GetBimonthly(current_quarter, 1))
+                    {
+
+                            newList.Insert(0,new
+                            {
+                                type = type.ToString(),
+                                season = current_quarter.ToString(),
+                                areas = new JArray(),
+                                modes = new JObject(),
+                                transformation = new JArray(),
+                                predictand = "",
+
+                            });
+
+                    }
+                    
+                }
+                else if (listOfConfig.Count() == 1)
+                {
+                    if (listOfConfig.FirstOrDefault().trimester == current_quarter)
+                    {
+
+                        newList.Add(new
+                        {
+                            type = type.ToString(),
+                            season = GetBimonthly(current_quarter, 1).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                        newList.Add(new
+                        {
+                            type = type.ToString(),
+                            season = GetBimonthly(current_quarter, 2).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+
+
+
+                    }
+                    else if (listOfConfig.FirstOrDefault().trimester == GetBimonthly(current_quarter, 1))
+                    {
+
+                        newList.Insert(0, new
+                        {
+                            type = type.ToString(),
+                            season = current_quarter.ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                        newList.Insert(2, new
+                        {
+                            type = type.ToString(),
+                            season = GetBimonthly(current_quarter, 2).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+
+                    }
+                    else if (listOfConfig.FirstOrDefault().trimester == GetBimonthly(current_quarter, 2))
+                    {
+
+                        newList.Insert(0, new
+                        {
+                            type = type.ToString(),
+                            season = current_quarter.ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                        newList.Insert(1, new
+                        {
+                            type = type.ToString(),
+                            season = GetBimonthly(current_quarter, 1).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+
+                    }
+                }
+                else if (listOfConfig.Count() == 0)
+                {
+                    for (int x = 0; x < 3; x++)
+                    {
+                        newList.Add(new
+                        {
+                            type = type.ToString(),
+                            season = x == 0 ? current_quarter.ToString() : x == 1 ? GetBimonthly(current_quarter,1).ToString()  : GetBimonthly(current_quarter,2).ToString(),
+                            areas = new JArray(),
+                            modes = new JObject(),
+                            transformation = new JArray(),
+                            predictand = "",
+
+                        });
+                    }
+                }
+            }
+            
+            return newList;
+        }
+
+        public static List<AreasCpt> getRegions(ConfigurationCPT config)
+        {
+            List<AreasCpt> r = new List<AreasCpt>();
+            foreach(Region region in config.regions)
+            {
+                AreasCpt area = new AreasCpt()
+                {
+                    predictor = region.predictor.ToString(),
+                    x_min = region.left_lower.lon.ToString(),
+                    x_max = region.rigth_upper.lon.ToString(),
+                    y_min = region.left_lower.lat.ToString(),
+                    y_max = region.rigth_upper.lat.ToString(),
+                };
+                r.Add(area);
+            }
+            //Add NA region object if this part is uncomment
+            /*if(r.Count() == 1)
+            {
+                r.Add(new AreasCpt()
+                {
+                    x_min = "NA",
+                    x_max = "NA",
+                    y_min = "NA",
+                    y_max = "NA",
+                });
+            }*/
+            
+            return r;
+        }
+
+        public static List<TransformationCpt> getTransformation(ConfigurationCPT config)
+        {
+            List<TransformationCpt> t = new List<TransformationCpt>();
+            TransformationCpt transformation = new TransformationCpt()
+            {
+                gamma = config.gamma
+            };
+            t.Add(transformation);
+            return t;
+        }
+
+        public static Quarter GetQuarter(Quarter current_quarter)
+        {
+            Quarter quarter;
+            if(Convert.ToInt32(current_quarter) > 8)
+            {
+                int value = Convert.ToInt32(current_quarter) - 9;
+                quarter = ((Quarter)value);
+            }
+            else
+            {
+                quarter = current_quarter + 3;
+            }
+            return quarter;
+        }
+
+        public static Quarter GetBimonthly(Quarter current_quarter, int number)
+        {
+            Quarter quarter;
+            if (Convert.ToInt32(current_quarter) >= 22)
+            {
+                if (number == 1)
+                {
+                    int value = Convert.ToInt32(current_quarter) - 10;
+                    quarter = ((Quarter)value);
+                }
+                else
+                {
+                    int value = Convert.ToInt32(current_quarter) - 8;
+                    quarter = ((Quarter)value);
+                }
+
+            }
+            else if (Convert.ToInt32(current_quarter) >= 20)
+            {
+                if(number == 1)
+                {
+                    quarter = current_quarter + 2;
+                }
+                else {
+                    int value = Convert.ToInt32(current_quarter) - 8;
+                    quarter = ((Quarter)value);
+                }
+
+            }
+            else
+            {
+                if (number == 1)
+                {
+                    quarter = current_quarter + 2;
+                }
+                else
+                {
+                    quarter = current_quarter + 4;
+                }
+                
+            }
+            return quarter;
+        }
+        private static int GetCustomOrder(Quarter trimester, int currentMonth, ForecastType type)
+        {
+            int trimesterValue = (int)trimester;
+
+            if (type == ForecastType.tri)
+            {
+                // Ajustar el valor del trimestre si es mayor que el mes actual
+                if (trimesterValue < currentMonth)
+                {
+                    trimesterValue += 12;
+                }
+            }
+            else if (type == ForecastType.bi)
+            {
+                // Ajustar el valor del bimestre si es mayor que el mes actual
+                if (trimesterValue < currentMonth + 12)
+                {
+                    trimesterValue += 12;
+                }
+            }
+
+            return trimesterValue;
         }
 
         /// <summary>

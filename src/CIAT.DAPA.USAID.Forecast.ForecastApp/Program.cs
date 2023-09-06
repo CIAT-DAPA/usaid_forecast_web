@@ -63,6 +63,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp
                     Out_WINDOW_CONFIG = conf["Out_WINDOW_CONFIG"],
                     Out_CROP_CONFIG = conf["Out_CROP_CONFIG"],
                     In_PATH_FS_FILE_PHENO_PHASES = conf["In_PATH_FS_FILE_PHENO_PHASES"],
+                    Out_PATH_CPT_FILE = conf["Out_PATH_CPT_FILE"],
                 };
             }
             catch (Exception ex)
