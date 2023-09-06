@@ -135,5 +135,21 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// Number of hot days with maximum daily temperature above 28 °C between beginning of stem elongation period and flowering
         /// </summary>
         hs_ndt28_b_f,
+        /// <summary>
+        /// rainy_days
+        /// </summary>
+        ag_ndll,
+        /// <summary>
+        /// dry_days
+        /// </summary>
+        ag_nds,
+        /// <summary>
+        /// heat_days
+        /// </summary>
+        ag_ndc,
+        /// <summary>
+        /// cold_days
+        /// </summary>
+        ag_ndf,
     }
 }
