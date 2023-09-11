@@ -18,15 +18,15 @@ async function init() {
     try {
         var capabilities = await get_geoserver_wms_capabilities();
 
-        console.log("wms capabilities",capabilities)
+        console.log("wms capabilities", capabilities)
         geoserverLayers = capabilities.WMS_Capabilities.Capability.Layer.Layer;
         updateMetadata(capabilities.WMS_Capabilities.Capability.Layer);
         updateSelectionEl(geoserverLayers);
         $('#capabilitiesFilter').toggle(true)
         initMaps();
-        initWFSOverlays();
-     
-      
+
+
+
     } catch (e) {
         console.error(e);
         $('#errorMsg').html("An error happened. Please try again later");
@@ -34,7 +34,7 @@ async function init() {
     }
 
     $('#capabilitiesLoader').toggle(false)
-   
+
 
 }
 
@@ -53,7 +53,7 @@ function updateMetadata(mainLayer) {
 }
 
 function updateSelectionEl(layers) {
-   // console.log("layers", layers);
+    // console.log("layers", layers);
 
 
     let crops = [];
@@ -66,7 +66,7 @@ function updateSelectionEl(layers) {
         return orderA - orderB;
     })
 
-  
+
     layers.forEach(layer => {
         let crop = extractKeyword(layer, 'crop')
         if (crop) {
@@ -79,15 +79,15 @@ function updateSelectionEl(layers) {
     });
 
 
-    
+
     // make unique and remove NA values
     crops = [...new Set(crops.filter(c => c.toLowerCase() != "NA".toLowerCase()))];
     groups = [...new Set(groups.filter(c => c.toLowerCase() != "NA".toLowerCase()))];
-   
+
     //console.log(crops, groups);
 
     let cropSelect = $('#cbo_crop')[0];
-    $('#cropSelect').toggle(crops.length>0);
+    $('#cropSelect').toggle(crops.length > 0);
     if (cropSelect) {
         crops.forEach(c =>
             cropSelect.add(new Option(translations[c] ?? c, c))
@@ -114,12 +114,14 @@ function initMaps() {
 
     var crop = $("#cbo_crop").val();
     var group = $("#cbo_group").val();
-   
 
-    console.log("update_maps", crop, group);
-    let filteredLayers = geoserverLayers.filter(layer => 
-         (!crop || extractKeyword(layer, 'crop') == crop)
-            && (!group || extractKeyword(layer, 'group') == group))
+
+    //console.log("update_maps", crop, group);
+    let filteredLayers = geoserverLayers.filter(layer =>
+        (!crop || extractKeyword(layer, 'crop') == crop)
+        && (!group || extractKeyword(layer, 'group') == group)
+    )
+
 
     console.log("filteredLayers", filteredLayers)
 
@@ -134,7 +136,7 @@ function initMaps() {
         const mapSectionEl = document.createElement('div');
         mapSectionEl.classList.add('indicator-map-container');
 
-        
+
 
         const title = document.createElement('h3');
         title.textContent = layer.Title;
@@ -169,25 +171,36 @@ var getMonthName = function (idx) {
 
 
 
-function plotMap(mapEl, layer) {
+async function plotMap(mapEl, layer) {
+
 
 
     // create map
     let map = L.map(mapEl, {
+        attributionControl: false,
         zoomControl: false,
         timeDimension: true,
-        timeDimensionOptions: {},
+        timeDimensionOptions: {
+
+        },
     }).fitBounds(conf.bounds, { padding: [50, 50] });
     map.myData = {};
-
-    //add zoom ctrl
-    L.control.zoom({ position: 'topright' }).addTo(map);
+    map.createPane('left');
+    map.createPane('right');
 
     //add background layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
+
+    L.control.attribution({
+        position: 'topright'
+    }).addTo(map);
+
+    //add zoom ctrl
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
 
     //add geoserver layer
     addWMSLayer(map, layer);
@@ -202,15 +215,23 @@ function plotMap(mapEl, layer) {
     addPeriodCtrl(map, layer);
     let periods = getPeriods(layer);
 
+    addDownloadCtrl(map, layer);
+
     let period = periods[0]?.split('-')[0] ?? "01"; // use default if just one period is defined
     map.currentPeriod = period;
     updatePeriod(map, layer)
 
-   // console.log(map)
+    let avgDate = new Date(indicatorYearConstants['avg'], period, 1)
+    map.timeDimension.setCurrentTime(avgDate)
+
+
+
+    // console.log(map)
 
     //add optional layers
     if (mapOverlays && mapOverlays.length > 0) {
-        add_map_overlays(map, mapOverlays);
+        addGeoJSONOverlays(map, mapOverlays);
+        
     }
 
 }
@@ -226,11 +247,11 @@ function addPeriodCtrl(map, layer) {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-bar-horizontal leaflet-bar-timecontrol leaflet-control select-control');
 
         let label = L.DomUtil.create('span');
-        label.innerHTML = translations.period+': '  ;
+        label.innerHTML = translations.period + ': ';
         container.appendChild(label);
 
         let select = L.DomUtil.create('select', 'period-selector');
-      periods.forEach(period => {
+        periods.forEach(period => {
             let parts = period.split('-')
             let start = parts[0];
             let label = "";
@@ -273,11 +294,13 @@ function updatePeriod(map, layer) {
 
     let period = map.currentPeriod;
     let times = layer.Dimension.toString().split(",");
+
     let dates = times.filter(time => {
         var date = new Date(time);
-        return date.getUTCMonth() + 1 == period && !Object.values(indicatorYearConstants).includes(date.getUTCFullYear());
-    })
+        return date.getUTCMonth() + 1 == period;// && !Object.values(indicatorYearConstants).includes(date.getUTCFullYear());
+    }).map(time => new Date(time));
     map.timeDimension.setAvailableTimes(dates, "replace")
+
 }
 
 
@@ -290,7 +313,7 @@ function addWMSLayer(map, layer) {
         layers: geoserver_workspace + ":" + layer.Name,
         format: 'image/png',
         transparent: true,
-       // opacity: 0.9,
+        // opacity: 0.9,
     })
 
     // Create and add a TimeDimension Layer to the map
@@ -299,10 +322,19 @@ function addWMSLayer(map, layer) {
 
     L.Control.TimeDimensionCustom = L.Control.TimeDimension.extend({
         _getDisplayDateFormat: function (date) {
-            return date.getFullYear();
+
+            if (date.getUTCFullYear() == indicatorYearConstants['avg'])
+                return translations.average;
+            else if (date.getUTCFullYear() == indicatorYearConstants['nino'])
+                return translations.el_nino;
+            else if (date.getUTCFullYear() == indicatorYearConstants['nina'])
+                return translations.la_nina;
+            else
+                return date.getUTCFullYear();
         }
     });
     var timeDimensionControl = new L.Control.TimeDimensionCustom({
+
         speedSlider: false,
         playerOptions: {
             buffer: 1,
@@ -317,16 +349,25 @@ function addWMSLegend(map, layer) {
     var legendControl = L.control({ position: 'topleft' });
     legendControl.onAdd = function (map) {
         var legendDiv = L.DomUtil.create('div', 'legend');
-
+        let headingEl = document.createElement("div");
+        headingEl.classList.add('legend-heading');
         let acronym = extractKeyword(layer, 'acronym');
         if (acronym) {
             let titleEl = document.createElement("h5");
             titleEl.innerHTML = acronym;
-            legendDiv.appendChild(titleEl);
-        }
-      
+            headingEl.appendChild(titleEl);
 
-      
+        }
+
+        let unit = extractKeyword(layer, 'units');
+        if (unit) {
+            let unitEl = document.createElement("span");
+            unitEl.innerHTML = '(' + unit + ')';
+            headingEl.appendChild(unitEl);
+        }
+
+        legendDiv.appendChild(headingEl);
+
 
 
         let legendUrl = geoserver_url + "?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=" + layer.Name;
@@ -342,15 +383,6 @@ function addWMSLegend(map, layer) {
         img.src = legendUrl;
         legendDiv.appendChild(img);
 
-
-
-        let unit = extractKeyword(layer, 'units');
-        if (unit) {
-            let unitEl = document.createElement("p");
-            unitEl.innerHTML ='('+ unit+')';
-            legendDiv.appendChild(unitEl);
-        }
-
         return legendDiv;
     };
 
@@ -364,12 +396,12 @@ function addWMSLegend(map, layer) {
 
 
 function addCompareCtrl(map, layer) {
-    var compareControl = L.control({ position: 'bottomleft' });
+    var compareControl = L.control({ position: 'bottomright' });
     compareControl.onAdd = function (map) {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-bar-horizontal leaflet-bar-timecontrol leaflet-control select-control');
 
         let label = L.DomUtil.create('span');
-        label.innerHTML = translations.compare+': ';
+        label.innerHTML = translations.compare + ': ';
         container.appendChild(label);
 
         let select = L.DomUtil.create('select', 'period-selector');
@@ -383,7 +415,6 @@ function addCompareCtrl(map, layer) {
         // Add event listener to the select element
         select.addEventListener('change', function (event) {
             var selectedValue = event.target.value;
-           // console.log('Selected value:', selectedValue);
             map.currentCompare = selectedValue;
             updateComparison(map, layer)
         });
@@ -396,56 +427,86 @@ function addCompareCtrl(map, layer) {
 
 
 function updateComparison(map, layer) {
-
+  
     let compare = map.currentCompare ?? 'none';
-    if (compare.toLowerCase() == 'none') {
-        if (map.myData.wmsLayerCompare) {
-            wmsLayerCompare.removeFrom(map)
-            map.myData.wmsLayerCompare = null;
-        }
-        if (map.myData.sideBySideControl) {
-            map.myData.sideBySideControl.remove();
-            map.myData.sideBySideControl = null;
-        }
-        return;
-    }
-
-
 
     if (map.myData.wmsLayerCompare) {
         map.myData.wmsLayerCompare.removeFrom(map)
         map.myData.wmsLayerCompare = null;
     }
+    if (map.myData.sideBySideControl) {
+        map.myData.sideBySideControl.remove();
+        map.myData.sideBySideControl = null;
+    }
+
+    if (map.myData.comparisonLabel) {
+        map.myData.comparisonLabel.remove();
+        map.myData.comparisonLabel = null;
+    }
+
+    if (compare.toLowerCase() == 'none') {
+        return;
+    }
+
 
     map.myData.wmsLayerCompare = L.tileLayer.wms(geoserver_url, {
         layers: geoserver_workspace + ":" + layer.Name,
         format: 'image/png',
         transparent: true,
         zIndex: 100,
-       // opacity: 0.9,
+        // opacity: 0.9,
     })
     map.myData.wmsLayerCompare.addTo(map);
     map.myData.wmsLayerCompare.setParams({ 'time': compare + "-" + map.currentPeriod });
 
-
-
-
     // hack around bug with getContainer, that is undefined for wmsLayer
     let tdWmsLayer = map.myData.tdWmsLayer;
     tdWmsLayer.getContainer = tdWmsLayer.getPane;
+    map.myData.sideBySideControl = L.control.sideBySide([tdWmsLayer], [map.myData.wmsLayerCompare]);
 
-    map.createPane("left");
-    map.createPane("right");
-
-
-    if (map.myData.sideBySideControl) {
-        map.myData.sideBySideControl.remove();
-        map.myData.sideBySideControl = null;
-    }
-    map.myData.sideBySideControl = L.control.sideBySide(tdWmsLayer, map.myData.wmsLayerCompare);
     map.myData.sideBySideControl.addTo(map);
+    map.invalidateSize()
 
- 
+
+}
+
+
+
+
+function addDownloadCtrl(map, layer) {
+
+
+    var downloadControl = L.control({ position: 'topright' });
+    downloadControl.onAdd = function (map) {
+
+
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        var button = L.DomUtil.create('a', 'leaflet-control-button fa fa-download', container);
+        button.setAttribute('href', '#');
+        button.setAttribute('role', 'button');
+        L.DomEvent.disableClickPropagation(button);
+        L.DomEvent.on(button, 'click', function () {
+            let date = map.timeDimension.getCurrentTime();
+            let dateStr = date.getUTCFullYear() + '-' + date.getUTCMonth()
+
+            let url = geoserver_url;
+            url += '?service=WCS&request=GetCoverage&version=2.0.1';
+            url += '&coverageId=' + layer.Name;
+            url += '&format=image/geotiff';
+            url += '&time=' + dateStr
+
+            console.log(url)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = url.split('/').pop()
+            a.click()
+
+        });
+        container.title = "Download";
+
+        return container;
+    }
+    downloadControl.addTo(map);
 }
 
 function extractKeyword(layer, key) {
@@ -459,7 +520,7 @@ function extractKeyword(layer, key) {
         (typeof keyword === 'string' || keyword instanceof String) && keyword.startsWith(key)
     )
 
-    let value =  valueStr?.split('=')[1];
+    let value = valueStr?.split('=')[1];
     //console.log("extractKeyword", keywords, key, value)
     return value;
 }

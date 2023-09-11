@@ -1,11 +1,10 @@
-﻿
-
-@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+﻿@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
 @inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
 
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,25 +42,32 @@
         <link rel="stylesheet" href="~/lib/please-wait/build/please-wait.css">
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/menu.css" />
-     
+
     </environment>
     <environment exclude="Development">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+            asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css"
-              asp-fallback-href="~/lib/leaflet/leaflet.css" />
+            asp-fallback-href="~/lib/leaflet/leaflet.css" />
         <link rel="stylesheet" href="~/css/vendor.min.css" asp-append-version="true">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     <link rel="shortcut icon" href="~/favicon.ico">
 
 </head>
+
 <body>
 
 
     <header class="header-logo">
         <h1 class="text-center">
-            <a href=""><img alt="logo" src="~/Environment/@AppSettings.Value.countryName/logo.png" class="text-center" /></a>
+            <a href=""><img alt="logo" src="~/Environment/@AppSettings.Value.countryName/logo.png"
+                    class="text-center" /></a>
         </h1>
     </header>
     <nav class="navbar navbar-default" id="mainMenu">
@@ -92,7 +98,7 @@
             @if (@AppSettings.Value.partners.Count > 0)
             {
                 <div class="col-lg-12 form-group">
-                    <div  style="color:white;">
+                    <div style="color:white;">
                         <h4>@Localizer["FooterPartnersTitle"]</h4>
                         <hr />
                     </div>
@@ -100,13 +106,15 @@
                         @foreach (var partner in @AppSettings.Value.partners)
                         {
                             <a href="@partner["link"]" target="_blank">
-                                <img class="img-rounded" src="~/Environment/@AppSettings.Value.countryName/Partners/@partner["src"]" alt="@partner["name"]" title="@partner["name"]" />
+                                <img class="img-rounded"
+                                    src="~/Environment/@AppSettings.Value.countryName/Partners/@partner["src"]"
+                                    alt="@partner["name"]" title="@partner["name"]" />
                             </a>
                         }
                     </section>
                 </div>
             }
-           
+
             <div class="clearfix"></div>
         </div>
         <div class="col-lg-12">
@@ -146,27 +154,21 @@
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"
-                asp-fallback-src="~/lib/jquery/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous">
-        </script>
+            asp-fallback-src="~/lib/jquery/jquery.min.js" asp-fallback-test="window.jQuery" crossorigin="anonymous">
+            </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous">
-        </script>
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal" crossorigin="anonymous">
+            </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"
-                asp-fallback-src="~/lib/leaflet/leaflet.js"
-                crossorigin="anonymous">
-        </script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"
-                asp-fallback-src="~/lib/axios/axios.min.js"
-                crossorigin="anonymous">
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"
-                asp-fallback-src="~/lib/d3/d3.min.js"
-                crossorigin="anonymous">
-        </script>
+            asp-fallback-src="~/lib/leaflet/leaflet.js" crossorigin="anonymous">
+            </script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js" asp-fallback-src="~/lib/axios/axios.min.js"
+            crossorigin="anonymous">
+            </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js" asp-fallback-src="~/lib/d3/d3.min.js"
+            crossorigin="anonymous">
+            </script>
         <script src="~/js/vendor.min.js"></script>
         <script src="~/js/site.min.js"></script>
     </environment>
@@ -188,4 +190,5 @@
         updateBackground();
     </script>
 </body>
+
 </html>

@@ -15,3 +15,4 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Forecast.Views
         public string Station { get; set; }
     }
 }
+ 

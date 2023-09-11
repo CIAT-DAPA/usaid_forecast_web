@@ -15,7 +15,7 @@ async function plot_map(id, ws, crops) {
 
     //add optional layers
     if (mapOverlays && mapOverlays.length > 0) {
-        add_map_overlays(map, mapOverlays);
+        addGeoJSONOverlays(map, mapOverlays);
     }
 
 

@@ -7,8 +7,15 @@
 
     var menu_climate_cbo = $('#menu_climate_cbo').select2({ placeholder: placeholder });
     menu_climate_cbo.on("change", function (e) {
+        console.log('updated climate')
         var re = /^https?:\/\/[^/]+/;
         window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_climate_cbo').val();
+    });
+    var menu_reports_cbo = $('#menu_reports_cbo').select2({ placeholder: placeholder });
+    menu_reports_cbo.on("change", function (e) {
+        console.log('updated reports')
+        var re = /^https?:\/\/[^/]+/;
+        window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_reports_cbo').val();
     });
 
     var menu_rice_cbo = $('#menu_rice_cbo').select2({ placeholder: placeholder });
@@ -18,7 +25,6 @@
     });
     var menu_maize_cbo = $('#menu_maize_cbo').select2({ placeholder: placeholder });
     menu_maize_cbo.on("change", function (e) {
-        console.log('changed damn maize 2')
         var re = /^https?:\/\/[^/]+/;
         window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_maize_cbo').val();
     });
@@ -27,6 +33,7 @@
         var re = /^https?:\/\/[^/]+/;
         window.location.href = re.exec(window.location.href)[0] + "/" + $('#menu_fruit_trees_cbo').val();
     });
+
 }
 $('ul.dropdown-menu').on('click', function (event) {
     var events = $._data(document, 'events') || {};

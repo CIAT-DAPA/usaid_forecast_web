@@ -28,12 +28,12 @@ function plot_map(id, idx, min, max, group, type, categories_t, categories_q = [
 
 
     //add optional layers
-   if (mapOverlays && mapOverlays.length > 0) {
-       add_map_overlays(maps[idx], mapOverlays);
+    if (mapOverlays && mapOverlays.length > 0) {
+        addGeoJSONOverlays(maps[idx], mapOverlays);
     }
 
 
-   
+
 
     var legend = L.control({ position: 'bottomleft' });
 

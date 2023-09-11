@@ -57,7 +57,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
             ViewBag.modules_geo_indicators = Configurations.modules_geo_indicators;
             ViewBag.modules_maize = Configurations.modules_maize;
             ViewBag.modules_fruit_trees = Configurations.modules_fruit_trees;
-
+      ViewBag.modules_reports = Configurations.modules_reports;
             ViewBag.modules_rice = Configurations.modules_rice;
 
             ViewBag.modules_expert = Configurations.modules_expert;

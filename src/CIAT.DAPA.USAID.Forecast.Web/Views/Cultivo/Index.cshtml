@@ -256,6 +256,7 @@
         ranges = merge_ranges_colors(ranges, colors);
 
         function update_forecast(cu, so) {
+            console. log(yield)
     
             // Ploting ranges
             plot_ranges(ranges,'ranges_' + cu);
@@ -269,7 +270,7 @@
             for (var j = 0; j < yield_filtered.length; j++) {
                 max = yield_filtered[j].data.findIndex(x => x.measure.startsWith('yield'));
 
-              //  console.log(yield_filtered[j])
+                console.log(yield_filtered[j])
                 if (best == null || best.data[max].avg < yield_filtered[j].data[max].avg) {
                     best = yield_filtered[j];
                     best_max = max;

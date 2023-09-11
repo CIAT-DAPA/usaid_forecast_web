@@ -9,16 +9,23 @@
     <ul class="nav navbar-nav">
         @if (ViewBag.modules_indicators)
         {
-            <li id="menu_main_indicators"><a href="/Indicators/"><span class="glyphicon glyphicon-signal"></span> @Localizer["Indicators"]</a></li>
+            <li id="menu_main_indicators"><a href="/Indicators/"><span class="glyphicon glyphicon-signal"></span>
+                    @Localizer["Indicators"]</a></li>
         }
         @if (ViewBag.modules_geo_indicators == true)
         {
-            <li id="menu_main_indicators"><a href="/GeoIndicators/"><span class="glyphicon glyphicon-signal"></span> @Localizer["Indicators"]</a></li>
+            <li id="menu_main_indicators"><a href="/GeoIndicators/"><span class="glyphicon glyphicon-signal"></span>
+                    @Localizer["Indicators"]</a></li>
         }
+
+
+
         @if (ViewBag.modules_climate)
         {
             <li id="menu_main_climate" class="dropdown">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Weather"]<span class="caret"></span></a>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_weather" role="button"
+                    aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-asterisk"></span>
+                    @Localizer["Weather"]<span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="drop_weather">
                     <li style="padding:5px 15px;">
                         <b>@Localizer["Search"]</b>
@@ -28,7 +35,8 @@
                             <option value=""></option>
                             @foreach (var ws in ViewBag.WeatherStations)
                             {
-                                <option value="Clima/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality, @ws.Name </option>
+                                <option value="Clima/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality, @ws.Name
+                                </option>
                             }
                         </select>
                     </li>
@@ -38,7 +46,9 @@
         @if (ViewBag.modules_rice)
         {
             <li id="menu_main_rice" class="dropdown">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_rice" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> @Localizer["CropRice"]<span class="caret"></span></a>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_rice" role="button" aria-haspopup="true"
+                    aria-expanded="false"><span class="glyphicon glyphicon-grain"></span> @Localizer["CropRice"]<span
+                        class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="drop_rice">
                     <li style="padding:5px 15px;">
                         <b>@Localizer["Search"]</b>
@@ -46,9 +56,11 @@
                     <li style="padding:5px 15px;">
                         <select id="menu_rice_cbo" name="menu_rice_cbo" class="form-control" style="width:100%;">
                             <option value=""></option>
-                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "rice", "arroz" }).Contains(p.Crop.ToLower())))
+                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new
+                           List<string>() { "rice", "arroz" }).Contains(p.Crop.ToLower())))
                             {
-                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State,
+                                    @ws.Municipality, @ws.Name </option>
                             }
                         </select>
                     </li>
@@ -58,7 +70,9 @@
         @if (ViewBag.modules_maize)
         {
             <li id="menu_main_maize" class="dropdown">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_maize" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> @Localizer["CropMaize"]<span class="caret"></span></a>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_maize" role="button"
+                    aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png"
+                        height="19" width="19" /> @Localizer["CropMaize"]<span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="drop_maize">
                     <li style="padding:5px 15px;">
                         <b>@Localizer["Search"]</b>
@@ -66,9 +80,11 @@
                     <li style="padding:5px 15px;">
                         <select id="menu_maize_cbo" name="menu_maize_cbo" class="form-control" style="width:100%;">
                             <option value=""></option>
-                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower())))
+                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new
+                           List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower())))
                             {
-                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State,
+                                    @ws.Municipality, @ws.Name </option>
                             }
                         </select>
                     </li>
@@ -76,22 +92,53 @@
             </li>
         }
 
-        
+
 
         @if (ViewBag.modules_fruit_trees)
         {
             <li id="menu_main_fruit_trees" class="dropdown">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_fruit_trees" role="button" aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/corn.png" height="19" width="19" /> @Localizer["FruitTrees"]<span class="caret"></span></a>
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_fruit_trees" role="button"
+                    aria-haspopup="true" aria-expanded="false"><img style="margin-top: -7px;" src="~/images/fruit.png"
+                        height="19" width="19" /> @Localizer["CropFruitTrees"]<span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="drop_fruit_trees">
                     <li style="padding:5px 15px;">
                         <b>@Localizer["Search"]</b>
                     </li>
                     <li style="padding:5px 15px;">
-                        <select id="menu_fruit_trees_cbo" name="menu_fruit_trees_cbo" class="form-control" style="width:100%;">
+                        <select id="menu_fruit_trees_cbo" name="menu_fruit_trees_cbo" class="form-control"
+                            style="width:100%;">
                             <option value=""></option>
-                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower())))
+                            @foreach (var ws in ((List<WeatherStationFullCrop>)ViewBag.WeatherStationsCrops).Where(p => (new
+                           List<string>() { "maize", "maíz", "maiz" }).Contains(p.Crop.ToLower())))
                             {
-                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State, @ws.Municipality, @ws.Name </option>
+                                <option value="Cultivo/@ws.State/@ws.Municipality/@ws.Name/@ws.Crop">@ws.State,
+                                    @ws.Municipality, @ws.Name </option>
+                            }
+                        </select>
+                    </li>
+                </ul>
+            </li>
+        }
+
+        @if (ViewBag.modules_reports)
+        {
+
+            <li id="menu_main_reports" class="dropdown">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_reports" role="button"
+                    aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-download"></span>
+                    @Localizer["Reports"]<span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="drop_reports">
+                    <li style="padding:5px 15px;">
+                        <b>@Localizer["Search"]</b>
+                    </li>
+                    <li style="padding:5px 15px;">
+                        <select id="menu_reports_cbo" name="menu_reports_cbo" class="form-control" style="width:100%;">
+                            <option value=""></option>
+                            @foreach (var ws in ViewBag.WeatherStations)
+                            {
+                                <option value="Reports/@ws.State/@ws.Municipality/@ws.Name">@ws.State, @ws.Municipality,
+                                    @ws.Name
+                                </option>
                             }
                         </select>
                     </li>
@@ -102,15 +149,18 @@
 
         @if (ViewBag.modules_expert)
         {
-            <li id="menu_main_expert"><a href="/Experto/"><span class="glyphicon glyphicon-cloud-download"></span> @Localizer["OtherDatabase"]</a></li>
+            <li id="menu_main_expert"><a href="/Experto/"><span class="glyphicon glyphicon-cloud-download"></span>
+                    @Localizer["OtherDatabase"]</a></li>
         }
         @if (ViewBag.modules_glossary)
         {
-            <li id="menu_main_glossary"><a href="/Home/Glosario/"><span class="glyphicon glyphicon-info-sign"></span> @Localizer["OtherGlosary"]</a></li>
+            <li id="menu_main_glossary"><a href="/Home/Glosario/"><span class="glyphicon glyphicon-info-sign"></span>
+                    @Localizer["OtherGlosary"]</a></li>
         }
         @if (ViewBag.modules_about)
         {
-            <li id="menu_main_about"><a href="/Home/AcercaDe/"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["OtherAbout"]</a></li>
+            <li id="menu_main_about"><a href="/Home/AcercaDe/"><span class="glyphicon glyphicon-eye-open"></span>
+                    @Localizer["OtherAbout"]</a></li>
         }
     </ul>
     <!-- Start Help -->
@@ -118,18 +168,21 @@
         @{
             var requestCulture = Context.Features.Get<IRequestCultureFeature>();
             var cultureItems = LocOptions.Value.SupportedUICultures
-                .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
-                .ToList();
+            .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+            .ToList();
             var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
         }
         <li id="menu_main_language" class="dropdown">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_language" role="button" aria-haspopup="true" aria-expanded="true">@requestCulture.RequestCulture.UICulture.Name.ToUpper().Substring(0, 2) <span class="caret"></span></a>
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="drop_language" role="button"
+                aria-haspopup="true"
+                aria-expanded="true">@requestCulture.RequestCulture.UICulture.Name.ToUpper().Substring(0, 2) <span
+                    class="caret"></span></a>
             <ul class="drop_language dropdown-menu" aria-labelledby="drop_language">
                 @foreach (var s in cultureItems)
                 {
                     <li style="padding:5px 15px;">
-                        <form id="selectLanguage_@s.Value" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
-                              method="post" class="form-horizontal" role="form">
+                        <form id="selectLanguage_@s.Value" asp-controller="Home" asp-action="SetLanguage"
+                            asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
                             <input type="hidden" name="culture" id="culture" value="@s.Value" />
                             <a onclick="$('#selectLanguage_@s.Value').submit();">@s.Value.ToUpper().Substring(0, 2)</a>
                         </form>

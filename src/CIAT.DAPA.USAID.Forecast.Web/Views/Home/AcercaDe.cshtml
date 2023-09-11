@@ -1,22 +1,57 @@
-﻿@{
+﻿@using System.IO;
+@using System.Text;
+@using CIAT.DAPA.USAID.Forecast.Web.Models.Tools;
+@inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment IHostingEnvironment
+
+
+
+@{
     ViewData["Title"] = Localizer["Title"];
     ViewData["Meta_Description"] = "Información sobre los procesos realizados por la plataforma de pronósticos agroclimáticos.";
     ViewData["Meta_Keywords"] = "acerca de,clima,predicción,cultivos,agroclima,agroclimatico,precipitación,rendimiento,días a cosecha,temperatura,historial rendimiento,histórico rendimiento,producción";
 }
 
+
+
+
+
+
+
+
+
+
 <div id="containerBlock">
-    @foreach (var w in ViewBag.words)
+
+    @{
+        var currentLocale = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+        //if html abput page exists, load it otherwise use default
+        string filePath = System.IO.Path.Combine(IHostingEnvironment.WebRootPath, "Environment", @AppSettings.Value.countryName, $"about_{currentLocale}.html");
+
+    }
+    @if (File.Exists(filePath))
     {
-        <section class="col-md-12 sections">
-            <article class="row section-content borderBox">
-                <div class="col-lg-12 blockTitle closed text-center" data-toggle="collapse" data-target="#@w">
-                    <label class="cultivar_name">@Localizer[w + "_Title"]</label>
-                </div>
-                <div class="collapse" id="@w">
-                    @Localizer[w + "_Description"]
-                </div>
-            </article>
-        </section>
+        <div class="col-md-12 sections">
+            @Html.Raw(File.ReadAllText(filePath, Encoding.GetEncoding(28591)))
+        </div>
+
+    }
+    else
+    {
+
+        @foreach (var w in ViewBag.words)
+        {
+            <section class="col-md-12 sections">
+                <article class="row section-content borderBox">
+                    <div class="col-lg-12 blockTitle closed text-center" data-toggle="collapse" data-target="#@w">
+                        <label class="cultivar_name">@Localizer[w + "_Title"]</label>
+                    </div>
+                    <div class="collapse" id="@w">
+                        @Localizer[w + "_Description"]
+                    </div>
+                </article>
+            </section>
+        }
     }
 </div>
 

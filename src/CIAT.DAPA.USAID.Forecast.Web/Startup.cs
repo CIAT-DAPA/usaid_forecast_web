@@ -73,7 +73,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
 
 
 
-            
+
 
 
             // Add custom settings from configuration file
@@ -91,6 +91,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                 options.modules_rice = bool.Parse(Configuration.GetSection("Modules:Rice").Value);
                 options.modules_maize = bool.Parse(Configuration.GetSection("Modules:Maize").Value);
                 options.modules_fruit_trees = bool.Parse(Configuration.GetSection("Modules:FruitTrees").Value);
+                options.modules_reports = bool.Parse(Configuration.GetSection("Modules:Reports").Value);
                 options.modules_expert = bool.Parse(Configuration.GetSection("Modules:Expert").Value);
                 options.modules_glossary = bool.Parse(Configuration.GetSection("Modules:Glossary").Value);
                 options.modules_about = bool.Parse(Configuration.GetSection("Modules:About").Value);
@@ -99,7 +100,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
                 options.mapOverlays = mapOverlays;
 
 
-        
+
                 if (options.modules_indicators || options.modules_geo_indicators)
                 {
                     options.indicators_path = Configuration.GetSection("Indicators:IndicatorsPath").Value;
@@ -123,7 +124,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
 
             // Configure supported cultures and localization options
             services.Configure<RequestLocalizationOptions>(options =>
-            {                
+            {
                 string[] languages = Configuration.GetSection("Cultures:Enable").Value.Split(",");
                 CultureInfo[] supportedCultures = new CultureInfo[languages.Length];
                 for (int i = 0; i < languages.Length; i++)

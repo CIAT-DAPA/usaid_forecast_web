@@ -120,6 +120,9 @@
   <data name="Country" xml:space="preserve">
     <value>País</value>
   </data>
+  <data name="CropFruitTrees" xml:space="preserve">
+    <value>Árvores frutiferas</value>
+  </data>
   <data name="CropMaize" xml:space="preserve">
     <value>Milho</value>
   </data>

@@ -117,37 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Country" xml:space="preserve">
-    <value>País</value>
+  <data name="Average" xml:space="preserve">
+    <value>Média</value>
   </data>
-  <data name="CropFruitTrees" xml:space="preserve">
-    <value>Frutales</value>
+  <data name="coffee" xml:space="preserve">
+    <value>Café</value>
   </data>
-  <data name="CropMaize" xml:space="preserve">
-    <value>Maíz</value>
+  <data name="Compare" xml:space="preserve">
+    <value>Comparar</value>
   </data>
-  <data name="CropRice" xml:space="preserve">
-    <value>Arroz</value>
+  <data name="Crop" xml:space="preserve">
+    <value>Cultura</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Ayuda</value>
+  <data name="DescriptionLong" xml:space="preserve">
+    <value>Nesta seção você pode ver uma lista de índices de risco agroclimático</value>
   </data>
-  <data name="Indicators" xml:space="preserve">
-    <value>Indicadores</value>
+  <data name="dry_bean" xml:space="preserve">
+    <value>Feijão seco</value>
   </data>
-  <data name="OtherAbout" xml:space="preserve">
-    <value>Acerca De</value>
+  <data name="dry_spells" xml:space="preserve">
+    <value>Períodos de seca</value>
   </data>
-  <data name="OtherDatabase" xml:space="preserve">
-    <value>Bases de datos</value>
+  <data name="El_nino" xml:space="preserve">
+    <value>El Niño</value>
   </data>
-  <data name="OtherGlosary" xml:space="preserve">
-    <value>Glosario</value>
+  <data name="Group" xml:space="preserve">
+    <value>Indicadores agroclimáticos</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Buscar</value>
+  <data name="heat_waves" xml:space="preserve">
+    <value>Ondas de calor</value>
   </data>
-  <data name="Weather" xml:space="preserve">
-    <value>Clima</value>
+  <data name="heavy_rainfall" xml:space="preserve">
+    <value>Períodos de chuva</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>Umidade</value>
+  </data>
+  <data name="La_nina" xml:space="preserve">
+    <value>La Niña</value>
+  </data>
+  <data name="maize" xml:space="preserve">
+    <value>Milho</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>Período</value>
+  </data>
+  <data name="Precipitation" xml:space="preserve">
+    <value>Precipitação</value>
+  </data>
+  <data name="soybean" xml:space="preserve">
+    <value>Soja</value>
+  </data>
+  <data name="spei" xml:space="preserve">
+    <value>SPEI</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperatura</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Visualizador de indicadores agroclimáticos</value>
+  </data>
+  <data name="water_demand" xml:space="preserve">
+    <value>Evapotranspiração</value>
   </data>
 </root>

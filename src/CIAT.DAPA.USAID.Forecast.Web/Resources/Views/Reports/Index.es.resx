@@ -117,37 +117,80 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Country" xml:space="preserve">
-    <value>País</value>
+  <data name="Average" xml:space="preserve">
+    <value>Promedio</value>
   </data>
-  <data name="CropFruitTrees" xml:space="preserve">
-    <value>Frutales</value>
+  <data name="coffee" xml:space="preserve">
+    <value>Café</value>
   </data>
-  <data name="CropMaize" xml:space="preserve">
+  <data name="Compare" xml:space="preserve">
+    <value>Comparar</value>
+  </data>
+  <data name="Crop" xml:space="preserve">
+    <value>Cultivos</value>
+  </data>
+  <data name="DescriptionLong" xml:space="preserve">
+    <value>Este visualizador de mapas agroclimáticos es una herramienta interactiva que le permite a los usuarios, principalmente extensionistas, personal técnico y entidades tomadoras de decisiones, visualizar información histórica sobre indicadores agroclimáticos (por ejemplo, indicadores que caracterizan sequías, excesos de lluvias, olas de calor, olas de frío, riesgo de Moniliasis, y riesgo de estrés térmico e hídrico), específicos para el departamento de San Martín (Perú).  
+
+Los mapas obtenidos a través de esta herramienta pueden ser utilizados para diversos fines, tales como: 
+
+Conocer los patrones espaciales promedio de los indicadores agroclimáticos mencionados anteriormente. 
+
+Explorar cómo las fases específicas del fenómeno El Niño-Oscilación del Sur (ENOS) (es decir, “El Niño”, “La Niña”) históricamente han influenciado las condiciones de déficit y exceso hídrico en el departamento de San Martín. 
+
+Identificar las regiones agrícolas con mayor riesgo de ser afectadas por Moniliasis, estrés térmico e hídrico combinado, y olas de frío.  
+
+Todos los indicadores agroclimáticos han sido creados para periodos específicos del año, en los cuales se presentan etapas fenológicas clave para cultivos frutales de la región, de la siguiente manera: Febrero – Abril (Periodo de máxima floración); Mayo – Septiembre (Periodo de crecimiento y desarrollo de los frutos); y Octubre – Diciembre (Periodo de maduración de los frutos). Para el desarrollo de esta herramienta, se utilizó la base de datos climática PISCO, la cual tiene información histórica diaria de precipitación, temperaturas (máxima y mínima), y evapotranspiración potencial, para el periodo 1981-2016. Por último, se consideraron siete eventos El Niño (1982-1983, 1987, 1991-1992, 1997-1998, 2002, 2009, 2015-2016) y seis eventos La Niña (1985, 1988-1989, 1995, 1998-2000, 2007-2008, 2010-2012), con el fin de caracterizar el comportamiento de los diferentes indicadores bajo estas fases del fenómeno ENOS.</value>
+  </data>
+  <data name="dry_bean" xml:space="preserve">
+    <value>Frijol seco</value>
+  </data>
+  <data name="dry_spells" xml:space="preserve">
+    <value>Períodos de sequía</value>
+  </data>
+  <data name="El_nino" xml:space="preserve">
+    <value>El Niño</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Indicadores agroclimáticos</value>
+  </data>
+  <data name="heat_waves" xml:space="preserve">
+    <value>Ondas de calor</value>
+  </data>
+  <data name="heavy_rainfall" xml:space="preserve">
+    <value>Periodos de lluvia</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>Humedad</value>
+  </data>
+  <data name="La_nina" xml:space="preserve">
+    <value>La Niña</value>
+  </data>
+  <data name="maize" xml:space="preserve">
     <value>Maíz</value>
   </data>
-  <data name="CropRice" xml:space="preserve">
-    <value>Arroz</value>
+  <data name="None" xml:space="preserve">
+    <value>Ninguno</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Ayuda</value>
+  <data name="Period" xml:space="preserve">
+    <value>Período</value>
   </data>
-  <data name="Indicators" xml:space="preserve">
-    <value>Indicadores</value>
+  <data name="Precipitation" xml:space="preserve">
+    <value>Precipitación</value>
   </data>
-  <data name="OtherAbout" xml:space="preserve">
-    <value>Acerca De</value>
+  <data name="soybean" xml:space="preserve">
+    <value>Frijol de soya</value>
   </data>
-  <data name="OtherDatabase" xml:space="preserve">
-    <value>Bases de datos</value>
+  <data name="spei" xml:space="preserve">
+    <value>SPEI</value>
   </data>
-  <data name="OtherGlosary" xml:space="preserve">
-    <value>Glosario</value>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperatura</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Buscar</value>
+  <data name="Title" xml:space="preserve">
+    <value>Visualizador de indicadores agroclimáticos</value>
   </data>
-  <data name="Weather" xml:space="preserve">
-    <value>Clima</value>
+  <data name="water_demand" xml:space="preserve">
+    <value>Evapotranspiración</value>
   </data>
 </root>

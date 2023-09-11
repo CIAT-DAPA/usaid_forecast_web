@@ -6,15 +6,23 @@
     min-width: 100px;
 }
 
-    .legend h5 {
-        max-width: 200px;
+
+.legend-heading {
+    display: flex;
+    max-width: 200px;
+    align-items: center;
+    justify-content: start;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+.legend-heading h5 {
         font-weight: bold;
-    }
+}
 
-.select-control{
-    padding:6px;
-    min-width:160px;
 
+.select-control {
+    padding: 6px;
+    min-width: 160px;
 }
 .period-selector {
     border: none;
@@ -51,4 +59,16 @@
     .indicator-maps-container {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
+}
+
+.leaflet-control-button {
+    font-size:20px;
+}
+
+
+.hidden-map {
+    position: absolute !important;
+    top: 0;
+    z-index: 0;
+    visibility: hidden;
 }

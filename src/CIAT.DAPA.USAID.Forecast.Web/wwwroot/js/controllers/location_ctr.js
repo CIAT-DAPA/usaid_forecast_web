@@ -44,10 +44,17 @@ angular.module('ForecastApp')
 
           $scope.menu_climate = menu_c.menu;
 
+
+
           // Transform the select 
           var menu_climate_cbo = $('#menu_climate_cbo').select2({placeholder: 'Seleccione una localidad'});
           menu_climate_cbo.on("change", function (e) {
               $window.location.href = "/Clima/" + $('#menu_climate_cbo').val();
+          });
+
+          var menu_reports_cbo = $('#menu_reports_cbo').select2({placeholder: 'Seleccione una localidad'});
+          menu_reports_cbo.on("change", function (e) {
+              $window.location.href = "/Reports/" + $('#menu_reports_cbo').val();
           });
 
           if ($scope.type === 'climate') {
@@ -61,7 +68,7 @@ angular.module('ForecastApp')
 
       GeographicFactory.getByCrop().then(function (g) {
 
-        console.log('getByCrop',g)
+ 
           // Get the geographic information rice and maize
           var states_rice = getLocationsToMenu(g.data.filter(function (item) { return item.name.toLowerCase() === 'arroz'; })[0].states);
           var states_maize = getLocationsToMenu(g.data.filter(function (item) { return item.name.toLowerCase() === 'maíz'; })[0].states);
@@ -75,8 +82,6 @@ angular.module('ForecastApp')
           });
           var menu_maize_cbo = $('#menu_maize_cbo').select2({ placeholder: 'Seleccione una localidad' });
           menu_maize_cbo.on("change", function (e) {
-
-            console.log('changed damn maize 1')
               $window.location.href = "/Cultivo/" + $('#menu_maize_cbo').val() + "/maíz";
           });
 
@@ -84,6 +89,7 @@ angular.module('ForecastApp')
           menu_fruit_trees_cbo.on("change", function (e) {
               $window.location.href = "/Cultivo/" + $('#menu_fruit_trees_cbo').val() + "/fruit-trees";
           });
+    
 
 
           if ($scope.type === 'crop') {
