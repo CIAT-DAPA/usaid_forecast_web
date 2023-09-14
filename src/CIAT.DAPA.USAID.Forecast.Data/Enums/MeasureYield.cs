@@ -151,5 +151,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// cold_days
         /// </summary>
         ag_ndf,
+        /// <summary>
+        /// drought_days
+        /// </summary>
+        ag_ndd,
+        /// <summary>
+        /// heat_drought_days
+        /// </summary>
+        ag_dcdh,
     }
 }
