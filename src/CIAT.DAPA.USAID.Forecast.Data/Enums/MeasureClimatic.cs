@@ -20,6 +20,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         t_min,
         /// <summary>
+        /// average temperature
+        /// </summary>
+        t_avg,
+        /// <summary>
+        /// Maximum humidity
+        /// </summary>
+        hum_max,
+        /// <summary>
+        /// minimum humidity
+        /// </summary>
+        hum_min,
+        /// <summary>
+        /// average humidity
+        /// </summary>
+        hum_avg,
+        /// <summary>
         /// Relative humidity
         /// </summary>
         rel_hum,

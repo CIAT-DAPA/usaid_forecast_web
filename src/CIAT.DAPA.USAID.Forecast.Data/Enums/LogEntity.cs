@@ -64,6 +64,10 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         hs_historical_climatic,
         /// <summary>
+        /// Climate History table
+        /// </summary>
+        hs_historical_daily_climatic_data,
+        /// <summary>
         /// Yield history table
         /// </summary>
         hs_historical_yield,
