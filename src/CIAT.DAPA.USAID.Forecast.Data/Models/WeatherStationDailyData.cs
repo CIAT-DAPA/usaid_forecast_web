@@ -19,7 +19,6 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// <summary>
         /// ID's weather station
         /// </summary>
-        [BsonId]
         [BsonRequired]
         public ObjectId weather_station { get; set; }
         /// <summary>

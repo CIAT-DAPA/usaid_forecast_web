@@ -60,7 +60,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
         /// <summary>
         /// Get or set the historical climatic entity in the database
         /// </summary>
-        public HistoricalDailyClimaticDataFactory historicalDailyClimaticData { get; set; }
+        public HistoricalDailyDataFactory historicalDailyData { get; set; }
         /// <summary>
         /// Get or set the historical yield entity in the database
         /// </summary>
@@ -168,7 +168,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Database
             cultivar = new CultivarFactory(db);
             soil = new SoilFactory(db);
             historicalClimatic = new HistoricalClimaticFactory(db);
-            historicalDailyClimaticData = new HistoricalDailyClimaticDataFactory(db);
+            historicalDailyData = new HistoricalDailyDataFactory(db);
             historicalYield = new HistoricalYieldFactory(db);
             climatology = new ClimatologyFactory(db);
             forecast = new ForecastFactory(db);

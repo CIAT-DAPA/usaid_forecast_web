@@ -12,13 +12,13 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
     /// <summary>
     /// This class allow to get information about historical daily climatic data collection
     /// </summary>
-    public class HistoricalDailyClimaticDataFactory : FactoryDB<WeatherStationDailyData>
+    public class HistoricalDailyDataFactory : FactoryDB<WeatherStationDailyData>
     {
         /// <summary>
         /// Method Construct
         /// </summary>
         /// <param name="database">Database connected to mongo</param>
-        public HistoricalDailyClimaticDataFactory(IMongoDatabase database) : base(database, LogEntity.hs_historical_daily_climatic_data)
+        public HistoricalDailyDataFactory(IMongoDatabase database) : base(database, LogEntity.hs_historical_daily_data)
         {
             // Index 1: weather_station and year
             var indexKeys_year = Builders<WeatherStationDailyData>.IndexKeys.Combine(
@@ -41,7 +41,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                             Builders<WeatherStationDailyData>.IndexKeys.Ascending(x => x.weather_station),
                             Builders<WeatherStationDailyData>.IndexKeys.Ascending(x => x.year),
                             Builders<WeatherStationDailyData>.IndexKeys.Ascending(x => x.month));
-            var indexOptions = new CreateIndexOptions { Unique = false }; // if you want the index is unique
+            var indexOptions = new CreateIndexOptions { Unique = true };
             var indexModel = new CreateIndexModel<WeatherStationDailyData>(indexKeys, indexOptions);
             collection.Indexes.CreateOne(indexModel);
         }
