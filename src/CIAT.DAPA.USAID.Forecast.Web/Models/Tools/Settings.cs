@@ -20,6 +20,12 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Models.Tools
         public string idCountry { get; set; }
 
         /// <summary>
+        /// Country id
+        /// </summary>
+        public string climateTimeSpan { get; set; }
+        
+
+        /// <summary>
         /// Google Analytics Tag
         /// </summary>
         public string gTag { get; set; }

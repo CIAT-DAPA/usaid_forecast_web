@@ -22,8 +22,17 @@
                         <span class="text-bold">
                             @{
                                 var f_p = (List<ForecastClimateData>)ViewBag.climate_data;
-                                int mon1 = f_p[0].Month == 1 ? 12 : f_p[0].Month - 1;
-                                int mon2 = f_p[1].Month == 12 ? 0 : f_p[1].Month + 1;
+                                int mon1 = f_p.First().Month ;
+                                int mon2 = f_p.Last().Month == 12 ? 0 : f_p.Last().Month + 1;
+                                if (ViewBag.climateTimeSpan != "bi")
+                                {
+                                    mon1 = mon1 == 1 ? 12 : mon1 - 1;
+                                }
+
+
+
+
+
                                 <span>@Localizer["Months"].Value.Split(",")[mon1 - 1] - </span>
                                 <span>@Localizer["Months"].Value.Split(",")[mon2 - 1]</span>
                             }
@@ -38,46 +47,66 @@
                     </p>
                 </div>
             </div>
+            
             <div class="row" id="probabilities_pies">
                 <div id="climate_carousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         @{
-                            int i = -1;
+                            int i = 0;
                             foreach (ForecastClimateData d in ViewBag.climate_data)
                             {
-                                i = i + 1;
+                               
                                 <li data-target="#climate_carousel" data-slide-to="@i" class="@(i == 0 ? " active" : null)"></li>
+                                i++;
                             }
                         }
                     </ol>
                     <div class="carousel-inner" role="listbox">
                         @{
-                            i = -1;
-                            foreach (ForecastClimateData d in ViewBag.climate_data)
+
+                            foreach (ForecastClimateData forecastClimateData in ViewBag.climate_data)
                             {
-                                i = i + 1;
-                                int month1 = d.Month == 1 ? 12 : d.Month - 1;
-                                int month2 = d.Month;
-                                int month3 = d.Month == 12 ? 1 : d.Month + 1;
-                                int[] months = new int[] { month1, month2, month3 };
+
+
+                                int month1 = forecastClimateData.Month == 1 ? 12 : forecastClimateData.Month - 1;
+                                int month2 = forecastClimateData.Month;
+                                int month3 = forecastClimateData.Month == 12 ? 1 : forecastClimateData.Month + 1;
+
                                 string[] months_names = Localizer["Months"].Value.Split(",");
-                                ForecastClimateProbability p = d.Probabilities.First();
+
+                                List<string> months = new  List<string>();
+                                if(ViewBag.climateTimeSpan != "bi"){
+                                    months.Add(months_names[month1-1]);
+                                }
+                                months.Add(months_names[month2 - 1]);
+                                months.Add(months_names[month3 - 1]);
+
+
+                                ForecastClimateProbability forecastClimateProbability = forecastClimateData.Probabilities.First();
                                 string summary = "ForecastNormal";
-                                if (p.Lower >= p.Normal && p.Lower >= p.Upper) { summary = "ForecastBelow"; }
-                                else if (p.Upper >= p.Normal && p.Upper >= p.Lower) { summary = "ForecastAbove"; }
-                                HistoricalClimateMonthly climatology_month = ((HistoricalClimatology)ViewBag.climatology).Monthly_Data.FirstOrDefault(o => o.Month == month2);
+                                if (forecastClimateProbability.Lower >= forecastClimateProbability.Normal && forecastClimateProbability.Lower >= forecastClimateProbability.Upper) { summary = "ForecastBelow"; }
+                                else if (forecastClimateProbability.Upper >= forecastClimateProbability.Normal && forecastClimateProbability.Upper >= forecastClimateProbability.Lower) { summary = "ForecastAbove"; }
+                                HistoricalClimateMonthly climatology_month = ((HistoricalClimatology)ViewBag.climatology).Monthly_Data.FirstOrDefault(o => o.Month == forecastClimateData.Month);
                                 <section class="item active forecast_slide" id="forecast_slide">
                                     <article class="col-lg-4 article_content col-sm-offset-1">
                                         <div class="section-content">
-                                            <h3 class="text-center">@d.Year</h3>
-                                            <h3 class="text-center">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</h3>
+                                            <h3 class="text-center">@forecastClimateData.Year</h3>
+                                            <h3 class="text-center">@string.Join(" - ",months)</h3>
                                             <h4 class="text-center">@Localizer["ForecastProbabilitiesTitle"]</h4>
-                                            <div id="@("pie_" + d.Year.ToString() + "_" + month2.ToString())" class="plot plot_pie">
+                                            <div id="@("pie_" + forecastClimateData.Year.ToString() + "_" + forecastClimateData.Month.ToString())" class="plot plot_pie">
                                                 <svg></svg>
                                             </div>
                                             <p class="text-justify article_content">
-                                                @Localizer["ForecastSummaryMonth"]
-                                                <span class="text-bold">@months_names[month1 - 1] - @months_names[month2 - 1] - @months_names[month3 - 1]</span>
+                                                @if (ViewBag.climateTimeSpan != "bi")
+                                                {
+                                                    @Localizer["ForecastSummaryTrimester"]
+                                                }
+                                                else
+                                                {
+                                                    @Localizer["ForecastSummaryBimester"]
+                                                }
+                                            
+                                                <span class="text-bold">@string.Join(" - ", months)</span>
                                                 @Localizer["ForecastSummaryWS"]
                                                 <span class="text-bold">@ViewBag.m</span>
 
@@ -90,18 +119,18 @@
                                         <div class="section-content">
                                             @{
                                                 int time = -1;
-                                                List<Scenario> scenario_list = ViewBag.scenario;
-                                                foreach (string s in scenario_list.Select(o => o.Measure).Distinct())
+                                                List<Scenario> scenarios = ViewBag.scenarios;
+                                                foreach (string measure in scenarios.Select(o => o.Measure).Distinct())
                                                 {
                                                     time = time + 1;
                                                     @Html.Raw((time % 2) == 0 ? "<div class='row'>" : "")
                                                     <article class="col-lg-6 article_content">
                                                         <table class="table">
                                                             <tr>
-                                                                <th colspan="4">@Localizer[s] (@Localizer[s + "_unit"])</th>
+                                                                <th colspan="4">@Localizer[measure] (@Localizer[measure + "_unit"])</th>
                                                             </tr>
                                                             <tr><th>@Localizer["ForecastScenarioDate"]</th><th>@Localizer["ForecastScenarioMinimun"]</th><th>@Localizer["ForecastScenarioAvg"]</th><th>@Localizer["ForecastScenarioMaximun"]</th></tr>
-                                                            @foreach (Scenario md in scenario_list.Where(o => o.Measure == s && months.Contains(o.Month)))
+                                                            @foreach (Scenario md in scenarios.Where(scenario => scenario.Measure == measure  && months.Contains(months_names[scenario.Month-1])))
                                                             {
                                                                 <tr>
                                                                     <td>@md.Year - @md.Month</td>
@@ -239,7 +268,19 @@
 
     <script type="text/javascript">
 
+
+        var climateTimeSpan =@Html.Raw(Json.Serialize(ViewBag.climateTimeSpan));
+        console.log(climateTimeSpan);
+
+
+
+
         var donuts_data = @Html.Raw(Json.Serialize(ViewBag.climate_data));
+
+        console.log(donuts_data);
+
+
+
         var donuts_labels = { "normal":'@Localizer["ForecastNormal"]', "upper":'@Localizer["ForecastAbove"]', "lower":'@Localizer["ForecastBelow"]'};
         plot_donut(donuts_data, donuts_labels);
 

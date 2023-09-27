@@ -81,6 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web
             {
                 options.api_fs = Configuration.GetSection("API_Forecast:api_fs").Value;
                 options.idCountry = Configuration.GetSection("API_Forecast:idCountry").Value;
+                options.climateTimeSpan = Configuration.GetSection("API_Forecast:climateTimeSpan").Value;
 
                 options.gTag = Configuration.GetSection("SiteConfig:g-tag").Value;
                 options.countryName = Configuration.GetSection("SiteConfig:countryName").Value;

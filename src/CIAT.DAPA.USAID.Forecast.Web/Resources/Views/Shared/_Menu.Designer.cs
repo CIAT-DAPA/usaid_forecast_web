@@ -70,7 +70,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fruit Trees.
+        ///   Looks up a localized string similar to Agroclimatic Forecast.
         /// </summary>
         public static string CropFruitTrees {
             get {

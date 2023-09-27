@@ -6,6 +6,13 @@
 @inject IOptions<RequestLocalizationOptions> LocOptions
 @inject Microsoft.Extensions.Options.IOptions<Settings> AppSettings
 
+
+@{
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Meta_Description"] = "Indicadores de riesgo agroclimático";
+    ViewData["Meta_Keywords"] = "indicadores,indicadores de riesgo climático";
+}
+
 <div id="containerBlock">
 
 

@@ -250,11 +250,11 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For the quarter.
+        ///   Looks up a localized string similar to For the two months of.
         /// </summary>
-        public static string ForecastSummaryMonth {
+        public static string ForecastSummaryBimester {
             get {
-                return ResourceManager.GetString("ForecastSummaryMonth", resourceCulture);
+                return ResourceManager.GetString("ForecastSummaryBimester", resourceCulture);
             }
         }
         
@@ -273,6 +273,15 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Clima {
         public static string ForecastSummaryResult {
             get {
                 return ResourceManager.GetString("ForecastSummaryResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For the quarter.
+        /// </summary>
+        public static string ForecastSummaryTrimester {
+            get {
+                return ResourceManager.GetString("ForecastSummaryTrimester", resourceCulture);
             }
         }
         

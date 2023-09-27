@@ -121,7 +121,7 @@
     <value>Country</value>
   </data>
   <data name="CropFruitTrees" xml:space="preserve">
-    <value>Fruit Trees</value>
+    <value>Agroclimatic Forecast</value>
   </data>
   <data name="CropMaize" xml:space="preserve">
     <value>Maize</value>

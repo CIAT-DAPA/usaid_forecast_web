@@ -251,6 +251,7 @@ function addPeriodCtrl(map, layer) {
         container.appendChild(label);
 
         let select = L.DomUtil.create('select', 'period-selector');
+        select.setAttribute("id", "periodSelector_"+layer.Name)
         periods.forEach(period => {
             let parts = period.split('-')
             let start = parts[0];
@@ -321,17 +322,7 @@ function addWMSLayer(map, layer) {
     map.myData.tdWmsLayer.addTo(map);
 
     L.Control.TimeDimensionCustom = L.Control.TimeDimension.extend({
-        _getDisplayDateFormat: function (date) {
-
-            if (date.getUTCFullYear() == indicatorYearConstants['avg'])
-                return translations.average;
-            else if (date.getUTCFullYear() == indicatorYearConstants['nino'])
-                return translations.el_nino;
-            else if (date.getUTCFullYear() == indicatorYearConstants['nina'])
-                return translations.la_nina;
-            else
-                return date.getUTCFullYear();
-        }
+        _getDisplayDateFormat: getYearDisplayDateFormat
     });
     var timeDimensionControl = new L.Control.TimeDimensionCustom({
 
@@ -342,6 +333,17 @@ function addWMSLayer(map, layer) {
         }
     });
     map.addControl(timeDimensionControl);
+}
+
+function getYearDisplayDateFormat(date) {
+    if (date.getUTCFullYear() == indicatorYearConstants['avg'])
+        return translations.average;
+    else if (date.getUTCFullYear() == indicatorYearConstants['nino'])
+        return translations.el_nino;
+    else if (date.getUTCFullYear() == indicatorYearConstants['nina'])
+        return translations.la_nina;
+    else
+        return date.getUTCFullYear();
 }
 
 function addWMSLegend(map, layer) {
@@ -488,18 +490,45 @@ function addDownloadCtrl(map, layer) {
         L.DomEvent.on(button, 'click', function () {
             let date = map.timeDimension.getCurrentTime();
             let dateStr = date.getUTCFullYear() + '-' + date.getUTCMonth()
-
             let url = geoserver_url;
             url += '?service=WCS&request=GetCoverage&version=2.0.1';
             url += '&coverageId=' + layer.Name;
             url += '&format=image/geotiff';
-            url += '&time=' + dateStr
+            url += '&time=' + dateStr;
 
-            console.log(url)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = url.split('/').pop()
-            a.click()
+
+            let dateLabel = getYearDisplayDateFormat(date)
+            let periodSelector = document.getElementById("periodSelector_" + layer.Name);
+            if (periodSelector) {
+                dateLabel += "_"+ periodSelector.options[periodSelector.selectedIndex].innerHTML;
+            }
+            dateLabel = dateLabel.replaceAll(" ", "");
+
+            fetch(url)
+                .then(response => {
+                    //console.log('returned response', response)
+                    return response.blob()
+                })
+                .then(blob => {
+                    // Create a Blob from the fetched data
+                    //console.log('converted to blob', blob)
+
+                    // Create a URL for the Blob
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const a = document.createElement('a');
+
+                    // Set the download attribute to specify the desired file name
+                    a.download = layer.Title.replaceAll(" ","_").toLowerCase() + "_" + dateLabel.toLowerCase() + ".tif";
+                    // Set the href attribute to the Blob URL
+                    a.href = blobUrl;
+                    a.click();
+                    // Clean up by revoking the Blob URL
+                    URL.revokeObjectURL(blobUrl);
+                })
+                .catch(error => {
+                    console.error('Error fetching or downloading the GeoTIFF:', error);
+                });
 
         });
         container.title = "Download";

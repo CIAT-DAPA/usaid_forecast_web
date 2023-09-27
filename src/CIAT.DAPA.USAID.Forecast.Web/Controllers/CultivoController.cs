@@ -83,7 +83,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.agronomic = agronomic;
                 ViewBag.yield = yield;
                 ViewBag.yield_exceedance = yield_exceedance;
-                ViewBag.ranges = ws.Ranges.Where(p => p.Crop_Name.ToLower() == crop.ToLower());
+                ViewBag.ranges = ws.Ranges.Where(p => p.Crop_Name.ToLower() == crop.ToLower()).ToList();
                 
 
                 return View();

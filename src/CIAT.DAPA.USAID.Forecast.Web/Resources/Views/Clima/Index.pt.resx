@@ -180,14 +180,17 @@
   <data name="ForecastScenarioTitle" xml:space="preserve">
     <value>Cenários de previsão</value>
   </data>
-  <data name="ForecastSummaryMonth" xml:space="preserve">
-    <value>para o trimestre</value>
+  <data name="ForecastSummaryBimester" xml:space="preserve">
+    <value>para o bimestre</value>
   </data>
   <data name="ForecastSummaryNormal" xml:space="preserve">
     <value>Normalmente, há precipitação entre</value>
   </data>
   <data name="ForecastSummaryResult" xml:space="preserve">
     <value>previsão do clima sugere que a precipitação é mais provável</value>
+  </data>
+  <data name="ForecastSummaryTrimester" xml:space="preserve">
+    <value>para o trimestre</value>
   </data>
   <data name="ForecastSummaryWS" xml:space="preserve">
     <value>no município de</value>

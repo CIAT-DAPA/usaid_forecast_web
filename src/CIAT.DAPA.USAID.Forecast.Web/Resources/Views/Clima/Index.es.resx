@@ -141,7 +141,7 @@
   <data name="ForecastProbabilitiesTitle" xml:space="preserve">
     <value>Probabilidad de precipitación (%)</value>
   </data>
-  <data name="ForecastSummaryMonth" xml:space="preserve">
+  <data name="ForecastSummaryTrimester" xml:space="preserve">
     <value>Para el trimestre</value>
   </data>
   <data name="ForecastSummaryNormal" xml:space="preserve">
@@ -254,5 +254,8 @@
   </data>
   <data name="HistoricalContentMid" xml:space="preserve">
     <value>en la estación climatológica</value>
+  </data>
+  <data name="ForecastSummaryBimester" xml:space="preserve">
+    <value>Para el bimestre</value>
   </data>
 </root>

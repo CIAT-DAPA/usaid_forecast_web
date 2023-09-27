@@ -12,7 +12,8 @@ async function plot_map(id, ws, crops) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
     }).addTo(map);
-
+    map.createPane('left');
+    map.createPane('right');
     //add optional layers
     if (mapOverlays && mapOverlays.length > 0) {
         addGeoJSONOverlays(map, mapOverlays);

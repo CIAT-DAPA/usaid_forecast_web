@@ -37,7 +37,8 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.m = municipality ?? string.Empty;
                 ViewBag.w = station ?? string.Empty;
                 ViewBag.Section = SectionSite.Climate;
-                
+                ViewBag.climateTimeSpan = Configurations.climateTimeSpan;
+
                 // Setting data
                 SetWS();
 
@@ -57,40 +58,40 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 ViewBag.climate_data = forecast.Climate.FirstOrDefault()?.Data ?? new List<ForecastClimateData>();
 
                 // Processing Scenarios data
-                List <ForecastScenario> scenario = forecast.Scenario.ToList();
-                var scenario_name = scenario.Select(p => p.Name).Distinct();
-                var measures = scenario.SelectMany(p => p.Monthly_Data).SelectMany(p => p.Data).Select(p => p.Measure).Distinct();
+                List <ForecastScenario> scenarios = forecast.Scenario.ToList();
+                var scenario_name = scenarios.Select(p => p.Name).Distinct();
+                var measures = scenarios.SelectMany(p => p.Monthly_Data).SelectMany(p => p.Data).Select(p => p.Measure).Distinct();
                 List<Scenario> scenario_list = new List<Scenario>();
-                foreach (var s in scenario)
+                foreach (var scenario in scenarios)
                 {
-                    foreach (var md in s.Monthly_Data)
+                    foreach (var md in scenario.Monthly_Data)
                     {
                         foreach (var da in md.Data)
                         {
-                            Scenario i = scenario_list.SingleOrDefault(p => p.Measure == da.Measure && p.Year == s.Year && p.Month == md.Month);
+                            Scenario i = scenario_list.SingleOrDefault(p => p.Measure == da.Measure && p.Year == scenario.Year && p.Month == md.Month);
                             if (i == null)
                                 scenario_list.Add(new Scenario()
                                 {
                                     Measure = da.Measure,
-                                    Year = s.Year,
+                                    Year = scenario.Year,
                                     Month = md.Month,
-                                    Avg = s.Name == "avg" ? da.Value : 0,
-                                    Max = s.Name == "max" ? da.Value : 0,
-                                    Min = s.Name == "min" ? da.Value : 0
+                                    Avg = scenario.Name == "avg" ? da.Value : 0,
+                                    Max = scenario.Name == "max" ? da.Value : 0,
+                                    Min = scenario.Name == "min" ? da.Value : 0
                                 });
                             else
                             {
-                                if (s.Name == "avg")
+                                if (scenario.Name == "avg")
                                     i.Avg = da.Value;
-                                else if(s.Name == "max")
+                                else if(scenario.Name == "max")
                                     i.Max = da.Value;
-                                else if (s.Name == "min")
+                                else if (scenario.Name == "min")
                                     i.Min = da.Value;
                             }   
                         }
                     }
                 }
-                ViewBag.scenario = scenario_list;
+                ViewBag.scenarios = scenario_list;
 
                 // Getting de historical climate
                 RepositoryHistoricalClimate rHC = new RepositoryHistoricalClimate(Root);

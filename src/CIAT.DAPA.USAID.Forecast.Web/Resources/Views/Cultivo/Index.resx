@@ -288,4 +288,28 @@
   <data name="Year" xml:space="preserve">
     <value>Year</value>
   </data>
+  <data name="ag_ndc_Description" xml:space="preserve">
+    <value>Heat days</value>
+  </data>
+  <data name="ag_ndc_unit" xml:space="preserve">
+    <value>Heat days</value>
+  </data>
+  <data name="ag_ndf_Description" xml:space="preserve">
+    <value>Cold days</value>
+  </data>
+  <data name="ag_ndf_unit" xml:space="preserve">
+    <value>Cold days</value>
+  </data>
+  <data name="ag_ndll_Description" xml:space="preserve">
+    <value>Rainy days</value>
+  </data>
+  <data name="ag_ndll_unit" xml:space="preserve">
+    <value>Rainy days</value>
+  </data>
+  <data name="ag_nds_Description" xml:space="preserve">
+    <value>Dry days</value>
+  </data>
+  <data name="ag_nds_unit" xml:space="preserve">
+    <value>Dry days</value>
+  </data>
 </root>
