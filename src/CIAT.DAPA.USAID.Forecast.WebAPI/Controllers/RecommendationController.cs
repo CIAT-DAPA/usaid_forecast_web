@@ -28,8 +28,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
         // GET: api/Get
         [HttpGet]
-        [Route("api/[controller]/RecommendationYield/{weather_stations}/{language?}/{format}")]
-        public async Task<IActionResult> RecommendationYield(string weather_stations, string language, string format)
+        [Route("api/[controller]/RecommendationYield/{weather_stations}/{format}")]
+        public async Task<IActionResult> RecommendationYield(string weather_stations, string format, string language)
         {
             try
             {
@@ -52,12 +52,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
                 List<RecommendationEntity> rc_ws = new List<RecommendationEntity>();
                 DateTime today = DateTime.Today;
-                language = language.ToLower();
+                
 
                 RecommendationLang recommendation_lang;
 
-                if (Enum.IsDefined(typeof(RecommendationLang), language))
+                if (language != null && Enum.IsDefined(typeof(RecommendationLang), language))
                 {
+                    language = language.ToLower();
                     Enum.TryParse(language, out recommendation_lang);
                 }
                 else
@@ -80,7 +81,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         List<RecommendationYieldFilter> ryf_land = new List<RecommendationYieldFilter>();
                         Crop crop_data = await db.crop.byIdAsync(crop.id);
                         // Filtering yield by station and soils
-                        IEnumerable<ForecastYield> yield_ws = fy.Where(p => p.weather_station == station && crop.soils.Select(p2 => p2.id).Contains(p.soil.ToString()));
+                        IEnumerable<ForecastYield> yield_ws = fy.Where(p => p.weather_station == station && crop.soils.Select(p2 => p2.id).Contains(p.soil.ToString()) && crop.cultivars.Select(p2 => p2.id).Contains(p.cultivar.ToString()));
                         
                         foreach (var yield in yield_ws)
                         {
@@ -264,10 +265,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         if (ryf_l.Count() > 0 && !is_inseason)
                         {
                             // Recommendation by each type of soil
-                            foreach (var s in ryf_l.Select(p => p.soil).Distinct())
+                            foreach (String s in ryf_l.Select(p => p.soil).Distinct())
                             {
+                                IEnumerable<RecommendationYieldFilter> ryf_l_filtered = ryf_l.Where(p => p.soil.Equals(s)).OrderByDescending(p => p.yield.avg);
                                 // Ordering yields for getting the best yield
-                                var best = ryf_l.Where(p => p.soil.Equals(s)).OrderByDescending(p => p.yield.avg).First();
+                                RecommendationYieldFilter best = ryf_l_filtered.First();
                                 // Getting best cultivar and soil by them ids
                                 var best_cul = crop.cultivars.Single(p => p.id == best.cultivar);
                                 var best_sol = crop.soils.Single(p => p.id == s);

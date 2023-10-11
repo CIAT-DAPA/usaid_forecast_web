@@ -320,7 +320,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                     // Read the file
                     StreamReader reader = new StreamReader(file.OpenReadStream());
                     // Variables to process the file
-                    IEnumerable<string> m_name = null, ws_ext_id = null, ws_name = null, ws_lat = null, ws_lon = null;
+                    IEnumerable<string> m_name = null, ws_ext_id = null, ws_name = null, ws_lat = null, ws_lon = null, ws_ele = null;
                     string ws_origin = string.Empty;
                     string line = string.Empty;
                     // Read the file
@@ -338,8 +338,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             ws_lat = line.Split(',').Skip(1);
                         else if (line.StartsWith("longitude"))
                             ws_lon = line.Split(',').Skip(1);
+                        else if (line.StartsWith("elevation"))
+                            ws_ele = line.Split(',').Skip(1);
                         else if (line.StartsWith("origin"))
                             ws_origin = line.Split(',')[1];
+                        
                     }
                     // Variables to management the import process
                     int count_municipalities = 0, count_weather_stations = 0;
@@ -364,6 +367,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAdmin.Controllers
                             ext_id = ws_ext_id.ElementAt(i),
                             latitude = double.Parse(ws_lat.ElementAt(i), CultureInfo.InvariantCulture),
                             longitude = double.Parse(ws_lon.ElementAt(i), CultureInfo.InvariantCulture),
+                            elevation = double.Parse(ws_ele.ElementAt(i), CultureInfo.InvariantCulture),
                             municipality = m_temp.id,
                             name = ws_name.ElementAt(i).Trim(),
                             origin = ws_origin,
