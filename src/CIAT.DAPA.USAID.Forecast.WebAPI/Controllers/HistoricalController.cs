@@ -1,4 +1,5 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -82,10 +83,17 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         // GET: api/Historical/HistoricalClimatic
         [HttpGet]
         [Route("api/[controller]/HistoricalClimatic/{weatherstations}/{format}")]
-        public async Task<IActionResult> HistoricalClimatic(string weatherstations, string format)
+        public async Task<IActionResult> HistoricalClimatic(string weatherstations, string format, DateTime initialDate, DateTime finalDate )
         {
             try
             {
+
+                if(initialDate != DateTime.MinValue && (finalDate != DateTime.MinValue && initialDate >= finalDate))
+                {
+                    return new StatusCodeResult(400);
+                }
+
+
                 // Transform the string id to object id
                 string[] parameters = weatherstations.Split(',');
                 ObjectId[] ws = new ObjectId[parameters.Length];
@@ -95,7 +103,32 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     ws[i] = getId(parameters[i]);
                     ids += weatherstations[i] + ",";
                 }
-                var json = (await db.historicalClimatic.byWeatherStationsAsync(ws)).OrderBy(p => p.year).Select(p => new
+
+
+                IEnumerable<HistoricalClimatic> historic = await db.historicalClimatic.byWeatherStationsAsync(ws);
+
+                if (initialDate != null && initialDate != DateTime.MinValue)
+                {
+                    int final_year = finalDate != null && finalDate != DateTime.MinValue ? finalDate.Year : DateTime.Today.Year;
+                    int final_month = finalDate != null && finalDate != DateTime.MinValue ? finalDate.Month : DateTime.Today.Month;
+                    historic = historic
+                        .Where(w => (w.year >= initialDate.Year && w.year <= final_year) );
+
+                    historic.First().monthly_data = historic.First().monthly_data.Where(w => w.month >= initialDate.Month);
+                    if(historic.Last().year == final_year)
+                    {
+                        historic.Last().monthly_data = historic.Last().monthly_data.Where(w => w.month <= final_month);
+                    }
+                    
+                }else if (finalDate != null && finalDate != DateTime.MinValue)
+                {
+                    historic = historic
+                        .Where(w => (w.year <= finalDate.Year));
+                    historic.Last().monthly_data = historic.Last().monthly_data.Where(w => w.month <= finalDate.Month);
+                }
+
+
+                var json = historic.OrderBy(p => p.year).Select(p => new
                 {
                     weather_station = p.weather_station.ToString(),
                     year = p.year,
