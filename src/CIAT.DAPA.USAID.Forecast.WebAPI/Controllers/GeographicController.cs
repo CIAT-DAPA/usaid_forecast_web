@@ -27,6 +27,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
         {
         }
 
+        
         // GET: api/Geographic/
         [HttpGet]
         [Route("api/[controller]/Country/{format}")]
@@ -67,6 +68,9 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 return new StatusCodeResult(500);
             }
         }
+        
+
+
 
         // GET: api/Geographic/
         [HttpGet]
@@ -76,11 +80,12 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             try
             {
                 List<StateEntity> json = new List<StateEntity>();
-                var country = await db.country.byIdAsync(idCountry); ;
-                var states = await db.state.listByCountryEnableAsync(country.id);
-                var municipalities = await db.municipality.listEnableVisibleAsync();
-                var weatherstations = await db.weatherStation.listEnableVisibleAsync();
-                var crops = await db.crop.listEnableAsync();
+                Country country = await db.country.byIdAsync(idCountry); 
+                List<State> states = await db.state.listByCountryEnableAsync(country.id);
+                List<Municipality> municipalities = await db.municipality.listEnableVisibleByStatesAsync(states.Select((state)=>state.id).ToArray());
+                List<WeatherStation> weatherstations = await db.weatherStation.listEnableVisibleByMunicipalitiesAsync(municipalities.Select((municipality) => municipality.id).ToArray());
+                List<Crop> crops = await db.crop.listEnableAsync();
+
                 StateEntity geo_s;
                 MunicipalityEntity geo_m;
                 foreach (var s in states)
@@ -126,6 +131,64 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         foreach (var m in s.municipalities)
                             foreach (var w in m.weather_stations)
                                 builder.Append(string.Join<string>(delimiter, new string[] { s.country.name, s.country.iso2, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, w.latitude.ToString(), w.longitude.ToString(), "\n" }));
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+                    return File(file, "text/csv", "geographic.csv");
+                }
+                else
+                    return Content("Format not supported");
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        // GET: api/Geographic/
+        [HttpGet]
+        [Route("api/[controller]/{idCountry}/WeatherStations/{format}")]
+        public async Task<IActionResult> WeatherStations(string idCountry, string format)
+        {
+            try
+            {
+                List<WeatherStationEntity> json = new List<WeatherStationEntity>();
+        
+                List<WeatherStation> weatherstations = await db.weatherStation.listEnableByCountryAsync(idCountry);
+                List<Crop> crops = await db.crop.listEnableAsync();
+
+                foreach (var w in weatherstations)
+                {
+                    json.Add(new WeatherStationEntity()
+                            {
+                                id = w.id.ToString(),
+                                ext_id = w.ext_id,
+                                name = w.name,
+                                origin = w.origin,
+                                latitude = w.latitude,
+                                longitude = w.longitude,
+                                ranges = w.ranges.Select(p => new YieldRangeEntity()
+                                {
+                                    crop_id = p.crop.ToString(),
+                                    label = p.label,
+                                    lower = p.lower,
+                                    upper = p.upper,
+                                    crop_name = crops.Single(p2 => p2.id == p.crop).name
+                                })
+                            });
+                }
+                // Write event log
+                writeEvent("Geographic count [" + json.Count().ToString() + "]", LogEvent.lis);
+
+                //Evaluate the format to export
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(json);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    // add header
+                    builder.Append(string.Join<string>(delimiter, new string[] { "ws_id", "ws_name", "ws_origin", "ws_lat", "ws_lon", "\n" }));
+                            foreach (var w in json)
+                                builder.Append(string.Join<string>(delimiter, new string[] {  w.id, w.name, w.origin, w.latitude.ToString(), w.longitude.ToString(), "\n" }));
                     var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
                     return File(file, "text/csv", "geographic.csv");
                 }

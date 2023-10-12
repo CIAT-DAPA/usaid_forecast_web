@@ -21,6 +21,12 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public StateFactory(IMongoDatabase database) : base(database, LogEntity.lc_state)
         {
 
+            // foreign index on country id
+            var indexKeys = Builders<State>.IndexKeys.Ascending(x => x.country);
+            var indexOptions = new CreateIndexOptions { Unique = false };
+            var indexModel = new CreateIndexModel<State>(indexKeys, indexOptions);
+            collection.Indexes.CreateOne(indexModel);
+
         }
 
         public async override Task<bool> updateAsync(State entity, State newEntity)

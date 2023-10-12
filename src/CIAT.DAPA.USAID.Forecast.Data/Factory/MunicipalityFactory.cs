@@ -20,7 +20,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="database">Database connected to mongo</param>
         public MunicipalityFactory(IMongoDatabase database) : base(database, LogEntity.lc_municipality)
         {
-
+            // foreign index on state id
+            var indexKeys = Builders<Municipality>.IndexKeys.Ascending(x => x.state);
+            var indexOptions = new CreateIndexOptions { Unique = false };
+            var indexModel = new CreateIndexModel<Municipality>(indexKeys, indexOptions);
+            collection.Indexes.CreateOne(indexModel);
         }
 
         public async override Task<bool> updateAsync(Municipality entity, Municipality newEntity)
@@ -67,6 +71,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var builder = Builders<Municipality>.Filter;
             var filter = builder.Eq("track.enable", true) & builder.Eq("visible", true);
             return await collection.Find(filter).ToListAsync<Municipality>();
+        }
+
+
+        /// <summary>
+        /// Method that return all registers enable and visible in the database for provided state ids
+        /// </summary>
+        /// <returns>List of municipalities</returns>
+        public async virtual Task<List<Municipality>> listEnableVisibleByStatesAsync(ObjectId[] states)
+        {
+
+            // Filter all entities available.
+            var query = from m in collection.AsQueryable()
+                        where m.track.enable && m.visible && states.Contains(m.state)
+                        select m;
+            return query.ToList();
+
         }
 
         /// <summary>

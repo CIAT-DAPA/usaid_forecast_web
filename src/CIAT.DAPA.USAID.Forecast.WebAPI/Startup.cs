@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Tools;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.OpenApi.Models;
+using AspNetCoreRateLimit;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI
 {
@@ -36,6 +37,28 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // configure Rate Limiting 
+            // needed to load configuration from appsettings.json
+            services.AddOptions();
+            // needed to store rate limit counters and ip rules
+            services.AddMemoryCache();
+            //load general configuration from appsettings.json
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            //load ip rules from appsettings.json
+            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+            // inject counter and rules stores
+            services.AddInMemoryRateLimiting();
+            // configuration (resolvers, counter key builders)
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+         
+
+
+
+
+
+
             // Add custom settings from configuration file
             services.Configure<Settings>(options =>
             {
@@ -49,6 +72,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
             {
                 options.RespectBrowserAcceptHeader = true;
             });
+
+
+
+
+
+
+
+
 
             // ********************
             // Setup CORS
@@ -84,11 +115,24 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
                     }
                 });
             });
+
+
+
+           
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+         
+
+            // Configure Rate Limiting Middleware
+            app.UseIpRateLimiting();
+
+
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -98,6 +142,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+     
+          
 
             // ********************
             // USE CORS - might not be required.

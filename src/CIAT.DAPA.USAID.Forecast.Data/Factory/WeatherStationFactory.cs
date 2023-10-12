@@ -22,6 +22,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         public WeatherStationFactory(IMongoDatabase database): base(database, LogEntity.lc_weather_station)
         {
 
+            // foreign index on municipality id
+            var indexKeys = Builders<WeatherStation>.IndexKeys.Ascending(x => x.municipality);
+            var indexOptions = new CreateIndexOptions { Unique = false };
+            var indexModel = new CreateIndexModel<WeatherStation>(indexKeys, indexOptions);
+            collection.Indexes.CreateOne(indexModel);
         }
 
         public async override Task<bool> updateAsync(WeatherStation entity, WeatherStation newEntity)
@@ -123,6 +128,32 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         }
 
         /// <summary>
+        /// Return all enabled weather stations for country 
+        /// </summary>
+        /// <param name="country">Id of country</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableByCountryAsync(string country)
+        {
+            // Filter all entities available.
+
+            var states = db.GetCollection<State>(Enum.GetName(typeof(LogEntity), LogEntity.lc_state))
+                              .AsQueryable().Where(f => f.track.enable).ToList();
+
+            var municipalities = db.GetCollection<Municipality>(Enum.GetName(typeof(LogEntity), LogEntity.lc_municipality))
+                                .AsQueryable().Where(f => f.track.enable).ToList();
+
+            var weatherstations = collection
+                                .AsQueryable().Where(f => f.track.enable).ToList();
+            // Join all data and groups the data by the country
+            var query = from s in states
+                        join m in municipalities on s.id equals m.state
+                        join w in weatherstations on m.id equals w.municipality
+                        where s.country == new ObjectId(country)
+                        select w;
+            return query.ToList();
+        }
+
+        /// <summary>
         /// Method that return all registers enable in the database
         /// by the state
         /// </summary>
@@ -144,6 +175,22 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
             return query.ToList();
         }
+
+        /// <summary>
+        /// Method that return all registers enable in the database for municipalities
+        /// </summary>
+        /// <param name="municipalities">Array of the municipalities ids</param>
+        /// <returns>List of the weather stations</returns>
+        public async virtual Task<List<WeatherStation>> listEnableVisibleByMunicipalitiesAsync(ObjectId[] municipalities)
+        {
+            // Filter all entities available.
+            var query = from ws in collection.AsQueryable()
+                        where ws.track.enable && ws.visible && municipalities.Contains(ws.municipality)
+                        select ws;
+            return query.ToList();
+        }
+
+
 
         public async virtual Task<List<WeatherStation>> listEnableByMunicipalityAsync(ObjectId municipality)
         {
