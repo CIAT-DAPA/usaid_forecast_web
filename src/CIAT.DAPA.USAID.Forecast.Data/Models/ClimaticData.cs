@@ -1,7 +1,8 @@
 ﻿using CIAT.DAPA.USAID.Forecast.Data.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Models
 {
@@ -14,6 +15,7 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Models
         /// Variable's name
         /// </summary>
         [BsonRepresentation(BsonType.String)]
+        [JsonConverter(typeof(StringEnumConverter))]  // JSON.Net
         [BsonRequired]
         public MeasureClimatic measure { get; set; }
         /// <summary>

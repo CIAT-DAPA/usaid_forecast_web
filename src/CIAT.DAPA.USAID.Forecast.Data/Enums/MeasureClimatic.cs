@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CIAT.DAPA.USAID.Forecast.Data.Enums
+﻿namespace CIAT.DAPA.USAID.Forecast.Data.Enums
 {
     /// <summary>
     /// This enum represents the different climatic variables available on the platform

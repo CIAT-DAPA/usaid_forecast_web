@@ -103,11 +103,11 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
         /// <param name="year">year of the climatic data</param>
         /// <param name="month">month of the climatic dat</param>
         /// <returns>List of the historical daily climatic data</returns>
-        public async virtual Task<List<WeatherStationDailyData>> DailyDataAsync(int year, int month, ObjectId ws)
+        public async virtual Task<WeatherStationDailyData> GetDailyDataForWeatherStationAsync(string weatherStation, int year, int month)
         {
             var builder = Builders<WeatherStationDailyData>.Filter;
-            var filter = builder.And(builder.Eq(x => x.weather_station, ws), builder.Eq(x => x.year, year), builder.Eq(x => x.month, month));
-            var query = await collection.Find(filter).ToListAsync<WeatherStationDailyData>();
+            var filter = builder.And(builder.Eq(x => x.weather_station, ObjectId.Parse(weatherStation)), builder.Eq(x => x.year, year), builder.Eq(x => x.month, month));
+            var query = await collection.Find(filter).FirstOrDefaultAsync<WeatherStationDailyData>();
             return query;
         }
     }
