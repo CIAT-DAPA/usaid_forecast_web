@@ -136,6 +136,126 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// </summary>
         hs_ndt28_b_f,
         /// <summary>
+        /// 
+        /// </summary>
+        hs_hb_0,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_hb_1,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_hb_2,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_hb_3,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_hb_4,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_hb_5,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr40_0,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr40_1,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr40_2,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr40_3,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr40_4,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr40_5,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr5_0,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr5_1,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr5_2,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr5_3,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr5_4,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndr5_5,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_cdr5_0,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_cdr5_1,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_cdr5_2,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_cdr5_3,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_cdr5_4,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_cdr5_5,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndt33_0,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndt33_1,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndt33_2,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndt33_3,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndt33_4,
+        /// <summary>
+        /// 
+        /// </summary>
+        hs_ndt33_5,
+        /// <summary>
         /// rainy_days
         /// </summary>
         ag_ndll,
@@ -159,5 +279,9 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Enums
         /// heat_drought_days
         /// </summary>
         ag_dcdh,
+        /// <summary>
+        /// total_rainfall
+        /// </summary>
+        ag_llta,
     }
 }
