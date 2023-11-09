@@ -117,70 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Average" xml:space="preserve">
-    <value>Média</value>
+  <data name="best-date" xml:space="preserve">
+    <value>Maior rendimento</value>
   </data>
-  <data name="coffee" xml:space="preserve">
-    <value>Café</value>
+  <data name="climate-scenarios" xml:space="preserve">
+    <value>Cenários climáticos</value>
   </data>
-  <data name="Compare" xml:space="preserve">
-    <value>Comparar</value>
+  <data name="comment" xml:space="preserve">
+    <value>Comentário</value>
   </data>
-  <data name="Crop" xml:space="preserve">
-    <value>Cultura</value>
+  <data name="coordinates" xml:space="preserve">
+    <value>Coordenadas: {0} {1}</value>
   </data>
-  <data name="DescriptionLong" xml:space="preserve">
-    <value>Nesta seção você pode ver uma lista de índices de risco agroclimático</value>
+  <data name="crops" xml:space="preserve">
+    <value>Plantações</value>
   </data>
-  <data name="dry_bean" xml:space="preserve">
-    <value>Feijão seco</value>
+  <data name="cultivar" xml:space="preserve">
+    <value>Cultivar</value>
   </data>
-  <data name="dry_spells" xml:space="preserve">
-    <value>Períodos de seca</value>
+  <data name="download-pdf" xml:space="preserve">
+    <value>Baixe como PDF</value>
   </data>
-  <data name="El_nino" xml:space="preserve">
-    <value>El Niño</value>
+  <data name="forecast-location" xml:space="preserve">
+    <value>no município de</value>
   </data>
-  <data name="Group" xml:space="preserve">
-    <value>Indicadores agroclimáticos</value>
+  <data name="forecast-lower" xml:space="preserve">
+    <value>abaixo do normal</value>
   </data>
-  <data name="heat_waves" xml:space="preserve">
-    <value>Ondas de calor</value>
+  <data name="forecast-normal" xml:space="preserve">
+    <value>dentro do normal</value>
   </data>
-  <data name="heavy_rainfall" xml:space="preserve">
-    <value>Períodos de chuva</value>
+  <data name="forecast-result" xml:space="preserve">
+    <value>a previsão sugere que a precipitação é mais provável</value>
   </data>
-  <data name="Humidity" xml:space="preserve">
-    <value>Umidade</value>
+  <data name="forecast-time" xml:space="preserve">
+    <value>Para o tempo de</value>
   </data>
-  <data name="La_nina" xml:space="preserve">
-    <value>La Niña</value>
+  <data name="forecast-upper" xml:space="preserve">
+    <value>acima do normal</value>
   </data>
-  <data name="maize" xml:space="preserve">
-    <value>Milho</value>
+  <data name="max-temp-w-unit" xml:space="preserve">
+    <value>Temperatura máxima (°C)</value>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>Nenhum</value>
+  <data name="min-temp-w-unit" xml:space="preserve">
+    <value>Temperatura mínima (°C)</value>
   </data>
-  <data name="Period" xml:space="preserve">
-    <value>Período</value>
+  <data name="precipitation-w-unit" xml:space="preserve">
+    <value>Precipitação (mm)</value>
   </data>
-  <data name="Precipitation" xml:space="preserve">
-    <value>Precipitação</value>
+  <data name="provided-by" xml:space="preserve">
+    <value>Fornecido por {0}</value>
   </data>
-  <data name="soybean" xml:space="preserve">
-    <value>Soja</value>
+  <data name="report" xml:space="preserve">
+    <value>Informe {0}</value>
   </data>
-  <data name="spei" xml:space="preserve">
-    <value>SPEI</value>
+  <data name="soil" xml:space="preserve">
+    <value>Solo</value>
   </data>
-  <data name="Temperature" xml:space="preserve">
-    <value>Temperatura</value>
+  <data name="solar-w-unit" xml:space="preserve">
+    <value>Radiação Solar (MJ/m2)</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Visualizador de indicadores agroclimáticos</value>
+  <data name="suitable-date" xml:space="preserve">
+    <value>É um &lt;strong&gt;bom&lt;/strong&gt; momento para</value>
   </data>
-  <data name="water_demand" xml:space="preserve">
-    <value>Evapotranspiração</value>
+  <data name="unsuitable-date" xml:space="preserve">
+    <value>&lt;strong&gt;Não é um momento recomendável&lt;/strong&gt; para</value>
+  </data>
+  <data name="weather" xml:space="preserve">
+    <value>Clima</value>
+  </data>
+  <data name="worst-date" xml:space="preserve">
+    <value>Rendimento mais baixo</value>
   </data>
 </root>

@@ -144,6 +144,9 @@
   <data name="OtherGlosary" xml:space="preserve">
     <value>Glosario</value>
   </data>
+  <data name="Reports" xml:space="preserve">
+    <value>Boletín</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>
   </data>

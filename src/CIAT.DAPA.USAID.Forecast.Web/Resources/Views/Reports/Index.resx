@@ -117,67 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Crop" xml:space="preserve">
+  <data name="best-date" xml:space="preserve">
+    <value>Highest Yield</value>
+  </data>
+  <data name="climate-scenarios" xml:space="preserve">
+    <value>Climate Scenarios</value>
+  </data>
+  <data name="comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="coordinates" xml:space="preserve">
+    <value>Coordinates: {0}  {1}</value>
+  </data>
+  <data name="crops" xml:space="preserve">
     <value>Crops</value>
   </data>
-  <data name="dry_bean" xml:space="preserve">
-    <value>Drybean</value>
+  <data name="cultivar" xml:space="preserve">
+    <value>Cultivar</value>
   </data>
-  <data name="dry_spells" xml:space="preserve">
-    <value>Dry Periods</value>
+  <data name="download-pdf" xml:space="preserve">
+    <value>Download as PDF</value>
   </data>
-  <data name="El_nino" xml:space="preserve">
-    <value>El Niño</value>
+  <data name="forecast-location" xml:space="preserve">
+    <value>in the municipality of</value>
   </data>
-  <data name="ForecastLower" xml:space="preserve">
-    <value>Below average</value>
+  <data name="forecast-lower" xml:space="preserve">
+    <value>below normal</value>
   </data>
-  <data name="ForecastNormal" xml:space="preserve">
-    <value>On average</value>
+  <data name="forecast-normal" xml:space="preserve">
+    <value>inside normal</value>
   </data>
-  <data name="ForecastUpper" xml:space="preserve">
-    <value>Above average</value>
+  <data name="forecast-result" xml:space="preserve">
+    <value>the forecast suggests that precipitation is most likely</value>
   </data>
-  <data name="Group" xml:space="preserve">
-    <value>Agroclimatic indicators</value>
+  <data name="forecast-time" xml:space="preserve">
+    <value>For the time of</value>
   </data>
-  <data name="heat_waves" xml:space="preserve">
-    <value>Heatwaves</value>
+  <data name="forecast-upper" xml:space="preserve">
+    <value>above normal</value>
   </data>
-  <data name="heavy_rainfall" xml:space="preserve">
-    <value>Wet periods</value>
+  <data name="max-temp-w-unit" xml:space="preserve">
+    <value>Max Temperature (°C)</value>
   </data>
-  <data name="Humidity" xml:space="preserve">
-    <value>Humidity</value>
+  <data name="min-temp-w-unit" xml:space="preserve">
+    <value>Min Temperature (°C)</value>
   </data>
-  <data name="La_nina" xml:space="preserve">
-    <value>La Niña</value>
+  <data name="precipitation-w-unit" xml:space="preserve">
+    <value>Precipitation (mm)</value>
   </data>
-  <data name="maize" xml:space="preserve">
-    <value>Maize</value>
+  <data name="provided-by" xml:space="preserve">
+    <value>Provided by {0}</value>
   </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
+  <data name="report" xml:space="preserve">
+    <value>Report {0}</value>
   </data>
-  <data name="Period" xml:space="preserve">
-    <value>Period</value>
+  <data name="soil" xml:space="preserve">
+    <value>Soil</value>
   </data>
-  <data name="Precipitation" xml:space="preserve">
-    <value>Precipitation</value>
+  <data name="solar-w-unit" xml:space="preserve">
+    <value>Solar Radiation (MJ/m2)</value>
   </data>
-  <data name="soybean" xml:space="preserve">
-    <value>Soybean</value>
+  <data name="suitable-date" xml:space="preserve">
+    <value>A &lt;strong&gt;good&lt;/strong&gt; time for</value>
   </data>
-  <data name="spei" xml:space="preserve">
-    <value>SPEI</value>
+  <data name="unsuitable-date" xml:space="preserve">
+    <value>&lt;strong&gt;Not a recommendable&lt;/strong&gt;time for</value>
   </data>
-  <data name="Temperature" xml:space="preserve">
-    <value>Temperature</value>
+  <data name="weather" xml:space="preserve">
+    <value>Weather</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Agroclimatic indices viewer</value>
-  </data>
-  <data name="water_demand" xml:space="preserve">
-    <value>Evapotranspiration</value>
+  <data name="worst-date" xml:space="preserve">
+    <value>Lowest yield</value>
   </data>
 </root>

@@ -61,191 +61,218 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Resources.Views.Reports {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Highest Yield.
+        /// </summary>
+        public static string best_date {
+            get {
+                return ResourceManager.GetString("best-date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Climate Scenarios.
+        /// </summary>
+        public static string climate_scenarios {
+            get {
+                return ResourceManager.GetString("climate-scenarios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        public static string comment {
+            get {
+                return ResourceManager.GetString("comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coordinates: {0}  {1}.
+        /// </summary>
+        public static string coordinates {
+            get {
+                return ResourceManager.GetString("coordinates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crops.
         /// </summary>
-        public static string Crop {
+        public static string crops {
             get {
-                return ResourceManager.GetString("Crop", resourceCulture);
+                return ResourceManager.GetString("crops", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drybean.
+        ///   Looks up a localized string similar to Cultivar.
         /// </summary>
-        public static string dry_bean {
+        public static string cultivar {
             get {
-                return ResourceManager.GetString("dry_bean", resourceCulture);
+                return ResourceManager.GetString("cultivar", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dry Periods.
+        ///   Looks up a localized string similar to Download as PDF.
         /// </summary>
-        public static string dry_spells {
+        public static string download_pdf {
             get {
-                return ResourceManager.GetString("dry_spells", resourceCulture);
+                return ResourceManager.GetString("download-pdf", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to El Niño.
+        ///   Looks up a localized string similar to in the municipality of.
         /// </summary>
-        public static string El_nino {
+        public static string forecast_location {
             get {
-                return ResourceManager.GetString("El_nino", resourceCulture);
+                return ResourceManager.GetString("forecast-location", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below average.
+        ///   Looks up a localized string similar to below normal.
         /// </summary>
-        public static string ForecastLower {
+        public static string forecast_lower {
             get {
-                return ResourceManager.GetString("ForecastLower", resourceCulture);
+                return ResourceManager.GetString("forecast-lower", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to On average.
+        ///   Looks up a localized string similar to inside normal.
         /// </summary>
-        public static string ForecastNormal {
+        public static string forecast_normal {
             get {
-                return ResourceManager.GetString("ForecastNormal", resourceCulture);
+                return ResourceManager.GetString("forecast-normal", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Above average.
+        ///   Looks up a localized string similar to the forecast suggests that precipitation is most likely.
         /// </summary>
-        public static string ForecastUpper {
+        public static string forecast_result {
             get {
-                return ResourceManager.GetString("ForecastUpper", resourceCulture);
+                return ResourceManager.GetString("forecast-result", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agroclimatic indicators.
+        ///   Looks up a localized string similar to For the time of.
         /// </summary>
-        public static string Group {
+        public static string forecast_time {
             get {
-                return ResourceManager.GetString("Group", resourceCulture);
+                return ResourceManager.GetString("forecast-time", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heatwaves.
+        ///   Looks up a localized string similar to above normal.
         /// </summary>
-        public static string heat_waves {
+        public static string forecast_upper {
             get {
-                return ResourceManager.GetString("heat_waves", resourceCulture);
+                return ResourceManager.GetString("forecast-upper", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wet periods.
+        ///   Looks up a localized string similar to Max Temperature (°C).
         /// </summary>
-        public static string heavy_rainfall {
+        public static string max_temp_w_unit {
             get {
-                return ResourceManager.GetString("heavy_rainfall", resourceCulture);
+                return ResourceManager.GetString("max-temp-w-unit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Humidity.
+        ///   Looks up a localized string similar to Min Temperature (°C).
         /// </summary>
-        public static string Humidity {
+        public static string min_temp_w_unit {
             get {
-                return ResourceManager.GetString("Humidity", resourceCulture);
+                return ResourceManager.GetString("min-temp-w-unit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La Niña.
+        ///   Looks up a localized string similar to Precipitation (mm).
         /// </summary>
-        public static string La_nina {
+        public static string precipitation_w_unit {
             get {
-                return ResourceManager.GetString("La_nina", resourceCulture);
+                return ResourceManager.GetString("precipitation-w-unit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maize.
+        ///   Looks up a localized string similar to Provided by {0}.
         /// </summary>
-        public static string maize {
+        public static string provided_by {
             get {
-                return ResourceManager.GetString("maize", resourceCulture);
+                return ResourceManager.GetString("provided-by", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to None.
+        ///   Looks up a localized string similar to Report {0}.
         /// </summary>
-        public static string None {
+        public static string report {
             get {
-                return ResourceManager.GetString("None", resourceCulture);
+                return ResourceManager.GetString("report", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Period.
+        ///   Looks up a localized string similar to Soil.
         /// </summary>
-        public static string Period {
+        public static string soil {
             get {
-                return ResourceManager.GetString("Period", resourceCulture);
+                return ResourceManager.GetString("soil", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Precipitation.
+        ///   Looks up a localized string similar to Solar Radiation (MJ/m2).
         /// </summary>
-        public static string Precipitation {
+        public static string solar_w_unit {
             get {
-                return ResourceManager.GetString("Precipitation", resourceCulture);
+                return ResourceManager.GetString("solar-w-unit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Soybean.
+        ///   Looks up a localized string similar to A &lt;strong&gt;good&lt;/strong&gt; time for.
         /// </summary>
-        public static string soybean {
+        public static string suitable_date {
             get {
-                return ResourceManager.GetString("soybean", resourceCulture);
+                return ResourceManager.GetString("suitable-date", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SPEI.
+        ///   Looks up a localized string similar to &lt;strong&gt;Not a recommendable&lt;/strong&gt;time for.
         /// </summary>
-        public static string spei {
+        public static string unsuitable_date {
             get {
-                return ResourceManager.GetString("spei", resourceCulture);
+                return ResourceManager.GetString("unsuitable-date", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Temperature.
+        ///   Looks up a localized string similar to Weather.
         /// </summary>
-        public static string Temperature {
+        public static string weather {
             get {
-                return ResourceManager.GetString("Temperature", resourceCulture);
+                return ResourceManager.GetString("weather", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Agroclimatic indices viewer.
+        ///   Looks up a localized string similar to Lowest yield.
         /// </summary>
-        public static string Title {
+        public static string worst_date {
             get {
-                return ResourceManager.GetString("Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Evapotranspiration.
-        /// </summary>
-        public static string water_demand {
-            get {
-                return ResourceManager.GetString("water_demand", resourceCulture);
+                return ResourceManager.GetString("worst-date", resourceCulture);
             }
         }
     }

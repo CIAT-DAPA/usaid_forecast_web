@@ -77,10 +77,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-     <Compile Update="Resources\Views\Reports\Index.Designer.cs">
-      <DependentUpon>Index.resx</DependentUpon>
+    <Compile Update="Resources\Views\Reports\Index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>Index.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Views\Indicators\Index.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -133,14 +133,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Views\Reports\Index.es.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Reports\Index.pt.resx">
-      <SubType>Designer</SubType>
+      <LastGenOutput>Index.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Reports\Index.resx">
       <LastGenOutput>Index.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Reports\Index.es.resx">
+      <LastGenOutput>Index.es.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\GeoIndicators\Index.es.resx">

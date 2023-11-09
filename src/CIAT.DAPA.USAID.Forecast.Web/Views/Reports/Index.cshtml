@@ -12,81 +12,141 @@
 }
 
 <!-- Add a download button -->
-<a onclick="savePdf()" class="btn btn-primary">Download PDF</a>
 
 <div class="report-wrapper">
+    <div class="report-content">
 
-    <div>
+        <a onclick="savePdf()" class="btn btn-primary print-button">@Localizer["download-pdf"]</a>
 
-        <span> @ViewBag.weatherStation.State, @ViewBag.weatherStation.Municipality</span>
-        <span> @DateTime.Now.ToString("yyyy-MM-dd")</span>
+        <small class="meta-info">
 
-    </div>
-    <h1>Report @ViewBag.weatherStation.Name</h1>
-    <div>
-        Lat:  @ViewBag.weatherStation.Latitude, Long: @ViewBag.weatherStation.Longitude
-    </div>
-    <div>
-        Provided by @ViewBag.weatherStation.Origin
-    </div>
+            <span> @ViewBag.weatherStation.State, @ViewBag.weatherStation.Municipality</span>
+            <span> @DateTime.Now.ToString("yyyy-MM-dd")</span>
 
-    <div id="map">
-        <!-- ... chart content ... -->
-    </div>
+        </small>
+        <h2>@Localizer["report", @ViewBag.weatherStation.Name]</h2>
 
+        <p>
+            @Localizer["provided-by", @ViewBag.weatherStation.Origin]
+        </p>
 
-    <h3>Weather</h3>
-    <h4>Forecast</h4>
-    <div id="precipitationChart">
+        <div id="reportMap">
+        </div>
+        <small class="meta-info">
+            @Localizer["coordinates", @ViewBag.weatherStation.Latitude, @ViewBag.weatherStation.Longitude]
+        </small>
 
-    </div>
+        <h3>@Localizer["weather"]</h3>
 
-    <h4>Average Climate Scenarios</h4>
-    <div id="scenarioCharts" class="scenario-charts">
+        <div id="precipitationChart">
 
-    </div>
+        </div>
 
+        <!--h4>@Localizer["climate-scenarios"]</h4-->
+        <div id="scenarioCharts" class="scenario-charts">
 
-    <h3>Crops</h3>
-
+        </div>
 
 
-    <div id="yieldContainers">
-    </div>
+        <h3>@Localizer["crops"]</h3>
 
+        <div id="yieldContainers">
+        </div>
 
-
-
-
-
-
-
-
-    <div id="mapImage">
-        <!-- ... chart content ... -->
     </div>
 </div>
 
 
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://unpkg.com/jspdf-autotable@3.6.0/dist/jspdf.plugin.autotable.js"></script>
-    <script src='https://unpkg.com/leaflet-image@0.4.0/leaflet-image.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link rel="stylesheet" href="~/css/maps.css" />
 
     <style>
-      
+
+       
+       
+        @@media print {
             body {
-                -webkit-print-color-adjust: exact;
-                color-adjust: exact;
+                margin: 0;
+                min-width: 210mm !important;
             }
-        
+            .yield-label{
+                border: 4px solid;
+            }
+            .yield-low {
+                border-color: #e33327;
+            }
+
+            .yield-regular {
+                border-color: #e37f27;
+            }
+
+            .yield-normal {
+                border-color: #c7e327;
+            }
+
+            .yield-good {
+                border-color: #82e327;
+            }
+
+            .yield-excellent {
+                border-color: #15eb31;
+            }
+
+            .print-button {
+               display:none;
+            }
+
+        }
+
+      
+        .meta-info {
+            color: grey;
+        }
+        .printable-chart{
+         
+            margin:auto;
+        }
+
+        .print-button {
+            position: absolute;
+            right: 1em;
+            top: -17px;
+        }
+
+        #reportMap {
+            height: 256px;
+            width: 100%;
+        }
+        #precipitationChart {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .precipitation-chart {
+            width:100%;
+            position: relative;
+            max-width: 5000px;
+        }
+        .precipitation-container{
+            max-width: 300px;
+        }
 
         .report-wrapper {
             background: white;
             padding: 1em;
+            position: relative;
+            max-width: 250mm;
+            margin: auto;
+        }
+
+
+        .report-content {
+            max-width: 210mm;
+            margin: auto;
         }
 
         .scenario-charts {
@@ -94,6 +154,9 @@
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             column-gap: 10px;
             row-gap: 1em;
+        }
+        .scenario-table{
+            width:100%;
         }
 
         .scenario-chart {
@@ -104,6 +167,7 @@
         }
 
         .yield-table {
+            margin-top: 1em;
             width: 100%;
             border-collapse: separate;
             /* This ensures that border-spacing is applied */
@@ -114,6 +178,10 @@
         .yield-table td {
             padding: 4px;
         }
+        .yield-chart{
+            width:100%;
+            position:relative;
+        }
 
         .border-row {
             background: grey;
@@ -123,7 +191,7 @@
         .border-row td {
             padding: 0 !important;
         }
-
+        
         .yield-table td:nth-child(1) {
             width: 200px;
         }
@@ -138,27 +206,33 @@
         }
 
         .yield-label {
-            padding: 8px 16px 8px 8px !important;
-            border-radius: 32px;
+            padding: 8px 8px 8px 8px !important;
+            border-radius: 1em;
             display: flex;
             align-items: center;
             justify-content: start;
-            gap: 8px;
-            font-weight: 700;
+            gap: 4px;
+            font-weight: 600;
             color: rgba(0, 0, 0, 0.6);
+            white-space: pre;
+         
         }
 
         .yield-icon {
-            font-size: 32px;
+            font-size: 22px;
         }
 
         .crop-labels {
             display: flex;
-            flex-direction: row;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: auto;
+            max-width: 1000px;
         }
 
+       
 
         .yield-low {
             background: #e33327;
@@ -188,6 +262,9 @@
         var weatherForecast = @Html.Raw(Json.Serialize(ViewBag.weatherForecast));
 
 
+
+
+
         var historicalWeatherData = @Html.Raw(Json.Serialize(ViewBag.historicalWeatherData));
 
         var agronomics = @Html.Raw(Json.Serialize(ViewBag.agronomics));
@@ -205,28 +282,22 @@
 
         createMap();
         if (weatherForecast.climate?.length > 0) {
-            createForecastCharts(weatherForecast.climate[0]);
+            createForecastCharts(weatherForecast.climate[0], weatherStation);
         }
 
 
         if (weatherForecast.scenario?.length > 0) {
-            createForecastScenarioCharts(weatherForecast.scenario, historicalWeatherData);
+          //  createForecastScenarioCharts(weatherForecast.scenario, historicalWeatherData);
         }
 
-        createYieldDiagram(agronomics, yieldForecast);
+        createYieldTable(agronomics, yieldForecast);
         createYieldDiagrams(agronomics, yieldForecast)
 
         function createMap() {
 
             return new Promise((resolve, reject) => {
 
-
-
-                let mapContainer = document.getElementById('map');
-                //document.body.appendChild(mapContainer);
-              //  mapContainer.classList.add('hidden-map');
-                mapContainer.style.height = "254px";
-                mapContainer.style.width = "720px";
+                let mapContainer = document.getElementById('reportMap');
                 var map = L.map(mapContainer, { zoomControl: false }).setView([weatherStation.latitude, weatherStation.longitude], 8);
                 map.dragging.disable();
                 map.touchZoom.disable();
@@ -241,47 +312,28 @@
                 }).addTo(map);
                 L.marker([weatherStation.latitude, weatherStation.longitude]).addTo(map);
                 map.invalidateSize();
-                /*
-                leafletImage(map, async (err, canvas) => {
-                    // now you have canvas
-                    // example thing to do with that canvas:
-                    var img = document.createElement('img');
-                    var dimensions = map.getSize();
-                    img.width = dimensions.x;
-                    img.height = dimensions.y;
-                    img.src = canvas.toDataURL();
 
-                    document.getElementById('mapImage').innerHTML = '';
-                    document.getElementById('mapImage').appendChild(img);
-                    if (err)
-                        reject(err);
-                    await new Promise(res => setTimeout(res, 1000));
-                    document.body.removeChild(mapContainer);
-
-                    resolve(img);
-
-                });*/
             });
         }
 
-        function createForecastCharts(forecastClimate) {
+        function createForecastCharts(forecastClimate, weatherStation) {
 
 
 
             var options = {
                 series: [{
-                    name: '@Localizer["ForecastLower"]',
+                    name: '@Localizer["forecast-lower"]',
                     data: forecastClimate.data.map(d => d.probabilities.find(prob => prob.measure == 'prec').lower)
                 }, {
-                    name: '@Localizer["ForecastNormal"]',
+                    name: '@Localizer["forecast-normal"]',
                     data: forecastClimate.data.map(d => d.probabilities.find(prob => prob.measure == 'prec').normal)
                 }, {
-                    name: '@Localizer["ForecastUpper"]',
+                    name: '@Localizer["forecast-upper"]',
                     data: forecastClimate.data.map(d => d.probabilities.find(prob => prob.measure == 'prec').upper)
                 }],
                 chart: {
                     type: 'bar',
-                    height: 250,
+                    height: 180,
                     stacked: true,
                     stackType: '100%',
                     toolbar: {
@@ -289,7 +341,10 @@
                     },
                     zoom: {
                         enabled: false,
-                    }
+                    },
+                    redrawOnWindowResize: true,
+                    redrawOnParentResize: true,
+
                 },
                 plotOptions: {
                     bar: {
@@ -303,13 +358,33 @@
                 title: {
                     text: 'Probability for precipitation'
                 },
+                grid: {
+                    show: false,
+                },
                 xaxis: {
+                    axisBorder: {
+                        show: false,
+                    },
+                    labels: {
+                        show: false,
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
                     categories: forecastClimate.data.map(val => {
                         let trimester = [(val.month - 1) % 12, (val.month) % 12, (val.month + 1) % 12]
                         let monthStrings = trimester.map(m => new Date(val.year, m - 1).toLocaleString('default', { month: 'short' })).join(' - ');
-                        return [val.year + '', monthStrings];
+                        return val.year + ': '+ monthStrings;
                     }),
 
+                },
+                yaxis: {
+                    labels: {
+                        maxWidth: 300,
+                        style: {
+                            fontWeight: 700,
+                        },
+                    }
                 },
                 tooltip: {
                     y: {
@@ -324,15 +399,109 @@
                 },
                 colors: ['#99d3ff', '#0390fc', '#005696'],
                 legend: {
-                    position: 'top',
-                    horizontalAlign: 'left',
-                    offsetX: 40
+                    position: 'bottom',
+                    horizontalAlign: 'center',
                 }
             };
             var element = document.createElement('div');
-            document.querySelector("#precipitationChart").appendChild(element)
+            element.classList.add('precipitation-chart');
+            element.classList.add('printable-chart');
+
+            document.querySelector("#precipitationChart").before(element)
             var chart = new ApexCharts(element, options);
             chart.render();
+
+
+
+          //  console.log(forecastClimate)
+
+            forecastClimate.data.forEach(val => {
+
+
+                var donutEl = document.createElement('div');
+                donutEl.classList.add('precipitation-container')
+                document.querySelector("#precipitationChart").appendChild(donutEl)
+
+
+
+                let trimester = [(val.month - 1) % 12, (val.month) % 12, (val.month + 1) % 12]
+                let monthStrings = trimester.map(m => new Date(val.year, m - 1).toLocaleString('default', { month: 'short' })).join(' - ');
+                let title = monthStrings + ' (' + val.year+')';
+
+
+                var options = {
+                    series: [
+                        val.probabilities.find(prob => prob.measure == 'prec').lower,
+                        val.probabilities.find(prob => prob.measure == 'prec').normal,
+                        val.probabilities.find(prob => prob.measure == 'prec').upper,
+
+                    ],
+                    labels: ['@Localizer["forecast-lower"]', '@Localizer["forecast-normal"]', '@Localizer["forecast-upper"]'],
+                    colors: ['#99d3ff', '#0390fc', '#005696'],
+                    chart: {
+                        type: 'donut',
+                        height: 280,
+                    },
+                    title: {
+                        align: 'center',
+                        text: title,
+                    },
+                    subtitle: {
+                        text: 'Probability for precipitation',
+                        align: 'center',
+
+                    },
+
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '33%'
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        horizontalAlign: 'center',
+
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return Math.round(val * 100) + '%'
+                            }
+                        }
+                    },
+
+                };
+                var element = document.createElement('div');
+                donutEl.appendChild(element)
+                var chart = new ApexCharts(element, options);
+                chart.render();
+
+
+
+
+                var result =  '@Localizer["forecast-normal"]';
+
+                var prec = val.probabilities.find(prob => prob.measure == 'prec');
+                if (prec.lower >= prec.normal && prec.lower >= prec.upper) { result ='@Localizer["forecast-lower"]'; }
+                else if (prec.upper >= prec.normal && prec.upper >= prec.lower) { result = '@Localizer["forecast-upper"]'; }
+
+
+
+                var descriptionEl = document.createElement('div');
+                descriptionEl.innerHTML = '@Localizer["forecast-time"]'
+                    + " <strong>" + monthStrings+"</strong> "
+                    + '@Localizer["forecast-location"]'
+                    + " <strong>" + weatherStation.municipality + "</strong> "
+                    + '@Localizer["forecast-result"]'
+                    + " <strong>" + result + "</strong>.";
+                donutEl.appendChild(descriptionEl)
+            });
+
+
+
+
 
 
         }
@@ -344,22 +513,22 @@
             let paramLists = [
                 {
                     id: 'prec',
-                    label: 'Precipitation',
+                    label: '@Localizer["precipitation-w-unit"]',
                     color: '#33b2df',
                 },
                 {
                     id: 'sol_rad',
-                    label: 'Solar Radiation',
+                    label: '@Localizer["solar-w-unit"]',
                     color: '#e427f5',
                 },
                 {
                     id: 't_max',
-                    label: 'Maximum Temperature',
+                    label:  '@Localizer["max-temp-w-unit"]',
                     color: '#f54227',
                 },
                 {
                     id: 't_min',
-                    label: 'Minimum Temperature',
+                    label: '@Localizer["min-temp-w-unit"]',
                     color: '#ff7e6b',
                 },
             ]
@@ -368,24 +537,25 @@
             paramLists.forEach(param => {
 
 
-                let avgData = forecastScenarios.find(sc => sc.name == 'avg');
-                let minData = forecastScenarios.find(sc => sc.name == 'min');
-                let maxData = forecastScenarios.find(sc => sc.name == 'max');
-
-
-
                 let data = []
-                avgData.monthly_Data.forEach(md => {
-                    data.push({
-                        month: new Date(2000, md.month - 1).toLocaleString('default', { month: 'short' }),
-                        avg: md.data.find(d => d.measure == param.id).value,
-                        min: minData.monthly_Data.find(d => d.month == md.month).data.find(d => d.measure == param.id).value,
-                        max: maxData.monthly_Data.find(d => d.month == md.month).data.find(d => d.measure == param.id).value,
-                        historical: historicalWeatherData?.monthly_Data.find(_md => _md.month == md.month)?.data.find(d => d.measure == param.id)?.value
+                forecastScenarios.filter(sc => sc.name == 'avg').sort((a, b) => a.year - b.year).forEach(yearlyData => {
+                    yearlyData.monthly_Data.forEach(monthlyData => {
+
+                        data.push({
+                            month: new Date(yearlyData.year, monthlyData.month - 1).toLocaleString('default', { month: 'short' }),
+                            avg: monthlyData.data.find(d => d.measure == param.id).value,
+                            min: forecastScenarios.find(sc => sc.name == 'min' && sc.year == yearlyData.year).monthly_Data.find(d => d.month == monthlyData.month).data.find(d => d.measure == param.id).value,
+                            max: forecastScenarios.find(sc => sc.name == 'max' && sc.year == yearlyData.year).monthly_Data.find(d => d.month == monthlyData.month).data.find(d => d.measure == param.id).value,
+                            historical: historicalWeatherData?.monthly_Data.find(_md => _md.month == monthlyData.month)?.data.find(d => d.measure == param.id)?.value
+                        })
+
                     })
-                });
+                })
 
 
+
+
+                var minY = Math.min.apply(null, data.map(d => (d.min)));
                 var options = {
                     series: [
 
@@ -400,7 +570,7 @@
                             })
 
                         },
-                        {
+                          {
                             type: 'line',
                             name: 'Historical average',
                             data: data.map(d => {
@@ -411,7 +581,7 @@
                             })
 
                         },
-                        {
+                      {
                             type: 'rangeArea',
                             name: 'Forecast Range (min-max)',
                             data: data.map(d => {
@@ -440,18 +610,16 @@
                         }
                     },
                     yaxis: {
-                        // min: 10,
-                        forceNiceScale: true,
-
+                        min: minY - 3 < 0 ? 0 : minY-3,
                     },
 
-                    colors: [param.color, param.color],
+                    colors: [param.color,'#7a7a7a', param.color],
                     dataLabels: {
                         enabled: false
                     },
 
                     fill: {
-                        opacity: [1, 0.5, 0.2]
+                        opacity: [1, 1, 0.2]
                     },
 
                     stroke: {
@@ -474,18 +642,77 @@
                     }
                 };
 
-                var element = document.createElement('div');
+                let element = document.createElement('div');
                 element.classList.add('scenario-chart')
                 document.querySelector("#scenarioCharts").appendChild(element)
-                var chart = new ApexCharts(element, options);
+                let chart = new ApexCharts(element, options);
                 chart.render();
+
+            })
+
+
+            let table = document.createElement('table');
+            table.classList.add('scenario-table')
+           // console.log(document.querySelector("#scenarioCharts"))
+            document.querySelector("#scenarioCharts").after(table);
+
+            let header = document.createElement('tr');
+            table.appendChild(header);
+            let td = document.createElement('th');
+            td.innerHTML = "-"
+            header.appendChild(td);
+
+            forecastScenarios.filter(sc => sc.name == 'avg').sort((a, b) => a.year - b.year).forEach(yearlyData => {
+                yearlyData.monthly_Data.forEach(monthlyData => {
+
+                    const date = new Date(yearlyData.year, monthlyData.month - 1);
+
+                    let td = document.createElement('th');
+                    td.innerHTML = date.toLocaleDateString("default", { year: 'numeric', month: 'long' });
+                    header.appendChild(td);
+                })
 
 
             })
+
+
+            paramLists.forEach(param => {
+                let row = document.createElement('tr');
+                table.appendChild(row);
+
+                let cat = document.createElement('td');
+                cat.innerHTML = param.label;
+                row.appendChild(cat);
+
+                forecastScenarios.filter(sc => sc.name == 'avg').sort((a, b) => a.year - b.year).forEach(yearlyData => {
+                    yearlyData.monthly_Data.forEach(monthlyData => {
+
+
+                        let avg = Math.round (monthlyData.data.find(d => d.measure == param.id).value);
+                        let historical = Math.round(historicalWeatherData?.monthly_Data.find(_md => _md.month == monthlyData.month)?.data.find(d => d.measure == param.id)?.value)
+
+                        let val = document.createElement('td');
+                        val.innerHTML = avg + " <span class='meta-info'>(" + historical +")</span>";
+                        row.appendChild(val);
+
+
+                    })
+                })
+
+
+            })
+
+
+
+
+
+
+
+
         }
 
 
-        function createYieldDiagram(agronomics, yieldForecast) {
+        function createYieldTable(agronomics, yieldForecast) {
 
 
             let sortedCrops = agronomics.sort((a, b) => {
@@ -503,41 +730,59 @@
 
                 var cropRanges = weatherStation.ranges.filter(r => r.crop_Id == crop.cp_Id);
                 cropRanges.sort((a, b) => a.lower - b.lower)
-                console.log('cropRanges', cropRanges)
+               // console.log('cropRanges', cropRanges)
 
 
-                var cropHeader = document.createElement('h4');
+                var cropHeader = document.createElement('h3');
                 cropHeader.classList.add('crop-heading')
                 cropHeader.innerHTML = crop.cp_Name;
-                document.querySelector("#yieldContainers").appendChild(cropHeader)
+
 
                 var cropLabels = document.createElement('div');
                 cropLabels.classList.add('crop-labels')
                 cropRanges.forEach((r, i) => {
 
-                    let cropLabel = createYieldIndicatorLabel(i, r.label + ': ' + roundToTons(r.lower) + ' - ' + roundToTons(r.upper) + 't/ha');
+                    let cropLabel = createYieldIndicatorLabel(i, '<strong>'+ r.label + '</strong>\n' + roundToTons(r.lower) + ' - ' + roundToTons(r.upper) + 't/ha');
                     cropLabels.appendChild(cropLabel)
                 })
-
-                document.querySelector("#yieldContainers").appendChild(cropLabels)
 
 
                 var table = document.createElement('table');
                 table.classList.add('yield-table')
-                document.querySelector("#yieldContainers").appendChild(table)
 
+                var header = document.createElement('tr');
+                table.appendChild(header)
+                var col1 = document.createElement('th');
+                col1.innerHTML = '@Localizer["cultivar"]'
+                header.appendChild(col1)
+
+                var col2 = document.createElement('th');
+                col2.innerHTML = '@Localizer["soil"]'
+                header.appendChild(col2)
+
+                var col3 = document.createElement('th');
+                col3.innerHTML ='@Localizer["worst-date"]'
+                header.appendChild(col3)
+
+
+                var col4 = document.createElement('th');
+                col4.innerHTML = '@Localizer["best-date"]'
+                header.appendChild(col4)
+
+                var col5 = document.createElement('th');
+                col5.innerHTML = '@Localizer["comment"]'
+                header.appendChild(col5)
+
+
+
+                var results = 0;
                 crop.cultivars.forEach((cultivar) => {
-
                     let i = 0;
-
                     crop.soils.forEach((soil) => {
-
-
+                        if (yieldForecast.yield.length == 0) return;
 
                         let yields = yieldForecast.yield[0].yield.filter(yieldData => yieldData.cultivar == cultivar.id && yieldData.soil == soil.id)
-
                         if (yields?.length > 0) {
-
 
                             yields = [...yields].sort((a, b) => extractYield(a) - extractYield(b));
                             //   console.log('cultivar', cultivar)
@@ -551,6 +796,7 @@
                             // console.log('min', min)
                             //  console.log('max', max)
                             //  console.log('median', median)
+
 
 
                             var row = document.createElement('tr');
@@ -575,29 +821,51 @@
 
 
                             var colMin = document.createElement('td');
-                            let minElement = createYieldIndicatorLabel(findYieldCass(extractYield(min), cropRanges), new Date(min.start).toLocaleString('default', { month: "short", day: "numeric", }) + ' - ' + roundToTons(extractYield(min)) + 't/ha');
+                            let minYield = findYieldCass(extractYield(min), cropRanges);
+                            let minElement = createYieldIndicatorLabel(minYield, new Date(min.start).toLocaleString('default', { month: "short", day: "numeric", }) + ' - ' + roundToTons(extractYield(min)) + 't/ha');
                             colMin.appendChild(minElement)
                             row.appendChild(colMin)
-
+                            /*
                             var colAvg = document.createElement('td');
                             let avgElement = createYieldIndicatorLabel(findYieldCass(extractYield(median), cropRanges), new Date(median.start).toLocaleString('default', { month: "short", day: "numeric", }) + ' - ' + roundToTons(extractYield(median)) + 't/ha');
                             colAvg.appendChild(avgElement)
                             row.appendChild(colAvg)
+                            */
 
                             var colMax = document.createElement('td');
-                            let maxElement = createYieldIndicatorLabel(findYieldCass(extractYield(max), cropRanges), new Date(max.start).toLocaleString('default', { month: "short", day: "numeric", }) + ' - ' + roundToTons(extractYield(max)) + 't/ha');
+                            let maxYield = findYieldCass(extractYield(max), cropRanges);
+                            let maxElement = createYieldIndicatorLabel(maxYield, new Date(max.start).toLocaleString('default', { month: "short", day: "numeric", }) + ' - ' + roundToTons(extractYield(max)) + 't/ha');
                             colMax.appendChild(maxElement)
                             row.appendChild(colMax)
 
+                   
+                            var colComment = document.createElement('td');
+                            let commentElement = document.createElement('small');
+                            if (minYield <= 1 && maxYield <= 1) {
+                                commentElement.innerHTML =
+                                   '@Localizer["unsuitable-date"]'+' '+cultivar.name
+                            }
+                            else if (minYield >= 3 && maxYield >= 3) {
+                                commentElement.innerHTML =
+                                    '@Localizer["suitable-date"]' + ' ' + cultivar.name
+                            }
+
+                            colComment.appendChild(commentElement)
+                            row.appendChild(colComment)
 
                             table.appendChild(row)
                             i++;
+                            results++;
                         }
                     })
 
                 })
 
-
+                if (results > 0) {
+                    document.querySelector("#yieldContainers").appendChild(cropHeader)
+                    document.querySelector("#yieldContainers").appendChild(cropLabels)
+                    document.querySelector("#yieldContainers").appendChild(table)
+                }
 
             });
         }
@@ -642,7 +910,7 @@
             let icon = document.createElement('i')
             icon.classList.add('yield-icon', 'fa-solid', iconName);
             element.appendChild(icon)
-            let labelEl = document.createElement('span')
+            let labelEl = document.createElement('small')
             labelEl.innerHTML = label;
             element.appendChild(labelEl)
             return element;
@@ -661,8 +929,6 @@
         function createYieldDiagrams(agronomics, yieldForecast) {
 
 
-
-
             let sortedCrops = agronomics.sort((a, b) => {
                 if (a.cp_Name < b.cp_Name) {
                     return -1;
@@ -678,17 +944,20 @@
 
                 var cropRanges = weatherStation.ranges.filter(r => r.crop_Id == crop.cp_Id);
                 cropRanges.sort((a, b) => a.lower - b.lower)
-                console.log('cropRanges', cropRanges)
+               // console.log('cropRanges', cropRanges)
+
+                var cropContainer = document.createElement('div');
+                document.querySelector("#yieldContainers").appendChild(cropContainer)
 
 
                 var cropHeader = document.createElement('h2');
                 cropHeader.classList.add('crop-heading')
                 cropHeader.innerHTML = crop.cp_Name;
-                document.querySelector("#yieldContainers").appendChild(cropHeader)
 
 
-                crop.cultivars.forEach((cultivar) => {
 
+                crop.cultivars.forEach((cultivar,idx) => {
+                    if (yieldForecast.yield.length == 0) return;
                     let filteredYieldsForCultivar = yieldForecast.yield[0].yield.filter(yieldData => yieldData.cultivar == cultivar.id)
                     let series = [];
                     let soilWithData = {};
@@ -705,7 +974,7 @@
                             })
 
 
-                            console.log('filteredYieldForRange', range, soil, filteredYieldForRange)
+                            //console.log('filteredYieldForRange', range, soil, filteredYieldForRange)
                             let dates = filteredYieldForRange.map(yieldData => new Date(yieldData.start)).sort((a, b) => a - b)
                             if (dates.length > 0) {
                                 yieldData.push({
@@ -725,7 +994,7 @@
                             data: yieldData
                         })
                     })
-                    console.log('series', soilWithData, series)
+                  //  console.log('series', soilWithData, series)
                     if (series.length == 0) return;
 
 
@@ -740,7 +1009,9 @@
                             },
                             zoom: {
                                 enabled: false,
-                            }
+                            },
+
+
                         },
                         plotOptions: {
                             bar: {
@@ -771,12 +1042,14 @@
                             },
                         },
                         legend: {
-                            fontSize: '14px',
+                           /* fontSize: '14px',
                             fontWeight: 600,
                             markers: {
                                 width: 20,
                                 height: 20,
-                            },
+                            },*/
+                            position: 'top',
+                            horizontalAlign: 'center',
                         },
                         title: {
                             text: cultivar.name,
@@ -786,63 +1059,27 @@
                             },
                         },
                     };
-
-
+                    if (idx == 0) {
+                        cropContainer.appendChild(cropHeader);
+                    }
                     var element = document.createElement('div');
-                    document.querySelector("#yieldContainers").appendChild(element)
+                    element.classList.add('yield-chart');
+                    element.classList.add('printable-chart');
+                    cropContainer.appendChild(element)
                     var chart = new ApexCharts(element, options);
                     chart.render();
 
                 });
+
+
             });
         }
 
 
+
         async function savePdf() {
+           window.print();
 
-
-            window.print();
-            return;
-            try {
-
-
-                // Default export is a4 paper, portrait, using millimeters for units
-                const doc = new jspdf.jsPDF();
-                const pageWidth = pdf.internal.pageSize.width; // pdf page width
-                doc.addImage('/Environment/@AppSettings.Value.countryName/logo.png', 'JPEG', 1, 2);
-
-                pdf.setDrawColor(229, 229, 229);
-                pdf.line(10, 75, pageWidth - 10, 75);
-
-                /*
-                 var dataURL = chart.dataURI().then(({ imgURI, blob }) => {
-                    const { jsPDF } = window.jspdf
-                    const pdf = new jsPDF();
-                    pdf.addImage(imgURI, 'PNG', 0, 0);
-                    pdf.save("pdf-chart.pdf");
-                })
-                */
-
-                const mapImage = await createMap();
-
-                console.log(mapImage)
-                doc.text("Hello world!", 10, 10);
-                doc.addImage(mapImage, 'JPEG', 100, 2);
-
-                doc.autoTable({
-                    head: [['Name', 'Email', 'Country']],
-                    body: [
-                        ['David', 'david@example.com', 'Sweden'],
-                        ['Castille', 'castille@example.com', 'Spain'],
-                        // ...
-                    ],
-                })
-
-                doc.save("a4.pdf");
-
-            } catch (e) {
-                console.error(e);
-            }
         }
         window.loading_screen.finish();
     </script>

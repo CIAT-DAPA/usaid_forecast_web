@@ -343,7 +343,7 @@ function getYearDisplayDateFormat(date) {
     else if (date.getUTCFullYear() == indicatorYearConstants['nina'])
         return translations.la_nina;
     else
-        return date.getUTCFullYear();
+        return date.getUTCFullYear().toString();
 }
 
 function addWMSLegend(map, layer) {
@@ -489,14 +489,16 @@ function addDownloadCtrl(map, layer) {
         L.DomEvent.disableClickPropagation(button);
         L.DomEvent.on(button, 'click', function () {
             let date = map.timeDimension.getCurrentTime();
-            let dateStr = date.getUTCFullYear() + '-' + date.getUTCMonth()
+            let dateStr ='time='+ date.getUTCFullYear() + '-' + date.getUTCMonth()
+            dateStr = 'subset=Time("' + date.toISOString() + '")'
             let url = geoserver_url;
             url += '?service=WCS&request=GetCoverage&version=2.0.1';
             url += '&coverageId=' + layer.Name;
             url += '&format=image/geotiff';
-            url += '&time=' + dateStr;
+            url += '&' + dateStr;
 
-
+          //  console.log(date);
+            console.log(url);
             let dateLabel = getYearDisplayDateFormat(date)
             let periodSelector = document.getElementById("periodSelector_" + layer.Name);
             if (periodSelector) {
