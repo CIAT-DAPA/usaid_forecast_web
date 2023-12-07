@@ -73,7 +73,7 @@ namespace CIAT.DAPA.USAID.Forecast.Web.Controllers
                 IEnumerable<string> cultivars = yield.Select(p => p.Cultivar).Distinct().ToList();
                 cultivars = cultivars.Where(p=> agronomic.Cultivars.Select(p2 => p2.Id).Distinct().Contains(p));
                 ViewBag.cultivars = agronomic.Cultivars.Where(p => cultivars.Contains(p.Id));
-
+                
                 // Filtering soils
                 IEnumerable<string> soils = yield.Select(p => p.Soil).Distinct().ToList();
                 soils = soils.Where(p => agronomic.Soils.Select(p2 => p2.Id).Distinct().Contains(p));

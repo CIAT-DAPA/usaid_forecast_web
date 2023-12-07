@@ -46,6 +46,13 @@
                 "ASPNETCORE_ENVIRONMENT": "Colombia"
             }
         },
+        "Nicaragua": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Nicaragua"
+            }
+        },
         "Guatemala": {
             "commandName": "IISExpress",
             "launchBrowser": true,

@@ -181,4 +181,8 @@
     <None Include="wwwroot\country.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Environment\Nicaragua\Partners\" />
+  </ItemGroup>
+
 </Project>
