@@ -126,11 +126,11 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 {
                     StringBuilder builder = new StringBuilder();
                     // add header
-                    builder.Append(string.Join<string>(delimiter, new string[] { "country_name","country_iso2", "state_id", "state_name", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "ws_lat", "ws_lon", "\n" }));
+                    builder.Append(string.Join<string>(delimiter, new string[] { "country_name","country_iso2", "state_id", "state_name","ext_id", "municipality_id", "municipality_name", "ws_id", "ws_name", "ws_origin", "ws_lat", "ws_lon", "\n" }));
                     foreach (var s in json)
                         foreach (var m in s.municipalities)
                             foreach (var w in m.weather_stations)
-                                builder.Append(string.Join<string>(delimiter, new string[] { s.country.name, s.country.iso2, s.id, s.name, m.id, m.name, w.id, w.name, w.origin, w.latitude.ToString(), w.longitude.ToString(), "\n" }));
+                                builder.Append(string.Join<string>(delimiter, new string[] { s.country.name, s.country.iso2, s.id, s.name,w.ext_id, m.id, m.name, w.id, w.name, w.origin, w.latitude.ToString(), w.longitude.ToString(), "\n" }));
                     var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
                     return File(file, "text/csv", "geographic.csv");
                 }

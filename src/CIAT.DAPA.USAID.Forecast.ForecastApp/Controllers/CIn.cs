@@ -97,7 +97,7 @@ namespace CIAT.DAPA.USAID.Forecast.ForecastApp.Controllers
                                 normal = double.Parse(fields[4]),
                                 above = double.Parse(fields[5]),
                                 season = changeSeason(fields[6]),
-                                predictand = fields[7]
+                                predictand = fields[7].Replace("\"", "")
                             });
                         }
                         count += 1;

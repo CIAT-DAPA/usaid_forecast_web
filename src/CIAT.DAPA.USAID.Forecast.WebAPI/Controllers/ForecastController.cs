@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson;
 using System.Text;
 using CIAT.DAPA.USAID.Forecast.WebAPI.Models.Entities;
+using CIAT.DAPA.USAID.Forecast.Data.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -41,8 +42,8 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                     ws[i] = getId(ws_parameter[i]);
 
                 var f = await db.forecast.getLatestAsync();
-                var fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
-                var fs = await db.forecastScenario.byForecastAndWeatherStationAsync(f.id, ws);
+                IEnumerable<ForecastClimate> fc = await db.forecastClimate.byForecastAndWeatherStationAsync(f.id, ws);
+                IEnumerable<ForecastScenario> fs = await db.forecastScenario.byForecastAndWeatherStationAsync(f.id, ws);
 
                 // It check the previous forecast for Ethiopia when the new forecast was add and Ethiopia has not been updated
                 if (fc.Count() < 1 && fs.Count() < 1)

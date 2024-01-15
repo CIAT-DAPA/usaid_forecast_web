@@ -68,11 +68,10 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
 
                 // Loop for weather station
-                foreach (var station in fy.Select(p => p.weather_station).Distinct())
+                foreach (ObjectId station in fy.Select(p => p.weather_station).Distinct())
                 {
                     WeatherStation ws_tmp = weatherstations.FirstOrDefault(p => p.id == station);
                     ObjectId country_id = countries.FirstOrDefault(c => c.id == states.FirstOrDefault(s => s.id == muni.FirstOrDefault(m => m.id == ws_tmp.municipality).state ).country).id;
-                    bool is_inseason = false;
                     // Loop for crop
                     foreach (var crop in agronomy.Select(p => new { id = p.cp_id, name = p.cp_name, cultivars = p.cultivars.Select(p2 => new { id = p2.id, name = p2.name }), soils = p.soils.Select(p2 => new { id = p2.id, name = p2.name }) }).Distinct())
                     {
@@ -81,8 +80,14 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                         Crop crop_data = await db.crop.byIdAsync(crop.id);
                         // Filtering yield by station and soils
                         IEnumerable<ForecastYield> yield_ws = fy.Where(p => p.weather_station == station && crop.soils.Select(p2 => p2.id).Contains(p.soil.ToString()));
-                        
-                        foreach (var yield in yield_ws)
+                        bool is_inseason = false;
+                        IEnumerable<ForecastYield> yield_ws_filtered = yield_ws.Where(p => crop.cultivars.Any(cultivar =>
+                            cultivar.id == p.cultivar.ToString()
+                        ) && crop.soils.Any(soil =>
+                             soil.id == p.soil.ToString())
+                        );
+
+                        foreach (ForecastYield yield in yield_ws_filtered)
                         {
                             foreach(YieldCrop yield_crop in yield.yield)
                             {
@@ -133,128 +138,137 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 
 
                                     IEnumerable<YieldData> yield_data_list = yield_crop.data.Where(p => phases.Contains(p.measure.ToString().Replace("hs_", "").Replace("st_", "").Replace("_w", "").Replace("_n", "")));
+                                    int lenght = yield_data_list.Count();
+                                    
                                     foreach (YieldData yield_data in yield_data_list)
                                     {
-                                        string type_of_recommendation = crop_data.crop_config.Where(cr => cr.label == yield_data.measure.ToString().Replace("hs_", "").Replace("st_", "").Replace("_w", "").Replace("_n", "")).First().type;
-                                        if (type_of_recommendation == "st")
+                                        IEnumerable <CropConfig> recommendations_list = crop_data.crop_config.Where(cr => cr.label == yield_data.measure.ToString().Replace("hs_", "").Replace("st_", "").Replace("_w", "").Replace("_n", ""));
+                                        if(recommendations_list.Count() > 0)
                                         {
-                                            string type = yield_data.measure.ToString().Split("_")[yield_data.measure.ToString().Split("_").Length - 1];
-
-                                            // Getting best cultivar and soil by them ids
-                                            var best_cul = crop.cultivars.Single(p => p.id == yield.cultivar.ToString());
-                                            var best_sol = crop.soils.Single(p => p.id == yield.soil.ToString());
-                                            List<RecommendationKey> keys = new List<RecommendationKey>() {
-                                                        new RecommendationKey(){ tag = "crop", value=crop.name, id=crop.id },
-                                                        new RecommendationKey(){ tag = "cultivar", value=best_cul.name, id=best_cul.id },
-                                                        new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
-                                                        new RecommendationKey(){ tag = "date", value=yield_crop.start.ToString("yyyy-MM-dd")},
-                                                        new RecommendationKey(){ tag = "yield", value=yield_data.avg.ToString()},
-                                                        new RecommendationKey(){ tag = "advisory", value=AdvisoryType.in_season.ToString()},
-                                                    };
-                                            RecommendationEntity recommentdation = new RecommendationEntity()
+                                            string type_of_recommendation = recommendations_list.First().type;
+                                            if (type_of_recommendation == "st")
                                             {
-                                                ws_id = station.ToString(),
-                                                ws_name = ws_tmp.name,
-                                                type = yield_data.measure.ToString(),
-                                                keys = keys,
+                                                string type = yield_data.measure.ToString().Split("_")[yield_data.measure.ToString().Split("_").Length - 1];
 
-                                            };
+                                                // Getting best cultivar and soil by them ids
+                                                var best_cul = crop.cultivars.Single(p => p.id == yield.cultivar.ToString());
+                                                var best_sol = crop.soils.Single(p => p.id == yield.soil.ToString());
+                                                List<RecommendationKey> keys = new List<RecommendationKey>() {
+                                                    new RecommendationKey(){ tag = "crop", value=crop.name, id=crop.id },
+                                                    new RecommendationKey(){ tag = "cultivar", value=best_cul.name, id=best_cul.id },
+                                                    new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
+                                                    new RecommendationKey(){ tag = "date", value=yield_crop.start.ToString("yyyy-MM-dd")},
+                                                    new RecommendationKey(){ tag = "yield", value=yield_data.avg.ToString()},
+                                                    new RecommendationKey(){ tag = "advisory", value=AdvisoryType.in_season.ToString()},
+                                                };
+                                                RecommendationEntity recommentdation = new RecommendationEntity()
+                                                {
+                                                    ws_id = station.ToString(),
+                                                    ws_name = ws_tmp.name,
+                                                    type = yield_data.measure.ToString(),
+                                                    keys = keys,
+
+                                                };
 
 
 
-                                            List<VarReplace> replaces = new List<VarReplace>();
+                                                List<VarReplace> replaces = new List<VarReplace>();
 
-                                            replaces.Add(new VarReplace("ws_name", ws_tmp.name));
-                                            replaces.Add(new VarReplace("crop_name", crop.name));
-                                            replaces.Add(new VarReplace("sol_name", best_sol.name));
-
-
-                                            List<Recommendation> phase_pheno_msgs = new List<Recommendation>();
-
-                                            if (yield_data.avg > 0.66)
-                                            {
-                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.above_normal.ToString(), recommendation_lang);
+                                                replaces.Add(new VarReplace("ws_name", ws_tmp.name));
+                                                replaces.Add(new VarReplace("crop_name", crop.name));
+                                                replaces.Add(new VarReplace("sol_name", best_sol.name));
 
 
+                                                List<Recommendation> phase_pheno_msgs = new List<Recommendation>();
+
+                                                if (yield_data.avg > 0.66)
+                                                {
+                                                    phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.above_normal.ToString(), recommendation_lang);
+
+
+                                                }
+                                                else if (yield_data.avg > 0.33)
+                                                {
+                                                    phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.normal.ToString(), recommendation_lang);
+                                                }
+                                                else
+                                                {
+                                                    phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.below_normal.ToString(), recommendation_lang);
+
+                                                }
+
+                                                if (phase_pheno_msgs.Count() > 0)
+                                                {
+                                                    string phase_pheno_msg = phase_pheno_msgs.First().resp;
+
+
+                                                    string new_phase_pheno_msg = VarReplace.createNewMsg(replaces, phase_pheno_msg);
+                                                    recommentdation.content = new_phase_pheno_msg;
+                                                }
+                                                else
+                                                {
+                                                    recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString() + " and this langauges: " + recommendation_lang;
+                                                }
+
+                                                is_inseason = true;
+                                                rc_ws.Add(recommentdation);
                                             }
-                                            else if (yield_data.avg > 0.33)
+                                            else if (type_of_recommendation == "hs")
                                             {
-                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.normal.ToString(), recommendation_lang);  
+                                                var best_cul = crop.cultivars.Single(p => p.id == yield.cultivar.ToString());
+                                                var best_sol = crop.soils.Single(p => p.id == yield.soil.ToString());
+                                                List<RecommendationKey> keys = new List<RecommendationKey>() {
+                                                    new RecommendationKey(){ tag = "crop", value=crop.name, id=crop.id },
+                                                    new RecommendationKey(){ tag = "cultivar", value=best_cul.name, id=best_cul.id },
+                                                    new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
+                                                    new RecommendationKey(){ tag = "date", value=yield_crop.start.ToString("yyyy-MM-dd")},
+                                                    new RecommendationKey(){ tag = "yield", value=yield_data.avg.ToString()},
+                                                    new RecommendationKey(){ tag = "advisory", value=AdvisoryType.in_season.ToString()},
+                                                };
+                                                RecommendationEntity recommentdation = new RecommendationEntity()
+                                                {
+                                                    ws_id = station.ToString(),
+                                                    ws_name = ws_tmp.name,
+                                                    type = yield_data.measure.ToString(),
+                                                    keys = keys,
+
+                                                };
+
+
+
+                                                List<VarReplace> replaces = new List<VarReplace>();
+
+                                                replaces.Add(new VarReplace("ws_name", ws_tmp.name));
+                                                replaces.Add(new VarReplace("crop_name", crop.name));
+                                                replaces.Add(new VarReplace("sol_name", best_sol.name));
+
+
+                                                IEnumerable<Recommendation> climate_msgs = await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.climate.ToString(), recommendation_lang);
+
+
+                                                if (climate_msgs.Count() > 0)
+                                                {
+                                                    string climate_msg = climate_msgs.First().resp;
+
+
+                                                    string new_climate_msg = VarReplace.createNewMsg(replaces, climate_msg);
+                                                    recommentdation.content = climate_msg;
+                                                }
+                                                else
+                                                {
+                                                    recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString() + " and this langauges: " + recommendation_lang;
+                                                }
+
+
+                                                is_inseason = true;
+                                                rc_ws.Add(recommentdation);
                                             }
-                                            else
-                                            {
-                                                phase_pheno_msgs = (List<Recommendation>)await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.below_normal.ToString(), recommendation_lang);
-                                                
-                                            }
-
-                                            if (phase_pheno_msgs.Count() > 0)
-                                            {
-                                                string phase_pheno_msg = phase_pheno_msgs.First().resp;
-
-
-                                                string new_phase_pheno_msg = VarReplace.createNewMsg(replaces, phase_pheno_msg);
-                                                recommentdation.content = new_phase_pheno_msg;
-                                            }
-                                            else
-                                            {
-                                                recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString() + " and this langauges: " + recommendation_lang;
-                                            }
-
-                                            is_inseason = true;
-                                            rc_ws.Add(recommentdation);
-                                        }
-                                        else if(type_of_recommendation == "hs")
-                                        {
-                                            var best_cul = crop.cultivars.Single(p => p.id == yield.cultivar.ToString());
-                                            var best_sol = crop.soils.Single(p => p.id == yield.soil.ToString());
-                                            List<RecommendationKey> keys = new List<RecommendationKey>() {
-                                                        new RecommendationKey(){ tag = "crop", value=crop.name, id=crop.id },
-                                                        new RecommendationKey(){ tag = "cultivar", value=best_cul.name, id=best_cul.id },
-                                                        new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
-                                                        new RecommendationKey(){ tag = "date", value=yield_crop.start.ToString("yyyy-MM-dd")},
-                                                        new RecommendationKey(){ tag = "yield", value=yield_data.avg.ToString()},
-                                                        new RecommendationKey(){ tag = "advisory", value=AdvisoryType.in_season.ToString()},
-                                                    };
-                                            RecommendationEntity recommentdation = new RecommendationEntity()
-                                            {
-                                                ws_id = station.ToString(),
-                                                ws_name = ws_tmp.name,
-                                                type = yield_data.measure.ToString(),
-                                                keys = keys,
-
-                                            };
-
-
-
-                                            List<VarReplace> replaces = new List<VarReplace>();
-
-                                            replaces.Add(new VarReplace("ws_name", ws_tmp.name));
-                                            replaces.Add(new VarReplace("crop_name", crop.name));
-                                            replaces.Add(new VarReplace("sol_name", best_sol.name));
-
-
-                                            IEnumerable<Recommendation> climate_msgs = await db.recommendation.byIndexAsync(country_id, yield_data.measure.ToString(), Data.Enums.RecommendationType.climate.ToString(), recommendation_lang);
-
-
-                                            if (climate_msgs.Count() > 0)
-                                            {
-                                                string climate_msg = climate_msgs.First().resp;
-
-
-                                                string new_climate_msg = VarReplace.createNewMsg(replaces, climate_msg);
-                                                recommentdation.content = climate_msg;
-                                            }
-                                            else
-                                            {
-                                                recommentdation.content = "It is necessary to add a recommendation for this phenological phase: " + yield_data.measure.ToString() + " and this langauges: " + recommendation_lang;
-                                            }
-
-
-                                            is_inseason = true;
-                                            rc_ws.Add(recommentdation);
                                         }
                                         
+
                                     }
+                                    
+                                    
                                 }
                             }
                                  
@@ -266,90 +280,95 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                             // Recommendation by each type of soil
                             foreach (var s in ryf_l.Select(p => p.soil).Distinct())
                             {
+
                                 // Ordering yields for getting the best yield
-                                var best = ryf_l.Where(p => p.soil.Equals(s)).OrderByDescending(p => p.yield.avg).First();
-                                // Getting best cultivar and soil by them ids
-                                var best_cul = crop.cultivars.Single(p => p.id == best.cultivar);
-                                var best_sol = crop.soils.Single(p => p.id == s);
-                                // Getting the weather station name
-                                // Extracting keys values
-                                List<RecommendationKey> keys = new List<RecommendationKey>() {
-                                    new RecommendationKey(){ tag = "crop", value=crop.name, id=crop.id },
-                                    new RecommendationKey(){ tag = "cultivar", value=best_cul.name, id=best_cul.id },
-                                    new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
-                                    new RecommendationKey(){ tag = "date", value=best.date.ToString("yyyy-MM-dd")},
-                                    new RecommendationKey(){ tag = "yield", value=best.yield.avg.ToString()},
-                                    new RecommendationKey(){ tag = "advisory", value=AdvisoryType.pre_season.ToString()},
-                                };
-
-                                IEnumerable<Recommendation> planting_day_msgs = await db.recommendation.byIndexAsync(country_id, "best_planting_date", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
-
-                                string planting_day_msg = "";
-
-                                if (planting_day_msgs.Count() > 0)
+                                IEnumerable<RecommendationYieldFilter> list_of_best = ryf_l.Where(p => p.soil.Equals(s)).OrderByDescending(p => p.yield.avg);
+                                if (list_of_best.Count() > 0)
                                 {
-                                    planting_day_msg = planting_day_msgs.First().resp;
+                                    RecommendationYieldFilter best = list_of_best.First();
+                                
+                                    // Getting best cultivar and soil by them ids
+                                    var best_cul = crop.cultivars.Single(p => p.id == best.cultivar);
+                                    var best_sol = crop.soils.Single(p => p.id == s);
+                                    // Getting the weather station name
+                                    // Extracting keys values
+                                    List<RecommendationKey> keys = new List<RecommendationKey>() {
+                                        new RecommendationKey(){ tag = "crop", value=crop.name, id=crop.id },
+                                        new RecommendationKey(){ tag = "cultivar", value=best_cul.name, id=best_cul.id },
+                                        new RecommendationKey(){ tag = "soil", value=best_sol.name, id=best_sol.id },
+                                        new RecommendationKey(){ tag = "date", value=best.date.ToString("yyyy-MM-dd")},
+                                        new RecommendationKey(){ tag = "yield", value=best.yield.avg.ToString()},
+                                        new RecommendationKey(){ tag = "advisory", value=AdvisoryType.pre_season.ToString()},
+                                    };
 
-                                }
-                                else
-                                {
-                                    planting_day_msg = "It is necessary to add a recommendation for best planting date" + " and this langauges: " + recommendation_lang;
-                                }
+                                    IEnumerable<Recommendation> planting_day_msgs = await db.recommendation.byIndexAsync(country_id, "best_planting_date", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
+
+                                    string planting_day_msg = "";
+
+                                    if (planting_day_msgs.Count() > 0)
+                                    {
+                                        planting_day_msg = planting_day_msgs.First().resp;
+
+                                    }
+                                    else
+                                    {
+                                        planting_day_msg = "It is necessary to add a recommendation for best planting date" + " and this langauges: " + recommendation_lang;
+                                    }
 
                                 
 
-                                List<VarReplace> replaces = new List<VarReplace>();
+                                    List<VarReplace> replaces = new List<VarReplace>();
 
-                                replaces.Add(new VarReplace("ws_name", ws_tmp.name));
-                                replaces.Add(new VarReplace("crop_name", crop.name));
-                                replaces.Add(new VarReplace("sol_name", best_sol.name));
-                                replaces.Add(new VarReplace("best_date", best.date.ToString("yyyy-MM-dd")));
-                                replaces.Add(new VarReplace("cul_name", best_cul.name));
-                                replaces.Add(new VarReplace("best_yield", best.yield.avg.ToString("N0")));
-
-
-                                string new_planting_day_msg = VarReplace.createNewMsg(replaces, planting_day_msg);
+                                    replaces.Add(new VarReplace("ws_name", ws_tmp.name));
+                                    replaces.Add(new VarReplace("crop_name", crop.name));
+                                    replaces.Add(new VarReplace("sol_name", best_sol.name));
+                                    replaces.Add(new VarReplace("best_date", best.date.ToString("yyyy-MM-dd")));
+                                    replaces.Add(new VarReplace("cul_name", best_cul.name));
+                                    replaces.Add(new VarReplace("best_yield", best.yield.avg.ToString("N0")));
 
 
-                                rc_ws.Add(new RecommendationEntity()
-                                {
-                                    ws_id = station.ToString(),
-                                    ws_name = ws_tmp.name,
-                                    type = Models.Enums.RecommendationType.best_planting_date.ToString(),
-                                    keys = keys,
-                                    content = new_planting_day_msg
-                                });
-
-                                IEnumerable<Recommendation> best_cultivar_msgs = await db.recommendation.byIndexAsync(country_id, "best_cultivar", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
+                                    string new_planting_day_msg = VarReplace.createNewMsg(replaces, planting_day_msg);
 
 
-                                string best_cultivar_msg = "";
+                                    rc_ws.Add(new RecommendationEntity()
+                                    {
+                                        ws_id = station.ToString(),
+                                        ws_name = ws_tmp.name,
+                                        type = Models.Enums.RecommendationType.best_planting_date.ToString(),
+                                        keys = keys,
+                                        content = new_planting_day_msg
+                                    });
 
-                                if (best_cultivar_msgs.Count() > 0)
-                                {
-                                    best_cultivar_msg = best_cultivar_msgs.First().resp;
+                                    IEnumerable<Recommendation> best_cultivar_msgs = await db.recommendation.byIndexAsync(country_id, "best_cultivar", Data.Enums.RecommendationType.pre_season.ToString(), recommendation_lang);
+
+
+                                    string best_cultivar_msg = "";
+
+                                    if (best_cultivar_msgs.Count() > 0)
+                                    {
+                                        best_cultivar_msg = best_cultivar_msgs.First().resp;
+
+                                    }
+                                    else
+                                    {
+                                        best_cultivar_msg = "It is necessary to add a recommendation for best cultivar" + " and this langauges: " + recommendation_lang;
+                                    }
+
+
+
+                                    string new_best_cultivar_msg = VarReplace.createNewMsg(replaces, best_cultivar_msg);
+
+
+                                    rc_ws.Add(new RecommendationEntity()
+                                    {
+                                        ws_id = station.ToString(),
+                                        ws_name = ws_tmp.name,
+                                        type = Models.Enums.RecommendationType.best_cultivar.ToString(),
+                                        keys = keys,
+                                        content = new_best_cultivar_msg
+                                    });
 
                                 }
-                                else
-                                {
-                                    best_cultivar_msg = "It is necessary to add a recommendation for best cultivar" + " and this langauges: " + recommendation_lang;
-                                }
-
-
-
-                                string new_best_cultivar_msg = VarReplace.createNewMsg(replaces, best_cultivar_msg);
-
-
-                                rc_ws.Add(new RecommendationEntity()
-                                {
-                                    ws_id = station.ToString(),
-                                    ws_name = ws_tmp.name,
-                                    type = Models.Enums.RecommendationType.best_cultivar.ToString(),
-                                    keys = keys,
-                                    content = new_best_cultivar_msg
-                                });
-
-
                             }
                         }
                         
