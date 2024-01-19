@@ -9,7 +9,7 @@
    id="svg5"
    inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="C:\projects\usaid_forecast_web\src\CIAT.DAPA.USAID.Forecast.Web\wwwroot\Environment\Zambia\logo.png"
+   inkscape:export-filename="..\generated\logo.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xml:space="preserve"
@@ -54,7 +54,7 @@
      inkscape:groupmode="layer"
      id="layer1"><text
        xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.30085994,-6.29682,-2.881099)"
+       transform="matrix(0.26458333,0,0,0.30085994,19.103186,-2.881099)"
        id="text2166"
        style="font-style:normal;font-weight:normal;font-size:37.3333px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect2168);fill:#000000;fill-opacity:1;stroke:none"
        inkscape:export-filename="C:\projects\usaid_forecast_web\src\CIAT.DAPA.USAID.Forecast.Web\wwwroot\Environment\Zambia\logo.png"
