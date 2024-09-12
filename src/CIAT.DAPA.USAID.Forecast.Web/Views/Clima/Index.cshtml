@@ -23,14 +23,12 @@
                             @{
                                 var f_p = (List<ForecastClimateData>)ViewBag.climate_data;
                                 int mon1 = f_p.First().Month ;
-                                int mon2 = f_p.Last().Month == 12 ? 0 : f_p.Last().Month + 1;
+                                int mon2 = f_p.Last().Month == 12 ? 1 : f_p.Last().Month + 1;
+
                                 if (ViewBag.climateTimeSpan != "bi")
                                 {
                                     mon1 = mon1 == 1 ? 12 : mon1 - 1;
                                 }
-
-
-
 
 
                                 <span>@Localizer["Months"].Value.Split(",")[mon1 - 1] - </span>
