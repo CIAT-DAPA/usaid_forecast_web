@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Swashbuckle.AspNetCore.Swagger;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
 {
@@ -82,8 +83,99 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             }
         }
 
-       
-        
+
+
+        // GET: api/Historical/Climatology
+        [HttpGet]
+        [Route("api/[controller]/LastDailyData/{weatherStationsId}/{format}")]
+        [ProducesResponseType(typeof(WeatherStationDailyDataEntity), 200)] // Suggests a successful response with HTTP status code 200
+                                                                           // Suggests a response with HTTP status code 404 for not found
+
+        public async Task<IActionResult> LastDailyData(string weatherStationsId = "651438c08a8437279ea6ca6a", string format = "json")
+        {
+            try
+            {
+                // Transform the string id to object id
+                string[] parameters = weatherStationsId.Split(',');
+                ObjectId[] ws = new ObjectId[parameters.Length];
+                string ids = string.Empty;
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    ws[i] = getId(parameters[i]);
+                    ids += weatherStationsId[i] + ",";
+                }
+
+                IEnumerable<WeatherStationDailyData> dailyData = await db.historicalDailyData.byWeatherStationsAsync(ws);
+
+                // Write event log
+                writeEvent("Last Daily Weather Data for weather station [" + weatherStationsId + "]", LogEvent.lis);
+
+                IEnumerable<WeatherStationDailyData> latestWeatherData = dailyData
+                    .GroupBy(w => w.weather_station)  // Agrupar por estación meteorológica
+                    .Select(group => group
+                        .OrderByDescending(w => w.year)  // Ordenar primero por año
+                        .ThenByDescending(w => w.month)  // Luego por mes
+                        .ThenByDescending(w => w.daily_readings.Max(r => r.day))  // Finalmente, por día
+                        .FirstOrDefault())  // Seleccionar el más reciente
+                    .Where(w => w != null);
+
+                // Evaluate the format to export
+                IEnumerable<WeatherStationDailyDataJson> jsonResult = latestWeatherData.Select(data => new WeatherStationDailyDataJson()
+                {
+                    weather_station = data.weather_station.ToString(),
+                    date = $"{data.year}/{data.month:D2}/{data.daily_readings.OrderByDescending(r => r.day).First().day:D2}",  // Formato YYYY/MM/DD
+                    climaticData = data.daily_readings.OrderByDescending(r => r.day).First().data.Select(d => new ClimaticData()
+                    {
+                        measure = d.measure, // Mantén como enum
+                        value = d.value
+                    }).ToList() // Convertir a lista
+                }).ToList(); // Asegúrate de convertir el resultado a lista también
+
+                // Retornar el resultado en formato JSON
+                if (string.IsNullOrEmpty(format) || format.ToLower().Trim().Equals("json"))
+                    return Json(jsonResult);
+                else if (format.ToLower().Trim().Equals("csv"))
+                {
+                    StringBuilder builder = new StringBuilder();
+                    string delimiter = ",";  // Definir el delimitador del CSV
+
+                    // Añadir el encabezado
+                    builder.Append(string.Join(delimiter, new string[] { "ws_id", "date", "measure", "value", "\n" }));
+
+                    // Recorrer los datos más recientes y construir las filas del CSV
+                    foreach (WeatherStationDailyDataJson data in jsonResult)
+                    {
+                        foreach (ClimaticData climaticData in data.climaticData) // Asegúrate de usar ClimaticData aquí
+                        {
+                            builder.Append(string.Join(delimiter, new string[]
+                            {
+                                data.weather_station,                  // ws_id
+                                data.date,                             // date en formato YYYY/MM/DD
+                                climaticData.measure.ToString(),      // Convierte el enum a string
+                                climaticData.value.ToString(),         // valor
+                                "\n"                                   // Nueva línea
+                            }));
+                        }
+                    }
+
+                    // Convertir el StringBuilder a bytes
+                    var file = UnicodeEncoding.Unicode.GetBytes(builder.ToString());
+
+                    // Retornar el archivo CSV
+                    return File(file, "text/csv", "LastDailyData.csv");
+                }
+                else
+                    return Content("Format not supported: " + format);
+            }
+            catch (Exception ex)
+            {
+                writeException(ex);
+                return new StatusCodeResult(500);
+            }
+        }
+
+
+
     }
 
 

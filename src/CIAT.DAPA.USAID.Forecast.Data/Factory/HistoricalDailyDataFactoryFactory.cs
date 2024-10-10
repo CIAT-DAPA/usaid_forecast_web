@@ -110,5 +110,14 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var query = await collection.Find(filter).FirstOrDefaultAsync<WeatherStationDailyData>();
             return query;
         }
+
+        public async virtual Task<List<WeatherStationDailyData>> byWeatherStationsAsync(ObjectId[] ws)
+        {
+            // Filter all entities available.
+            var query = from daily_data in collection.AsQueryable()
+                        where ws.Contains(daily_data.weather_station)
+                        select daily_data;
+            return query.ToList();
+        }
     }
 }
