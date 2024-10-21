@@ -119,5 +119,48 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
                         select daily_data;
             return query.ToList();
         }
+
+        /// <summary>
+        /// Method that return climactic daily data between a start and end date in the database 
+        /// by the weather stations
+        /// </summary>
+        /// <param name="ws">weather station id who contain climatic data</param>
+        /// <param name="startDate">Start Date of the query</param>
+        /// <param name="endDate">End Date of the query dat</param>
+        /// <returns>List of the historical daily climatic data</returns>
+        public async virtual Task<List<WeatherStationDailyData>> GetDailyDataForWeatherStationAsync(string weatherStation, DateTime startDate, DateTime endDate)
+        {
+
+            var startYear = startDate.Year;
+            var startMonth = startDate.Month;
+            var endYear = endDate.Year;
+            var endMonth = endDate.Month;
+
+
+            var builder = Builders<WeatherStationDailyData>.Filter;
+            var filter = builder.And(
+                builder.Eq(x => x.weather_station, ObjectId.Parse(weatherStation)),
+             
+                builder.Or(
+                    // Data between the start and end year
+                    builder.And(
+                        builder.Gte(x => x.year, startYear),
+                        builder.Lte(x => x.year, endYear)
+                    ),
+                    // Exact year but between months for start and end year
+                    builder.And(
+                        builder.Eq(x => x.year, startYear),
+                        builder.Gte(x => x.month, startMonth)
+                    ),
+                    builder.And(
+                        builder.Eq(x => x.year, endYear),
+                        builder.Lte(x => x.month, endMonth)
+                    )
+                )
+                );
+            var query = await collection.Find(filter).ToListAsync<WeatherStationDailyData>();
+            return query;
+        }
+
     }
 }
