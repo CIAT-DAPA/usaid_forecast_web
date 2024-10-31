@@ -131,15 +131,19 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 writeEvent("Last Daily Weather Data for weather station [" + weatherStationsId + "]", LogEvent.lis);
 
                 IEnumerable<WeatherStationDailyData> latestWeatherData = dailyData
-                    .GroupBy(w => w.weather_station)  // Agrupar por estación meteorológica
-                    .Select(group => group
-                        .OrderByDescending(w => w.year)  // Ordenar primero por año
-                        .ThenByDescending(w => w.month)  // Luego por mes
-                        .ThenByDescending(w => w.daily_readings.Max(r => r.day))  // Finalmente, por día
-                        .FirstOrDefault())  // Seleccionar el más reciente
-                    .Where(w => w != null);
+                    .Where(data => data.daily_readings != null && data.daily_readings.Any()) // Verificar si daily_readings no es nulo y tiene elementos
+                    .Select(data => new WeatherStationDailyData
+                    {
+                        weather_station = data.weather_station,
+                        year = data.year,
+                        month = data.month,
+                        daily_readings = new List<DailyReading>
+                        {
+                            data.daily_readings.OrderByDescending(r => r.day).FirstOrDefault()  // Seleccionar el último día
+                        }
+                    });
 
-                // Evaluate the format to export
+
                 IEnumerable<WeatherStationDailyDataJson> jsonResult = latestWeatherData.Select(data => new WeatherStationDailyDataJson()
                 {
                     weather_station = data.weather_station.ToString(),
@@ -189,6 +193,7 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 writeException(ex);
                 return new StatusCodeResult(500);
             }

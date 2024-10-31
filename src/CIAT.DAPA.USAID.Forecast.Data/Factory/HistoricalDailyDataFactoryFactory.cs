@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization;
 
 namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 {
@@ -113,11 +114,47 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
 
         public async virtual Task<List<WeatherStationDailyData>> byWeatherStationsAsync(ObjectId[] ws)
         {
-            // Filter all entities available.
-            var query = from daily_data in collection.AsQueryable()
-                        where ws.Contains(daily_data.weather_station)
-                        select daily_data;
-            return query.ToList();
+            // Definir el pipeline de agregación
+            var pipeline = new[]
+            {
+                // Filtrar por estaciones meteorológicas
+                new BsonDocument("$match", new BsonDocument("weather_station", new BsonDocument("$in", new BsonArray(ws)))),
+
+                // Agrupar por estación, año y mes
+                new BsonDocument("$group", new BsonDocument
+                    {
+                        { "_id", new BsonDocument
+                            {
+                                { "weatherStation", "$weather_station" },
+                                { "year", "$year" },
+                                { "month", "$month" }
+                            }},
+                        { "latestData", new BsonDocument("$first", "$$ROOT") } // Obtener el primer documento en el grupo
+                    }),
+
+                // Ordenar por año y mes de manera descendente
+                new BsonDocument("$sort", new BsonDocument
+                    {
+                        { "_id.year", -1 },
+                        { "_id.month", -1 }
+                    }),
+
+                // Agrupar nuevamente para obtener el último registro por estación
+                new BsonDocument("$group", new BsonDocument
+                    {
+                        { "_id", "$_id.weatherStation" },
+                        { "latestData", new BsonDocument("$first", "$latestData") } // Obtener el último dato de cada estación
+                    }),
+
+                // Proyectar solo el campo deseado
+                new BsonDocument("$replaceRoot", new BsonDocument("newRoot", "$latestData"))
+            };
+
+            // Ejecutar el pipeline de agregación
+            var latestData = await collection.Aggregate<BsonDocument>(pipeline).ToListAsync();
+
+            // Convertir a lista de WeatherStationDailyData
+            return latestData.Select(doc => BsonSerializer.Deserialize<WeatherStationDailyData>(doc)).ToList();
         }
 
         /// <summary>
