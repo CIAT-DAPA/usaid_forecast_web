@@ -136,28 +136,39 @@ namespace CIAT.DAPA.USAID.Forecast.Data.Factory
             var endYear = endDate.Year;
             var endMonth = endDate.Month;
 
-
             var builder = Builders<WeatherStationDailyData>.Filter;
             var filter = builder.And(
                 builder.Eq(x => x.weather_station, ObjectId.Parse(weatherStation)),
              
-                builder.Or(
-                    // Data between the start and end year
-                    builder.And(
-                        builder.Gte(x => x.year, startYear),
-                        builder.Lte(x => x.year, endYear)
-                    ),
-                    // Exact year but between months for start and end year
+                 builder.Or(
+                    // If startYear and endYear are the same, we restrict to months within that year
                     builder.And(
                         builder.Eq(x => x.year, startYear),
+                        builder.Eq(x => x.year, endYear),
+                        builder.Gte(x => x.month, startMonth),
+                        builder.Lte(x => x.month, endMonth)
+                    ),
+                    
+                    // If year is start and years are different, take item from start month on
+                    builder.And(
+                        builder.Eq(x => x.year, startYear),
+                        builder.Lt(x => x.year, endYear),
                         builder.Gte(x => x.month, startMonth)
                     ),
+                    // If year is end and years are different, take item until end month on
                     builder.And(
                         builder.Eq(x => x.year, endYear),
+                        builder.Gt(x => x.year, startYear),
                         builder.Lte(x => x.month, endMonth)
+                    ),
+
+                    // if year is between (not including) start and end - take item regardless of month
+                    builder.And(
+                        builder.Gt(x => x.year, startYear),
+                        builder.Lt(x => x.year, endYear)
                     )
                 )
-                );
+            );
             var query = await collection.Find(filter).ToListAsync<WeatherStationDailyData>();
             return query;
         }

@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore;
 using Newtonsoft.Json;
 using System.Linq;
 using System.ComponentModel;
@@ -40,16 +41,24 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
          // Suggests a response with HTTP status code 404 for not found
      
         public async Task<IActionResult> Climatology(
-            [FromQuery, Required, DefaultValue(typeof(DateTime), "2023-10-01")] DateTime startDate,
-            [FromQuery, Required, DefaultValue(typeof(DateTime), "2023-11-01")] DateTime endDate,
+            [FromQuery, Required, DefaultValue(/*typeof(DateTime),*/ "2021-05-05")] DateTime startDate,
+            [FromQuery, Required, DefaultValue(/*typeof(DateTime),*/ "2021-07-25")] DateTime endDate,
+
             string weatherStationId = "651438a68a8437279ea6ca46",
             string format = "json")
         {
             try
             {
-        
+
+                if (endDate < startDate)
+                {
+                    return BadRequest("endDate must be greater than startDate.");
+                }
+
+
+
                 List<WeatherStationDailyData> dailyData = await db.historicalDailyData.GetDailyDataForWeatherStationAsync(weatherStationId, startDate, endDate);
-                
+
                 // Write event log
                 writeEvent("Daily Weather Data Climatology for weather station [" + weatherStationId + "] retrieved: " + dailyData.Count.ToString(), LogEvent.lis);
 
@@ -59,7 +68,13 @@ namespace CIAT.DAPA.USAID.Forecast.WebAPI.Controllers
                 {
                     foreach (DailyReading reading in data.daily_readings)
                     {
+                        //filter days
                         var date = new DateTime(data.year, data.month, reading.day);
+                        if (date.CompareTo(startDate) < 0 || date.CompareTo(endDate) > 0)
+                        {
+                            continue;
+                        }
+
                         DailyClimate dailyClimate = new DailyClimate(date, reading.data);
                         dailyDataRange.daily_data.Add(dailyClimate); 
                     }
